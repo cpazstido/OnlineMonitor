@@ -1,0 +1,68 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 22
+    buildToolsVersion "23.0.0 rc3"
+
+    defaultConfig {
+        applicationId "com.hy.onlinemonitor"
+        minSdkVersion 14
+        targetSdkVersion 22
+        versionCode 1
+        versionName "1.0"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile 'com.android.support:cardview-v7:22.2.1'
+    compile 'com.android.support:support-v4:22.2.1'
+    compile 'com.android.support:appcompat-v7:22.2.1'
+    compile 'com.android.support:recyclerview-v7:22.2.1'
+    compile 'com.android.support:support-annotations:22.2.1'
+    compile 'com.github.rey5137:material:1.1.1'
+    //图片加载库
+    compile 'com.squareup.picasso:picasso:2.5.2'
+    //控件加入左上等图标
+    compile 'com.lid.labelview:lib:0.1.1'
+    //下拉刷新
+    compile 'com.baoyz.pullrefreshlayout:library:1.0.1'
+    //viewpager
+    compile('com.github.florent37:materialviewpager:1.0.6@aar') {
+        transitive = true
+    }
+    //点击打开viewpager的库
+    compile 'com.r0adkll:slidableactivity:2.0.3'
+    //导航菜单的库
+    compile('com.mikepenz:materialdrawer:3.1.2@aar') {
+        transitive = true
+    }
+    //网络请求的库
+    compile 'com.loopj.android:android-async-http:1.4.7'
+    //Gson
+    compile 'com.google.code.gson:gson:2.3.1'
+    //百度地图
+    compile files('libs/baidumapapi_v3_5_0_3.jar')
+    //导入自动find的库
+    compile 'com.jakewharton:butterknife:7.0.1'
+    //滑动出现更多选项
+    compile 'com.daimajia.swipelayout:library:1.2.0@aar'
+    //动画
+    compile 'com.nineoldandroids:library:2.4.0'
+    compile 'com.daimajia.easing:library:1.0.1@aar'
+    compile 'com.daimajia.androidanimations:library:1.1.3@aar'
+    //对话框
+    compile 'com.afollestad:material-dialogs:0.7.7.0'
+    //树形菜单
+    compile 'com.github.bmelnychuk:atv:1.2.4'
+    compile 'com.github.johnkil.print:print:1.2.2'
+    compile 'io.reactivex:rxandroid:1.0.0'
+    compile project(':data')
+    compile project(':domain')
+}
