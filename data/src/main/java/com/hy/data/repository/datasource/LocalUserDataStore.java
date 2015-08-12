@@ -32,7 +32,14 @@ public class LocalUserDataStore implements UserDataStore{
     }
 
     @Override
-    public void upDataUser(int choiceType) {
-        userCache.upDataUser(choiceType);
+    public Observable<String> upDataUser(int choiceType) {
+        return userCache.upDataUser(choiceType);
     }
+
+    @Override
+    public Observable<UserEntity> getUserInfor() {
+        return userCache.getUserInfor();
+    }
+
+
 }

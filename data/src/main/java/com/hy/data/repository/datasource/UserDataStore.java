@@ -21,10 +21,9 @@ public interface UserDataStore {
    */
   Observable<UserEntity> userEntity(final String loginAccount, final String loginPwd);
 
-
   Observable<List<String>> equipmentList();
 
-//  List<String> equipmentList();
+  Observable<String> upDataUser(int choiceType);
 
-  void upDataUser(int choiceType);
+  Observable<UserEntity> getUserInfor();
 }

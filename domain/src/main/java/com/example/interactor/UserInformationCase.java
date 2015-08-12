@@ -11,14 +11,35 @@ import rx.Observable;
  */
 public class UserInformationCase extends UseCase {
     private UserRepository userRepository;
+    private int choiceType = -1;
+    private String getUser = "";
+    public UserInformationCase(ThreadExecutor threadExecutor, PostExecutionThread postExecutionThread, UserRepository userRepository, int choiceType) {
+        super(threadExecutor, postExecutionThread);
+        this.userRepository = userRepository;
+        this.choiceType = choiceType;
+    }
 
     public UserInformationCase(ThreadExecutor threadExecutor, PostExecutionThread postExecutionThread, UserRepository userRepository) {
         super(threadExecutor, postExecutionThread);
         this.userRepository = userRepository;
     }
 
+    public UserInformationCase(ThreadExecutor threadExecutor, PostExecutionThread postExecutionThread, UserRepository userRepository, String getUser) {
+        super(threadExecutor, postExecutionThread);
+        this.userRepository = userRepository;
+        this.getUser = getUser;
+    }
+
     @Override
     protected Observable buildUseCaseObservable() {
-        return this.userRepository.equipmentList();
+        if(choiceType != -1 && getUser == "") {
+            return this.userRepository.upDataUser(choiceType);
+        }else if (choiceType == -1 && getUser != ""){
+            return this.userRepository.getUserInfor();
+        }
+        else if(choiceType == -1 && getUser == ""){
+            return this.userRepository.equipmentList();
+        }
+        return null;
     }
 }

@@ -11,11 +11,11 @@ import rx.Observable;
  */
 public interface UserCache {
 
-    Observable<UserEntity> get();
+    Observable<UserEntity> getUserInfor();
 
     void put(UserEntity userEntity);
 
-    void upDataUser(int choiceType);
+    Observable<String> upDataUser(int choiceType);
 
     Observable<List<String>> ownedEquipmentList();
 }

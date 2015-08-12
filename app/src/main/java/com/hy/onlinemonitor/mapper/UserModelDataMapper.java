@@ -39,6 +39,8 @@ public class UserModelDataMapper {
       throw new IllegalArgumentException("Cannot transform a null value");
     }
     User user = new User();
+
+    user.setSelectionType(domainUser.getSelectionType());
     user.setUserName(domainUser.getUserName());
     user.setOwnedEquipment(domainUser.getOwnedEquipment());
 

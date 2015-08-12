@@ -1,5 +1,6 @@
 package com.hy.onlinemonitor.view.Activity;
 
+
 import android.content.Intent;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -7,6 +8,7 @@ import android.view.View;
 import android.widget.AdapterView;
 
 import com.hy.onlinemonitor.R;
+import com.hy.onlinemonitor.view.Activity.Function.EquipmentListActivity;
 import com.hy.onlinemonitor.view.Adapter.MainGridAdapter;
 import com.hy.onlinemonitor.view.Component.MyGridView;
 
@@ -24,7 +26,7 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
     private static int AUTOPLANEGV = 3;
 
     @Override
-    protected void initAdapter() {
+    public void initAdapter() {
         Log.e("msg", "selectedType" + selectedType);
         gvFunction.setAdapter(new MainGridAdapter(MainActivity.this, FIREGV, selectedType));
         gvFunction.setOnItemClickListener(this);
@@ -41,14 +43,14 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
     }
 
     @Override
-    protected void initDatas() {
+    public void initDatas() {
 
     }
 
     @Override
-    protected void initViews() {
-        selectedType = this.getUserInformation().getSelectionType();    //得到选择到的是哪一个类型的监控设备
-
+    public void initViews() {
+        selectedType = this.getUser().getSelectionType();    //得到选择到的是哪一个类型的监控设备
+        Log.e("selectedType",""+selectedType);
         if (selectedType == 3) {//若是无人机,则隐藏状态监测这一项
             findViewById(R.id.main_ll_monitor).setVisibility(View.GONE);
         }
@@ -87,42 +89,42 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
                         startActivity(gridEquipmentListIntent);
                         break;
                     case 1: //报警信息
-                        Intent gridAlarmIntent = new Intent(MainActivity.this, AlarmInformationActivity.class);
-                        Log.e("lok","报警信息");
-                        startActivity(gridAlarmIntent);
+//                        Intent gridAlarmIntent = new Intent(MainActivity.this, AlarmInformationActivity.class);
+//                        Log.e("lok","报警信息");
+//                        startActivity(gridAlarmIntent);
                         break;
                     case 2: //地图
-                        Intent gridMapIntent = new Intent(MainActivity.this,MapActivity.class);
-                        Log.e("lok","地图");
-                        startActivity(gridMapIntent);
+//                        Intent gridMapIntent = new Intent(MainActivity.this,MapActivity.class);
+//                        Log.e("lok","地图");
+//                        startActivity(gridMapIntent);
                         break;
                 }
                 break;
             case R.id.main_gv_manage:    //系统管理gridView
                 switch(position) {
                     case 0://公司
-                        Intent gridCompanyIntent = new Intent(MainActivity.this, CompanyManageActivity.class);
-                        startActivity(gridCompanyIntent);
+//                        Intent gridCompanyIntent = new Intent(MainActivity.this, CompanyManageActivity.class);
+//                        startActivity(gridCompanyIntent);
                         break;
                     case 1://管理员
-                        Intent gridAdministratorIntent = new Intent(MainActivity.this, AdministratorManageActivity.class);
-                        startActivity(gridAdministratorIntent);
+//                        Intent gridAdministratorIntent = new Intent(MainActivity.this, AdministratorManageActivity.class);
+//                        startActivity(gridAdministratorIntent);
                         break;
                     case 2://权限
-                        Intent gridAuthorityIntent = new Intent(MainActivity.this, JurisdictionManageActivity.class);
-                        startActivity(gridAuthorityIntent);
+//                        Intent gridAuthorityIntent = new Intent(MainActivity.this, JurisdictionManageActivity.class);
+//                        startActivity(gridAuthorityIntent);
                         break;
                     case 3://线路
-                        Intent gridLineIntent = new Intent(MainActivity.this, LineManageActivity.class);
-                        startActivity(gridLineIntent);
+//                        Intent gridLineIntent = new Intent(MainActivity.this, LineManageActivity.class);
+//                        startActivity(gridLineIntent);
                         break;
                     case 4://杆塔
-                        Intent gridTowerIntent = new Intent(MainActivity.this, TowerManageActivity.class);
-                        startActivity(gridTowerIntent);
+//                        Intent gridTowerIntent = new Intent(MainActivity.this, TowerManageActivity.class);
+//                        startActivity(gridTowerIntent);
                         break;
                     case 5://设备
-                        Intent gridEquipmentIntent = new Intent(MainActivity.this, EquipmentManageActivity.class);
-                        startActivity(gridEquipmentIntent);
+//                        Intent gridEquipmentIntent = new Intent(MainActivity.this, EquipmentManageActivity.class);
+//                        startActivity(gridEquipmentIntent);
                         break;
                 }
                 break;

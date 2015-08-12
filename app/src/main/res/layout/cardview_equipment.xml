@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/equipment_cardview"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="4dp"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp"
+    android:layout_marginTop="4dp"
+    android:layout_weight="1"
+    app:cardCornerRadius="2dp"
+    app:cardElevation="4dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/equipment_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/mSubhead"
+                android:text="侯阳一线--84号塔" />
+
+            <ImageView
+                android:id="@+id/equipment_title_new_alarm"
+                android:layout_width="50dp"
+                android:layout_height="match_parent"
+                android:layout_alignBottom="@+id/equipment_name"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/gv_fire"
+                android:visibility="gone" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/equipment_alarm_new_tv"
+                android:layout_alignParentLeft="true"
+                android:layout_width="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/mSubhead"
+                android:text="@string/new_alarm" />
+            <TextView
+                android:id="@+id/new_alarm_null_tv"
+                android:layout_alignParentRight="true"
+                android:layout_gravity="center"
+                android:layout_marginRight="50dp"
+                android:text="@string/no_alarm"
+                android:textSize="@dimen/mBody2"
+                android:visibility="gone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <LinearLayout
+                android:id="@+id/equipment_alarm_new_ll"
+                android:layout_alignParentRight="true"
+                android:layout_toRightOf="@id/equipment_alarm_new_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <com.rey.material.widget.Button
+                    style="@style/FlatColorButtonRippleStyle"
+                    android:id="@+id/new_sensor_alarm"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/bt_height"
+                    android:layout_weight="1"
+                    android:textColor="#FF2196F3"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Button"
+                    android:text="@string/the_sensor"
+                    app:rd_delayClick="afterRelease"/>
+                <com.rey.material.widget.Button
+                    style="@style/FlatColorButtonRippleStyle"
+                    android:id="@+id/new_fire_alarm"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/bt_height"
+                    android:layout_weight="1"
+                    android:textColor="#FF2196F3"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Button"
+                    android:text="@string/the_fire"
+                    app:rd_delayClick="afterRelease"/>
+                <com.rey.material.widget.Button
+                    style="@style/FlatColorButtonRippleStyle"
+                    android:id="@+id/new_break_alarm"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/bt_height"
+                    android:layout_weight="1"
+                    android:textColor="#FF2196F3"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Button"
+                    android:text="@string/the_break"
+                    app:rd_delayClick="afterRelease"/>
+            </LinearLayout>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/equipment_alarm_old_tv"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/mSubhead"
+                android:text="@string/history_alarm" />
+
+
+            <LinearLayout
+                android:id="@+id/equipment_alarm_old_ll"
+                android:layout_alignParentRight="true"
+                android:layout_toRightOf="@id/equipment_alarm_old_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <com.rey.material.widget.Button
+                    style="@style/FlatColorButtonRippleStyle"
+                    android:id="@+id/history_sensor_alarm"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/bt_height"
+                    android:layout_weight="1"
+                    android:textColor="#FF2196F3"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Button"
+                    android:text="@string/the_sensor"
+                    app:rd_delayClick="afterRelease"/>
+
+                <com.rey.material.widget.Button
+                    style="@style/FlatColorButtonRippleStyle"
+                    android:id="@+id/history_fire_alarm"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/bt_height"
+                    android:layout_weight="1"
+                    android:textColor="#FF2196F3"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Button"
+                    android:text="@string/the_fire"
+                    app:rd_delayClick="afterRelease"/>
+
+                <com.rey.material.widget.Button
+                    style="@style/FlatColorButtonRippleStyle"
+                    android:id="@+id/history_break_alarm"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/bt_height"
+                    android:layout_weight="1"
+                    android:textColor="#FF2196F3"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Button"
+                    android:text="@string/the_break"
+                    app:rd_delayClick="afterRelease"/>
+            </LinearLayout>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/equipment_state_tv"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/mSubhead"
+                android:text="@string/equipment_state" />
+            <LinearLayout
+                android:layout_alignParentRight="true"
+                android:id="@+id/real_time_ll"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <com.rey.material.widget.Button
+                    style="@style/FlatColorButtonRippleStyle"
+                    android:id="@+id/real_time_video"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/bt_height"
+                    android:layout_weight="1"
+                    android:textColor="#FF2196F3"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Button"
+                    android:text="@string/real_time_video"
+                    app:rd_delayClick="afterRelease"/>
+            </LinearLayout>
+            <TextView
+                android:id="@+id/equipment_state_show"
+                android:layout_toLeftOf="@id/real_time_ll"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@id/equipment_state_tv"
+                android:layout_marginLeft="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+        </RelativeLayout>
+    </LinearLayout>
+
+
+</android.support.v7.widget.CardView>

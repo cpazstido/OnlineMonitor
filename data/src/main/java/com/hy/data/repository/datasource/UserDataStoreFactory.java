@@ -41,5 +41,4 @@ public class UserDataStoreFactory {
   public UserDataStore createLocalDataStore(){
     return new LocalUserDataStore(context,new UserCacheImp(context));
   }
-
 }

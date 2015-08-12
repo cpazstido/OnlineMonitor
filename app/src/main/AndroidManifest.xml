@@ -21,6 +21,9 @@
 
         <activity android:name=".view.Activity.TypeSelectionActivity"/>
 
+        <activity android:name=".view.Activity.MainActivity"/>
+
+        <activity android:name=".view.Activity.Function.EquipmentListActivity"/>
 
     </application>
 

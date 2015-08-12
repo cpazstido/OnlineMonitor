@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <include layout="@layout/toolbar"/>
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="80dp">
+
+            <LinearLayout
+                android:id="@+id/main_ll_function"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="2dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/function"
+                    android:textColor="#FFFF8833"
+                    android:textSize="@dimen/mTitle"
+                    android:typeface="monospace" />
+
+                <View
+                    android:layout_width="80dp"
+                    android:layout_height="1.5dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:background="#FFFF8833" />
+
+                <com.hy.onlinemonitor.view.Component.MyGridView
+                    android:id="@+id/main_gv_function"
+                    android:layout_width="match_parent"
+                    android:layout_height="140dp"
+                    android:columnWidth="80dp"
+                    android:gravity="center"
+                    android:horizontalSpacing="1dp"
+                    android:minHeight="90dp"
+                    android:numColumns="auto_fit"
+                    android:stretchMode="columnWidth"
+                    android:verticalSpacing="1dp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:id="@+id/main_ll_config"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="2dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/parameter_configuration"
+                    android:textColor="#FFFF8833"
+                    android:textSize="@dimen/mTitle"
+                    android:typeface="monospace" />
+
+                <View
+                    android:layout_width="80dp"
+                    android:layout_height="1.5dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:background="#FFFF8833" />
+
+                <com.hy.onlinemonitor.view.Component.MyGridView
+                    android:id="@+id/main_gv_config"
+                    android:layout_width="match_parent"
+                    android:layout_height="140dp"
+                    android:columnWidth="80dp"
+                    android:gravity="center"
+                    android:horizontalSpacing="1dp"
+                    android:minHeight="90dp"
+                    android:numColumns="auto_fit"
+                    android:stretchMode="columnWidth"
+                    android:verticalSpacing="1dp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/main_ll_manage"
+                android:layout_marginBottom="20dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="2dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/system_management"
+                    android:textColor="#FFFF8833"
+                    android:textSize="@dimen/mTitle"
+                    android:typeface="monospace" />
+
+                <View
+                    android:layout_width="80dp"
+                    android:layout_height="1.5dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:background="#FFFF8833" />
+
+                <com.hy.onlinemonitor.view.Component.MyGridView
+                    android:id="@+id/main_gv_manage"
+                    android:layout_width="match_parent"
+                    android:layout_height="140dp"
+                    android:columnWidth="80dp"
+                    android:gravity="center"
+                    android:horizontalSpacing="1dp"
+                    android:minHeight="90dp"
+                    android:numColumns="auto_fit"
+                    android:stretchMode="columnWidth"
+                    android:verticalSpacing="1dp"/>
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/main_ll_monitor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="2dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/condition_monitoring"
+                    android:textColor="#FFFF8833"
+                    android:textSize="@dimen/mTitle"
+                    android:typeface="monospace" />
+
+                <View
+                    android:layout_width="80dp"
+                    android:layout_height="1.5dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:background="#FFFF8833" />
+
+                <com.hy.onlinemonitor.view.Component.MyGridView
+                    android:id="@+id/main_gv_monitor"
+                    android:layout_width="match_parent"
+                    android:layout_height="140dp"
+                    android:columnWidth="80dp"
+                    android:gravity="center"
+                    android:horizontalSpacing="1dp"
+                    android:minHeight="90dp"
+                    android:numColumns="auto_fit"
+                    android:stretchMode="columnWidth"
+                    android:verticalSpacing="1dp"/>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

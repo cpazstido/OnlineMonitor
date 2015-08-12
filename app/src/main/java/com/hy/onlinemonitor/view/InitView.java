@@ -8,4 +8,7 @@ public interface InitView {
     void initViews();
 
     void initDatas();
+
+    void initAdapter();
+
 }

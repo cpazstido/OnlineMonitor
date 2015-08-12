@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -11,7 +12,8 @@ import android.widget.TextView;
 
 import com.hy.onlinemonitor.R;
 import com.hy.onlinemonitor.bean.User;
-import com.hy.onlinemonitor.presenter.LoginPresenter;
+import com.hy.onlinemonitor.presenter.UserPresenter;
+import com.hy.onlinemonitor.view.InitView;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.iconics.typeface.FontAwesome;
 import com.mikepenz.materialdrawer.Drawer;
@@ -25,26 +27,29 @@ import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 /**
  * Created by wsw on 2015/7/16.
  */
-public abstract class BaseActivity extends AppCompatActivity {
+public abstract class BaseActivity extends AppCompatActivity implements InitView{
     private Drawer result = null;
     private Toolbar toolbar;
     private User user;
     private View headView;
+    private UserPresenter userPresenter;
+    private TextView userNameTV;
 
-    public void setUser(User user) {
-        this.user = user;
+    public TextView getUserNameTV() {
+        return userNameTV;
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setOwnContentView();
         initUser();
+
         toolbar = getToolbar();
         setSupportActionBar(toolbar);
         headView = LayoutInflater.from(this).inflate(R.layout.drawer_header, null);
-        TextView userNameTV = (TextView) headView.findViewById(R.id.tv_user_name);
+        userNameTV = (TextView) headView.findViewById(R.id.tv_user_name);
 
-        userNameTV.setText(user.getUserName());
         result = new DrawerBuilder().withActivity(this)
                 .withToolbar(toolbar)
                 .addDrawerItems(
@@ -57,7 +62,7 @@ public abstract class BaseActivity extends AppCompatActivity {
                         new SectionDrawerItem().withName(R.string.system_management),
                         new SecondaryDrawerItem().withName(R.string.company).withIcon(FontAwesome.Icon.faw_github).withIdentifier(6).withCheckable(true),
                         new SecondaryDrawerItem().withName(R.string.administrator).withIcon(GoogleMaterial.Icon.gmd_format_color_fill).withIdentifier(7).withTag("Bullhorn"),
-                        new SecondaryDrawerItem().withName(R.string.jurisdiction).withIcon(GoogleMaterial.Icon.gmd_format_color_fill).withIdentifier(8).withTag("Bullhorn"),
+                        new SecondaryDrawerItem().withName(R.string.jurisdiction).withIcon(GoogleMaterial.Icon.gmd_airline_seat_flat).withIdentifier(8).withTag("Bullhorn"),
                         new SecondaryDrawerItem().withName(R.string.line).withIcon(GoogleMaterial.Icon.gmd_format_color_fill).withIdentifier(9).withTag("Bullhorn"),
                         new SecondaryDrawerItem().withName(R.string.tower).withIcon(GoogleMaterial.Icon.gmd_format_color_fill).withIdentifier(10).withTag("Bullhorn"),
                         new SecondaryDrawerItem().withName(R.string.equipment).withIcon(GoogleMaterial.Icon.gmd_format_color_fill).withIdentifier(11).withTag("Bullhorn"),
@@ -137,24 +142,27 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     private  void initUser(){
-        LoginPresenter userPresenter = new LoginPresenter();
+        userPresenter = new UserPresenter();
         userPresenter.setBaseAcitvity(this);
         userPresenter.getUserInformation(this);
-
     }
 
-    protected abstract void initAdapter();
-
-    protected abstract void initDatas();
-
-    protected abstract void initViews();
-
+    public void afterGetUser(){
+        Log.e("msg","afterGetUser");
+    }
     protected abstract Toolbar getToolbar();
 
     protected abstract void setOwnContentView();
 
     public Drawer getDrawer() {
         return this.result;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+    public User getUser() {
+        return user;
     }
 
 }

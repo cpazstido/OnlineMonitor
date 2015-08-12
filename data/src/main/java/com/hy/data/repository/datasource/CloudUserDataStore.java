@@ -42,14 +42,20 @@ public class CloudUserDataStore implements UserDataStore {
 
   }
 
+
   @Override
   public Observable<List<String>> equipmentList() {
     return null;
   }
 
   @Override
-  public void upDataUser(int choiceType) {
+  public Observable upDataUser(int choiceType) {
+    return null;
+  }
 
+  @Override
+  public Observable<UserEntity> getUserInfor() {
+    return null;
   }
 
 }

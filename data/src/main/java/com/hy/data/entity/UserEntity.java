@@ -53,4 +53,16 @@ public class UserEntity {
   public String getUserName() {
     return userName;
   }
+
+
+  @Override
+  public String toString() {
+    final StringBuilder sb = new StringBuilder("UserEntity{");
+    sb.append("selectionType=").append(selectionType);
+    sb.append(", userName='").append(userName).append('\'');
+    sb.append(", id=").append(id);
+    sb.append(", OwnedEquipment='").append(OwnedEquipment).append('\'');
+    sb.append('}');
+    return sb.toString();
+  }
 }

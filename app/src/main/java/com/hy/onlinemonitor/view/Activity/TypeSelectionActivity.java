@@ -1,7 +1,7 @@
 package com.hy.onlinemonitor.view.Activity;
 
 
-import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
@@ -12,76 +12,33 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.hy.onlinemonitor.R;
-import com.hy.onlinemonitor.presenter.LoginPresenter;
+import com.hy.onlinemonitor.presenter.UserPresenter;
 import com.hy.onlinemonitor.view.InitView;
-import com.hy.onlinemonitor.view.JumpView;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-import butterknife.ButterKnife;
-
 /**
  * Created by wsw on 2015/7/11.
  */
-public class TypeSelectionActivity extends AppCompatActivity implements InitView,JumpView{
+public class TypeSelectionActivity extends AppCompatActivity implements InitView{
 
     private CardView fire_card, break_card, auto_card, normal_card;
     private TextView fire_tv, break_tv, auto_tv, normal_tv;
     private ImageView fire_iv, break_iv, auto_iv, normal_iv;
     private Toolbar toolbar;
     private List<String> ownedEquipmentList;
-    private LoginPresenter loginPresenter;
+    private UserPresenter userPresenter;
 
     public void setOwnedEquipmentList(List<String> ownedEquipmentList) {
-        Log.e("aa","there!aaaaa");
         this.ownedEquipmentList = ownedEquipmentList;
-        Log.e("aa", "size!" + ownedEquipmentList.size());
-
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_type_selection);
-        ButterKnife.bind(this);
         initViews();
-    }
-
-    public void initListener() {
-        fire_card.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-//                Intent fireIntent = new Intent(TypeSelectionActivity.this, MainActivity.class);
-                loginPresenter.upDataUser(0);
-//                startActivity(fireIntent);
-            }
-        });
-        break_card.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-//                Intent breakIntent = new Intent(TypeSelectionActivity.this, MainActivity.class);
-                loginPresenter.upDataUser(1);
-//                startActivity(breakIntent);
-            }
-        });
-
-        normal_card.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-//                Intent normalIntent = new Intent(TypeSelectionActivity.this, MainActivity.class);
-                loginPresenter.upDataUser(2);
-//                startActivity(normalIntent);
-            }
-        });
-        auto_card.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-//                Intent autoIntent = new Intent(TypeSelectionActivity.this, MainActivity.class);
-                loginPresenter.upDataUser(3);
-//                startActivity(autoIntent);
-            }
-        });
     }
 
     @Override
@@ -101,9 +58,9 @@ public class TypeSelectionActivity extends AppCompatActivity implements InitView
         normal_iv = (ImageView) normal_card.findViewById(R.id.list_item_image);
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-        loginPresenter = new LoginPresenter();
-        loginPresenter.setTypeSelectionActivity(this);
-        loginPresenter.getUserEquipmentList(this);
+        userPresenter = new UserPresenter();
+        userPresenter.setTypeSelectionActivity(this);
+        userPresenter.getUserEquipmentList(this);
 
     }
 
@@ -111,7 +68,6 @@ public class TypeSelectionActivity extends AppCompatActivity implements InitView
     public void initDatas() {
 
         for (String equipment : ownedEquipmentList) {
-            Log.e("equipment", equipment);
             switch (equipment) {
                 case "山火":
                     fire_card.setVisibility(View.VISIBLE);
@@ -142,29 +98,54 @@ public class TypeSelectionActivity extends AppCompatActivity implements InitView
 
     }
 
-
     @Override
-    public void GoToView() {
+    public void initAdapter() {
+        fire_card.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                userPresenter.upDataUser(0, TypeSelectionActivity.this);
+            }
+        });
+        break_card.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                userPresenter.upDataUser(1, TypeSelectionActivity.this);
+            }
+        });
+
+        normal_card.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                userPresenter.upDataUser(2, TypeSelectionActivity.this);
+            }
+        });
+        auto_card.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                userPresenter.upDataUser(3, TypeSelectionActivity.this);
+            }
+        });
+    }
+    public void GotoActivity(){
+        Log.e("TypeSelectionActivity", "GotoActivity");
+
+        Intent intent = new Intent(TypeSelectionActivity.this, MainActivity.class);
+        startActivity(intent);
 
     }
 
-    @Override
-    public void showLoading() {
-
+    @Override public void onResume() {
+        super.onResume();
+        this.userPresenter.resume();
     }
 
-    @Override
-    public void hideLoading() {
-
+    @Override public void onPause() {
+        super.onPause();
+        this.userPresenter.pause();
     }
 
-    @Override
-    public void showError(String message) {
-
-    }
-
-    @Override
-    public Context getContext() {
-        return TypeSelectionActivity.this;
+    @Override public void onDestroy() {
+        super.onDestroy();
+        this.userPresenter.destroy();
     }
 }

@@ -1,6 +1,6 @@
 package com.hy.onlinemonitor.data;
 
-import com.hy.test.onlinesystem.R;
+import com.hy.onlinemonitor.R;
 
 /**
  * 类型分类汇总

@@ -20,5 +20,8 @@ public interface UserRepository {
 
   Observable<List<String>> equipmentList();
 
-  void upDataUser(int choiceType);
+  Observable<String> upDataUser(int choiceType);
+
+  Observable<DomainUser> getUserInfor();
+
 }

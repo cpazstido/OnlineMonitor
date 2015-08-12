@@ -50,9 +50,15 @@ public class UserDataRepository implements UserRepository {
   }
 
   @Override
-  public void upDataUser(int choiceType) {
+  public Observable<String> upDataUser(int choiceType) {
     final UserDataStore userDataStore = this.userDataStoreFactory.createLocalDataStore();
-    userDataStore.upDataUser(choiceType);
+    return userDataStore.upDataUser(choiceType);
   }
 
+  @Override
+  public Observable<DomainUser> getUserInfor() {
+    final UserDataStore userDataStore = this.userDataStoreFactory.createLocalDataStore();
+
+    return userDataStore.getUserInfor().map(this.userEntityDataMapper::transform);
+  }
 }

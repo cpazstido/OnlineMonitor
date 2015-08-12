@@ -21,13 +21,13 @@ import rx.Subscriber;
 public class UserCacheImp implements UserCache{
 
     private Context mContext;
-
     public UserCacheImp(Context mContext) {
         this.mContext = mContext;
     }
 
+
     @Override
-    public Observable<UserEntity> get() {
+    public Observable<UserEntity> getUserInfor() {
         return Observable.create(new Observable.OnSubscribe<UserEntity>() {
             @Override
             public void call(Subscriber<? super UserEntity> subscriber) {
@@ -39,12 +39,9 @@ public class UserCacheImp implements UserCache{
                 } catch (DbException e) {
                     e.printStackTrace();
                 }
-                if (userEntity != null) {
-                    subscriber.onNext(userEntity);
-                    subscriber.onCompleted();
-                } else {
-                    subscriber.onError(new UserNotFoundException());
-                }
+                Log.e("toString", "ToString->>>" + userEntity.toString());
+                subscriber.onNext(userEntity);
+                subscriber.onCompleted();
             }
         });
     }
@@ -66,19 +63,30 @@ public class UserCacheImp implements UserCache{
     }
 
     @Override
-    public void upDataUser(int choiceType) {
-        DbUtils db = DbUtils.create(mContext);
-        List<UserEntity> users = null;
-        try {
-            users = db.findAll(Selector.from(UserEntity.class));
-            if (users != null) {
-                UserEntity  userEntity = users.get(0);
-                userEntity.setSelectionType(choiceType);
-                db.saveOrUpdate(userEntity);
+    public Observable<String> upDataUser(int choiceType) {
+
+        return Observable.create(new Observable.OnSubscribe<String>() {
+            @Override
+            public void call(Subscriber<? super String> subscriber) {
+                DbUtils db = DbUtils.create(mContext);
+                List<UserEntity> users = null;
+                try {
+                    users = db.findAll(Selector.from(UserEntity.class));
+                    if (users != null) {
+                        UserEntity  userEntity = users.get(0);
+                        userEntity.setSelectionType(choiceType);
+                        db.saveOrUpdate(userEntity);
+                    }
+                } catch (DbException e) {
+                    e.printStackTrace();
+                }
+                subscriber.onNext("success");
+                subscriber.onCompleted();
             }
-        } catch (DbException e) {
-            e.printStackTrace();
-        }
+        });
+
+
+
     }
 
     @Override
