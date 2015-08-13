@@ -9,6 +9,7 @@ import com.example.interactor.DefaultSubscriber;
 import com.example.interactor.UseCase;
 import com.example.interactor.UserInformationCase;
 import com.example.repository.UserRepository;
+import com.hy.data.entity.mapper.UserEntityDataMapper;
 import com.hy.data.executor.JobExecutor;
 import com.hy.data.repository.UserDataRepository;
 import com.hy.data.repository.datasource.UserDataStoreFactory;
@@ -48,15 +49,16 @@ public class UserPresenter extends DefaultSubscriber implements Presenter {
     }
 
     public void getUserInformation(Context mContext) {
-        userRepository = new UserDataRepository(new UserDataStoreFactory(mContext));
-        this.UserInformationCase = new UserInformationCase(new JobExecutor(), new UIThread(), userRepository,"aaa");
+        userRepository = new UserDataRepository(new UserDataStoreFactory(mContext), new UserEntityDataMapper());
+        this.UserInformationCase = new UserInformationCase(new JobExecutor(), new UIThread(), userRepository, "getUserInformation");
         this.UserInformationCase.execute(new UserInformationSubscriber());
     }
 
     private final class UserInformationSubscriber extends DefaultSubscriber<DomainUser> {
         @Override
         public void onCompleted() {
-            baseActivity.afterGetUser();
+            baseActivity.setupUI();
+            baseActivity.initialize();
         }
 
         @Override
@@ -65,17 +67,16 @@ public class UserPresenter extends DefaultSubscriber implements Presenter {
         }
 
         @Override
-        public void onNext(DomainUser user) {
-            Log.e("UserInformation","onNext");
-            User userCollection = new UserModelDataMapper().transform(user);
-
-            baseActivity.setUser(userCollection);
-            baseActivity.getUserNameTV().setText(user.getUserName());
+        public void onNext(DomainUser domainUser) {
+            User user = new UserModelDataMapper().transform(domainUser);
+            baseActivity.setUser(user);
+            baseActivity.getUserNameTV().setText(domainUser.getUserName());
         }
     }
 
 
     public void upDataUser(int choiceType, Context mContext) {
+        this.mContext = mContext;
         userRepository = new UserDataRepository(new UserDataStoreFactory(mContext));
         this.UserInformationCase = new UserInformationCase(new JobExecutor(), new UIThread(), userRepository, choiceType);
         this.UserInformationCase.execute(new upDataUserSubscriber());
@@ -112,8 +113,7 @@ public class UserPresenter extends DefaultSubscriber implements Presenter {
     private final class EquipmentListSubscriber extends DefaultSubscriber<List<String>> {
         @Override
         public void onCompleted() {
-            typeSelectionActivity.initDatas();
-            typeSelectionActivity.initAdapter();
+            typeSelectionActivity.initialize();
         }
 
         @Override
@@ -123,7 +123,6 @@ public class UserPresenter extends DefaultSubscriber implements Presenter {
 
         @Override
         public void onNext(List<String> ownedEquipmentList) {
-            Log.e("sub", "onNext");
             typeSelectionActivity.setOwnedEquipmentList(ownedEquipmentList);
         }
     }
@@ -132,7 +131,7 @@ public class UserPresenter extends DefaultSubscriber implements Presenter {
         this.baseActivity = baseActivity;
     }
 
-    public void setTypeSelectionActivity(@NonNull TypeSelectionActivity typeSelectionActivity){
+    public void setTypeSelectionActivity(@NonNull TypeSelectionActivity typeSelectionActivity) {
         this.typeSelectionActivity = typeSelectionActivity;
     }
 

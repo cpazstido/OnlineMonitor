@@ -5,10 +5,8 @@ package com.hy.onlinemonitor.view;
  */
 public interface InitView {
 
-    void initViews();
+    void setupUI();
 
-    void initDatas();
-
-    void initAdapter();
+    void initialize();
 
 }

@@ -4,6 +4,8 @@ import com.example.executor.PostExecutionThread;
 import com.example.executor.ThreadExecutor;
 import com.example.repository.UserRepository;
 
+import java.util.Objects;
+
 import rx.Observable;
 
 /**
@@ -32,14 +34,17 @@ public class UserInformationCase extends UseCase {
 
     @Override
     protected Observable buildUseCaseObservable() {
-        if(choiceType != -1 && getUser == "") {
-            return this.userRepository.upDataUser(choiceType);
-        }else if (choiceType == -1 && getUser != ""){
-            return this.userRepository.getUserInfor();
+        Observable observable =null;
+        if(choiceType != -1 && Objects.equals("", getUser)) {
+            observable = this.userRepository.upDataUser(choiceType);
         }
-        else if(choiceType == -1 && getUser == ""){
-            return this.userRepository.equipmentList();
+        if (choiceType == -1 && !Objects.equals(getUser, "")){
+            observable = this.userRepository.getUserInfor();
         }
-        return null;
+        if(choiceType == -1 && Objects.equals(getUser, "")){
+            observable =  this.userRepository.equipmentList();
+        }
+        return observable;
+
     }
 }

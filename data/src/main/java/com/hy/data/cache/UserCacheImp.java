@@ -1,7 +1,6 @@
 package com.hy.data.cache;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.hy.data.entity.UserEntity;
 import com.hy.data.exception.UserNotFoundException;
@@ -25,7 +24,6 @@ public class UserCacheImp implements UserCache{
         this.mContext = mContext;
     }
 
-
     @Override
     public Observable<UserEntity> getUserInfor() {
         return Observable.create(new Observable.OnSubscribe<UserEntity>() {
@@ -36,12 +34,17 @@ public class UserCacheImp implements UserCache{
                 try {
                     List<UserEntity> users = db.findAll(Selector.from(UserEntity.class));
                     userEntity = users.get(0);
+
                 } catch (DbException e) {
                     e.printStackTrace();
                 }
-                Log.e("toString", "ToString->>>" + userEntity.toString());
-                subscriber.onNext(userEntity);
-                subscriber.onCompleted();
+                if(userEntity !=null) {
+
+                    subscriber.onNext(userEntity);
+                    subscriber.onCompleted();
+                }else{
+                    new Throwable("userEntity is NUll");
+                }
             }
         });
     }
@@ -49,14 +52,9 @@ public class UserCacheImp implements UserCache{
     @Override
     public void put(UserEntity userEntity) {
         DbUtils db = DbUtils.create(mContext);
-
         try {
-            List<UserEntity> users = db.findAll(Selector.from(UserEntity.class));
-            if (users != null) {
-                db.deleteAll(users);
-            }
+            db.deleteAll(UserEntity.class);
             db.save(userEntity);
-
         } catch (DbException e) {
             e.printStackTrace();
         }
@@ -76,6 +74,7 @@ public class UserCacheImp implements UserCache{
                         UserEntity  userEntity = users.get(0);
                         userEntity.setSelectionType(choiceType);
                         db.saveOrUpdate(userEntity);
+                        users = db.findAll(Selector.from(UserEntity.class));
                     }
                 } catch (DbException e) {
                     e.printStackTrace();
@@ -84,9 +83,6 @@ public class UserCacheImp implements UserCache{
                 subscriber.onCompleted();
             }
         });
-
-
-
     }
 
     @Override
@@ -101,11 +97,10 @@ public class UserCacheImp implements UserCache{
                     UserEntity  userEntity = users.get(0);
                     String ownedEquipmentStr = userEntity.getOwnedEquipment();
                     ownedEquipmentList = TransformationUtils.getListFromString(ownedEquipmentStr, ",");
-                    Log.e("aaa","here");
                 } catch (DbException e) {
                     e.printStackTrace();
                 }
-                if(ownedEquipmentList !=null){
+                if(ownedEquipmentList != null){
                     subscriber.onNext(ownedEquipmentList);
                     subscriber.onCompleted();
                 } else {

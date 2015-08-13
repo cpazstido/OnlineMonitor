@@ -38,11 +38,32 @@ public class TypeSelectionActivity extends AppCompatActivity implements InitView
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_type_selection);
-        initViews();
+        setupUI();
+    }
+
+    public void GotoActivity(){
+        Log.e("TypeSelectionActivity", "GotoActivity");
+        Intent intent = new Intent(TypeSelectionActivity.this, MainActivity.class);
+        startActivity(intent);
+    }
+
+    @Override public void onResume() {
+        super.onResume();
+        this.userPresenter.resume();
+    }
+
+    @Override public void onPause() {
+        super.onPause();
+        this.userPresenter.pause();
+    }
+
+    @Override public void onDestroy() {
+        super.onDestroy();
+        this.userPresenter.destroy();
     }
 
     @Override
-    public void initViews() {
+    public void setupUI() {
         fire_card = (CardView) findViewById(R.id.fire_alarm_cardview);
         break_card = (CardView) findViewById(R.id.break_alarm_cardview);
         auto_card = (CardView) findViewById(R.id.autoplane_alarm_cardview);
@@ -61,12 +82,10 @@ public class TypeSelectionActivity extends AppCompatActivity implements InitView
         userPresenter = new UserPresenter();
         userPresenter.setTypeSelectionActivity(this);
         userPresenter.getUserEquipmentList(this);
-
     }
 
     @Override
-    public void initDatas() {
-
+    public void initialize() {
         for (String equipment : ownedEquipmentList) {
             switch (equipment) {
                 case "山火":
@@ -96,10 +115,6 @@ public class TypeSelectionActivity extends AppCompatActivity implements InitView
         toolbar.setSubtitle(R.string.please_choice);
         setSupportActionBar(toolbar);
 
-    }
-
-    @Override
-    public void initAdapter() {
         fire_card.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -125,27 +140,5 @@ public class TypeSelectionActivity extends AppCompatActivity implements InitView
                 userPresenter.upDataUser(3, TypeSelectionActivity.this);
             }
         });
-    }
-    public void GotoActivity(){
-        Log.e("TypeSelectionActivity", "GotoActivity");
-
-        Intent intent = new Intent(TypeSelectionActivity.this, MainActivity.class);
-        startActivity(intent);
-
-    }
-
-    @Override public void onResume() {
-        super.onResume();
-        this.userPresenter.resume();
-    }
-
-    @Override public void onPause() {
-        super.onPause();
-        this.userPresenter.pause();
-    }
-
-    @Override public void onDestroy() {
-        super.onDestroy();
-        this.userPresenter.destroy();
     }
 }

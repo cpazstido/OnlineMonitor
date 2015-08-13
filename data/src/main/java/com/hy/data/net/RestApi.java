@@ -16,7 +16,10 @@
 package com.hy.data.net;
 
 
+import com.hy.data.entity.EquipmentAlarmEntity;
 import com.hy.data.entity.UserEntity;
+
+import java.util.List;
 
 import rx.Observable;
 
@@ -26,13 +29,15 @@ import rx.Observable;
 public interface RestApi {
   static final String API_BASE_URL = "http://www.android10.org/myapi/";
 
-  /** Api url for getting all users */
-  static final String API_URL_GET_USER_LIST = API_BASE_URL + "users.json";
-  /** Api url for getting a user profile: Remember to concatenate id + 'json' */
-  static final String API_URL_GET_USER_DETAILS = API_BASE_URL + "user_";
-
   /**
    * 取得用户对象
    */
+
   Observable<UserEntity> userEntity(String loginAccount, String loginPwd);
+
+  /**
+   * 取得设备报警列表
+   */
+  Observable<List<EquipmentAlarmEntity>> equipmentAlarmEntity(String UserName,int choiceType);
+
 }

@@ -43,7 +43,7 @@ public abstract class UseCase {
   @SuppressWarnings("unchecked")
   public void execute(Subscriber UseCaseSubscriber) {
     this.subscription = this.buildUseCaseObservable()
-            .subscribeOn(Schedulers.newThread())
+            .subscribeOn(Schedulers.io())
             .observeOn(postExecutionThread.getScheduler())
             .subscribe(UseCaseSubscriber);
   }

@@ -24,10 +24,13 @@ import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
 import com.mikepenz.materialdrawer.model.SectionDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
  * Created by wsw on 2015/7/16.
  */
-public abstract class BaseActivity extends AppCompatActivity implements InitView{
+public abstract class BaseActivity extends AppCompatActivity implements InitView {
     private Drawer result = null;
     private Toolbar toolbar;
     private User user;
@@ -44,7 +47,6 @@ public abstract class BaseActivity extends AppCompatActivity implements InitView
         super.onCreate(savedInstanceState);
         setOwnContentView();
         initUser();
-
         toolbar = getToolbar();
         setSupportActionBar(toolbar);
         headView = LayoutInflater.from(this).inflate(R.layout.drawer_header, null);
@@ -71,7 +73,7 @@ public abstract class BaseActivity extends AppCompatActivity implements InitView
                         new PrimaryDrawerItem().withName(R.string.about).withIcon(GoogleMaterial.Icon.gmd_wb_sunny).withIdentifier(13).withCheckable(true),
                         new PrimaryDrawerItem().withName(R.string.exit).withIcon(GoogleMaterial.Icon.gmd_wb_sunny).withIdentifier(14).withCheckable(true)
                 )
-               .withOnDrawerItemClickListener(
+                .withOnDrawerItemClickListener(
                         new Drawer.OnDrawerItemClickListener() {
                             @Override
                             public boolean onItemClick(AdapterView<?> adapterView, View view, int i, long l, IDrawerItem iDrawerItem) {
@@ -134,22 +136,17 @@ public abstract class BaseActivity extends AppCompatActivity implements InitView
                 .withShowDrawerOnFirstLaunch(true)
                 .build();
         result.closeDrawer();
-
-        initViews();
-        initDatas();
-        initAdapter();
-
     }
 
-    private  void initUser(){
+    private void initUser() {
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy年MM月dd日  HH:mm:ss ");
+        Date data = new Date(System.currentTimeMillis());
+        Log.e("startTime",formatter.format(data));
         userPresenter = new UserPresenter();
         userPresenter.setBaseAcitvity(this);
         userPresenter.getUserInformation(this);
     }
 
-    public void afterGetUser(){
-        Log.e("msg","afterGetUser");
-    }
     protected abstract Toolbar getToolbar();
 
     protected abstract void setOwnContentView();
@@ -161,6 +158,7 @@ public abstract class BaseActivity extends AppCompatActivity implements InitView
     public void setUser(User user) {
         this.user = user;
     }
+
     public User getUser() {
         return user;
     }

@@ -26,29 +26,7 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
     private static int AUTOPLANEGV = 3;
 
     @Override
-    public void initAdapter() {
-        Log.e("msg", "selectedType" + selectedType);
-        gvFunction.setAdapter(new MainGridAdapter(MainActivity.this, FIREGV, selectedType));
-        gvFunction.setOnItemClickListener(this);
-
-//        gvConfig.setAdapter(new GridAdapter(MainActivity.this, BREAKGV, selectedType));
-//        gvConfig.setOnItemClickListener(this);
-
-        gvManage.setAdapter(new MainGridAdapter(MainActivity.this, NORMALGV, selectedType));
-        gvManage.setOnItemClickListener(this);
-
-//        gvMonitor.setAdapter(new GridAdapter(MainActivity.this, AUTOPLANEGV, selectedType));
-//        gvMonitor.setOnItemClickListener(this);
-
-    }
-
-    @Override
-    public void initDatas() {
-
-    }
-
-    @Override
-    public void initViews() {
+    public void setupUI() {
         selectedType = this.getUser().getSelectionType();    //得到选择到的是哪一个类型的监控设备
         Log.e("selectedType",""+selectedType);
         if (selectedType == 3) {//若是无人机,则隐藏状态监测这一项
@@ -62,6 +40,23 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
         //gvConfig = (MyGridView) findViewById(R.id.main_gv_config);
         gvManage = (MyGridView) findViewById(R.id.main_gv_manage);
         //gvMonitor = (MyGridView) findViewById(R.id.main_gv_monitor);
+
+
+        gvFunction.setAdapter(new MainGridAdapter(MainActivity.this, FIREGV, selectedType));
+        gvFunction.setOnItemClickListener(this);
+
+//        gvConfig.setAdapter(new GridAdapter(MainActivity.this, BREAKGV, selectedType));
+//        gvConfig.setOnItemClickListener(this);
+
+        gvManage.setAdapter(new MainGridAdapter(MainActivity.this, NORMALGV, selectedType));
+        gvManage.setOnItemClickListener(this);
+
+//        gvMonitor.setAdapter(new GridAdapter(MainActivity.this, AUTOPLANEGV, selectedType));
+//        gvMonitor.setOnItemClickListener(this);
+    }
+
+    @Override
+    public void initialize() {
 
     }
 

@@ -5,7 +5,7 @@ import android.content.Context;
 import com.hy.data.cache.UserCache;
 import com.hy.data.cache.UserCacheImp;
 import com.hy.data.entity.mapper.UserEntityJsonMapper;
-import com.hy.data.net.LoginRestApi;
+import com.hy.data.net.RestApiImpl;
 import com.hy.data.net.RestApi;
 
 
@@ -33,7 +33,7 @@ public class UserDataStoreFactory {
    */
   public UserDataStore createCloudDataStore(String loginAccount, String loginPwd) {
     UserEntityJsonMapper userEntityJsonMapper = new UserEntityJsonMapper();
-    RestApi restApi = new LoginRestApi(this.context, userEntityJsonMapper);
+    RestApi restApi = new RestApiImpl(this.context, userEntityJsonMapper);
 
     return new CloudUserDataStore(restApi,this.userCache);
   }
