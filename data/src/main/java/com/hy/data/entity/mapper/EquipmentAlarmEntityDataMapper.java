@@ -3,6 +3,10 @@ package com.hy.data.entity.mapper;
 import com.example.bean.DomainEquipmentAlarmInformation;
 import com.hy.data.entity.EquipmentAlarmEntity;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 /**
  * Created by 24363 on 2015/8/13.
  */
@@ -26,4 +30,16 @@ public class EquipmentAlarmEntityDataMapper {
         return domainEquipmentAlarmInformation;
     }
 
+    public List<DomainEquipmentAlarmInformation> transform(Collection<EquipmentAlarmEntity> equipmentAlarmEntities) {
+        List<DomainEquipmentAlarmInformation> equipmentAlarmInformationList = new ArrayList<>();
+        DomainEquipmentAlarmInformation domainEquipmentAlarmInformation;
+        for (EquipmentAlarmEntity equipmentAlarmEntity : equipmentAlarmEntities) {
+            domainEquipmentAlarmInformation = transform(equipmentAlarmEntity);
+            if (domainEquipmentAlarmInformation != null) {
+                equipmentAlarmInformationList.add(domainEquipmentAlarmInformation);
+            }
+        }
+
+        return equipmentAlarmInformationList;
+    }
 }

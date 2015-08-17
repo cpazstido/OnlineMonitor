@@ -22,21 +22,16 @@ public class EquipmentAlarmRepository implements EquipmentRepository{
     private int choiceType;
     private EquipmentAlarmEntityDataMapper equipmentAlarmEntityDataMapper;
 
-    public EquipmentAlarmRepository(Context mContext, String userName, int choiceType, EquipmentAlarmEntityDataMapper equipmentAlarmEntityDataMapper) {
+    public EquipmentAlarmRepository(Context mContext, String userName, int choiceType) {
         this.mContext = mContext;
         this.userName = userName;
         this.choiceType = choiceType;
-        this.equipmentAlarmEntityDataMapper = equipmentAlarmEntityDataMapper;
+        this.equipmentAlarmEntityDataMapper = new EquipmentAlarmEntityDataMapper();
     }
 
     @Override
     public Observable<List<DomainEquipmentAlarmInformation>> equipmentAlarmList() {
-        EquipmentAlarmEntityJsonMapper equipmentAlarmEntityJsonMapper = new EquipmentAlarmEntityJsonMapper();
-        Observable<List<DomainEquipmentAlarmInformation>>  DomainEquipmentAlarmInformations =null;
-
         RestApiImpl restApi = new RestApiImpl(mContext,new EquipmentAlarmEntityJsonMapper());
-        restApi.equipmentAlarmEntity(userName,choiceType).flatMap()
-
-        return null;
+        return restApi.equipmentAlarmEntity(userName,choiceType).map(this.equipmentAlarmEntityDataMapper::transform);
     }
 }

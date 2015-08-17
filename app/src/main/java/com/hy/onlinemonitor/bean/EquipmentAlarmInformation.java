@@ -11,6 +11,9 @@ public class EquipmentAlarmInformation {
     private int newBreakAlarm;
     private int newSensorAlarm;
 
+    public EquipmentAlarmInformation() {
+    }
+
     public EquipmentAlarmInformation(String equipmnetName, String equipmnetState, int newFireAlarm, int newBreakAlarm, int newSensorAlarm) {
         this.equipmnetName = equipmnetName;
         this.equipmnetState = equipmnetState;

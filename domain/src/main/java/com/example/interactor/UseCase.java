@@ -1,7 +1,6 @@
 package com.example.interactor;
 
 import com.example.executor.PostExecutionThread;
-import com.example.executor.ThreadExecutor;
 
 import rx.Observable;
 import rx.Subscriber;
@@ -19,14 +18,11 @@ import rx.subscriptions.Subscriptions;
  */
 public abstract class UseCase {
 
-  private final ThreadExecutor threadExecutor;
   private final PostExecutionThread postExecutionThread;
 
   private Subscription subscription = Subscriptions.empty();
 
-  protected UseCase(ThreadExecutor threadExecutor,
-                    PostExecutionThread postExecutionThread) {
-    this.threadExecutor = threadExecutor;
+  protected UseCase(PostExecutionThread postExecutionThread) {
     this.postExecutionThread = postExecutionThread;
   }
 

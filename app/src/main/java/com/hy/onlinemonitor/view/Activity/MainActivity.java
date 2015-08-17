@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.AdapterView;
 
 import com.hy.onlinemonitor.R;
+import com.hy.onlinemonitor.view.Activity.Function.AlarmInformationActivity;
 import com.hy.onlinemonitor.view.Activity.Function.EquipmentListActivity;
 import com.hy.onlinemonitor.view.Adapter.MainGridAdapter;
 import com.hy.onlinemonitor.view.Component.MyGridView;
@@ -84,9 +85,9 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
                         startActivity(gridEquipmentListIntent);
                         break;
                     case 1: //报警信息
-//                        Intent gridAlarmIntent = new Intent(MainActivity.this, AlarmInformationActivity.class);
-//                        Log.e("lok","报警信息");
-//                        startActivity(gridAlarmIntent);
+                        Intent gridAlarmIntent = new Intent(MainActivity.this, AlarmInformationActivity.class);
+                        Log.e("lok","报警信息");
+                        startActivity(gridAlarmIntent);
                         break;
                     case 2: //地图
 //                        Intent gridMapIntent = new Intent(MainActivity.this,MapActivity.class);

@@ -4,34 +4,37 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-    <com.rey.material.widget.Button
-        style="@style/RaiseColorButtonRippleStyle"
-        android:id="@+id/button_bt_raise_color"
-        android:layout_width="0dp"
-        android:layout_height="@dimen/bt_height"
-        android:layout_weight="0.4"
-        android:textColor="#FFFFFFFF"
-        android:textAppearance="@style/Base.TextAppearance.AppCompat.Button"
 
-        android:text="BUTTON"
-        app:rd_delayClick="afterRelease"/>
-    </LinearLayout>
-    <LinearLayout
+    <include layout="@layout/toolbar"/>
+
+    <com.ogaclejapan.smarttablayout.SmartTabLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/viewpagertab"
+        android:background="@color/primary"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <com.rey.material.widget.Button
-            style="@style/RaiseColorButtonRippleStyle"
-            android:id="@+id/login_btn"
-            android:layout_width="0dp"
-            android:layout_height="@dimen/bt_height"
-            android:layout_weight="1"
-            android:textColor="#FFFFFFFF"
-            android:textAppearance="@style/Base.TextAppearance.AppCompat.Button"
-            android:text="@string/login"
-            app:rd_delayClick="afterRelease"/>
-    </LinearLayout>
+        android:layout_height="48dp"
+        android:clipToPadding="false"
+        android:paddingLeft="4dp"
+        android:paddingRight="4dp"
+        app:stl_defaultTabTextColor="@color/icons"
+        app:stl_defaultTabTextHorizontalPadding="18dp"
+        app:stl_dividerColor="@color/transparent"
+        app:stl_dividerThickness="0dp"
+        app:stl_indicatorColor="@color/backgroundColorPress"
+        app:stl_indicatorCornerRadius="18dp"
+        app:stl_indicatorAlwaysInCenter="true"
+        app:stl_indicatorInterpolation="smart"
+        app:stl_indicatorGravity="center"
+        app:stl_indicatorThickness="36dp"
+        app:stl_underlineColor="@color/transparent"
+        app:stl_underlineThickness="0dp"
+        />
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/viewpagertab"
+        />
 
 </LinearLayout>

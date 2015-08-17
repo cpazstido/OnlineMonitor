@@ -1,7 +1,6 @@
 package com.example.interactor;
 
 import com.example.executor.PostExecutionThread;
-import com.example.executor.ThreadExecutor;
 import com.example.repository.UserRepository;
 
 import rx.Observable;
@@ -13,8 +12,8 @@ public class LoginUseCase extends UseCase {
     private UserRepository userRepository;
     private String loginAccount, loginPwd;
 
-    public LoginUseCase(ThreadExecutor threadExecutor, PostExecutionThread postExecutionThread, UserRepository userRepository, String loginAccount, String loginPwd) {
-        super(threadExecutor, postExecutionThread);
+    public LoginUseCase(PostExecutionThread postExecutionThread, UserRepository userRepository, String loginAccount, String loginPwd) {
+        super(postExecutionThread);
         this.userRepository = userRepository;
         this.loginAccount = loginAccount;
         this.loginPwd = loginPwd;

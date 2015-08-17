@@ -18,7 +18,7 @@ import rx.Observable;
 import rx.Subscriber;
 
 /**
- * Created by wsw on 2015/8/10.
+ * 用于取得网络数据
  */
 public class RestApiImpl implements RestApi {
 
@@ -148,7 +148,7 @@ public class RestApiImpl implements RestApi {
         equipmentAlarmEntities.add(new EquipmentAlarmEntity("美国超级电力", "摄像机开电",2, 0, 1, 1));
         equipmentAlarmEntities.add(new EquipmentAlarmEntity("英国核电力", "摄像机正在开电",3, 1, 0, 1));
         equipmentAlarmEntities.add(new EquipmentAlarmEntity("火星电力", "摄像机断电",5,1, 1, 0));
-        equipmentAlarmEntities.add(new EquipmentAlarmEntity());
+        equipmentAlarmEntities.add(new EquipmentAlarmEntity("什么么贵","开电中",2,2,0,1));
         return gson.toJson(equipmentAlarmEntities);
     }
 

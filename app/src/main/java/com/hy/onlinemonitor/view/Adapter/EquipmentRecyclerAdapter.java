@@ -56,7 +56,7 @@ public class EquipmentRecyclerAdapter extends RecyclerView.Adapter<EquipmentList
         if(equipmentAlarmInformation.getNewBreakAlarm() ==0){
             holder.newBreakAlarm.setVisibility(View.GONE);
         }
-        if(equipmentAlarmInformation.getNewSensorAlarm() ==0 && equipmentAlarmInformation.getNewFireAlarm() ==0&& equipmentAlarmInformation.getNewBreakAlarm() ==0){
+        if(equipmentAlarmInformation.getNewSensorAlarm() ==0 && equipmentAlarmInformation.getNewFireAlarm() ==0&& equipmentAlarmInformation.getNewBreakAlarm() ==0)        {
             holder.newSensorAlarm.setVisibility(View.GONE);
             holder.newFireAlarm.setVisibility(View.GONE);
             holder.newBreakAlarm.setVisibility(View.GONE);
@@ -130,17 +130,15 @@ public class EquipmentRecyclerAdapter extends RecyclerView.Adapter<EquipmentList
         return (this.mList != null) ? this.mList.size() : 0;
     }
 
-    public void setEquipmentList(Collection<EquipmentAlarmInformation> equipmentList) {
-        this.validateEquipmentList(equipmentList);
-        this.mList = (List<EquipmentAlarmInformation>) equipmentList;
+    public void setEquipmentCollection(Collection<EquipmentAlarmInformation> equipmentAlarmInformationCollection){
+        this.validateEquipmentCollection(equipmentAlarmInformationCollection);
+        this.mList = (List<EquipmentAlarmInformation>)equipmentAlarmInformationCollection;
         this.notifyDataSetChanged();
-
     }
 
-    private void validateEquipmentList(Collection<EquipmentAlarmInformation> equipmentList) {
-        if (equipmentList == null) {
+    private void validateEquipmentCollection(Collection<EquipmentAlarmInformation> equipmentAlarmInformationCollection) {
+        if (equipmentAlarmInformationCollection == null) {
             throw new IllegalArgumentException("The list cannot be null");
         }
     }
-
 }

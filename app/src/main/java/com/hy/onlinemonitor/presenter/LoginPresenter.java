@@ -10,7 +10,6 @@ import com.example.interactor.LoginUseCase;
 import com.example.interactor.UseCase;
 import com.example.repository.UserRepository;
 import com.hy.data.entity.mapper.UserEntityDataMapper;
-import com.hy.data.executor.JobExecutor;
 import com.hy.data.repository.UserDataRepository;
 import com.hy.data.repository.datasource.UserDataStoreFactory;
 import com.hy.onlinemonitor.UIThread;
@@ -73,7 +72,7 @@ public class LoginPresenter extends DefaultSubscriber implements Presenter{
 
     private void userLogin() {
         userRepository = new UserDataRepository(new UserDataStoreFactory(mContext),new UserEntityDataMapper());
-        this.loginUseCase = new LoginUseCase(new JobExecutor(),new UIThread(),userRepository,loginAccount,loginPwd);
+        this.loginUseCase = new LoginUseCase(new UIThread(),userRepository,loginAccount,loginPwd);
         this.loginUseCase.execute(new UserSubscriber());
     }
 

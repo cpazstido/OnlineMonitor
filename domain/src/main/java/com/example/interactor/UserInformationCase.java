@@ -1,10 +1,7 @@
 package com.example.interactor;
 
 import com.example.executor.PostExecutionThread;
-import com.example.executor.ThreadExecutor;
 import com.example.repository.UserRepository;
-
-import java.util.Objects;
 
 import rx.Observable;
 
@@ -15,19 +12,19 @@ public class UserInformationCase extends UseCase {
     private UserRepository userRepository;
     private int choiceType = -1;
     private String getUser = "";
-    public UserInformationCase(ThreadExecutor threadExecutor, PostExecutionThread postExecutionThread, UserRepository userRepository, int choiceType) {
-        super(threadExecutor, postExecutionThread);
+    public UserInformationCase(PostExecutionThread postExecutionThread, UserRepository userRepository, int choiceType) {
+        super(postExecutionThread);
         this.userRepository = userRepository;
         this.choiceType = choiceType;
     }
 
-    public UserInformationCase(ThreadExecutor threadExecutor, PostExecutionThread postExecutionThread, UserRepository userRepository) {
-        super(threadExecutor, postExecutionThread);
+    public UserInformationCase(PostExecutionThread postExecutionThread, UserRepository userRepository) {
+        super(postExecutionThread);
         this.userRepository = userRepository;
     }
 
-    public UserInformationCase(ThreadExecutor threadExecutor, PostExecutionThread postExecutionThread, UserRepository userRepository, String getUser) {
-        super(threadExecutor, postExecutionThread);
+    public UserInformationCase(PostExecutionThread postExecutionThread, UserRepository userRepository, String getUser) {
+        super(postExecutionThread);
         this.userRepository = userRepository;
         this.getUser = getUser;
     }
@@ -35,13 +32,13 @@ public class UserInformationCase extends UseCase {
     @Override
     protected Observable buildUseCaseObservable() {
         Observable observable =null;
-        if(choiceType != -1 && Objects.equals("", getUser)) {
+        if(choiceType != -1 && getUser =="") {
             observable = this.userRepository.upDataUser(choiceType);
         }
-        if (choiceType == -1 && !Objects.equals(getUser, "")){
+        if (choiceType == -1 && getUser !=""){
             observable = this.userRepository.getUserInfor();
         }
-        if(choiceType == -1 && Objects.equals(getUser, "")){
+        if(choiceType == -1 && getUser == ""){
             observable =  this.userRepository.equipmentList();
         }
         return observable;

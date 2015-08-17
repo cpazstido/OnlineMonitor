@@ -10,7 +10,6 @@ import com.example.interactor.UseCase;
 import com.example.interactor.UserInformationCase;
 import com.example.repository.UserRepository;
 import com.hy.data.entity.mapper.UserEntityDataMapper;
-import com.hy.data.executor.JobExecutor;
 import com.hy.data.repository.UserDataRepository;
 import com.hy.data.repository.datasource.UserDataStoreFactory;
 import com.hy.onlinemonitor.UIThread;
@@ -50,7 +49,7 @@ public class UserPresenter extends DefaultSubscriber implements Presenter {
 
     public void getUserInformation(Context mContext) {
         userRepository = new UserDataRepository(new UserDataStoreFactory(mContext), new UserEntityDataMapper());
-        this.UserInformationCase = new UserInformationCase(new JobExecutor(), new UIThread(), userRepository, "getUserInformation");
+        this.UserInformationCase = new UserInformationCase(new UIThread(), userRepository, "getUserInformation");
         this.UserInformationCase.execute(new UserInformationSubscriber());
     }
 
@@ -78,7 +77,7 @@ public class UserPresenter extends DefaultSubscriber implements Presenter {
     public void upDataUser(int choiceType, Context mContext) {
         this.mContext = mContext;
         userRepository = new UserDataRepository(new UserDataStoreFactory(mContext));
-        this.UserInformationCase = new UserInformationCase(new JobExecutor(), new UIThread(), userRepository, choiceType);
+        this.UserInformationCase = new UserInformationCase(new UIThread(), userRepository, choiceType);
         this.UserInformationCase.execute(new upDataUserSubscriber());
     }
 
@@ -106,7 +105,7 @@ public class UserPresenter extends DefaultSubscriber implements Presenter {
 
     public void getUserEquipmentList(Context mContext) {
         userRepository = new UserDataRepository(new UserDataStoreFactory(mContext));
-        this.UserInformationCase = new UserInformationCase(new JobExecutor(), new UIThread(), userRepository);
+        this.UserInformationCase = new UserInformationCase(new UIThread(), userRepository);
         this.UserInformationCase.execute(new EquipmentListSubscriber());
     }
 

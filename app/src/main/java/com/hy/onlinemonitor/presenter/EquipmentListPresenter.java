@@ -1,8 +1,16 @@
 package com.hy.onlinemonitor.presenter;
 
+import android.content.Context;
+import android.support.annotation.Nullable;
+
+import com.example.bean.DomainEquipmentAlarmInformation;
 import com.example.interactor.DefaultSubscriber;
+import com.example.interactor.EquipmentAlarmUseCase;
 import com.example.interactor.UseCase;
+import com.hy.data.repository.EquipmentAlarmRepository;
+import com.hy.onlinemonitor.UIThread;
 import com.hy.onlinemonitor.bean.EquipmentAlarmInformation;
+import com.hy.onlinemonitor.mapper.EquipmentDataMapper;
 import com.hy.onlinemonitor.view.Activity.Function.EquipmentListActivity;
 
 import java.util.Collection;
@@ -15,24 +23,25 @@ public class EquipmentListPresenter implements Presenter
 {
     private final UseCase getEquipmentListUseCase;
     private EquipmentListActivity equipmentListActivity;
+    private EquipmentDataMapper equipmentDataMapper;
 
-    public EquipmentListPresenter(UseCase getUserListUseCase) {
-        this.getEquipmentListUseCase = getUserListUseCase;
+    public EquipmentListPresenter(Context mContext,String userName,int choiceType) {
+        EquipmentAlarmRepository equipmentAlarmRepository = new EquipmentAlarmRepository(mContext,userName,choiceType);
+        this.getEquipmentListUseCase = new EquipmentAlarmUseCase(new UIThread(),equipmentAlarmRepository);
+        this.equipmentDataMapper = new EquipmentDataMapper();
     }
 
     @Override
     public void resume() {
-
     }
 
     @Override
     public void pause() {
-
     }
 
     @Override
     public void destroy() {
-
+        this.getEquipmentListUseCase.unsubscribe();
     }
 
     private void showViewLoading() {
@@ -42,7 +51,6 @@ public class EquipmentListPresenter implements Presenter
     private void hideViewLoading() {
         this.equipmentListActivity.hideLoading();
     }
-
 
     public void initialize() {
         this.loadEquipmentList();
@@ -57,7 +65,7 @@ public class EquipmentListPresenter implements Presenter
         this.getEquipmentListUseCase.execute(new EquipmentListSubscriber());
     }
 
-    private class EquipmentListSubscriber extends DefaultSubscriber<List<EquipmentAlarmInformation>> {
+    private class EquipmentListSubscriber extends DefaultSubscriber<List<DomainEquipmentAlarmInformation>> {
         @Override
         public void onCompleted() {
             EquipmentListPresenter.this.hideViewLoading();
@@ -69,20 +77,19 @@ public class EquipmentListPresenter implements Presenter
         }
 
         @Override
-        public void onNext(List<EquipmentAlarmInformation> equipmentAlarmInformations) {
-            EquipmentListPresenter.this.showEquipmentAlarmCollectionInView(equipmentAlarmInformations);
+        public void onNext(List<DomainEquipmentAlarmInformation> domainEquipmentAlarmInformations) {
+            EquipmentListPresenter.this.showEquipmentAlarmCollectionInView(domainEquipmentAlarmInformations);
         }
     }
 
-    private void showEquipmentAlarmCollectionInView(List<EquipmentAlarmInformation> equipmentAlarmInformations) {
-        final Collection<EquipmentAlarmInformation> equipmentAlarmsCollection =
-                this.equipmentAlarmDataMapper.transform(usersCollection);
-        this.equipmentListActivity.renderUserList(userModelsC-ollection);
+    private void showEquipmentAlarmCollectionInView(List<DomainEquipmentAlarmInformation> domainEquipmentAlarmInformations) {
+        final Collection<EquipmentAlarmInformation> equipmentAlarmInformations =
+                this.equipmentDataMapper.transform(domainEquipmentAlarmInformations);
+        this.equipmentListActivity.renderEquipmentList(equipmentAlarmInformations);
     }
 
-    public void setView(EquipmentListActivity equipmentListActivity) {
+    public void setView(@Nullable EquipmentListActivity equipmentListActivity) {
         this.equipmentListActivity = equipmentListActivity;
     }
-
 
 }

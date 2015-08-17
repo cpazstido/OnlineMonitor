@@ -1,6 +1,8 @@
 package com.hy.onlinemonitor.view.Activity.Function;
 
 import android.content.Context;
+import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -9,25 +11,35 @@ import com.baoyz.widget.PullRefreshLayout;
 import com.hy.onlinemonitor.R;
 import com.hy.onlinemonitor.bean.EquipmentAlarmInformation;
 import com.hy.onlinemonitor.presenter.EquipmentListPresenter;
+import com.hy.onlinemonitor.utile.GetLoading;
 import com.hy.onlinemonitor.view.Activity.BaseActivity;
 import com.hy.onlinemonitor.view.Adapter.EquipmentRecyclerAdapter;
 import com.hy.onlinemonitor.view.EquipmentList;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
 
 /**
  * Created by wsw on 2015/7/13.
  */
 public class EquipmentListActivity extends BaseActivity implements EquipmentList {
 
-    private PullRefreshLayout swipeRefreshLayout;
-    private RecyclerView mRecyclerView;
-    private RecyclerView.Adapter mAdapter;
+    @Bind(R.id.toolbar)
+    Toolbar toolbar;
+    @Bind(R.id.rv_recyclerview_data)
+    RecyclerView rvRecyclerviewData;
+    @Bind(R.id.swipeRefreshLayout)
+    PullRefreshLayout swipeRefreshLayout;
+    private EquipmentRecyclerAdapter mAdapter;
     private List<EquipmentAlarmInformation> mList;
     private int selectedType;
-    private Toolbar toolbar;
+    private String userName;
     private EquipmentListPresenter equipmentListPresenter;
+    private AlertDialog loadingDialog;
 
     @Override
     protected Toolbar getToolbar() {
@@ -47,17 +59,19 @@ public class EquipmentListActivity extends BaseActivity implements EquipmentList
 
     @Override
     public void renderEquipmentList(Collection<EquipmentAlarmInformation> EquipmentInformationCollection) {
-
+        if (EquipmentInformationCollection != null) {
+            this.mAdapter.setEquipmentCollection(EquipmentInformationCollection);
+        }
     }
 
     @Override
     public void showLoading() {
-
+        loadingDialog.show();
     }
 
     @Override
     public void hideLoading() {
-
+        loadingDialog.cancel();
     }
 
     @Override
@@ -72,14 +86,18 @@ public class EquipmentListActivity extends BaseActivity implements EquipmentList
 
     @Override
     public void setupUI() {
-        selectedType=this.getUser().getSelectionType();
-        mRecyclerView = (RecyclerView) findViewById(R.id.rv_recyclerview_data);
+        loadingDialog = GetLoading.getDialog(EquipmentListActivity.this, "加载数据中");
+        selectedType = this.getUser().getSelectionType();
+        userName = this.getUser().getUserName();
+        initPresenter();
+        rvRecyclerviewData = (RecyclerView) findViewById(R.id.rv_recyclerview_data);
         swipeRefreshLayout = (PullRefreshLayout) findViewById(R.id.swipeRefreshLayout);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mRecyclerView.setHasFixedSize(true);
+        rvRecyclerviewData.setLayoutManager(new LinearLayoutManager(this));
+        rvRecyclerviewData.setHasFixedSize(true);
+        mList = new ArrayList<>();
 
         mAdapter = new EquipmentRecyclerAdapter(selectedType, EquipmentListActivity.this, mList);
-        mRecyclerView.setAdapter(mAdapter);
+        rvRecyclerviewData.setAdapter(mAdapter);
         /*下拉加载更多*/
         swipeRefreshLayout.setOnRefreshListener(new PullRefreshLayout.OnRefreshListener() {
             @Override
@@ -96,9 +114,20 @@ public class EquipmentListActivity extends BaseActivity implements EquipmentList
         });
     }
 
+    private void initPresenter() {
+        this.equipmentListPresenter = new EquipmentListPresenter(this, userName, selectedType);
+        this.equipmentListPresenter.setView(this);
+    }
+
     @Override
     public void initialize() {
-        this.equipmentListPresenter.setView(this);
         this.loadEquipmentList();
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
     }
 }
