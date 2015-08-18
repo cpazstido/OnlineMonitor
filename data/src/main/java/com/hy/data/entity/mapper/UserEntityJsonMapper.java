@@ -23,18 +23,11 @@ public class UserEntityJsonMapper {
    *
    * @param userJsonResponse A json representing a user profile.
    * @return {@link UserEntity}.
-   * @throws JsonSyntaxException if the json string is not a valid json structure.
    */
 
   public UserEntity transformUserEntity(String userJsonResponse) throws JsonSyntaxException {
-    try {
-      Type userEntityType = new TypeToken<UserEntity>() {}.getType();
-      UserEntity userEntity = this.gson.fromJson(userJsonResponse, userEntityType);
-
-      return userEntity;
-    } catch (JsonSyntaxException jsonException) {
-      throw jsonException;
-    }
+    Type userEntityType = new TypeToken<UserEntity>() {}.getType();
+    return this.gson.fromJson(userJsonResponse, userEntityType);
   }
 
 }

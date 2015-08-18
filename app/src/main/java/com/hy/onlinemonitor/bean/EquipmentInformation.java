@@ -1,15 +1,35 @@
-package com.example.bean;
+package com.hy.onlinemonitor.bean;
 
-import java.lang.String; /**
- * Created by 24363 on 2015/8/13.
+/**
+ * Created by wsw on 2015/7/15.
  */
-public class DomainEquipmentAlarmInformation {
+public class EquipmentInformation {
+
     private String equipmnetName;
     private String equipmnetState;
     private int SN;
     private int newFireAlarm;
     private int newBreakAlarm;
     private int newSensorAlarm;
+
+    public EquipmentInformation() {
+    }
+
+    public EquipmentInformation(String equipmnetName, String equipmnetState, int newFireAlarm, int newBreakAlarm, int newSensorAlarm) {
+        this.equipmnetName = equipmnetName;
+        this.equipmnetState = equipmnetState;
+        this.newFireAlarm = newFireAlarm;
+        this.newBreakAlarm = newBreakAlarm;
+        this.newSensorAlarm = newSensorAlarm;
+    }
+
+    public int getSN() {
+        return SN;
+    }
+
+    public void setSN(int SN) {
+        this.SN = SN;
+    }
 
     public String getEquipmnetName() {
         return equipmnetName;
@@ -25,14 +45,6 @@ public class DomainEquipmentAlarmInformation {
 
     public void setEquipmnetState(String equipmnetState) {
         this.equipmnetState = equipmnetState;
-    }
-
-    public int getSN() {
-        return SN;
-    }
-
-    public void setSN(int SN) {
-        this.SN = SN;
     }
 
     public int getNewFireAlarm() {
@@ -57,5 +69,17 @@ public class DomainEquipmentAlarmInformation {
 
     public void setNewSensorAlarm(int newSensorAlarm) {
         this.newSensorAlarm = newSensorAlarm;
+    }
+
+    @Override
+    public String toString() {
+        return "EquipmnetAlarmInformation{" +
+                "equipmnetName='" + equipmnetName + '\'' +
+                ", equipmnetState='" + equipmnetState + '\'' +
+                ", SN=" + SN +
+                ", newFireAlarm=" + newFireAlarm +
+                ", newBreakAlarm=" + newBreakAlarm +
+                ", newSensorAlarm=" + newSensorAlarm +
+                '}';
     }
 }

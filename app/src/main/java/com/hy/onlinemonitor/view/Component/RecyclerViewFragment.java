@@ -1,5 +1,6 @@
 package com.hy.onlinemonitor.view.Component;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -15,119 +16,150 @@ import com.github.florent37.materialviewpager.MaterialViewPagerHelper;
 import com.github.florent37.materialviewpager.adapter.RecyclerViewMaterialAdapter;
 import com.hy.onlinemonitor.R;
 import com.hy.onlinemonitor.bean.AlarmInformation;
-import com.hy.onlinemonitor.data.TypeDef;
+import com.hy.onlinemonitor.presenter.AlarmPresenter;
 import com.hy.onlinemonitor.view.Adapter.AlarmRecyclerAdapter;
+import com.hy.onlinemonitor.view.AlarmListView;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
 
 /**
  * Created by wsw on 2015/7/9.
  */
-public class RecyclerViewFragment extends Fragment {
+public class RecyclerViewFragment extends Fragment implements AlarmListView {
 
-    private RecyclerView mRecyclerView;
-    private RecyclerView.Adapter mAdapter;
-    private int position;
-    private static List<String> alarmTitle;
-    private List<AlarmInformation> mContentItems;
-    private int showType = 1;
-    private Context mContext;
-    private static int sum=0;
-    public static RecyclerViewFragment newInstance(int a, List<String> b) {
-        alarmTitle = b;
-        RecyclerViewFragment fragment = new RecyclerViewFragment();
-        Bundle bundle = new Bundle();
-        bundle.putInt("postion", a);
-        fragment.setArguments(bundle);
-        return fragment;
+    public interface AlarmListListener {
+        void onAlarmClicked(final AlarmInformation alarmInformation);
     }
 
-    public RecyclerViewFragment() {
-        super();
+    @Bind(R.id.recyclerView)
+    RecyclerView recyclerView;
+
+    private boolean isNoInit = true;
+    private AlarmRecyclerAdapter mAdapter;
+    private RecyclerView.Adapter RcAdapter;
+    private static List<String> alarmTitles;
+    private static String userName;
+    private int showType = 1;
+    private Context mContext;
+    private AlarmPresenter alarmPresenter;
+    private AlarmListListener alarmListListener;
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        if (activity instanceof AlarmListListener) {
+            this.alarmListListener = (AlarmListListener) activity;
+        }
+    }
+
+    public static RecyclerViewFragment newInstance(List<String> alarmTitle, int postion, String name) {
+        Log.e("newInstance","newInstance");
+        alarmTitles = alarmTitle;
+        userName = name;
+        Bundle bundle = new Bundle();
+        bundle.putInt("postion", postion);
+        RecyclerViewFragment fragment = new RecyclerViewFragment();
+        fragment.setArguments(bundle);
+        return fragment;
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         Log.e("RecyclerViewFragment", "onCreateView");
         mContext = container != null ? container.getContext() : null;
-        return inflater.inflate(R.layout.fragment_recyclerview, container, false);
+        View view = inflater.inflate(R.layout.fragment_recyclerview, container, false);
+        ButterKnife.bind(this, view);
+        setupUI();
+        return view;
+    }
+
+    private void setupUI() {
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setHasFixedSize(true);
+        mAdapter = new AlarmRecyclerAdapter(new ArrayList<AlarmInformation>(), mContext, showType);
+        this.mAdapter.setOnItemClickListener(onItemClickListener);
+        RcAdapter = new RecyclerViewMaterialAdapter(mAdapter);
+        recyclerView.setAdapter(RcAdapter);
+        MaterialViewPagerHelper.registerRecyclerView(getActivity(), recyclerView, null);
+    }
+
+    private void initialize() {
+        alarmPresenter = new AlarmPresenter(RecyclerViewFragment.this.getContext());
+        this.alarmPresenter.setView(this);
+    }
+
+    private void loadAlarmList(String title, String userName) {
+        this.alarmPresenter.initialize(title, userName);
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        Log.e("RecyclerViewFragment","onViewCreated"+sum++);
-        super.onViewCreated(view, savedInstanceState);
-        /**
-         * 这里取出放入的viewpager的当前选中的页数
-         */
-        Bundle bundle = getArguments();
-        position = bundle.getInt("postion");
-
-        mRecyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
-        mRecyclerView.setLayoutManager(layoutManager);
-        mRecyclerView.setHasFixedSize(true);
-        /**
-         * 这里获取数据,在没有获取数据前,出现一个等待选框.......
-         */
-        mContentItems = new ArrayList<>();
-        Log.e("showData","SHowData -- here");
-        switch (alarmTitle.get(position)) {
-            case "传感器历史报警":
-                for (int i = 0; i < 2; ++i) {
-                    showType = 0;
-                    mContentItems.add(new AlarmInformation("地球电力", "http://pic.yesky.com/imagelist/07/04/1837387_7424.jpg", "http://www.zgmaimai.cn/uploads/allimg/c120621/1340251A2213Z-2K263.jpg", "是", "紧急的报警", "已处理", 0));
-                }
-                break;
-            case "传感器新报警":
-                for (int i = 0; i < 3; ++i) {
-                    showType = 0;
-                    mContentItems.add(new AlarmInformation("火星电力", "http://p2.so.qhimg.com/bdr/_240_/t01cfc4b3d8f4a4f1b7.jpg", "http://p1.so.qhimg.com/bdr/_240_/t01c67d191fbf4589f6.jpg", "是", "紧急的报警", "已处理", 1));
-                }
-                break;
-            case "山火历史报警":
-                for (int i = 0; i < 4; ++i) {
-                    mContentItems.add(new AlarmInformation("水星电力", "http://p2.so.qhimg.com/bdr/_240_/t01cfc4b3d8f4a4f1b7.jpg", "http://p1.so.qhimg.com/bdr/_240_/t01c67d191fbf4589f6.jpg", "是", "紧急的报警", "已处理", 2));
-                }
-                break;
-            case "山火新报警":
-                for (int i = 0; i < 5; ++i) {
-                    mContentItems.add(new AlarmInformation("木星电力", "http://pic.yesky.com/imagelist/07/04/1837387_7424.jpg", "http://p1.so.qhimg.com/bdr/_240_/t01c67d191fbf4589f6.jpg", "是", "紧急的报警", "已处理", 3));
-                }
-                break;
-            case "外破历史报警":
-                for (int i = 0; i < 6; ++i) {
-                    mContentItems.add(new AlarmInformation("太阳电力", "http://p2.so.qhimg.com/bdr/_240_/t01cfc4b3d8f4a4f1b7.jpg", "http://p1.so.qhimg.com/bdr/_240_/t01c67d191fbf4589f6.jpg", "是", "紧急的报警", "已处理", 4));
-                }
-                break;
-            case "外破新报警":
-                for (int i = 0; i < 7; ++i) {
-                    mContentItems.add(new AlarmInformation("海王星电力", "http://pic.yesky.com/imagelist/07/04/1837387_7424.jpg", "http://p1.so.qhimg.com/bdr/_240_/t01c67d191fbf4589f6.jpg", "是", "紧急的报警", "已处理", 5));
-                }
-                break;
-        }
-
-        if(alarmTitle == null){
-            position=0;
-            for (String alarmTitlea : TypeDef.typeFireAlarmTitle) {
-                alarmTitle = new ArrayList<>();
-                alarmTitle.add(alarmTitlea);
-            }
-        }
-
-        mAdapter = new RecyclerViewMaterialAdapter(new AlarmRecyclerAdapter(mContentItems,mContext, showType));
-        mRecyclerView.setAdapter(mAdapter);
-        MaterialViewPagerHelper.registerRecyclerView(getActivity(), mRecyclerView, null);
+    public void onDestroyView() {
+        super.onDestroyView();
+        ButterKnife.unbind(this);
     }
+
+    @Override
+    public void showLoading() {
+
+    }
+
+    @Override
+    public void hideLoading() {
+
+    }
+
+    @Override
+    public void showError(String message) {
+
+    }
+
+    @Override
+    public Context getContext() {
+        return getActivity().getBaseContext();
+    }
+
+    @Override
+    public void renderAlarmList(Collection<AlarmInformation> alarmInformationCollection) {
+        Log.e("renderAlarmList",alarmInformationCollection.toString());
+        this.mAdapter.setAlarmCollection(alarmInformationCollection);
+        RcAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void viewAlarm(AlarmInformation alarmInformation) {
+        if (this.alarmListListener != null) {
+            this.alarmListListener.onAlarmClicked(alarmInformation);
+        }
+    }
+
+    private AlarmRecyclerAdapter.OnItemClickListener onItemClickListener =
+            new AlarmRecyclerAdapter.OnItemClickListener() {
+                @Override
+                public void onAlarmItemClicked(AlarmInformation alarmInformation) {
+                    if (RecyclerViewFragment.this.alarmPresenter != null && alarmInformation != null) {
+                        RecyclerViewFragment.this.alarmPresenter.onAlarmClicked(alarmInformation);
+                    }
+                }
+            };
 
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
+        Log.e("setUserVisibleHint","setUserVisibleHint");
         super.setUserVisibleHint(isVisibleToUser);
-        if(isVisibleToUser){
-            Log.e("aaa","true");
-        }else{
-            Log.e("aaa","false");
+        if (isVisibleToUser && isNoInit) {
+            Bundle bundle = getArguments();
+            int postion = bundle.getInt("postion");
+            Log.e("showData", "SHowData -- here");
+            isNoInit = false;
+            Log.e("a", "newInstance->" + alarmTitles.get(postion) + "---" + userName);
+            this.initialize();
+            this.loadAlarmList(alarmTitles.get(postion), userName);
         }
     }
 }

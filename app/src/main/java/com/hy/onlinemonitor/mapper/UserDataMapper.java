@@ -24,9 +24,9 @@ import com.hy.onlinemonitor.bean.User;
  * presentation layer.
  */
 
-public class UserModelDataMapper {
+public class UserDataMapper {
 
-  public UserModelDataMapper() {}
+  public UserDataMapper() {}
 
   /**
    * Transform a {@link DomainUser} into an {@link User}.

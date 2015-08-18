@@ -3,13 +3,13 @@ package com.hy.onlinemonitor.presenter;
 import android.content.Context;
 import android.support.annotation.Nullable;
 
-import com.example.bean.DomainEquipmentAlarmInformation;
+import com.example.bean.DomainEquipmentInformation;
 import com.example.interactor.DefaultSubscriber;
-import com.example.interactor.EquipmentAlarmUseCase;
+import com.example.interactor.EquipmentUseCase;
 import com.example.interactor.UseCase;
-import com.hy.data.repository.EquipmentAlarmRepository;
+import com.hy.data.repository.EquipmentDataRepository;
 import com.hy.onlinemonitor.UIThread;
-import com.hy.onlinemonitor.bean.EquipmentAlarmInformation;
+import com.hy.onlinemonitor.bean.EquipmentInformation;
 import com.hy.onlinemonitor.mapper.EquipmentDataMapper;
 import com.hy.onlinemonitor.view.Activity.Function.EquipmentListActivity;
 
@@ -21,13 +21,12 @@ import java.util.List;
  */
 public class EquipmentListPresenter implements Presenter
 {
-    private final UseCase getEquipmentListUseCase;
+    private UseCase getEquipmentListUseCase;
     private EquipmentListActivity equipmentListActivity;
     private EquipmentDataMapper equipmentDataMapper;
-
-    public EquipmentListPresenter(Context mContext,String userName,int choiceType) {
-        EquipmentAlarmRepository equipmentAlarmRepository = new EquipmentAlarmRepository(mContext,userName,choiceType);
-        this.getEquipmentListUseCase = new EquipmentAlarmUseCase(new UIThread(),equipmentAlarmRepository);
+    private Context mContext;
+    public EquipmentListPresenter(Context mContext) {
+        this.mContext = mContext;
         this.equipmentDataMapper = new EquipmentDataMapper();
     }
 
@@ -43,29 +42,31 @@ public class EquipmentListPresenter implements Presenter
     public void destroy() {
         this.getEquipmentListUseCase.unsubscribe();
     }
-
-    private void showViewLoading() {
+    @Override
+    public void showViewLoading() {
         this.equipmentListActivity.showLoading();
     }
-
-    private void hideViewLoading() {
+    @Override
+    public void hideViewLoading() {
         this.equipmentListActivity.hideLoading();
     }
 
-    public void initialize() {
-        this.loadEquipmentList();
+    public void initialize(String userName,int selectedType) {
+        this.loadEquipmentList(userName , selectedType);
     }
 
-    private void loadEquipmentList() {
+    private void loadEquipmentList(String userName,int selectedType) {
         this.showViewLoading();
-        this.getEquipmentList();
+        this.getEquipmentList(userName,selectedType);
     }
 
-    private void getEquipmentList() {
+    private void getEquipmentList(String userName,int selectedType) {
+        EquipmentDataRepository equipmentDataRepository = new EquipmentDataRepository(mContext,userName,selectedType);
+        this.getEquipmentListUseCase = new EquipmentUseCase(new UIThread(), equipmentDataRepository);
         this.getEquipmentListUseCase.execute(new EquipmentListSubscriber());
     }
 
-    private class EquipmentListSubscriber extends DefaultSubscriber<List<DomainEquipmentAlarmInformation>> {
+    private class EquipmentListSubscriber extends DefaultSubscriber<List<DomainEquipmentInformation>> {
         @Override
         public void onCompleted() {
             EquipmentListPresenter.this.hideViewLoading();
@@ -77,15 +78,15 @@ public class EquipmentListPresenter implements Presenter
         }
 
         @Override
-        public void onNext(List<DomainEquipmentAlarmInformation> domainEquipmentAlarmInformations) {
-            EquipmentListPresenter.this.showEquipmentAlarmCollectionInView(domainEquipmentAlarmInformations);
+        public void onNext(List<DomainEquipmentInformation> domainEquipmentInformations) {
+            EquipmentListPresenter.this.showEquipmentAlarmCollectionInView(domainEquipmentInformations);
         }
     }
 
-    private void showEquipmentAlarmCollectionInView(List<DomainEquipmentAlarmInformation> domainEquipmentAlarmInformations) {
-        final Collection<EquipmentAlarmInformation> equipmentAlarmInformations =
-                this.equipmentDataMapper.transform(domainEquipmentAlarmInformations);
-        this.equipmentListActivity.renderEquipmentList(equipmentAlarmInformations);
+    private void showEquipmentAlarmCollectionInView(List<DomainEquipmentInformation> domainEquipmentInformations) {
+        final Collection<EquipmentInformation> equipmentInformations =
+                this.equipmentDataMapper.transform(domainEquipmentInformations);
+        this.equipmentListActivity.renderEquipmentList(equipmentInformations);
     }
 
     public void setView(@Nullable EquipmentListActivity equipmentListActivity) {

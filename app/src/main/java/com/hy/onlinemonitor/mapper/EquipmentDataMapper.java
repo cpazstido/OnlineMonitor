@@ -1,7 +1,7 @@
 package com.hy.onlinemonitor.mapper;
 
-import com.example.bean.DomainEquipmentAlarmInformation;
-import com.hy.onlinemonitor.bean.EquipmentAlarmInformation;
+import com.example.bean.DomainEquipmentInformation;
+import com.hy.onlinemonitor.bean.EquipmentInformation;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -13,34 +13,34 @@ import java.util.List;
 public class EquipmentDataMapper {
     public EquipmentDataMapper() {}
 
-    public EquipmentAlarmInformation transform(DomainEquipmentAlarmInformation domainEquipmentAlarmInformation) {
-        if (null == domainEquipmentAlarmInformation) {
+    public EquipmentInformation transform(DomainEquipmentInformation domainEquipmentInformation) {
+        if (null == domainEquipmentInformation) {
             throw new IllegalArgumentException("Cannot transform a null value");
         }
-        EquipmentAlarmInformation equipmentAlarmInformation = new EquipmentAlarmInformation();
+        EquipmentInformation equipmentInformation = new EquipmentInformation();
 
-        equipmentAlarmInformation.setSN(domainEquipmentAlarmInformation.getSN());
-        equipmentAlarmInformation.setNewSensorAlarm(domainEquipmentAlarmInformation.getNewSensorAlarm());
-        equipmentAlarmInformation.setNewFireAlarm(domainEquipmentAlarmInformation.getNewFireAlarm());
-        equipmentAlarmInformation.setNewBreakAlarm(domainEquipmentAlarmInformation.getNewBreakAlarm());
-        equipmentAlarmInformation.setEquipmnetState(domainEquipmentAlarmInformation.getEquipmnetState());
-        equipmentAlarmInformation.setEquipmnetName(domainEquipmentAlarmInformation.getEquipmnetName());
+        equipmentInformation.setSN(domainEquipmentInformation.getSN());
+        equipmentInformation.setNewSensorAlarm(domainEquipmentInformation.getNewSensorAlarm());
+        equipmentInformation.setNewFireAlarm(domainEquipmentInformation.getNewFireAlarm());
+        equipmentInformation.setNewBreakAlarm(domainEquipmentInformation.getNewBreakAlarm());
+        equipmentInformation.setEquipmnetState(domainEquipmentInformation.getEquipmnetState());
+        equipmentInformation.setEquipmnetName(domainEquipmentInformation.getEquipmnetName());
 
-        return equipmentAlarmInformation;
+        return equipmentInformation;
     }
 
-    public List<EquipmentAlarmInformation> transform(Collection<DomainEquipmentAlarmInformation> domainEquipmentAlarmInformations){
+    public List<EquipmentInformation> transform(Collection<DomainEquipmentInformation> domainEquipmentInformations){
 
-        List<EquipmentAlarmInformation> equipmentAlarmInformations = new ArrayList<>();
-        EquipmentAlarmInformation equipmentAlarmInformation;
-        for (DomainEquipmentAlarmInformation domainEquipmentAlarmInformation : domainEquipmentAlarmInformations) {
-            equipmentAlarmInformation = transform(domainEquipmentAlarmInformation);
-            if (equipmentAlarmInformation != null) {
-                equipmentAlarmInformations.add(equipmentAlarmInformation);
+        List<EquipmentInformation> equipmentInformations = new ArrayList<>();
+        EquipmentInformation equipmentInformation;
+        for (DomainEquipmentInformation domainEquipmentInformation : domainEquipmentInformations) {
+            equipmentInformation = transform(domainEquipmentInformation);
+            if (equipmentInformation != null) {
+                equipmentInformations.add(equipmentInformation);
             }
         }
 
-        return equipmentAlarmInformations;
+        return equipmentInformations;
     }
 
 }

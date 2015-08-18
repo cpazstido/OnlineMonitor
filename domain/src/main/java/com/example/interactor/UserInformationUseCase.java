@@ -8,22 +8,22 @@ import rx.Observable;
 /**
  * Created by 24363 on 2015/8/11.
  */
-public class UserInformationCase extends UseCase {
+public class UserInformationUseCase extends UseCase {
     private UserRepository userRepository;
     private int choiceType = -1;
     private String getUser = "";
-    public UserInformationCase(PostExecutionThread postExecutionThread, UserRepository userRepository, int choiceType) {
+    public UserInformationUseCase(PostExecutionThread postExecutionThread, UserRepository userRepository, int choiceType) {
         super(postExecutionThread);
         this.userRepository = userRepository;
         this.choiceType = choiceType;
     }
 
-    public UserInformationCase(PostExecutionThread postExecutionThread, UserRepository userRepository) {
+    public UserInformationUseCase(PostExecutionThread postExecutionThread, UserRepository userRepository) {
         super(postExecutionThread);
         this.userRepository = userRepository;
     }
 
-    public UserInformationCase(PostExecutionThread postExecutionThread, UserRepository userRepository, String getUser) {
+    public UserInformationUseCase(PostExecutionThread postExecutionThread, UserRepository userRepository, String getUser) {
         super(postExecutionThread);
         this.userRepository = userRepository;
         this.getUser = getUser;

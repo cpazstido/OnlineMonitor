@@ -9,7 +9,7 @@ import android.support.v7.widget.Toolbar;
 
 import com.baoyz.widget.PullRefreshLayout;
 import com.hy.onlinemonitor.R;
-import com.hy.onlinemonitor.bean.EquipmentAlarmInformation;
+import com.hy.onlinemonitor.bean.EquipmentInformation;
 import com.hy.onlinemonitor.presenter.EquipmentListPresenter;
 import com.hy.onlinemonitor.utile.GetLoading;
 import com.hy.onlinemonitor.view.Activity.BaseActivity;
@@ -35,7 +35,7 @@ public class EquipmentListActivity extends BaseActivity implements EquipmentList
     @Bind(R.id.swipeRefreshLayout)
     PullRefreshLayout swipeRefreshLayout;
     private EquipmentRecyclerAdapter mAdapter;
-    private List<EquipmentAlarmInformation> mList;
+    private List<EquipmentInformation> mList;
     private int selectedType;
     private String userName;
     private EquipmentListPresenter equipmentListPresenter;
@@ -54,11 +54,11 @@ public class EquipmentListActivity extends BaseActivity implements EquipmentList
     }
 
     private void loadEquipmentList() {
-        this.equipmentListPresenter.initialize();
+        this.equipmentListPresenter.initialize(userName,selectedType);
     }
 
     @Override
-    public void renderEquipmentList(Collection<EquipmentAlarmInformation> EquipmentInformationCollection) {
+    public void renderEquipmentList(Collection<EquipmentInformation> EquipmentInformationCollection) {
         if (EquipmentInformationCollection != null) {
             this.mAdapter.setEquipmentCollection(EquipmentInformationCollection);
         }
@@ -105,7 +105,7 @@ public class EquipmentListActivity extends BaseActivity implements EquipmentList
                 swipeRefreshLayout.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        mList.add(new EquipmentAlarmInformation("罗马电力", "摄像机开电", 0, 0, 0));
+                        mList.add(new EquipmentInformation("罗马电力", "摄像机开电", 0, 0, 0));
                         mAdapter.notifyDataSetChanged();
                         swipeRefreshLayout.setRefreshing(false);
                     }
@@ -115,7 +115,7 @@ public class EquipmentListActivity extends BaseActivity implements EquipmentList
     }
 
     private void initPresenter() {
-        this.equipmentListPresenter = new EquipmentListPresenter(this, userName, selectedType);
+        this.equipmentListPresenter = new EquipmentListPresenter(this);
         this.equipmentListPresenter.setView(this);
     }
 

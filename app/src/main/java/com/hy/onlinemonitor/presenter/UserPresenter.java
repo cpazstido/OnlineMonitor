@@ -7,14 +7,14 @@ import android.util.Log;
 import com.example.bean.DomainUser;
 import com.example.interactor.DefaultSubscriber;
 import com.example.interactor.UseCase;
-import com.example.interactor.UserInformationCase;
+import com.example.interactor.UserInformationUseCase;
 import com.example.repository.UserRepository;
 import com.hy.data.entity.mapper.UserEntityDataMapper;
 import com.hy.data.repository.UserDataRepository;
 import com.hy.data.repository.datasource.UserDataStoreFactory;
 import com.hy.onlinemonitor.UIThread;
 import com.hy.onlinemonitor.bean.User;
-import com.hy.onlinemonitor.mapper.UserModelDataMapper;
+import com.hy.onlinemonitor.mapper.UserDataMapper;
 import com.hy.onlinemonitor.view.Activity.BaseActivity;
 import com.hy.onlinemonitor.view.Activity.TypeSelectionActivity;
 import com.rey.material.widget.SnackBar;
@@ -47,9 +47,19 @@ public class UserPresenter extends DefaultSubscriber implements Presenter {
         this.UserInformationCase.unsubscribe();
     }
 
+    @Override
+    public void showViewLoading() {
+
+    }
+
+    @Override
+    public void hideViewLoading() {
+
+    }
+
     public void getUserInformation(Context mContext) {
         userRepository = new UserDataRepository(new UserDataStoreFactory(mContext), new UserEntityDataMapper());
-        this.UserInformationCase = new UserInformationCase(new UIThread(), userRepository, "getUserInformation");
+        this.UserInformationCase = new UserInformationUseCase(new UIThread(), userRepository, "getUserInformation");
         this.UserInformationCase.execute(new UserInformationSubscriber());
     }
 
@@ -67,7 +77,7 @@ public class UserPresenter extends DefaultSubscriber implements Presenter {
 
         @Override
         public void onNext(DomainUser domainUser) {
-            User user = new UserModelDataMapper().transform(domainUser);
+            User user = new UserDataMapper().transform(domainUser);
             baseActivity.setUser(user);
             baseActivity.getUserNameTV().setText(domainUser.getUserName());
         }
@@ -77,7 +87,7 @@ public class UserPresenter extends DefaultSubscriber implements Presenter {
     public void upDataUser(int choiceType, Context mContext) {
         this.mContext = mContext;
         userRepository = new UserDataRepository(new UserDataStoreFactory(mContext));
-        this.UserInformationCase = new UserInformationCase(new UIThread(), userRepository, choiceType);
+        this.UserInformationCase = new UserInformationUseCase(new UIThread(), userRepository, choiceType);
         this.UserInformationCase.execute(new upDataUserSubscriber());
     }
 
@@ -105,7 +115,7 @@ public class UserPresenter extends DefaultSubscriber implements Presenter {
 
     public void getUserEquipmentList(Context mContext) {
         userRepository = new UserDataRepository(new UserDataStoreFactory(mContext));
-        this.UserInformationCase = new UserInformationCase(new UIThread(), userRepository);
+        this.UserInformationCase = new UserInformationUseCase(new UIThread(), userRepository);
         this.UserInformationCase.execute(new EquipmentListSubscriber());
     }
 

@@ -39,7 +39,6 @@ public class LoginPresenter extends DefaultSubscriber implements Presenter{
     @Override
     public void destroy() {
         this.loginUseCase.unsubscribe();
-
     }
 
     public void setView(@NonNull JumpView view){
@@ -58,11 +57,11 @@ public class LoginPresenter extends DefaultSubscriber implements Presenter{
         this.userLogin();
     }
 
-    private void showViewLoading() {
+    public void showViewLoading() {
         LoginView.showLoading();
     }
 
-    private void hideViewLoading() {
+    public void hideViewLoading() {
         LoginView.hideLoading();
     }
 
@@ -93,7 +92,4 @@ public class LoginPresenter extends DefaultSubscriber implements Presenter{
             LoginPresenter.this.GotoView();
         }
     }
-
-
-
 }

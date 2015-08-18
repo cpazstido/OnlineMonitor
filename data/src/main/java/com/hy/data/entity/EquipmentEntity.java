@@ -1,9 +1,9 @@
-package com.hy.onlinemonitor.bean;
+package com.hy.data.entity;
 
 /**
- * Created by wsw on 2015/7/15.
+ * Created by 24363 on 2015/8/13.
  */
-public class EquipmentAlarmInformation {
+public class EquipmentEntity {
     private String equipmnetName;
     private String equipmnetState;
     private int SN;
@@ -11,23 +11,16 @@ public class EquipmentAlarmInformation {
     private int newBreakAlarm;
     private int newSensorAlarm;
 
-    public EquipmentAlarmInformation() {
-    }
-
-    public EquipmentAlarmInformation(String equipmnetName, String equipmnetState, int newFireAlarm, int newBreakAlarm, int newSensorAlarm) {
+    public EquipmentEntity(String equipmnetName, String equipmnetState, int SN, int newFireAlarm, int newBreakAlarm, int newSensorAlarm) {
         this.equipmnetName = equipmnetName;
         this.equipmnetState = equipmnetState;
+        this.SN = SN;
         this.newFireAlarm = newFireAlarm;
         this.newBreakAlarm = newBreakAlarm;
         this.newSensorAlarm = newSensorAlarm;
     }
 
-    public int getSN() {
-        return SN;
-    }
-
-    public void setSN(int SN) {
-        this.SN = SN;
+    public EquipmentEntity() {
     }
 
     public String getEquipmnetName() {
@@ -44,6 +37,14 @@ public class EquipmentAlarmInformation {
 
     public void setEquipmnetState(String equipmnetState) {
         this.equipmnetState = equipmnetState;
+    }
+
+    public int getSN() {
+        return SN;
+    }
+
+    public void setSN(int SN) {
+        this.SN = SN;
     }
 
     public int getNewFireAlarm() {
@@ -68,17 +69,5 @@ public class EquipmentAlarmInformation {
 
     public void setNewSensorAlarm(int newSensorAlarm) {
         this.newSensorAlarm = newSensorAlarm;
-    }
-
-    @Override
-    public String toString() {
-        return "EquipmnetAlarmInformation{" +
-                "equipmnetName='" + equipmnetName + '\'' +
-                ", equipmnetState='" + equipmnetState + '\'' +
-                ", SN=" + SN +
-                ", newFireAlarm=" + newFireAlarm +
-                ", newBreakAlarm=" + newBreakAlarm +
-                ", newSensorAlarm=" + newSensorAlarm +
-                '}';
     }
 }

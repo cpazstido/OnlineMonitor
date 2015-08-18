@@ -1,7 +1,7 @@
 package com.hy.data.entity.mapper;
 
-import com.example.bean.DomainEquipmentAlarmInformation;
-import com.hy.data.entity.EquipmentAlarmEntity;
+import com.example.bean.DomainEquipmentInformation;
+import com.hy.data.entity.EquipmentEntity;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -14,29 +14,29 @@ public class EquipmentAlarmEntityDataMapper {
     public EquipmentAlarmEntityDataMapper() {
     }
 
-    public DomainEquipmentAlarmInformation transform(EquipmentAlarmEntity equipmentAlarmEntity) {
-        DomainEquipmentAlarmInformation domainEquipmentAlarmInformation = null;
+    public DomainEquipmentInformation transform(EquipmentEntity equipmentEntity) {
+        DomainEquipmentInformation domainEquipmentInformation = null;
 
-        if (equipmentAlarmEntity != null) {
-            domainEquipmentAlarmInformation = new DomainEquipmentAlarmInformation();
-            domainEquipmentAlarmInformation.setSN(equipmentAlarmEntity.getSN());
-            domainEquipmentAlarmInformation.setEquipmnetName(equipmentAlarmEntity.getEquipmnetName());
-            domainEquipmentAlarmInformation.setEquipmnetState(equipmentAlarmEntity.getEquipmnetState());
-            domainEquipmentAlarmInformation.setNewBreakAlarm(equipmentAlarmEntity.getNewBreakAlarm());
-            domainEquipmentAlarmInformation.setNewFireAlarm(equipmentAlarmEntity.getNewFireAlarm());
-            domainEquipmentAlarmInformation.setNewSensorAlarm(equipmentAlarmEntity.getNewSensorAlarm());
+        if (equipmentEntity != null) {
+            domainEquipmentInformation = new DomainEquipmentInformation();
+            domainEquipmentInformation.setSN(equipmentEntity.getSN());
+            domainEquipmentInformation.setEquipmnetName(equipmentEntity.getEquipmnetName());
+            domainEquipmentInformation.setEquipmnetState(equipmentEntity.getEquipmnetState());
+            domainEquipmentInformation.setNewBreakAlarm(equipmentEntity.getNewBreakAlarm());
+            domainEquipmentInformation.setNewFireAlarm(equipmentEntity.getNewFireAlarm());
+            domainEquipmentInformation.setNewSensorAlarm(equipmentEntity.getNewSensorAlarm());
         }
 
-        return domainEquipmentAlarmInformation;
+        return domainEquipmentInformation;
     }
 
-    public List<DomainEquipmentAlarmInformation> transform(Collection<EquipmentAlarmEntity> equipmentAlarmEntities) {
-        List<DomainEquipmentAlarmInformation> equipmentAlarmInformationList = new ArrayList<>();
-        DomainEquipmentAlarmInformation domainEquipmentAlarmInformation;
-        for (EquipmentAlarmEntity equipmentAlarmEntity : equipmentAlarmEntities) {
-            domainEquipmentAlarmInformation = transform(equipmentAlarmEntity);
-            if (domainEquipmentAlarmInformation != null) {
-                equipmentAlarmInformationList.add(domainEquipmentAlarmInformation);
+    public List<DomainEquipmentInformation> transform(Collection<EquipmentEntity> equipmentAlarmEntities) {
+        List<DomainEquipmentInformation> equipmentAlarmInformationList = new ArrayList<>();
+        DomainEquipmentInformation domainEquipmentInformation;
+        for (EquipmentEntity equipmentEntity : equipmentAlarmEntities) {
+            domainEquipmentInformation = transform(equipmentEntity);
+            if (domainEquipmentInformation != null) {
+                equipmentAlarmInformationList.add(domainEquipmentInformation);
             }
         }
 

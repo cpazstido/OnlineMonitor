@@ -16,7 +16,8 @@
 package com.hy.data.net;
 
 
-import com.hy.data.entity.EquipmentAlarmEntity;
+import com.hy.data.entity.AlarmEntity;
+import com.hy.data.entity.EquipmentEntity;
 import com.hy.data.entity.UserEntity;
 
 import java.util.List;
@@ -36,8 +37,13 @@ public interface RestApi {
   Observable<UserEntity> userEntity(String loginAccount, String loginPwd);
 
   /**
-   * 取得设备报警列表
+   * 取得设备列表
    */
-  Observable<List<EquipmentAlarmEntity>> equipmentAlarmEntity(String UserName,int choiceType);
+  Observable<List<EquipmentEntity>> equipmentEntity(String userName, int choiceType);
+
+  /**
+   * 取得报警列表
+   */
+  Observable<List<AlarmEntity>> alarmEntity(String userName,String title);
 
 }

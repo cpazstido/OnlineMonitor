@@ -5,8 +5,10 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
 import com.google.gson.Gson;
-import com.hy.data.entity.EquipmentAlarmEntity;
+import com.hy.data.entity.AlarmEntity;
+import com.hy.data.entity.EquipmentEntity;
 import com.hy.data.entity.UserEntity;
+import com.hy.data.entity.mapper.AlarmEntityJsonMapper;
 import com.hy.data.entity.mapper.EquipmentAlarmEntityJsonMapper;
 import com.hy.data.entity.mapper.UserEntityJsonMapper;
 import com.hy.data.exception.NetworkConnectionException;
@@ -25,6 +27,7 @@ public class RestApiImpl implements RestApi {
     private final Context context;
     private UserEntityJsonMapper userEntityJsonMapper;
     private EquipmentAlarmEntityJsonMapper equipmentAlarmEntityJsonMapper;
+    private AlarmEntityJsonMapper alarmEntityJsonMapper;
     /**
      * Constructor of the class
      *
@@ -47,6 +50,14 @@ public class RestApiImpl implements RestApi {
         this.equipmentAlarmEntityJsonMapper = equipmentAlarmEntityJsonMapper;
     }
 
+    public RestApiImpl(Context context, AlarmEntityJsonMapper alarmEntityJsonMapper) {
+        if (context == null || alarmEntityJsonMapper == null) {
+            throw new IllegalArgumentException("The constructor parameters cannot be null!!!");
+        }
+        this.context = context;
+        this.alarmEntityJsonMapper = alarmEntityJsonMapper;
+    }
+
     /**
      * 获取用户登录信息
      * @param loginAccount  用户名
@@ -61,8 +72,7 @@ public class RestApiImpl implements RestApi {
          public void call(Subscriber<? super UserEntity> subscriber) {
 
              String responseUserEntities = null;
-             responseUserEntities = getTestUserEntities(loginAccount, loginPwd);
-//           responseUserEntities = getUserEntitiesFromApi();
+           responseUserEntities = getUserEntitiesFromApi();
              if (responseUserEntities != null) {
                  subscriber.onNext(userEntityJsonMapper.transformUserEntity(
                          responseUserEntities));
@@ -79,19 +89,17 @@ public class RestApiImpl implements RestApi {
      *
      * @param userName  用户名
      * @param choiceType 选择的查看类型
-     * @return List<EquipmentAlarmEntity>
      */
     @Override
-    public Observable<List<EquipmentAlarmEntity>> equipmentAlarmEntity(String userName, int choiceType) {
-        return Observable.create(new Observable.OnSubscribe<List<EquipmentAlarmEntity>>() {
+    public Observable<List<EquipmentEntity>> equipmentEntity(String userName, int choiceType) {
+        return Observable.create(new Observable.OnSubscribe<List<EquipmentEntity>>() {
             @Override
-            public void call(Subscriber<? super List<EquipmentAlarmEntity>> subscriber) {
-                String responseEquipmentAlarmEntities = null;
-                responseEquipmentAlarmEntities = getTestEquipmentAlarmEntities(userName, choiceType);
-//                responseEquipmentAlarmEntities = getEquipmentAlarmEntitiesFromApi(UserName, choiceType);
-                if (responseEquipmentAlarmEntities != null) {
+            public void call(Subscriber<? super List<EquipmentEntity>> subscriber) {
+                String responseEquipmentEntities = null;
+                responseEquipmentEntities = getEquipmentEntitiesFromApi(userName, choiceType);
+                if (responseEquipmentEntities != null) {
                     subscriber.onNext(equipmentAlarmEntityJsonMapper.transformEquipmentAlarmEntity(
-                            responseEquipmentAlarmEntities));
+                            responseEquipmentEntities));
                     subscriber.onCompleted();
                 } else {
                     subscriber.onError(new NetworkConnectionException());
@@ -99,8 +107,6 @@ public class RestApiImpl implements RestApi {
             }
         });
     }
-
-
 
     private String getUserEntitiesFromApi() {
         //        RequestParams params= new RequestParams();
@@ -123,11 +129,6 @@ public class RestApiImpl implements RestApi {
 //                new SnackBar(context).text("连接失败,请稍后再试....").show();
 //            }
 //        });
-        return null;
-    }
-
-    private String getTestUserEntities(String loginAccount, String loginPwd) {
-
         Gson gson = new Gson();
         try {
             Thread.sleep(1000);
@@ -137,24 +138,57 @@ public class RestApiImpl implements RestApi {
         return gson.toJson(new UserEntity("山西电力", "山火,外破,普通视频,无人机"));
     }
 
-    private String getTestEquipmentAlarmEntities(String userName, int choiceType) {
+    private String getEquipmentEntitiesFromApi(String userName, int choiceType) {
         Gson gson = new Gson();
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        List<EquipmentAlarmEntity> equipmentAlarmEntities = new ArrayList<>();
-        equipmentAlarmEntities.add(new EquipmentAlarmEntity("美国超级电力", "摄像机开电",2, 0, 1, 1));
-        equipmentAlarmEntities.add(new EquipmentAlarmEntity("英国核电力", "摄像机正在开电",3, 1, 0, 1));
-        equipmentAlarmEntities.add(new EquipmentAlarmEntity("火星电力", "摄像机断电",5,1, 1, 0));
-        equipmentAlarmEntities.add(new EquipmentAlarmEntity("什么么贵","开电中",2,2,0,1));
+        List<EquipmentEntity> equipmentAlarmEntities = new ArrayList<>();
+        equipmentAlarmEntities.add(new EquipmentEntity("美国超级电力", "摄像机开电",2, 0, 1, 1));
+        equipmentAlarmEntities.add(new EquipmentEntity("英国核电力", "摄像机正在开电",3, 1, 0, 1));
+        equipmentAlarmEntities.add(new EquipmentEntity("火星电力", "摄像机断电",5,1, 1, 0));
+        equipmentAlarmEntities.add(new EquipmentEntity("什么么贵","开电中",2,2,0,1));
         return gson.toJson(equipmentAlarmEntities);
     }
 
-    private String getEquipmentAlarmEntitiesFromApi(String userName, int choiceType) {
+    @Override
+    public Observable<List<AlarmEntity>> alarmEntity(String userName, String title) {
+        return Observable.create(new Observable.OnSubscribe<List<AlarmEntity>>() {
+            @Override
+            public void call(Subscriber<? super List<AlarmEntity>> subscriber) {
+                String responseAlarmEntities = null;
+                int choiceType = -1;
+                switch (title){
+                    case "山火历史报警":
+                        choiceType =0;
+                        break;
 
-        return null;
+                }
+
+                responseAlarmEntities = getAlarmEntitiesFromApi(userName, choiceType);
+                if (responseAlarmEntities != null) {
+                    subscriber.onNext(alarmEntityJsonMapper.transformEquipmentAlarmEntity(
+                            responseAlarmEntities));
+                    subscriber.onCompleted();
+                } else {
+                    subscriber.onError(new NetworkConnectionException());
+                }
+            }
+        });
+    }
+
+    private String getAlarmEntitiesFromApi(String userName, int choiceType) {
+        Gson gson = new Gson();
+        List<AlarmEntity> alarmEntities = new ArrayList<>();
+        alarmEntities.add(new AlarmEntity("分分分", "http://pic.yesky.com/imagelist/07/04/1837387_7424.jpg", "http://www.zgmaimai.cn/uploads/allimg/c120621/1340251A2213Z-2K263.jpg", "是", "紧急的报警", "已处理", 0));
+        alarmEntities.add(new AlarmEntity("水水水", "http://pic.yesky.com/imagelist/07/04/1837387_7424.jpg", "http://www.zgmaimai.cn/uploads/allimg/c120621/1340251A2213Z-2K263.jpg", "是", "紧急的报警", "已处理", 0));
+        alarmEntities.add(new AlarmEntity("哈哈哈", "http://pic.yesky.com/imagelist/07/04/1837387_7424.jpg", "http://www.zgmaimai.cn/uploads/allimg/c120621/1340251A2213Z-2K263.jpg", "是", "紧急的报警", "已处理", 0));
+        alarmEntities.add(new AlarmEntity("多对多", "http://pic.yesky.com/imagelist/07/04/1837387_7424.jpg", "http://www.zgmaimai.cn/uploads/allimg/c120621/1340251A2213Z-2K263.jpg", "是", "紧急的报警", "已处理", 0));
+        alarmEntities.add(new AlarmEntity("啊啊啊", "http://pic.yesky.com/imagelist/07/04/1837387_7424.jpg", "http://www.zgmaimai.cn/uploads/allimg/c120621/1340251A2213Z-2K263.jpg", "是", "紧急的报警", "已处理", 0));
+
+        return gson.toJson(alarmEntities);
     }
 
     private boolean isThereInternetConnection() {

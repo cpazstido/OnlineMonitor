@@ -1,27 +1,15 @@
-package com.hy.data.entity;
+package com.example.bean;
 
-/**
+import java.lang.String; /**
  * Created by 24363 on 2015/8/13.
  */
-public class EquipmentAlarmEntity {
+public class DomainEquipmentInformation {
     private String equipmnetName;
     private String equipmnetState;
     private int SN;
     private int newFireAlarm;
     private int newBreakAlarm;
     private int newSensorAlarm;
-
-    public EquipmentAlarmEntity(String equipmnetName, String equipmnetState, int SN, int newFireAlarm, int newBreakAlarm, int newSensorAlarm) {
-        this.equipmnetName = equipmnetName;
-        this.equipmnetState = equipmnetState;
-        this.SN = SN;
-        this.newFireAlarm = newFireAlarm;
-        this.newBreakAlarm = newBreakAlarm;
-        this.newSensorAlarm = newSensorAlarm;
-    }
-
-    public EquipmentAlarmEntity() {
-    }
 
     public String getEquipmnetName() {
         return equipmnetName;

@@ -3,7 +3,7 @@ package com.hy.data.entity.mapper;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
-import com.hy.data.entity.EquipmentAlarmEntity;
+import com.hy.data.entity.EquipmentEntity;
 
 import java.lang.reflect.Type;
 import java.util.List;
@@ -18,14 +18,8 @@ public class EquipmentAlarmEntityJsonMapper {
         this.gson = new Gson();
     }
 
-    public List<EquipmentAlarmEntity> transformEquipmentAlarmEntity(String equipmentAlarmJsonResponse) throws JsonSyntaxException {
-        try {
-            Type equipmentAlarmEntityType = new TypeToken<List<EquipmentAlarmEntity>>() {}.getType();
-            List<EquipmentAlarmEntity> equipmentAlarmEntitys = this.gson.fromJson(equipmentAlarmJsonResponse, equipmentAlarmEntityType);
-
-            return equipmentAlarmEntitys;
-        } catch (JsonSyntaxException jsonException) {
-            throw jsonException;
-        }
+    public List<EquipmentEntity> transformEquipmentAlarmEntity(String equipmentJsonResponse) throws JsonSyntaxException {
+        Type equipmentEntityType = new TypeToken<List<EquipmentEntity>>() {}.getType();
+        return this.gson.fromJson(equipmentJsonResponse, equipmentEntityType);
     }
 }

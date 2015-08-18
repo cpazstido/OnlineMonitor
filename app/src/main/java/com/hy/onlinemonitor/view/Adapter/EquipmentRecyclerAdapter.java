@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.hy.onlinemonitor.R;
-import com.hy.onlinemonitor.bean.EquipmentAlarmInformation;
+import com.hy.onlinemonitor.bean.EquipmentInformation;
 import com.hy.onlinemonitor.view.ViewHolder.EquipmentListViewHolder;
 import com.lid.lib.LabelView;
 
@@ -20,9 +20,9 @@ import java.util.List;
 public class EquipmentRecyclerAdapter extends RecyclerView.Adapter<EquipmentListViewHolder> {
     private int selectionType;
     private Context mContext;
-    private List<EquipmentAlarmInformation> mList;
+    private List<EquipmentInformation> mList;
     private LabelView label;
-    public EquipmentRecyclerAdapter(int selectionType, Context context, List<EquipmentAlarmInformation> list) {
+    public EquipmentRecyclerAdapter(int selectionType, Context context, List<EquipmentInformation> list) {
         this.selectionType = selectionType;
         this.mContext = context;
         this.mList = list;
@@ -39,24 +39,24 @@ public class EquipmentRecyclerAdapter extends RecyclerView.Adapter<EquipmentList
 
     @Override
     public void onBindViewHolder(final EquipmentListViewHolder holder, int position) {
-        final EquipmentAlarmInformation equipmentAlarmInformation = mList.get(position);
-        holder.stateShow.setText(equipmentAlarmInformation.getEquipmnetState());
-        holder.equipmentName.setText(equipmentAlarmInformation.getEquipmnetName());
-        if(equipmentAlarmInformation.getNewBreakAlarm()!=0 || equipmentAlarmInformation.getNewFireAlarm()!=0|| equipmentAlarmInformation.getNewSensorAlarm()!=0){
+        final EquipmentInformation equipmentInformation = mList.get(position);
+        holder.stateShow.setText(equipmentInformation.getEquipmnetState());
+        holder.equipmentName.setText(equipmentInformation.getEquipmnetName());
+        if(equipmentInformation.getNewBreakAlarm()!=0 || equipmentInformation.getNewFireAlarm()!=0|| equipmentInformation.getNewSensorAlarm()!=0){
             holder.newAlarmImageView.setVisibility(View.VISIBLE);
         }
-        if(equipmentAlarmInformation.getNewSensorAlarm() ==0){
+        if(equipmentInformation.getNewSensorAlarm() ==0){
             //newSensorAlarm,newFireAlarm,newBreakAlarm
             //equipmentAlarmNull
             holder.newSensorAlarm.setVisibility(View.GONE);
         }
-        if(equipmentAlarmInformation.getNewFireAlarm() ==0){
+        if(equipmentInformation.getNewFireAlarm() ==0){
             holder.newFireAlarm.setVisibility(View.GONE);
         }
-        if(equipmentAlarmInformation.getNewBreakAlarm() ==0){
+        if(equipmentInformation.getNewBreakAlarm() ==0){
             holder.newBreakAlarm.setVisibility(View.GONE);
         }
-        if(equipmentAlarmInformation.getNewSensorAlarm() ==0 && equipmentAlarmInformation.getNewFireAlarm() ==0&& equipmentAlarmInformation.getNewBreakAlarm() ==0)        {
+        if(equipmentInformation.getNewSensorAlarm() ==0 && equipmentInformation.getNewFireAlarm() ==0&& equipmentInformation.getNewBreakAlarm() ==0)        {
             holder.newSensorAlarm.setVisibility(View.GONE);
             holder.newFireAlarm.setVisibility(View.GONE);
             holder.newBreakAlarm.setVisibility(View.GONE);
@@ -130,14 +130,14 @@ public class EquipmentRecyclerAdapter extends RecyclerView.Adapter<EquipmentList
         return (this.mList != null) ? this.mList.size() : 0;
     }
 
-    public void setEquipmentCollection(Collection<EquipmentAlarmInformation> equipmentAlarmInformationCollection){
-        this.validateEquipmentCollection(equipmentAlarmInformationCollection);
-        this.mList = (List<EquipmentAlarmInformation>)equipmentAlarmInformationCollection;
+    public void setEquipmentCollection(Collection<EquipmentInformation> equipmentInformationCollection){
+        this.validateEquipmentCollection(equipmentInformationCollection);
+        this.mList = (List<EquipmentInformation>) equipmentInformationCollection;
         this.notifyDataSetChanged();
     }
 
-    private void validateEquipmentCollection(Collection<EquipmentAlarmInformation> equipmentAlarmInformationCollection) {
-        if (equipmentAlarmInformationCollection == null) {
+    private void validateEquipmentCollection(Collection<EquipmentInformation> equipmentInformationCollection) {
+        if (equipmentInformationCollection == null) {
             throw new IllegalArgumentException("The list cannot be null");
         }
     }

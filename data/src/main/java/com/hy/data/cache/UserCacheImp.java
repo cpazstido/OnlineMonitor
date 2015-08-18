@@ -74,7 +74,6 @@ public class UserCacheImp implements UserCache{
                         UserEntity  userEntity = users.get(0);
                         userEntity.setSelectionType(choiceType);
                         db.saveOrUpdate(userEntity);
-                        users = db.findAll(Selector.from(UserEntity.class));
                     }
                 } catch (DbException e) {
                     e.printStackTrace();

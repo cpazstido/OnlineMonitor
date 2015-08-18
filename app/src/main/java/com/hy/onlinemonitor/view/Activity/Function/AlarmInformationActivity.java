@@ -1,16 +1,18 @@
 package com.hy.onlinemonitor.view.Activity.Function;
 
+import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.ViewGroup;
 
 import com.github.florent37.materialviewpager.MaterialViewPager;
-import com.github.florent37.materialviewpager.header.HeaderDesign;
 import com.hy.onlinemonitor.R;
 import com.hy.onlinemonitor.data.TypeDef;
 import com.hy.onlinemonitor.view.Activity.BaseActivity;
 import com.hy.onlinemonitor.view.Component.RecyclerViewFragment;
+import com.hy.onlinemonitor.view.LoadDataView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +20,7 @@ import java.util.List;
 /**
  * Created by wsw on 2015/7/13.
  */
-public class AlarmInformationActivity extends BaseActivity {
+public class AlarmInformationActivity extends BaseActivity implements LoadDataView{
     private MaterialViewPager mViewPager;
     private List<String> alarmTitles;
 
@@ -60,7 +62,8 @@ public class AlarmInformationActivity extends BaseActivity {
         mViewPager.getViewPager().setAdapter(new FragmentPagerAdapter(getSupportFragmentManager()) {
             @Override
             public Fragment getItem(int position) {
-                return RecyclerViewFragment.newInstance(position, alarmTitles);
+                Log.e("aaa","getItem");
+                return RecyclerViewFragment.newInstance(alarmTitles,position,AlarmInformationActivity.this.getUser().getUserName());
             }
 
             @Override
@@ -70,6 +73,7 @@ public class AlarmInformationActivity extends BaseActivity {
 
             @Override
             public Object instantiateItem(ViewGroup container, int position) {
+                Log.e("aaa","instantiateItem");
                 return super.instantiateItem(container, position);
             }
 
@@ -82,44 +86,43 @@ public class AlarmInformationActivity extends BaseActivity {
             public CharSequence getPageTitle(int position) {
                 return alarmTitles.get(position);
             }
+
         });
-
-        //在这里应该加载数据
-        mViewPager.setMaterialViewPagerListener(new MaterialViewPager.Listener() {
-            @Override
-            public HeaderDesign getHeaderDesign(int page) {
-                switch (page) {
-                    case 0:
-                        return HeaderDesign.fromColorResAndUrl(
-                                R.color.green,
-                                "https://fs01.androidpit.info/a/63/0e/android-l-wallpapers-630ea6-h900.jpg");
-                    case 1:
-                        return HeaderDesign.fromColorResAndUrl(
-                                R.color.blue,
-                                "http://cdn1.tnwcdn.com/wp-content/blogs.dir/1/files/2014/06/wallpaper_51.jpg");
-                    case 2:
-                        return HeaderDesign.fromColorResAndUrl(
-                                R.color.cyan,
-                                "http://www.droid-life.com/wp-content/uploads/2014/10/lollipop-wallpapers10.jpg");
-                    case 3:
-                        return HeaderDesign.fromColorResAndUrl(
-                                R.color.red,
-                                "http://www.tothemobile.com/wp-content/uploads/2014/07/original.jpg");
-                    case 4:
-                        return HeaderDesign.fromColorResAndUrl(
-                                R.color.lime,
-                                "http://www.tothemobile.com/wp-content/uploads/2014/07/original.jpg");
-                    case 5:
-                        return HeaderDesign.fromColorResAndUrl(
-                                R.color.purple,
-                                "http://www.tothemobile.com/wp-content/uploads/2014/07/original.jpg");
-
-                }
-                //execute others actions if needed (ex : modify your header logo)
-                return null;
-            }
-        });
-
+//        在这里应该加载数据
+//        mViewPager.setMaterialViewPagerListener(new MaterialViewPager.Listener() {
+//            @Override
+//            public HeaderDesign getHeaderDesign(int page) {
+//                switch (page) {
+//                    case 0:
+//                        return HeaderDesign.fromColorResAndUrl(
+//                                R.color.green,
+//                                "https://fs01.androidpit.info/a/63/0e/android-l-wallpapers-630ea6-h900.jpg");
+//                    case 1:
+//                        return HeaderDesign.fromColorResAndUrl(
+//                                R.color.blue,
+//                                "http://cdn1.tnwcdn.com/wp-content/blogs.dir/1/files/2014/06/wallpaper_51.jpg");
+//                    case 2:
+//                        return HeaderDesign.fromColorResAndUrl(
+//                                R.color.cyan,
+//                                "http://www.droid-life.com/wp-content/uploads/2014/10/lollipop-wallpapers10.jpg");
+//                    case 3:
+//                        return HeaderDesign.fromColorResAndUrl(
+//                                R.color.red,
+//                                "http://www.tothemobile.com/wp-content/uploads/2014/07/original.jpg");
+//                    case 4:
+//                        return HeaderDesign.fromColorResAndUrl(
+//                                R.color.lime,
+//                                "http://www.tothemobile.com/wp-content/uploads/2014/07/original.jpg");
+//                    case 5:
+//                        return HeaderDesign.fromColorResAndUrl(
+//                                R.color.purple,
+//                                "http://www.tothemobile.com/wp-content/uploads/2014/07/original.jpg");
+//
+//                }
+//                //execute others actions if needed (ex : modify your header logo)
+//                return null;
+//            }
+//        });
         mViewPager.getViewPager().setOffscreenPageLimit(mViewPager.getViewPager().getAdapter().getCount());
         mViewPager.getPagerTitleStrip().setViewPager(mViewPager.getViewPager());
         mViewPager.getViewPager().setCurrentItem(0);
@@ -127,6 +130,26 @@ public class AlarmInformationActivity extends BaseActivity {
 
     @Override
     public void initialize() {
+        mViewPager.getViewPager().getAdapter().notifyDataSetChanged();
+    }
 
+    @Override
+    public void showLoading() {
+
+    }
+
+    @Override
+    public void hideLoading() {
+
+    }
+
+    @Override
+    public void showError(String message) {
+
+    }
+
+    @Override
+    public Context getContext() {
+        return AlarmInformationActivity.this;
     }
 }
