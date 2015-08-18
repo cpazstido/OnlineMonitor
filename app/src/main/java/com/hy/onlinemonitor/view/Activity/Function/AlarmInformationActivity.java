@@ -1,6 +1,7 @@
 package com.hy.onlinemonitor.view.Activity.Function;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v7.widget.Toolbar;
@@ -9,6 +10,7 @@ import android.view.ViewGroup;
 
 import com.github.florent37.materialviewpager.MaterialViewPager;
 import com.hy.onlinemonitor.R;
+import com.hy.onlinemonitor.bean.AlarmInformation;
 import com.hy.onlinemonitor.data.TypeDef;
 import com.hy.onlinemonitor.view.Activity.BaseActivity;
 import com.hy.onlinemonitor.view.Component.RecyclerViewFragment;
@@ -20,7 +22,7 @@ import java.util.List;
 /**
  * Created by wsw on 2015/7/13.
  */
-public class AlarmInformationActivity extends BaseActivity implements LoadDataView{
+public class AlarmInformationActivity extends BaseActivity implements LoadDataView,RecyclerViewFragment.AlarmListListener{
     private MaterialViewPager mViewPager;
     private List<String> alarmTitles;
 
@@ -151,5 +153,12 @@ public class AlarmInformationActivity extends BaseActivity implements LoadDataVi
     @Override
     public Context getContext() {
         return AlarmInformationActivity.this;
+    }
+
+    @Override
+    public void onAlarmClicked(AlarmInformation alarmInformation) {
+        Intent itemIntent = new Intent(AlarmInformationActivity.this, DetailedAlarmActivity.class);
+        itemIntent.putExtra("detailedAlarm", alarmInformation);
+        startActivity(itemIntent);
     }
 }

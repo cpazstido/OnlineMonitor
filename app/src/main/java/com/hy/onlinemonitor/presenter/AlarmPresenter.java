@@ -102,6 +102,6 @@ public class AlarmPresenter implements Presenter{
     }
 
     public void onAlarmClicked(AlarmInformation alarmInformation) {
-
+        this.alarmView.viewAlarm(alarmInformation);
     }
 }

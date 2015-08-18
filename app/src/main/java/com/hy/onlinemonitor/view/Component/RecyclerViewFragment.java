@@ -58,7 +58,7 @@ public class RecyclerViewFragment extends Fragment implements AlarmListView {
     }
 
     public static RecyclerViewFragment newInstance(List<String> alarmTitle, int postion, String name) {
-        Log.e("newInstance","newInstance");
+        Log.e("newInstance", "newInstance");
         alarmTitles = alarmTitle;
         userName = name;
         Bundle bundle = new Bundle();
@@ -126,7 +126,6 @@ public class RecyclerViewFragment extends Fragment implements AlarmListView {
 
     @Override
     public void renderAlarmList(Collection<AlarmInformation> alarmInformationCollection) {
-        Log.e("renderAlarmList",alarmInformationCollection.toString());
         this.mAdapter.setAlarmCollection(alarmInformationCollection);
         RcAdapter.notifyDataSetChanged();
     }
@@ -142,6 +141,7 @@ public class RecyclerViewFragment extends Fragment implements AlarmListView {
             new AlarmRecyclerAdapter.OnItemClickListener() {
                 @Override
                 public void onAlarmItemClicked(AlarmInformation alarmInformation) {
+                    Log.e("OnItemClickListener","OnItemClickListener");
                     if (RecyclerViewFragment.this.alarmPresenter != null && alarmInformation != null) {
                         RecyclerViewFragment.this.alarmPresenter.onAlarmClicked(alarmInformation);
                     }
@@ -150,14 +150,11 @@ public class RecyclerViewFragment extends Fragment implements AlarmListView {
 
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
-        Log.e("setUserVisibleHint","setUserVisibleHint");
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser && isNoInit) {
             Bundle bundle = getArguments();
             int postion = bundle.getInt("postion");
-            Log.e("showData", "SHowData -- here");
             isNoInit = false;
-            Log.e("a", "newInstance->" + alarmTitles.get(postion) + "---" + userName);
             this.initialize();
             this.loadAlarmList(alarmTitles.get(postion), userName);
         }

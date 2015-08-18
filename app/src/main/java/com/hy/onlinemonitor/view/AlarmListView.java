@@ -18,5 +18,4 @@ public interface AlarmListView extends LoadDataView{
      */
     void viewAlarm(AlarmInformation alarmInformation);
 
-
 }

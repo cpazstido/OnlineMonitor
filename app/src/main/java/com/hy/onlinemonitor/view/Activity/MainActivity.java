@@ -10,6 +10,7 @@ import android.widget.AdapterView;
 import com.hy.onlinemonitor.R;
 import com.hy.onlinemonitor.view.Activity.Function.AlarmInformationActivity;
 import com.hy.onlinemonitor.view.Activity.Function.EquipmentListActivity;
+import com.hy.onlinemonitor.view.Activity.Function.MapActivity;
 import com.hy.onlinemonitor.view.Adapter.MainGridAdapter;
 import com.hy.onlinemonitor.view.Component.MyGridView;
 
@@ -90,9 +91,9 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
                         startActivity(gridAlarmIntent);
                         break;
                     case 2: //地图
-//                        Intent gridMapIntent = new Intent(MainActivity.this,MapActivity.class);
-//                        Log.e("lok","地图");
-//                        startActivity(gridMapIntent);
+                        Intent gridMapIntent = new Intent(MainActivity.this,MapActivity.class);
+                        Log.e("lok","地图");
+                        startActivity(gridMapIntent);
                         break;
                 }
                 break;

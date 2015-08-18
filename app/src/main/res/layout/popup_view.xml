@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:background="@drawable/popup"
+    android:layout_height="match_parent">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/mSubhead"
+        android:gravity="center"
+        android:id="@+id/map_equipment_information"
+        />
+    <LinearLayout
+        android:layout_gravity="center_horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <com.rey.material.widget.Button
+            style="@style/FlatColorButtonRippleStyle"
+            android:id="@+id/map_equipment_video"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/bt_height"
+            android:layout_weight="0.4"
+            android:textColor="#FF2196F3"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Button"
+            android:text="@string/real_time_video"
+            app:rd_delayClick="afterRelease"/>
+    </LinearLayout>
+
+
+</LinearLayout>
