@@ -14,7 +14,7 @@ import com.hy.onlinemonitor.presenter.EquipmentListPresenter;
 import com.hy.onlinemonitor.utile.GetLoading;
 import com.hy.onlinemonitor.view.Activity.BaseActivity;
 import com.hy.onlinemonitor.view.Adapter.EquipmentRecyclerAdapter;
-import com.hy.onlinemonitor.view.EquipmentList;
+import com.hy.onlinemonitor.view.EquipmentListView;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -26,7 +26,7 @@ import butterknife.ButterKnife;
 /**
  * Created by wsw on 2015/7/13.
  */
-public class EquipmentListActivity extends BaseActivity implements EquipmentList {
+public class EquipmentListViewActivity extends BaseActivity implements EquipmentListView {
 
     @Bind(R.id.toolbar)
     Toolbar toolbar;
@@ -81,12 +81,12 @@ public class EquipmentListActivity extends BaseActivity implements EquipmentList
 
     @Override
     public Context getContext() {
-        return EquipmentListActivity.this;
+        return EquipmentListViewActivity.this;
     }
 
     @Override
     public void setupUI() {
-        loadingDialog = GetLoading.getDialog(EquipmentListActivity.this, "加载数据中");
+        loadingDialog = GetLoading.getDialog(EquipmentListViewActivity.this, "加载数据中");
         selectedType = this.getUser().getSelectionType();
         userName = this.getUser().getUserName();
         initPresenter();
@@ -96,7 +96,7 @@ public class EquipmentListActivity extends BaseActivity implements EquipmentList
         rvRecyclerviewData.setHasFixedSize(true);
         mList = new ArrayList<>();
 
-        mAdapter = new EquipmentRecyclerAdapter(selectedType, EquipmentListActivity.this, mList);
+        mAdapter = new EquipmentRecyclerAdapter(selectedType, EquipmentListViewActivity.this, mList);
         rvRecyclerviewData.setAdapter(mAdapter);
         /*下拉加载更多*/
         swipeRefreshLayout.setOnRefreshListener(new PullRefreshLayout.OnRefreshListener() {

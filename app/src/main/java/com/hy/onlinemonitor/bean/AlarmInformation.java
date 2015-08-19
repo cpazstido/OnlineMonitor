@@ -11,6 +11,7 @@ public class AlarmInformation implements Serializable {
     private String infraredImage;
     private String isBlowingEquipment;
     private String alarmInformation;
+    private String videoFileName;
     private String isHandle;
     private int typeAlarm;
 

@@ -9,7 +9,7 @@ import android.widget.AdapterView;
 
 import com.hy.onlinemonitor.R;
 import com.hy.onlinemonitor.view.Activity.Function.AlarmInformationActivity;
-import com.hy.onlinemonitor.view.Activity.Function.EquipmentListActivity;
+import com.hy.onlinemonitor.view.Activity.Function.EquipmentListViewActivity;
 import com.hy.onlinemonitor.view.Activity.Function.MapActivity;
 import com.hy.onlinemonitor.view.Adapter.MainGridAdapter;
 import com.hy.onlinemonitor.view.Component.MyGridView;
@@ -81,7 +81,7 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
             case R.id.main_gv_function: //功能gridiewV
                 switch (position) {
                     case 0: //设备列表
-                        Intent gridEquipmentListIntent = new Intent(MainActivity.this, EquipmentListActivity.class);
+                        Intent gridEquipmentListIntent = new Intent(MainActivity.this, EquipmentListViewActivity.class);
                         Log.e("lok","设备列表");
                         startActivity(gridEquipmentListIntent);
                         break;

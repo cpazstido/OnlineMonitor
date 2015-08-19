@@ -49,7 +49,6 @@ public class UserPresenter extends DefaultSubscriber implements Presenter {
 
     @Override
     public void showViewLoading() {
-
     }
 
     @Override
@@ -66,8 +65,6 @@ public class UserPresenter extends DefaultSubscriber implements Presenter {
     private final class UserInformationSubscriber extends DefaultSubscriber<DomainUser> {
         @Override
         public void onCompleted() {
-            baseActivity.setupUI();
-            baseActivity.initialize();
         }
 
         @Override
@@ -80,9 +77,10 @@ public class UserPresenter extends DefaultSubscriber implements Presenter {
             User user = new UserDataMapper().transform(domainUser);
             baseActivity.setUser(user);
             baseActivity.getUserNameTV().setText(domainUser.getUserName());
+            baseActivity.setupUI();
+            baseActivity.initialize();
         }
     }
-
 
     public void upDataUser(int choiceType, Context mContext) {
         this.mContext = mContext;

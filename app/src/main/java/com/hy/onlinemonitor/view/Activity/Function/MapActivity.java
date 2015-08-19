@@ -1,5 +1,7 @@
 package com.hy.onlinemonitor.view.Activity.Function;
 
+import android.content.Context;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,35 +20,37 @@ import com.baidu.mapapi.map.MarkerOptions;
 import com.baidu.mapapi.map.OverlayOptions;
 import com.baidu.mapapi.model.LatLng;
 import com.hy.onlinemonitor.R;
-import com.hy.onlinemonitor.bean.EquipmentMapAndVideo;
+import com.hy.onlinemonitor.bean.Map;
+import com.hy.onlinemonitor.presenter.MapPresenter;
+import com.hy.onlinemonitor.utile.GetLoading;
 import com.hy.onlinemonitor.view.Activity.BaseActivity;
+import com.hy.onlinemonitor.view.MapListView;
 import com.rey.material.widget.Button;
+import com.rey.material.widget.SnackBar;
 
-import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
  * Created by wsw on 2015/7/13.
  */
-public class MapActivity extends BaseActivity {
+public class MapActivity extends BaseActivity implements MapListView {
     private Toolbar toolbar;
     private MapView mMapView;
     private BaiduMap mBaiduMap;
     private InfoWindow mInfoWindow;
     private BitmapDescriptor bd;
     private MapStatusUpdate msu;
+    private List<Map> mapAndVideoList;
+    private MapPresenter mapPresenter;
+    private AlertDialog loadingDialog;
+
     /**
      * 给地图上添加设备的位置的标记
      */
-    private void initOverlay() {
-        /**
-         * 这里本来应该是访问网络获得数据的....
-         */
-        List<EquipmentMapAndVideo> list = new ArrayList<>();
-        list.add(new EquipmentMapAndVideo(39.963175, 116.400244, "盘梁山", 1));
-        list.add(new EquipmentMapAndVideo(39.933175, 116.400244, "观冰战", 2));
 
-        for (final EquipmentMapAndVideo emv : list) {
+    private void initOverlay() {
+        for (final Map emv : mapAndVideoList) {
             LatLng ll = new LatLng(emv.getLatitude(), emv.getLongitude());
             OverlayOptions oo = new MarkerOptions().position(ll).icon(bd)
                     .zIndex(emv.getSN());
@@ -71,7 +75,7 @@ public class MapActivity extends BaseActivity {
                                 /**
                                  * 这里弹出视频播放窗口
                                  */
-//                                new SnackBar(MapActivity.this,"播放视频"+emv.getSN(),null,null).show();
+                                new SnackBar(MapActivity.this,null).text("播放视频"+emv.getSN()).show();
                                 mBaiduMap.hideInfoWindow();
                             }
                         };
@@ -84,6 +88,17 @@ public class MapActivity extends BaseActivity {
             });
         }
     }
+
+    private void loadMapList() {
+
+        this.mapPresenter.initialize(getUser().getUserName(),getUser().getSelectionType());
+    }
+
+    private void initPresenter() {
+        this.mapPresenter = new MapPresenter(this);
+        this.mapPresenter.setView(this);
+    }
+
     @Override
     protected Toolbar getToolbar() {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -95,6 +110,7 @@ public class MapActivity extends BaseActivity {
     protected void setOwnContentView() {
         SDKInitializer.initialize(getApplicationContext());
         setContentView(R.layout.activity_map);
+        mMapView = (MapView) findViewById(R.id.bmapView);
     }
 
     /**
@@ -141,9 +157,9 @@ public class MapActivity extends BaseActivity {
 
     @Override
     public void setupUI() {
+        loadingDialog = GetLoading.getDialog(MapActivity.this, "加载数据中");
         bd = BitmapDescriptorFactory
                 .fromResource(R.drawable.icon_gcoding);
-        mMapView = (MapView) findViewById(R.id.bmapView);
         mBaiduMap = mMapView.getMap();
         //缩放级别
         msu = MapStatusUpdateFactory.zoomTo(14.0f);
@@ -152,6 +168,34 @@ public class MapActivity extends BaseActivity {
 
     @Override
     public void initialize() {
+        this.initPresenter();
+        this.loadMapList();
+    }
+
+    @Override
+    public void showLoading() {
+        loadingDialog.show();
+    }
+
+    @Override
+    public void hideLoading() {
+        loadingDialog.cancel();
+    }
+
+
+    @Override
+    public void showError(String message) {
+
+    }
+
+    @Override
+    public Context getContext() {
+        return MapActivity.this;
+    }
+
+    @Override
+    public void renderMapList(Collection<Map> maps) {
+        mapAndVideoList = (List<Map>) maps;
         initOverlay();
     }
 }

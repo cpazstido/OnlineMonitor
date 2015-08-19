@@ -18,6 +18,7 @@ package com.hy.data.net;
 
 import com.hy.data.entity.AlarmEntity;
 import com.hy.data.entity.EquipmentEntity;
+import com.hy.data.entity.MapEntity;
 import com.hy.data.entity.UserEntity;
 
 import java.util.List;
@@ -45,5 +46,10 @@ public interface RestApi {
    * 取得报警列表
    */
   Observable<List<AlarmEntity>> alarmEntity(String userName,String title);
+
+  /**
+   * 取得地图列表
+   */
+  Observable<List<MapEntity>> mapEntity(String userName,int choiceType);
 
 }

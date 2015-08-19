@@ -3,13 +3,16 @@ package com.hy.data.net;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.util.Log;
 
 import com.google.gson.Gson;
 import com.hy.data.entity.AlarmEntity;
 import com.hy.data.entity.EquipmentEntity;
+import com.hy.data.entity.MapEntity;
 import com.hy.data.entity.UserEntity;
 import com.hy.data.entity.mapper.AlarmEntityJsonMapper;
 import com.hy.data.entity.mapper.EquipmentAlarmEntityJsonMapper;
+import com.hy.data.entity.mapper.MapEntityJsonMapper;
 import com.hy.data.entity.mapper.UserEntityJsonMapper;
 import com.hy.data.exception.NetworkConnectionException;
 
@@ -28,6 +31,7 @@ public class RestApiImpl implements RestApi {
     private UserEntityJsonMapper userEntityJsonMapper;
     private EquipmentAlarmEntityJsonMapper equipmentAlarmEntityJsonMapper;
     private AlarmEntityJsonMapper alarmEntityJsonMapper;
+    private MapEntityJsonMapper mapEntityJsonMapper;
     /**
      * Constructor of the class
      *
@@ -48,6 +52,14 @@ public class RestApiImpl implements RestApi {
         }
         this.context = context;
         this.equipmentAlarmEntityJsonMapper = equipmentAlarmEntityJsonMapper;
+    }
+
+    public RestApiImpl(Context context, MapEntityJsonMapper mapEntityJsonMapper) {
+        if (context == null || mapEntityJsonMapper == null) {
+            throw new IllegalArgumentException("The constructor parameters cannot be null!!!");
+        }
+        this.context = context;
+        this.mapEntityJsonMapper = mapEntityJsonMapper;
     }
 
     public RestApiImpl(Context context, AlarmEntityJsonMapper alarmEntityJsonMapper) {
@@ -160,13 +172,12 @@ public class RestApiImpl implements RestApi {
             public void call(Subscriber<? super List<AlarmEntity>> subscriber) {
                 String responseAlarmEntities = null;
                 int choiceType = -1;
-                switch (title){
+                switch (title) {
                     case "山火历史报警":
-                        choiceType =0;
+                        choiceType = 0;
                         break;
 
                 }
-
                 responseAlarmEntities = getAlarmEntitiesFromApi(userName, choiceType);
                 if (responseAlarmEntities != null) {
                     subscriber.onNext(alarmEntityJsonMapper.transformEquipmentAlarmEntity(
@@ -190,6 +201,36 @@ public class RestApiImpl implements RestApi {
 
         return gson.toJson(alarmEntities);
     }
+
+
+    @Override
+    public Observable<List<MapEntity>> mapEntity(String userName,int choiceType) {
+        return Observable.create(new Observable.OnSubscribe<List<MapEntity>>() {
+            @Override
+            public void call(Subscriber<? super List<MapEntity>> subscriber) {
+                String responseMapEntities =null;
+                responseMapEntities = getMapEntitiesFromApi(userName, choiceType);
+                if (responseMapEntities != null) {
+                    Log.e("aa",responseMapEntities);
+                    subscriber.onNext(mapEntityJsonMapper.transformMapEntity(
+                            responseMapEntities));
+                    subscriber.onCompleted();
+                } else {
+                    subscriber.onError(new NetworkConnectionException());
+                }
+            }
+        });
+    }
+
+    private String getMapEntitiesFromApi(String userName, int choiceType) {
+        Gson gson = new Gson();
+        List<MapEntity> mapEntities = new ArrayList<>();
+        mapEntities.add(new MapEntity(39.963175, 116.400244, "盘梁山","1",2));
+        mapEntities.add(new MapEntity(39.963175, 116.400244, "西道梁","3",7));
+        mapEntities.add(new MapEntity(39.963175, 116.400244, "确诊果汁","41",6));
+        return gson.toJson(mapEntities);
+    }
+
 
     private boolean isThereInternetConnection() {
         boolean isConnected;

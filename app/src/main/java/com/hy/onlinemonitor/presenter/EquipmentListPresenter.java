@@ -11,7 +11,7 @@ import com.hy.data.repository.EquipmentDataRepository;
 import com.hy.onlinemonitor.UIThread;
 import com.hy.onlinemonitor.bean.EquipmentInformation;
 import com.hy.onlinemonitor.mapper.EquipmentDataMapper;
-import com.hy.onlinemonitor.view.Activity.Function.EquipmentListActivity;
+import com.hy.onlinemonitor.view.Activity.Function.EquipmentListViewActivity;
 
 import java.util.Collection;
 import java.util.List;
@@ -22,7 +22,7 @@ import java.util.List;
 public class EquipmentListPresenter implements Presenter
 {
     private UseCase getEquipmentListUseCase;
-    private EquipmentListActivity equipmentListActivity;
+    private EquipmentListViewActivity equipmentListActivity;
     private EquipmentDataMapper equipmentDataMapper;
     private Context mContext;
     public EquipmentListPresenter(Context mContext) {
@@ -89,7 +89,7 @@ public class EquipmentListPresenter implements Presenter
         this.equipmentListActivity.renderEquipmentList(equipmentInformations);
     }
 
-    public void setView(@Nullable EquipmentListActivity equipmentListActivity) {
+    public void setView(@Nullable EquipmentListViewActivity equipmentListActivity) {
         this.equipmentListActivity = equipmentListActivity;
     }
 

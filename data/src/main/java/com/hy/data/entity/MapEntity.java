@@ -1,30 +1,20 @@
-package com.hy.onlinemonitor.bean;
+package com.hy.data.entity;
 
 /**
- * Created by wsw on 2015/7/18.
+ * Created by 24363 on 2015/8/19.
  */
-public class EquipmentMapAndVideo {
+public class MapEntity {
     private double Longitude;
     private double Latitude;
     private String EquipmentName;
     private String EquipmentId;
     private int SN;
 
-    public EquipmentMapAndVideo() {
-    }
-
-    public EquipmentMapAndVideo(double latitude, double longitude, String equipmentName, int sN) {
+    public MapEntity(double longitude, double latitude, String equipmentName, String equipmentId, int SN) {
         Longitude = longitude;
         Latitude = latitude;
         EquipmentName = equipmentName;
-        SN = sN;
-    }
-
-    public int getSN() {
-        return SN;
-    }
-
-    public void setSN(int SN) {
+        EquipmentId = equipmentId;
         this.SN = SN;
     }
 
@@ -58,5 +48,13 @@ public class EquipmentMapAndVideo {
 
     public void setEquipmentId(String equipmentId) {
         EquipmentId = equipmentId;
+    }
+
+    public int getSN() {
+        return SN;
+    }
+
+    public void setSN(int SN) {
+        this.SN = SN;
     }
 }

@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -23,9 +22,6 @@ import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
 import com.mikepenz.materialdrawer.model.SectionDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 /**
  * Created by wsw on 2015/7/16.
@@ -87,7 +83,7 @@ public abstract class BaseActivity extends AppCompatActivity implements InitView
                                             intent = new Intent(BaseActivity.this, MainActivity.class);
                                             break;
                                       /*  case 3://设备列表
-                                            intent = new Intent(BaseActivity.this, EquipmentListActivity.class);
+                                            intent = new Intent(BaseActivity.this, );
                                             break;
                                         case 4://报警信息
                                             intent = new Intent(BaseActivity.this, AlarmInformationActivity.class);
@@ -139,9 +135,6 @@ public abstract class BaseActivity extends AppCompatActivity implements InitView
     }
 
     private void initUser() {
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy年MM月dd日  HH:mm:ss ");
-        Date data = new Date(System.currentTimeMillis());
-        Log.e("startTime",formatter.format(data));
         userPresenter = new UserPresenter();
         userPresenter.setBaseAcitvity(this);
         userPresenter.getUserInformation(this);
