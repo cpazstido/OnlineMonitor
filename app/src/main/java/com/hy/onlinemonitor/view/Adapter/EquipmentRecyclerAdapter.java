@@ -1,6 +1,7 @@
 package com.hy.onlinemonitor.view.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,6 +9,7 @@ import android.view.ViewGroup;
 
 import com.hy.onlinemonitor.R;
 import com.hy.onlinemonitor.bean.EquipmentInformation;
+import com.hy.onlinemonitor.view.Activity.Function.SingleAlarmInformationActivtity;
 import com.hy.onlinemonitor.view.ViewHolder.EquipmentListViewHolder;
 import com.lid.lib.LabelView;
 
@@ -67,16 +69,16 @@ public class EquipmentRecyclerAdapter extends RecyclerView.Adapter<EquipmentList
             @Override
             public void onClick(View v) {
 //                Intent intent = new Intent(holder.itemView.getContext(), VideoActivity.class);
-
 //                holder.itemView.getContext().startActivity(intent);
             }
         });
         holder.historyBreakAlarm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Intent intent = new Intent(holder.itemView.getContext(), AlarmInformationActivity.class);
-//                intent.putExtra("titleName","外破历史");
-//                holder.itemView.getContext().startActivity(intent);
+                Intent intent = new Intent(holder.itemView.getContext(), SingleAlarmInformationActivtity.class);
+                intent.putExtra("titleName","外破历史");
+                intent.putExtra("equipmentSn", equipmentInformation.getSN());
+                holder.itemView.getContext().startActivity(intent);
             }
         });
         holder.historyFireAlarm.setOnClickListener(new View.OnClickListener() {

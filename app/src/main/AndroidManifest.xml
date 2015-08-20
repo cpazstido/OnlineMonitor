@@ -59,6 +59,10 @@
         <activity android:name=".view.Activity.Function.MapActivity"
             android:launchMode="singleTask"
             />
+        <activity android:name=".view.Activity.Function.SingleAlarmInformationActivtity"
+            android:launchMode="singleTask"
+            />
+
     </application>
 
 </manifest>

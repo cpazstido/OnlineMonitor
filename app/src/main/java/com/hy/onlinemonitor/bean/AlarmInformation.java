@@ -12,28 +12,11 @@ public class AlarmInformation implements Serializable {
     private String isBlowingEquipment;
     private String alarmInformation;
     private String videoFileName;
+    private String alarmSN;
     private String isHandle;
     private int typeAlarm;
 
     public AlarmInformation() {
-    }
-
-    public AlarmInformation(String alarmName, String visibleLightImage, String infraredImage, String isBlowingEquipment, String alarmInformation, String isHandle, int typeAlarm) {
-        this.alarmName = alarmName;
-        this.visibleLightImage = visibleLightImage;
-        this.infraredImage = infraredImage;
-        this.isBlowingEquipment = isBlowingEquipment;
-        this.alarmInformation = alarmInformation;
-        this.isHandle = isHandle;
-        this.typeAlarm = typeAlarm;
-    }
-
-    public int getTypeAlarm() {
-        return typeAlarm;
-    }
-
-    public void setTypeAlarm(int typeAlarm) {
-        this.typeAlarm = typeAlarm;
     }
 
     public String getAlarmName() {
@@ -76,6 +59,22 @@ public class AlarmInformation implements Serializable {
         this.alarmInformation = alarmInformation;
     }
 
+    public String getVideoFileName() {
+        return videoFileName;
+    }
+
+    public void setVideoFileName(String videoFileName) {
+        this.videoFileName = videoFileName;
+    }
+
+    public String getAlarmSN() {
+        return alarmSN;
+    }
+
+    public void setAlarmSN(String alarmSN) {
+        this.alarmSN = alarmSN;
+    }
+
     public String getIsHandle() {
         return isHandle;
     }
@@ -84,15 +83,27 @@ public class AlarmInformation implements Serializable {
         this.isHandle = isHandle;
     }
 
+    public int getTypeAlarm() {
+        return typeAlarm;
+    }
+
+    public void setTypeAlarm(int typeAlarm) {
+        this.typeAlarm = typeAlarm;
+    }
+
     @Override
     public String toString() {
-        return "AlarmInformation{" +
-                "alarmName='" + alarmName + '\'' +
-                ", visibleLightImage='" + visibleLightImage + '\'' +
-                ", infraredImage='" + infraredImage + '\'' +
-                ", isBlowingEquipment='" + isBlowingEquipment + '\'' +
-                ", alarmInformation='" + alarmInformation + '\'' +
-                ", isHandle='" + isHandle + '\'' +
-                '}';
+        final StringBuilder sb = new StringBuilder("AlarmInformation{");
+        sb.append("alarmName='").append(alarmName).append('\'');
+        sb.append(", visibleLightImage='").append(visibleLightImage).append('\'');
+        sb.append(", infraredImage='").append(infraredImage).append('\'');
+        sb.append(", isBlowingEquipment='").append(isBlowingEquipment).append('\'');
+        sb.append(", alarmInformation='").append(alarmInformation).append('\'');
+        sb.append(", videoFileName='").append(videoFileName).append('\'');
+        sb.append(", alarmSN='").append(alarmSN).append('\'');
+        sb.append(", isHandle='").append(isHandle).append('\'');
+        sb.append(", typeAlarm=").append(typeAlarm);
+        sb.append('}');
+        return sb.toString();
     }
 }

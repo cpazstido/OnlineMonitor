@@ -176,7 +176,6 @@ public class RestApiImpl implements RestApi {
                     case "山火历史报警":
                         choiceType = 0;
                         break;
-
                 }
                 responseAlarmEntities = getAlarmEntitiesFromApi(userName, choiceType);
                 if (responseAlarmEntities != null) {
@@ -209,7 +208,9 @@ public class RestApiImpl implements RestApi {
             @Override
             public void call(Subscriber<? super List<MapEntity>> subscriber) {
                 String responseMapEntities =null;
+
                 responseMapEntities = getMapEntitiesFromApi(userName, choiceType);
+
                 if (responseMapEntities != null) {
                     Log.e("aa",responseMapEntities);
                     subscriber.onNext(mapEntityJsonMapper.transformMapEntity(
@@ -223,11 +224,16 @@ public class RestApiImpl implements RestApi {
     }
 
     private String getMapEntitiesFromApi(String userName, int choiceType) {
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         Gson gson = new Gson();
         List<MapEntity> mapEntities = new ArrayList<>();
-        mapEntities.add(new MapEntity(39.963175, 116.400244, "盘梁山","1",2));
-        mapEntities.add(new MapEntity(39.963175, 116.400244, "西道梁","3",7));
-        mapEntities.add(new MapEntity(39.963175, 116.400244, "确诊果汁","41",6));
+        mapEntities.add(new MapEntity(116.400244,39.963175,  "盘梁山","1",2));
+        mapEntities.add(new MapEntity(116.500244,39.933175,  "西道梁","3",7));
+        mapEntities.add(new MapEntity(116.600244,39.943175,  "确诊果汁","41",6));
         return gson.toJson(mapEntities);
     }
 

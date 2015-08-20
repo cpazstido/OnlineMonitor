@@ -90,7 +90,6 @@ public class MapActivity extends BaseActivity implements MapListView {
     }
 
     private void loadMapList() {
-
         this.mapPresenter.initialize(getUser().getUserName(),getUser().getSelectionType());
     }
 
@@ -196,6 +195,6 @@ public class MapActivity extends BaseActivity implements MapListView {
     @Override
     public void renderMapList(Collection<Map> maps) {
         mapAndVideoList = (List<Map>) maps;
-        initOverlay();
+        resetOverlay(null);
     }
 }

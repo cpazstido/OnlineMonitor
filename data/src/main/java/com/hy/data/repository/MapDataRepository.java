@@ -17,7 +17,6 @@ import rx.Observable;
  */
 public class MapDataRepository implements MapRepository {
 
-
     private Context mContext;
     private String userName;
     private int selectedType;
