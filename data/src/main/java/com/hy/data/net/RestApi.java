@@ -16,9 +16,8 @@
 package com.hy.data.net;
 
 
-import com.hy.data.entity.AlarmEntity;
-import com.hy.data.entity.EquipmentEntity;
 import com.hy.data.entity.MapEntity;
+import com.hy.data.entity.EquipmentPageEntity;
 import com.hy.data.entity.UserEntity;
 
 import java.util.List;
@@ -40,12 +39,13 @@ public interface RestApi {
   /**
    * 取得设备列表
    */
-  Observable<List<EquipmentEntity>> equipmentEntity(String userName, int choiceType);
+  Observable<EquipmentPageEntity> equipmentEntity(String userName, int choiceType);
+
 
   /**
    * 根据用户id,以及用户徐那种的标题,取得标题下的报警列表
    */
-  Observable<List<AlarmEntity>> alarmEntity(String userId,String title);
+  Observable<EquipmentPageEntity> alarmEntity(String userId,String title);
 
   /**
    * 根据用户id,以及设备sn取得设备的报警
@@ -53,12 +53,12 @@ public interface RestApi {
    * @param equipmentSn 标示某一个设备
    * @return 返回报警信息列表
    */
-  Observable<List<AlarmEntity>> alarmEntity(String userId,int equipmentSn);
-
+  Observable<EquipmentPageEntity> alarmEntity(String userId,int equipmentSn);
 
   /**
    * 取得地图列表
    */
+
   Observable<List<MapEntity>> mapEntity(String userName,int choiceType);
 
 }

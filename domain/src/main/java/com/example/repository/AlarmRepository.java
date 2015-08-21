@@ -1,8 +1,6 @@
 package com.example.repository;
 
-import com.example.bean.DomainAlarmInformation;
-
-import java.util.List;
+import com.example.bean.DomainAlarmPage;
 
 import rx.Observable;
 
@@ -11,8 +9,8 @@ import rx.Observable;
  */
 public interface AlarmRepository {
 
-    Observable<List<DomainAlarmInformation>> alarmList(String title);
+    Observable<DomainAlarmPage> alarmList(String title);
     
-    Observable<List<DomainAlarmInformation>> alarmList(int equipmentSn);
+    Observable<DomainAlarmPage> alarmList(int equipmentSn);
 
 }

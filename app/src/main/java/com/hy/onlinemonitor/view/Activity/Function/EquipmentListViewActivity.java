@@ -10,14 +10,13 @@ import android.support.v7.widget.Toolbar;
 import com.baoyz.widget.PullRefreshLayout;
 import com.hy.onlinemonitor.R;
 import com.hy.onlinemonitor.bean.EquipmentInformation;
-import com.hy.onlinemonitor.bean.Page;
+import com.hy.onlinemonitor.bean.Pages;
 import com.hy.onlinemonitor.presenter.EquipmentListPresenter;
 import com.hy.onlinemonitor.utile.GetLoading;
 import com.hy.onlinemonitor.view.Activity.BaseActivity;
 import com.hy.onlinemonitor.view.Adapter.EquipmentRecyclerAdapter;
 import com.hy.onlinemonitor.view.EquipmentListView;
 
-import java.util.Collection;
 import java.util.List;
 
 import butterknife.Bind;
@@ -33,7 +32,7 @@ public class EquipmentListViewActivity extends BaseActivity implements Equipment
     PullRefreshLayout swipeRefreshLayout;
     private EquipmentRecyclerAdapter mAdapter;
     private List<EquipmentInformation> mList;
-    private Page page;
+    private Pages page;
     private int selectedType;
     private String userName;
     private EquipmentListPresenter equipmentListPresenter;
@@ -56,9 +55,9 @@ public class EquipmentListViewActivity extends BaseActivity implements Equipment
     }
 
     @Override
-    public void renderEquipmentList(Collection<EquipmentInformation> EquipmentInformationCollection) {
-        if (EquipmentInformationCollection != null) {
-            this.mAdapter.setEquipmentCollection(EquipmentInformationCollection);
+    public void renderEquipmentList(Pages pages) {
+        if (pages != null) {
+            this.mAdapter.setEquipmentCollection(pages.getList());
         }
     }
 
@@ -92,7 +91,7 @@ public class EquipmentListViewActivity extends BaseActivity implements Equipment
         swipeRefreshLayout = (PullRefreshLayout) findViewById(R.id.swipeRefreshLayout);
         rvRecyclerviewData.setLayoutManager(new LinearLayoutManager(this));
         rvRecyclerviewData.setHasFixedSize(true);
-        page = new Page();
+        page = new Pages();
 
         mAdapter = new EquipmentRecyclerAdapter(selectedType, EquipmentListViewActivity.this, page,getUser().getUserId());
         rvRecyclerviewData.setAdapter(mAdapter);

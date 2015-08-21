@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * Created by 24363 on 2015/8/21.
  */
-public class PageEntity {
+public class AlarmPageEntity {
     //当前页数
     private int pageNum;
     //每页显示条数
@@ -13,9 +13,7 @@ public class PageEntity {
     //总记录数
     private int rowCount;
     //结果放在集合里
-    private List list;
-    //页面上显示多少个序号
-    private int pagecode = 5;
+    private List<AlarmEntity> list;
     //总共有多少页
     private int   totalPage;
 
@@ -43,20 +41,12 @@ public class PageEntity {
         this.rowCount = rowCount;
     }
 
-    public List getList() {
+    public List<AlarmEntity> getList() {
         return list;
     }
 
-    public void setList(List list) {
+    public void setList(List<AlarmEntity> list) {
         this.list = list;
-    }
-
-    public int getPagecode() {
-        return pagecode;
-    }
-
-    public void setPagecode(int pagecode) {
-        this.pagecode = pagecode;
     }
 
     public int getTotalPage() {

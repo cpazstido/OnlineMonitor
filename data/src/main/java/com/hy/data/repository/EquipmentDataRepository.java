@@ -2,13 +2,9 @@ package com.hy.data.repository;
 
 import android.content.Context;
 
-import com.example.bean.DomainEquipmentInformation;
+import com.example.bean.DoaminEquipmentPage;
 import com.example.repository.EquipmentRepository;
-import com.hy.data.entity.mapper.EquipmentAlarmEntityDataMapper;
-import com.hy.data.entity.mapper.EquipmentAlarmEntityJsonMapper;
 import com.hy.data.net.RestApiImpl;
-
-import java.util.List;
 
 import rx.Observable;
 
@@ -20,18 +16,18 @@ public class EquipmentDataRepository implements EquipmentRepository {
     private Context mContext;
     private String userName;
     private int selectedType;
-    private EquipmentAlarmEntityDataMapper equipmentAlarmEntityDataMapper;
+    private PageEntityDataMapper pageEntityDataMapper;
 
     public EquipmentDataRepository(Context mContext, String userName, int selectedType) {
         this.mContext = mContext;
         this.userName = userName;
         this.selectedType = selectedType;
-        this.equipmentAlarmEntityDataMapper = new EquipmentAlarmEntityDataMapper();
+        this.pageEntityDataMapper = new PageEntityDataMapper();
     }
 
     @Override
-    public Observable<List<DomainEquipmentInformation>> equipmentList() {
-        RestApiImpl restApi = new RestApiImpl(mContext,new EquipmentAlarmEntityJsonMapper());
-        return restApi.equipmentEntity(userName, selectedType).map(this.equipmentAlarmEntityDataMapper::transform);
+    public Observable<DoaminEquipmentPage> equipmentList() {
+        RestApiImpl restApi = new RestApiImpl(mContext,new PageEntityJsonMapper());
+        return restApi.equipmentEntity(userName, selectedType).map(this.pageEntityDataMapper::transform);
     }
 }

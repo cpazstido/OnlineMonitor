@@ -1,8 +1,6 @@
 package com.example.repository;
 
-import com.example.bean.DomainEquipmentInformation;
-
-import java.util.List;
+import com.example.bean.DoaminEquipmentPage;
 
 import rx.Observable;
 
@@ -11,5 +9,5 @@ import rx.Observable;
  */
 public interface EquipmentRepository {
 
-    Observable<List<DomainEquipmentInformation>> equipmentList();
+    Observable<DoaminEquipmentPage> equipmentList();
 }

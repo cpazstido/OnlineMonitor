@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 
 import com.hy.onlinemonitor.R;
 import com.hy.onlinemonitor.bean.EquipmentInformation;
-import com.hy.onlinemonitor.bean.Page;
+import com.hy.onlinemonitor.bean.Pages;
 import com.hy.onlinemonitor.view.Activity.Function.SingleAlarmInformationActivity;
 import com.hy.onlinemonitor.view.ViewHolder.EquipmentListViewHolder;
 import com.lid.lib.LabelView;
@@ -26,7 +26,7 @@ public class EquipmentRecyclerAdapter extends RecyclerView.Adapter<EquipmentList
     private List<EquipmentInformation> mList;
     private LabelView label;
     private String userId;
-    public EquipmentRecyclerAdapter(int selectionType, Context context, Page page, String userId) {
+    public EquipmentRecyclerAdapter(int selectionType, Context context, Pages page, String userId) {
         this.selectionType = selectionType;
         this.mContext = context;
         this.mList = page.getList();

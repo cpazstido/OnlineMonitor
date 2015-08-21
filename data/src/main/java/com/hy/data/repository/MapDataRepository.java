@@ -5,7 +5,6 @@ import android.content.Context;
 import com.example.bean.DomainMap;
 import com.example.repository.MapRepository;
 import com.hy.data.entity.mapper.MapEntityDataMapper;
-import com.hy.data.entity.mapper.MapEntityJsonMapper;
 import com.hy.data.net.RestApiImpl;
 
 import java.util.List;

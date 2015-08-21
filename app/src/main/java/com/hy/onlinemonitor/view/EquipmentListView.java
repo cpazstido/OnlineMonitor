@@ -1,12 +1,10 @@
 package com.hy.onlinemonitor.view;
 
 
-import com.hy.onlinemonitor.bean.EquipmentInformation;
-
-import java.util.Collection;
+import com.hy.onlinemonitor.bean.Pages;
 
 public interface EquipmentListView extends LoadDataView {
 
-    void renderEquipmentList(Collection<EquipmentInformation> EquipmentInformationCollection);
+    void renderEquipmentList(Pages pages);
 
 }

@@ -3,18 +3,15 @@ package com.hy.onlinemonitor.presenter;
 import android.content.Context;
 import android.support.annotation.Nullable;
 
-import com.example.bean.DomainEquipmentInformation;
+import com.example.bean.DoaminEquipmentPage;
 import com.example.interactor.DefaultSubscriber;
 import com.example.interactor.EquipmentUseCase;
 import com.example.interactor.UseCase;
 import com.hy.data.repository.EquipmentDataRepository;
 import com.hy.onlinemonitor.UIThread;
-import com.hy.onlinemonitor.bean.EquipmentInformation;
-import com.hy.onlinemonitor.mapper.EquipmentDataMapper;
+import com.hy.onlinemonitor.bean.Pages;
+import com.hy.onlinemonitor.mapper.PageDataMapper;
 import com.hy.onlinemonitor.view.Activity.Function.EquipmentListViewActivity;
-
-import java.util.Collection;
-import java.util.List;
 
 /**
  * Created by 24363 on 2015/8/13.
@@ -23,11 +20,11 @@ public class EquipmentListPresenter implements Presenter
 {
     private UseCase getEquipmentListUseCase;
     private EquipmentListViewActivity equipmentListActivity;
-    private EquipmentDataMapper equipmentDataMapper;
+    private PageDataMapper pageDataMapper;
     private Context mContext;
     public EquipmentListPresenter(Context mContext) {
         this.mContext = mContext;
-        this.equipmentDataMapper = new EquipmentDataMapper();
+        this.pageDataMapper = new PageDataMapper();
     }
 
     @Override
@@ -66,7 +63,7 @@ public class EquipmentListPresenter implements Presenter
         this.getEquipmentListUseCase.execute(new EquipmentListSubscriber());
     }
 
-    private class EquipmentListSubscriber extends DefaultSubscriber<List<DomainEquipmentInformation>> {
+    private class EquipmentListSubscriber extends DefaultSubscriber<DoaminEquipmentPage> {
         @Override
         public void onCompleted() {
             EquipmentListPresenter.this.hideViewLoading();
@@ -78,15 +75,14 @@ public class EquipmentListPresenter implements Presenter
         }
 
         @Override
-        public void onNext(List<DomainEquipmentInformation> domainEquipmentInformations) {
-            EquipmentListPresenter.this.showEquipmentAlarmCollectionInView(domainEquipmentInformations);
+        public void onNext(DoaminEquipmentPage doaminEquipmentPage) {
+            EquipmentListPresenter.this.showEquipmentPage(doaminEquipmentPage);
         }
     }
 
-    private void showEquipmentAlarmCollectionInView(List<DomainEquipmentInformation> domainEquipmentInformations) {
-        final Collection<EquipmentInformation> equipmentInformations =
-                this.equipmentDataMapper.transform(domainEquipmentInformations);
-        this.equipmentListActivity.renderEquipmentList(equipmentInformations);
+    private void showEquipmentPage(DoaminEquipmentPage doaminEquipmentPage) {
+        Pages pages = this.pageDataMapper.transform(doaminEquipmentPage);
+        this.equipmentListActivity.renderEquipmentList(pages);
     }
 
     public void setView(@Nullable EquipmentListViewActivity equipmentListActivity) {
