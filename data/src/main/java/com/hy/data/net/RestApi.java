@@ -43,9 +43,18 @@ public interface RestApi {
   Observable<List<EquipmentEntity>> equipmentEntity(String userName, int choiceType);
 
   /**
-   * 取得报警列表
+   * 根据用户id,以及用户徐那种的标题,取得标题下的报警列表
    */
-  Observable<List<AlarmEntity>> alarmEntity(String userName,String title);
+  Observable<List<AlarmEntity>> alarmEntity(String userId,String title);
+
+  /**
+   * 根据用户id,以及设备sn取得设备的报警
+   * @param userId 用户id
+   * @param equipmentSn 标示某一个设备
+   * @return 返回报警信息列表
+   */
+  Observable<List<AlarmEntity>> alarmEntity(String userId,int equipmentSn);
+
 
   /**
    * 取得地图列表

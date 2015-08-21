@@ -11,6 +11,8 @@ import rx.Observable;
  */
 public interface AlarmRepository {
 
-    Observable<List<DomainAlarmInformation>> alarmList();
+    Observable<List<DomainAlarmInformation>> alarmList(String title);
+    
+    Observable<List<DomainAlarmInformation>> alarmList(int equipmentSn);
 
 }

@@ -166,18 +166,14 @@ public class RestApiImpl implements RestApi {
     }
 
     @Override
-    public Observable<List<AlarmEntity>> alarmEntity(String userName, String title) {
+    public Observable<List<AlarmEntity>> alarmEntity(String userId, String title) {
         return Observable.create(new Observable.OnSubscribe<List<AlarmEntity>>() {
             @Override
             public void call(Subscriber<? super List<AlarmEntity>> subscriber) {
                 String responseAlarmEntities = null;
                 int choiceType = -1;
-                switch (title) {
-                    case "山火历史报警":
-                        choiceType = 0;
-                        break;
-                }
-                responseAlarmEntities = getAlarmEntitiesFromApi(userName, choiceType);
+
+                responseAlarmEntities = getAlarmEntitiesFromApi(userId, title);
                 if (responseAlarmEntities != null) {
                     subscriber.onNext(alarmEntityJsonMapper.transformEquipmentAlarmEntity(
                             responseAlarmEntities));
@@ -189,7 +185,38 @@ public class RestApiImpl implements RestApi {
         });
     }
 
-    private String getAlarmEntitiesFromApi(String userName, int choiceType) {
+    @Override
+    public Observable<List<AlarmEntity>> alarmEntity(String userId, int equipmentSn) {
+        return Observable.create(new Observable.OnSubscribe<List<AlarmEntity>>() {
+            @Override
+            public void call(Subscriber<? super List<AlarmEntity>> subscriber) {
+                String responseAlarmEntities = null;
+                responseAlarmEntities = getAlarmEntitiesFromApi(userId, equipmentSn);
+                if (responseAlarmEntities != null) {
+                    subscriber.onNext(alarmEntityJsonMapper.transformEquipmentAlarmEntity(
+                            responseAlarmEntities));
+                    subscriber.onCompleted();
+                } else {
+                    subscriber.onError(new NetworkConnectionException());
+                }
+            }
+        });
+    }
+
+    private String getAlarmEntitiesFromApi(String userName, int equipmentSn) {
+        Gson gson = new Gson();
+        List<AlarmEntity> alarmEntities = new ArrayList<>();
+        alarmEntities.add(new AlarmEntity("分分分", "http://pic.yesky.com/imagelist/07/04/1837387_7424.jpg", "http://www.zgmaimai.cn/uploads/allimg/c120621/1340251A2213Z-2K263.jpg", "是", "紧急的报警", "已处理", 0));
+        alarmEntities.add(new AlarmEntity("水水水", "http://pic.yesky.com/imagelist/07/04/1837387_7424.jpg", "http://www.zgmaimai.cn/uploads/allimg/c120621/1340251A2213Z-2K263.jpg", "是", "紧急的报警", "已处理", 1));
+        alarmEntities.add(new AlarmEntity("哈哈哈", "http://pic.yesky.com/imagelist/07/04/1837387_7424.jpg", "http://www.zgmaimai.cn/uploads/allimg/c120621/1340251A2213Z-2K263.jpg", "是", "紧急的报警", "已处理", 2));
+        alarmEntities.add(new AlarmEntity("多对多", "http://pic.yesky.com/imagelist/07/04/1837387_7424.jpg", "http://www.zgmaimai.cn/uploads/allimg/c120621/1340251A2213Z-2K263.jpg", "是", "紧急的报警", "已处理", 3));
+        alarmEntities.add(new AlarmEntity("啊啊啊", "http://pic.yesky.com/imagelist/07/04/1837387_7424.jpg", "http://www.zgmaimai.cn/uploads/allimg/c120621/1340251A2213Z-2K263.jpg", "是", "紧急的报警", "已处理", 4));
+
+        return gson.toJson(alarmEntities);
+    }
+
+
+    private String getAlarmEntitiesFromApi(String userName, String title) {
         Gson gson = new Gson();
         List<AlarmEntity> alarmEntities = new ArrayList<>();
         alarmEntities.add(new AlarmEntity("分分分", "http://pic.yesky.com/imagelist/07/04/1837387_7424.jpg", "http://www.zgmaimai.cn/uploads/allimg/c120621/1340251A2213Z-2K263.jpg", "是", "紧急的报警", "已处理", 0));

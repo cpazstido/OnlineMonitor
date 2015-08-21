@@ -125,6 +125,7 @@ public class AlarmInformationActivity extends BaseActivity implements LoadDataVi
 //                return null;
 //            }
 //        });
+
         mViewPager.getViewPager().setOffscreenPageLimit(mViewPager.getViewPager().getAdapter().getCount());
         mViewPager.getPagerTitleStrip().setViewPager(mViewPager.getViewPager());
         mViewPager.getViewPager().setCurrentItem(0);

@@ -10,22 +10,19 @@ import android.support.v7.widget.Toolbar;
 import com.baoyz.widget.PullRefreshLayout;
 import com.hy.onlinemonitor.R;
 import com.hy.onlinemonitor.bean.EquipmentInformation;
+import com.hy.onlinemonitor.bean.Page;
 import com.hy.onlinemonitor.presenter.EquipmentListPresenter;
 import com.hy.onlinemonitor.utile.GetLoading;
 import com.hy.onlinemonitor.view.Activity.BaseActivity;
 import com.hy.onlinemonitor.view.Adapter.EquipmentRecyclerAdapter;
 import com.hy.onlinemonitor.view.EquipmentListView;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-/**
- * Created by wsw on 2015/7/13.
- */
 public class EquipmentListViewActivity extends BaseActivity implements EquipmentListView {
 
     @Bind(R.id.toolbar)
@@ -36,6 +33,7 @@ public class EquipmentListViewActivity extends BaseActivity implements Equipment
     PullRefreshLayout swipeRefreshLayout;
     private EquipmentRecyclerAdapter mAdapter;
     private List<EquipmentInformation> mList;
+    private Page page;
     private int selectedType;
     private String userName;
     private EquipmentListPresenter equipmentListPresenter;
@@ -94,19 +92,18 @@ public class EquipmentListViewActivity extends BaseActivity implements Equipment
         swipeRefreshLayout = (PullRefreshLayout) findViewById(R.id.swipeRefreshLayout);
         rvRecyclerviewData.setLayoutManager(new LinearLayoutManager(this));
         rvRecyclerviewData.setHasFixedSize(true);
-        mList = new ArrayList<>();
+        page = new Page();
 
-        mAdapter = new EquipmentRecyclerAdapter(selectedType, EquipmentListViewActivity.this, mList);
+        mAdapter = new EquipmentRecyclerAdapter(selectedType, EquipmentListViewActivity.this, page,getUser().getUserId());
         rvRecyclerviewData.setAdapter(mAdapter);
-        /*下拉加载更多*/
+
+        /*下拉刷新更多*/
         swipeRefreshLayout.setOnRefreshListener(new PullRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 swipeRefreshLayout.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        mList.add(new EquipmentInformation("罗马电力", "摄像机开电", 0, 0, 0));
-                        mAdapter.notifyDataSetChanged();
                         swipeRefreshLayout.setRefreshing(false);
                     }
                 }, 4000);

@@ -9,7 +9,8 @@ import android.view.ViewGroup;
 
 import com.hy.onlinemonitor.R;
 import com.hy.onlinemonitor.bean.EquipmentInformation;
-import com.hy.onlinemonitor.view.Activity.Function.SingleAlarmInformationActivtity;
+import com.hy.onlinemonitor.bean.Page;
+import com.hy.onlinemonitor.view.Activity.Function.SingleAlarmInformationActivity;
 import com.hy.onlinemonitor.view.ViewHolder.EquipmentListViewHolder;
 import com.lid.lib.LabelView;
 
@@ -24,10 +25,12 @@ public class EquipmentRecyclerAdapter extends RecyclerView.Adapter<EquipmentList
     private Context mContext;
     private List<EquipmentInformation> mList;
     private LabelView label;
-    public EquipmentRecyclerAdapter(int selectionType, Context context, List<EquipmentInformation> list) {
+    private String userId;
+    public EquipmentRecyclerAdapter(int selectionType, Context context, Page page, String userId) {
         this.selectionType = selectionType;
         this.mContext = context;
-        this.mList = list;
+        this.mList = page.getList();
+        this.userId = userId;
     }
 
     @Override
@@ -35,8 +38,7 @@ public class EquipmentRecyclerAdapter extends RecyclerView.Adapter<EquipmentList
         View view = LayoutInflater.from(mContext).inflate(R.layout.cardview_equipment, parent,
                 false);
 
-        EquipmentListViewHolder holder = new EquipmentListViewHolder(view, selectionType);
-        return holder;
+        return new EquipmentListViewHolder(view, selectionType);
     }
 
     @Override
@@ -75,54 +77,78 @@ public class EquipmentRecyclerAdapter extends RecyclerView.Adapter<EquipmentList
         holder.historyBreakAlarm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(holder.itemView.getContext(), SingleAlarmInformationActivtity.class);
+                Intent intent = new Intent(holder.itemView.getContext(), SingleAlarmInformationActivity.class);
                 intent.putExtra("titleName","外破历史");
                 intent.putExtra("equipmentSn", equipmentInformation.getSN());
+                intent.putExtra("equipmentName",equipmentInformation.getEquipmnetName());
+                intent.putExtra("userId",userId);
+                intent.putExtra("showType",1);
                 holder.itemView.getContext().startActivity(intent);
             }
         });
+
         holder.historyFireAlarm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Intent intent = new Intent(holder.itemView.getContext(), AlarmInformationActivity.class);
-//                intent.putExtra("titleName","山火历史");
-//                holder.itemView.getContext().startActivity(intent);
+                Intent intent = new Intent(holder.itemView.getContext(), SingleAlarmInformationActivity.class);
+                intent.putExtra("titleName","山火历史");
+                intent.putExtra("equipmentSn", equipmentInformation.getSN());
+                intent.putExtra("equipmentName",equipmentInformation.getEquipmnetName());
+                intent.putExtra("userId",userId);
+                intent.putExtra("showType",1);
+                holder.itemView.getContext().startActivity(intent);
             }
         });
 
         holder.historySensorAlarm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Intent intent = new Intent(holder.itemView.getContext(), AlarmInformationActivity.class);                intent.putExtra("titleName","外破历史");
-//                intent.putExtra("titleName","传感器历史");
-//                holder.itemView.getContext().startActivity(intent);
+                Intent intent = new Intent(holder.itemView.getContext(), SingleAlarmInformationActivity.class);                intent.putExtra("titleName","外破历史");
+                intent.putExtra("titleName","传感器历史");
+                intent.putExtra("equipmentSn", equipmentInformation.getSN());
+                intent.putExtra("equipmentName",equipmentInformation.getEquipmnetName());
+                intent.putExtra("userId",userId);
+                intent.putExtra("showType",0);
+                holder.itemView.getContext().startActivity(intent);
             }
         });
 
         holder.newBreakAlarm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Intent intent = new Intent(holder.itemView.getContext(), AlarmInformationActivity.class);
-//                intent.putExtra("titleName","新外破");
-//                holder.itemView.getContext().startActivity(intent);
+                Intent intent = new Intent(holder.itemView.getContext(), SingleAlarmInformationActivity.class);
+                intent.putExtra("titleName","新外破");
+                intent.putExtra("equipmentSn", equipmentInformation.getSN());
+                intent.putExtra("equipmentName",equipmentInformation.getEquipmnetName());
+                intent.putExtra("userId",userId);
+                intent.putExtra("showType",1);
+                holder.itemView.getContext().startActivity(intent);
             }
         });
 
         holder.newFireAlarm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Intent intent = new Intent(holder.itemView.getContext(), AlarmInformationActivity.class);
-//                intent.putExtra("titleName","新山火");
-//                holder.itemView.getContext().startActivity(intent);
+                Intent intent = new Intent(holder.itemView.getContext(), SingleAlarmInformationActivity.class);
+                intent.putExtra("titleName","新山火");
+                intent.putExtra("equipmentSn", equipmentInformation.getSN());
+                intent.putExtra("equipmentName",equipmentInformation.getEquipmnetName());
+                intent.putExtra("userId",userId);
+                intent.putExtra("showType",1);
+                holder.itemView.getContext().startActivity(intent);
             }
         });
 
         holder.newSensorAlarm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Intent intent = new Intent(holder.itemView.getContext(), AlarmInformationActivity.class);
-//                intent.putExtra("titleName","新传感器");
-//                holder.itemView.getContext().startActivity(intent);
+                Intent intent = new Intent(holder.itemView.getContext(), SingleAlarmInformationActivity.class);
+                intent.putExtra("titleName","新传感器");
+                intent.putExtra("equipmentSn", equipmentInformation.getSN());
+                intent.putExtra("equipmentName",equipmentInformation.getEquipmnetName());
+                intent.putExtra("userId",userId);
+                intent.putExtra("showType",0);
+                holder.itemView.getContext().startActivity(intent);
             }
         });
     }

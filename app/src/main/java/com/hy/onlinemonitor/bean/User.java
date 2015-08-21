@@ -8,25 +8,38 @@ import java.io.Serializable;
 public class User implements Serializable {
     private int selectionType;  //代表选择的类型
     private String userName;
+    private String userId;//唯一标示一个用户的属性
     private int id; //使用xUtile必须拥有的参数
     private String OwnedEquipment;  //原本应该是一个String[]或者List<String>,但是不能保存在数据库中,所以选用"山火,外破"这种方式,在代码中进行分离
 
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("User{");
+        sb.append("selectionType=").append(selectionType);
+        sb.append(", userName='").append(userName).append('\'');
+        sb.append(", userId='").append(userId).append('\'');
+        sb.append(", id=").append(id);
+        sb.append(", OwnedEquipment='").append(OwnedEquipment).append('\'');
+        sb.append('}');
+        return sb.toString();
+    }
+
     public User() {//使用xUtile必须的构造函数
     }
+
 
     public User(String userName, String ownedEquipment) {
         this.userName = userName;
         OwnedEquipment = ownedEquipment;
     }
 
-    @Override
-    public String toString() {
-        return "User{" +
-                "selectionType=" + selectionType +
-                ", userName='" + userName + '\'' +
-                ", id=" + id +
-                ", OwnedEquipment='" + OwnedEquipment + '\'' +
-                '}';
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public String getOwnedEquipment() {

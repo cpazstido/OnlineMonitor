@@ -19,19 +19,28 @@ public class AlarmDataRepository implements AlarmRepository{
 
     private Context mContext;
     private AlarmEntityDataMapper alarmEntityDataMapper;
-    private String userName;
-    private String title;
-    public AlarmDataRepository(Context mContext,String userName, String title) {
-        this.userName= userName;
-        this.title = title;
+    private String userId;
+    public AlarmDataRepository(Context mContext,String userId, String title) {
+        this.userId = userId;
+        this.mContext = mContext;
+        this.alarmEntityDataMapper = new AlarmEntityDataMapper();
+    }
+
+    public AlarmDataRepository(Context mContext,String userId, int equipmentSn) {
+        this.userId = userId;
         this.mContext = mContext;
         this.alarmEntityDataMapper = new AlarmEntityDataMapper();
     }
 
     @Override
-    public Observable<List<DomainAlarmInformation>> alarmList() {
+    public Observable<List<DomainAlarmInformation>> alarmList(String title) {
         RestApiImpl restApi = new RestApiImpl(mContext,new AlarmEntityJsonMapper());
-        return restApi.alarmEntity(userName, title).map(this.alarmEntityDataMapper::transform);
+        return restApi.alarmEntity(userId, title).map(this.alarmEntityDataMapper::transform);
+    }
 
+    @Override
+    public Observable<List<DomainAlarmInformation>> alarmList(int equipmentSn) {
+        RestApiImpl restApi = new RestApiImpl(mContext,new AlarmEntityJsonMapper());
+        return restApi.alarmEntity(userId, equipmentSn).map(this.alarmEntityDataMapper::transform);
     }
 }

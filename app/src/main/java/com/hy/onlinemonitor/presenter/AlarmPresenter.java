@@ -22,26 +22,33 @@ import java.util.List;
 public class AlarmPresenter implements Presenter{
 
     private AlarmListView alarmView;
-    private String title;
-    private String userName;
+    private String userId;
     private Context mContext;
     private AlarmDataMapper alarmDataMapper;
     private UseCase getAlarmListUseCase;
-
     public AlarmPresenter(Context mContext) {
         this.mContext = mContext;
         this.alarmDataMapper = new AlarmDataMapper();
     }
 
-    public void initialize(String title,String userName) {
-        this.title = title;
-        this.userName = userName;
-        this.loadUserList();
+    public void initialize(String title,String userId) {
+        this.userId = userId;
+        this.loadUserList(title);
+    }
+    
+    public void initialize(String userId,int equipmentSn,int page) {
+        this.userId = userId;
+        this.loadUserList(equipmentSn);
+    }
+    
+    private void loadUserList(int equipmentSn) {
+        this.showViewLoading();
+        this.getAlarmList(equipmentSn);
     }
 
-    private void loadUserList() {
+    private void loadUserList(String title) {
         this.showViewLoading();
-        this.getAlarmList();
+        this.getAlarmList(title);
     }
     @Override
     public void showViewLoading() {
@@ -52,9 +59,15 @@ public class AlarmPresenter implements Presenter{
         this.alarmView.hideLoading();
     }
 
-    private void getAlarmList() {
-        AlarmDataRepository alarmDataRepository = new AlarmDataRepository(mContext,userName,title);
-        this.getAlarmListUseCase = new AlarmUseCase(new UIThread(),alarmDataRepository);
+    private void getAlarmList(String title) {
+        AlarmDataRepository alarmDataRepository = new AlarmDataRepository(mContext, userId,title);
+        this.getAlarmListUseCase = new AlarmUseCase(new UIThread(),alarmDataRepository,title);
+        this.getAlarmListUseCase.execute(new AlarmListSubscriber());
+    }
+
+    private void getAlarmList(int equipmentSn) {
+        AlarmDataRepository alarmDataRepository = new AlarmDataRepository(mContext, userId,equipmentSn);
+        this.getAlarmListUseCase = new AlarmUseCase(new UIThread(),alarmDataRepository,equipmentSn);
         this.getAlarmListUseCase.execute(new AlarmListSubscriber());
     }
 
