@@ -2,52 +2,43 @@ package com.hy.onlinemonitor.bean;
 
 import java.io.Serializable;
 
-/**
- * Created by wsw on 2015/8/10.
- */
 public class User implements Serializable {
     private int selectionType;  //代表选择的类型
-    private String userName;
-    private String userId;//唯一标示一个用户的属性
+    private String companyName; //公司名
+    private int userId;//唯一标示一个用户的属性
     private int id; //使用xUtile必须拥有的参数
-    private String OwnedEquipment;  //原本应该是一个String[]或者List<String>,但是不能保存在数据库中,所以选用"山火,外破"这种方式,在代码中进行分离
-
-
-    @Override
-    public String toString() {
-        final StringBuilder sb = new StringBuilder("User{");
-        sb.append("selectionType=").append(selectionType);
-        sb.append(", userName='").append(userName).append('\'');
-        sb.append(", userId='").append(userId).append('\'');
-        sb.append(", id=").append(id);
-        sb.append(", OwnedEquipment='").append(OwnedEquipment).append('\'');
-        sb.append('}');
-        return sb.toString();
-    }
-
+    private String OwnedEquipment;  //原本应该是一个String[]或者List<String>,但是不能保存在数据库中,所以选用"fire&uav&video&break"这种方式,在代码中进行分离
+                                    //fire-->山火 uav-->无人机 video-->普通视频 break-->外破
     public User() {//使用xUtile必须的构造函数
     }
 
-
-    public User(String userName, String ownedEquipment) {
-        this.userName = userName;
+    public User(String companyName, String ownedEquipment) {
+        this.companyName = companyName;
         OwnedEquipment = ownedEquipment;
     }
 
-    public String getUserId() {
+    public int getSelectionType() {
+        return selectionType;
+    }
+
+    public void setSelectionType(int selectionType) {
+        this.selectionType = selectionType;
+    }
+
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
+    }
+
+    public int getUserId() {
         return userId;
     }
 
-    public void setUserId(String userId) {
+    public void setUserId(int userId) {
         this.userId = userId;
-    }
-
-    public String getOwnedEquipment() {
-        return OwnedEquipment;
-    }
-
-    public void setOwnedEquipment(String ownedEquipment) {
-        OwnedEquipment = ownedEquipment;
     }
 
     public int getId() {
@@ -58,22 +49,11 @@ public class User implements Serializable {
         this.id = id;
     }
 
-    public void setSelectionType(int selectionType) {
-        this.selectionType = selectionType;
+    public String getOwnedEquipment() {
+        return OwnedEquipment;
     }
 
-
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    public int getSelectionType() {
-        return selectionType;
-    }
-
-
-    public String getUserName() {
-        return userName;
+    public void setOwnedEquipment(String ownedEquipment) {
+        OwnedEquipment = ownedEquipment;
     }
 }

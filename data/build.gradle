@@ -45,6 +45,6 @@ dependencies {
     compile 'com.google.code.gson:gson:2.3.1'
     compile project(':domain')
     compile files('libs/xUtils-2.6.14.jar')
-    compile 'com.loopj.android:android-async-http:1.4.7'
+    compile 'com.loopj.android:android-async-http:1.4.8'
     compile 'com.github.rey5137:material:1.1.1'
 }

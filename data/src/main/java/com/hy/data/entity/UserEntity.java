@@ -4,27 +4,22 @@ package com.hy.data.entity;
  * User Entity used in the data layer.
  */
 public class UserEntity {
-
+  /**
+   * ownedEquipment : fire&break&video
+   * companyName : 四川汇源光通信有限公司
+   * userId : 27
+   */
+  private String ownedEquipment;
+  private String companyName;
+  private int userId;
   private int selectionType;
-  private String userName;
   private int id;
-  private String OwnedEquipment;  //原本应该是一个String[]或者List<String>,但是不能保存在数据库中,所以选用"山火,外破"这种方式,在代码中进行分离
-
-  public UserEntity() {
-    //empty
-  }
-
-  public UserEntity(String userName, String ownedEquipment) {
-    this.userName = userName;
-    OwnedEquipment = ownedEquipment;
-  }
-
-  public String getOwnedEquipment() {
-    return OwnedEquipment;
-  }
-
   public void setOwnedEquipment(String ownedEquipment) {
-    OwnedEquipment = ownedEquipment;
+    this.ownedEquipment = ownedEquipment;
+  }
+
+  public void setCompanyName(String companyName) {
+    this.companyName = companyName;
   }
 
   public int getId() {
@@ -35,34 +30,27 @@ public class UserEntity {
     this.id = id;
   }
 
-  public void setSelectionType(int selectionType) {
-    this.selectionType = selectionType;
+  public String getOwnedEquipment() {
+    return ownedEquipment;
   }
 
+  public String getCompanyName() {
+    return companyName;
+  }
 
+  public int getUserId() {
+    return userId;
+  }
 
-  public void setUserName(String userName) {
-    this.userName = userName;
+  public void setUserId(int userId) {
+    this.userId = userId;
   }
 
   public int getSelectionType() {
     return selectionType;
   }
 
-
-  public String getUserName() {
-    return userName;
-  }
-
-
-  @Override
-  public String toString() {
-    final StringBuilder sb = new StringBuilder("UserEntity{");
-    sb.append("selectionType=").append(selectionType);
-    sb.append(", userName='").append(userName).append('\'');
-    sb.append(", id=").append(id);
-    sb.append(", OwnedEquipment='").append(OwnedEquipment).append('\'');
-    sb.append('}');
-    return sb.toString();
+  public void setSelectionType(int selectionType) {
+    this.selectionType = selectionType;
   }
 }

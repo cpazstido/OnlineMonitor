@@ -90,7 +90,7 @@ public class MapActivity extends BaseActivity implements MapListView {
     }
 
     private void loadMapList() {
-        this.mapPresenter.initialize(getUser().getUserName(),getUser().getSelectionType());
+        this.mapPresenter.initialize(getUser().getCompanyName(),getUser().getSelectionType());
     }
 
     private void initPresenter() {

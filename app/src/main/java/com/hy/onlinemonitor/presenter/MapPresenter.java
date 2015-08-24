@@ -15,6 +15,8 @@ import com.hy.onlinemonitor.view.Activity.Function.MapActivity;
 import java.util.Collection;
 import java.util.List;
 
+import rx.schedulers.Schedulers;
+
 /**
  * Created by 24363 on 2015/8/19.
  */
@@ -73,7 +75,7 @@ public class MapPresenter implements Presenter{
 
     private void getMapList() {
         MapDataRepository mapDataRepository = new MapDataRepository(mContext,userName,selectedType);
-        this.getMapListUseCase = new MapUseCase(new UIThread(), mapDataRepository);
+        this.getMapListUseCase = new MapUseCase(new UIThread(), Schedulers.io(), mapDataRepository);
         this.getMapListUseCase.execute(new MapListSubscriber());
 
     }

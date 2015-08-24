@@ -14,9 +14,6 @@ import java.util.List;
 import rx.Observable;
 import rx.Subscriber;
 
-/**
- * Created by 24363 on 2015/8/11.
- */
 public class UserCacheImp implements UserCache{
 
     private Context mContext;
@@ -34,7 +31,6 @@ public class UserCacheImp implements UserCache{
                 try {
                     List<UserEntity> users = db.findAll(Selector.from(UserEntity.class));
                     userEntity = users.get(0);
-
                 } catch (DbException e) {
                     e.printStackTrace();
                 }
@@ -95,7 +91,7 @@ public class UserCacheImp implements UserCache{
                     List<UserEntity> users = db.findAll(Selector.from(UserEntity.class));
                     UserEntity  userEntity = users.get(0);
                     String ownedEquipmentStr = userEntity.getOwnedEquipment();
-                    ownedEquipmentList = TransformationUtils.getListFromString(ownedEquipmentStr, ",");
+                    ownedEquipmentList = TransformationUtils.getListFromString(ownedEquipmentStr, "&");
                 } catch (DbException e) {
                     e.printStackTrace();
                 }

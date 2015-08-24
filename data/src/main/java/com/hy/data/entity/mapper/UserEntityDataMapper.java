@@ -39,10 +39,10 @@ public class UserEntityDataMapper {
 
     if (userEntity != null) {
       domainUser = new DomainUser();
-      domainUser.setUserName(userEntity.getUserName());
-      domainUser.setSelectionType(userEntity.getSelectionType());
-      domainUser.setId(userEntity.getId());
+      domainUser.setCompanyName(userEntity.getCompanyName());
+      domainUser.setUserId(userEntity.getUserId());
       domainUser.setOwnedEquipment(userEntity.getOwnedEquipment());
+      domainUser.setSelectionType(userEntity.getSelectionType());
     }
 
     return domainUser;

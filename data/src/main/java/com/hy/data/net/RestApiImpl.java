@@ -5,11 +5,9 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Log;
 
-import com.example.bean.DomainAlarmPage;
 import com.google.gson.Gson;
 import com.hy.data.entity.AlarmEntity;
 import com.hy.data.entity.AlarmPageEntity;
-import com.hy.data.entity.EquipmentEntity;
 import com.hy.data.entity.EquipmentPageEntity;
 import com.hy.data.entity.MapEntity;
 import com.hy.data.entity.UserEntity;
@@ -17,7 +15,14 @@ import com.hy.data.entity.mapper.MapEntityJsonMapper;
 import com.hy.data.entity.mapper.PageEntityJsonMapper;
 import com.hy.data.entity.mapper.UserEntityJsonMapper;
 import com.hy.data.exception.NetworkConnectionException;
+import com.hy.data.utile.SystemRestClient;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
+import com.rey.material.widget.SnackBar;
 
+import org.apache.http.Header;
+
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,7 +38,6 @@ public class RestApiImpl implements RestApi {
     private UserEntityJsonMapper userEntityJsonMapper;
     private MapEntityJsonMapper mapEntityJsonMapper;
     private PageEntityJsonMapper pageEntityJsonMapper;
-    private int getType; // 判断是获得哪个数据的page-->设备列表,报警列表
 
     /**
      * Constructor of the class
@@ -76,100 +80,85 @@ public class RestApiImpl implements RestApi {
     @Override
     public Observable<UserEntity> userEntity(String loginAccount, String loginPwd) {
         return Observable.create(new Observable.OnSubscribe<UserEntity>() {
-                 @Override
-                 public void call(Subscriber<? super UserEntity> subscriber) {
+             @Override
+             public void call(Subscriber<? super UserEntity> subscriber) {
+                 RequestParams params = new RequestParams();
+                 params.put("uername", loginAccount);
+                 params.put("uerpwd", loginPwd);
 
-                     String responseUserEntities = null;
-                     responseUserEntities = getUserEntitiesFromApi();
-                     if (responseUserEntities != null) {
-                         subscriber.onNext(userEntityJsonMapper.transformUserEntity(
-                                 responseUserEntities));
-                         subscriber.onCompleted();
-                     } else {
-                         subscriber.onError(new NetworkConnectionException());
+                 SystemRestClient.get("/login", params, new AsyncHttpResponseHandler() {
+                     @Override
+                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                         Log.i("msg", "登陆成功");
+                         String responseUserEntities = null;
+                         try {
+                             responseUserEntities = new String(responseBody, "UTF-8");
+//                             responseUserEntities = StringTransformation.transform(responseUserEntities);
+                             Log.e("result", responseUserEntities);
+                             subscriber.onNext(userEntityJsonMapper.transformUserEntity(
+                                     responseUserEntities));
+                             subscriber.onCompleted();
+                         } catch (UnsupportedEncodingException e) {
+                             e.printStackTrace();
+                         }
                      }
-                 }
+
+                     @Override
+                     public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                         Log.e("getUserEntitiesFromApi", "onFailure");
+                         new SnackBar(context).text("连接失败,请稍后再试....").show();
+                         subscriber.onError(new NetworkConnectionException("链接失败"));
+                     }
+                 });
              }
+         }
         );
     }
 
     /**
      * 获取设备列表
      *
-     * @param userName
+     * @param userId
      * @param choiceType
      * @return
      */
     @Override
-    public Observable<EquipmentPageEntity> equipmentEntity(String userName, int choiceType) {
+    public Observable<EquipmentPageEntity> equipmentEntity(int userId, int choiceType, int pageNumber) {
         return Observable.create(new Observable.OnSubscribe<EquipmentPageEntity>() {
             @Override
             public void call(Subscriber<? super EquipmentPageEntity> subscriber) {
-                String responseEquipmentEntities = null;
-                responseEquipmentEntities = getEquipmentEntitiesFromApi(userName, choiceType);
-                if (responseEquipmentEntities != null) {
-                    subscriber.onNext(pageEntityJsonMapper.transformEquipmentPageEntity(responseEquipmentEntities));
-                    subscriber.onCompleted();
-                } else {
-                    subscriber.onError(new NetworkConnectionException());
-                }
+
+                RequestParams params = new RequestParams();
+                params.put("userId", userId);
+                params.put("curProject", choiceType);
+                params.put("pageNum", pageNumber);
+
+                SystemRestClient.get("/getEquipmentList", params, new AsyncHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                        String responseEquipmentEntities = null;
+                        try {
+                            responseEquipmentEntities = new String(responseBody, "UTF-8");
+                            subscriber.onNext(pageEntityJsonMapper.transformEquipmentPageEntity(responseEquipmentEntities));
+                            subscriber.onCompleted();
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                        Log.e("getUserEntitiesFromApi", "onFailure");
+                        new SnackBar(context).text("连接失败,请稍后再试....").show();
+                        subscriber.onError(new NetworkConnectionException("链接失败"));
+                    }
+                });
             }
         });
     }
 
-    private String getUserEntitiesFromApi() {
-        //        RequestParams params= new RequestParams();
-//        params.put("loginAccount",loginAccount);
-//        params.put("loginPwd",loginPwd);
-//        SystemRestClient.post("/login", params, new AsyncHttpResponseHandler() {
-//            @Override
-//            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-//                        Log.i("msg", "登陆成功");
-//                        String result = null;
-//                        try {
-//                            result = new String(responseBody, "UTF-8");
-//                        } catch (UnsupportedEncodingException e) {
-//                            e.printStackTrace();
-//                        }
-//            }
-//
-//            @Override
-//            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-//                new SnackBar(context).text("连接失败,请稍后再试....").show();
-//            }
-//        });
-        Gson gson = new Gson();
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        return gson.toJson(new UserEntity("山西电力", "山火,外破,普通视频,无人机"));
-    }
-
-    private String getEquipmentEntitiesFromApi(String userName, int choiceType) {
-        Gson gson = new Gson();
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        EquipmentPageEntity equipmentPageEntity = new EquipmentPageEntity();
-        List<EquipmentEntity> equipmentAlarmEntities = new ArrayList<>();
-        equipmentAlarmEntities.add(new EquipmentEntity("美国超级电力", "摄像机开电", 2, 0, 1, 1));
-        equipmentAlarmEntities.add(new EquipmentEntity("英国核电力", "摄像机正在开电", 3, 1, 0, 1));
-        equipmentAlarmEntities.add(new EquipmentEntity("火星电力", "摄像机断电", 5, 1, 1, 0));
-        equipmentAlarmEntities.add(new EquipmentEntity("什么么贵", "开电中", 2, 2, 0, 1));
-        equipmentPageEntity.setList(equipmentAlarmEntities);
-        equipmentPageEntity.setPageNum(0);
-        equipmentPageEntity.setPageSize(10);
-        equipmentPageEntity.setTotalPage(1);
-        equipmentPageEntity.setRowCount(4);
-        return gson.toJson(equipmentPageEntity);
-    }
-
     @Override
-    public Observable<AlarmPageEntity> alarmEntity(String userId, String title) {
+    public Observable<AlarmPageEntity> alarmEntity(int userId, String title) {
         return Observable.create(new Observable.OnSubscribe<AlarmPageEntity>() {
             @Override
             public void call(Subscriber<? super AlarmPageEntity> subscriber) {
@@ -187,10 +176,10 @@ public class RestApiImpl implements RestApi {
     }
 
     @Override
-    public Observable<DomainAlarmPage> alarmEntity(String userId, int equipmentSn) {
-        return Observable.create(new Observable.OnSubscribe<DomainAlarmPage>() {
+    public Observable<AlarmPageEntity> alarmEntity(int userId, int equipmentSn) {
+        return Observable.create(new Observable.OnSubscribe<AlarmPageEntity>() {
             @Override
-            public void call(Subscriber<? super DomainAlarmPage> subscriber) {
+            public void call(Subscriber<? super AlarmPageEntity> subscriber) {
                 String responseAlarmEntities = null;
                 responseAlarmEntities = getAlarmEntitiesFromApi(userId, equipmentSn);
                 if (responseAlarmEntities != null) {
@@ -203,8 +192,8 @@ public class RestApiImpl implements RestApi {
         });
     }
 
-    private String getAlarmEntitiesFromApi(String userName, int equipmentSn) {
-        EquipmentPageEntity equipmentPageEntity = new EquipmentPageEntity();
+    private String getAlarmEntitiesFromApi(int userName, int equipmentSn) {
+        AlarmPageEntity alarmPageEntity = new AlarmPageEntity();
         Gson gson = new Gson();
         List<AlarmEntity> alarmEntities = new ArrayList<>();
         alarmEntities.add(new AlarmEntity("分分分", "http://pic.yesky.com/imagelist/07/04/1837387_7424.jpg", "http://www.zgmaimai.cn/uploads/allimg/c120621/1340251A2213Z-2K263.jpg", "是", "紧急的报警", "已处理", 0));
@@ -212,17 +201,17 @@ public class RestApiImpl implements RestApi {
         alarmEntities.add(new AlarmEntity("哈哈哈", "http://pic.yesky.com/imagelist/07/04/1837387_7424.jpg", "http://www.zgmaimai.cn/uploads/allimg/c120621/1340251A2213Z-2K263.jpg", "是", "紧急的报警", "已处理", 2));
         alarmEntities.add(new AlarmEntity("多对多", "http://pic.yesky.com/imagelist/07/04/1837387_7424.jpg", "http://www.zgmaimai.cn/uploads/allimg/c120621/1340251A2213Z-2K263.jpg", "是", "紧急的报警", "已处理", 3));
         alarmEntities.add(new AlarmEntity("啊啊啊", "http://pic.yesky.com/imagelist/07/04/1837387_7424.jpg", "http://www.zgmaimai.cn/uploads/allimg/c120621/1340251A2213Z-2K263.jpg", "是", "紧急的报警", "已处理", 4));
-        equipmentPageEntity.setList(alarmEntities);
-        equipmentPageEntity.setPageNum(0);
-        equipmentPageEntity.setPageSize(10);
-        equipmentPageEntity.setTotalPage(1);
-        equipmentPageEntity.setRowCount(5);
-        return gson.toJson(equipmentPageEntity);
+        alarmPageEntity.setList(alarmEntities);
+        alarmPageEntity.setPageNum(0);
+        alarmPageEntity.setPageSize(10);
+        alarmPageEntity.setTotalPage(1);
+        alarmPageEntity.setRowCount(5);
+        return gson.toJson(alarmPageEntity);
     }
 
 
-    private String getAlarmEntitiesFromApi(String userName, String title) {
-        EquipmentPageEntity equipmentPageEntity = new EquipmentPageEntity();
+    private String getAlarmEntitiesFromApi(int userName, String title) {
+        AlarmPageEntity alarmPageEntity = new AlarmPageEntity();
         Gson gson = new Gson();
         List<AlarmEntity> alarmEntities = new ArrayList<>();
         alarmEntities.add(new AlarmEntity("分分分", "http://pic.yesky.com/imagelist/07/04/1837387_7424.jpg", "http://www.zgmaimai.cn/uploads/allimg/c120621/1340251A2213Z-2K263.jpg", "是", "紧急的报警", "已处理", 0));
@@ -230,12 +219,12 @@ public class RestApiImpl implements RestApi {
         alarmEntities.add(new AlarmEntity("哈哈哈", "http://pic.yesky.com/imagelist/07/04/1837387_7424.jpg", "http://www.zgmaimai.cn/uploads/allimg/c120621/1340251A2213Z-2K263.jpg", "是", "紧急的报警", "已处理", 2));
         alarmEntities.add(new AlarmEntity("多对多", "http://pic.yesky.com/imagelist/07/04/1837387_7424.jpg", "http://www.zgmaimai.cn/uploads/allimg/c120621/1340251A2213Z-2K263.jpg", "是", "紧急的报警", "已处理", 3));
         alarmEntities.add(new AlarmEntity("啊啊啊", "http://pic.yesky.com/imagelist/07/04/1837387_7424.jpg", "http://www.zgmaimai.cn/uploads/allimg/c120621/1340251A2213Z-2K263.jpg", "是", "紧急的报警", "已处理", 4));
-        equipmentPageEntity.setList(alarmEntities);
-        equipmentPageEntity.setPageNum(0);
-        equipmentPageEntity.setPageSize(10);
-        equipmentPageEntity.setTotalPage(1);
-        equipmentPageEntity.setRowCount(5);
-        return gson.toJson(equipmentPageEntity);
+        alarmPageEntity.setList(alarmEntities);
+        alarmPageEntity.setPageNum(0);
+        alarmPageEntity.setPageSize(10);
+        alarmPageEntity.setTotalPage(1);
+        alarmPageEntity.setRowCount(5);
+        return gson.toJson(alarmPageEntity);
     }
 
 

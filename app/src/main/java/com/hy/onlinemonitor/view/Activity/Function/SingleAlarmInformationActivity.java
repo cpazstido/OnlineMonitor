@@ -63,7 +63,7 @@ public class SingleAlarmInformationActivity extends AppCompatActivity implements
         Intent intent = getIntent();
         String title = intent.getStringExtra("titleName");
         String subTitle = intent.getStringExtra("equipmentName");
-        String userId = intent.getStringExtra("userId");
+        int userId = intent.getIntExtra("userId",-1);
         equipmentSn = intent.getIntExtra("equipmentSn",-1);
         showType = intent.getIntExtra("showType",-1);
 
@@ -145,7 +145,7 @@ public class SingleAlarmInformationActivity extends AppCompatActivity implements
             this.onAlarmClicked(alarmInformation);
     }
 
-    private void loadAlarmList(String userId,int equipmentSn,int page) {
+    private void loadAlarmList(int userId,int equipmentSn,int page) {
         this.alarmPresenter.initialize(userId, equipmentSn,page);
     }
 }

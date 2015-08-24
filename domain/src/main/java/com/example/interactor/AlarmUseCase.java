@@ -4,6 +4,7 @@ import com.example.executor.PostExecutionThread;
 import com.example.repository.AlarmRepository;
 
 import rx.Observable;
+import rx.Scheduler;
 
 /**
  * Created by 24363 on 2015/8/18.
@@ -14,13 +15,13 @@ public class AlarmUseCase extends UseCase{
     private int equipmentId;
     private String title;
     private int returnType =-1;
-    public AlarmUseCase(PostExecutionThread postExecutionThread, AlarmRepository alarmRepository,String title) {
-        super(postExecutionThread);
+    public AlarmUseCase(PostExecutionThread postExecutionThread, Scheduler subExecutionThread, AlarmRepository alarmRepository,String title) {
+        super(postExecutionThread,subExecutionThread);
         this.returnType = 0;
         this.alarmRepository = alarmRepository;
     }
-    public AlarmUseCase(PostExecutionThread postExecutionThread, AlarmRepository alarmRepository,int equipmentId) {
-        super(postExecutionThread);
+    public AlarmUseCase(PostExecutionThread postExecutionThread,Scheduler subExecutionThread, AlarmRepository alarmRepository,int equipmentId) {
+        super(postExecutionThread,subExecutionThread);
         this.returnType = 1;
         this.alarmRepository = alarmRepository;
     }

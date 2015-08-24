@@ -3,9 +3,9 @@ package com.example.interactor;
 import com.example.executor.PostExecutionThread;
 
 import rx.Observable;
+import rx.Scheduler;
 import rx.Subscriber;
 import rx.Subscription;
-import rx.schedulers.Schedulers;
 import rx.subscriptions.Subscriptions;
 
 /**
@@ -19,11 +19,13 @@ import rx.subscriptions.Subscriptions;
 public abstract class UseCase {
 
   private final PostExecutionThread postExecutionThread;
+  private final Scheduler subExecutionThread;
 
   private Subscription subscription = Subscriptions.empty();
 
-  protected UseCase(PostExecutionThread postExecutionThread) {
+  protected UseCase(PostExecutionThread postExecutionThread ,Scheduler subExecutionThread) {
     this.postExecutionThread = postExecutionThread;
+    this.subExecutionThread = subExecutionThread;
   }
 
   /**
@@ -39,7 +41,8 @@ public abstract class UseCase {
   @SuppressWarnings("unchecked")
   public void execute(Subscriber UseCaseSubscriber) {
     this.subscription = this.buildUseCaseObservable()
-            .subscribeOn(Schedulers.io())
+//            .subscribeOn(Schedulers.io())
+            .subscribeOn(subExecutionThread)
             .observeOn(postExecutionThread.getScheduler())
             .subscribe(UseCaseSubscriber);
   }

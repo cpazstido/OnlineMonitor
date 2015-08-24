@@ -1,6 +1,5 @@
 package com.hy.onlinemonitor.view.Activity;
 
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -20,9 +19,6 @@ import com.rey.material.widget.SnackBar;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-/**
- * Created by wsw on 2015/7/16.
- */
 
 public class LoginActivity extends AppCompatActivity implements JumpView {
 
@@ -94,7 +90,6 @@ public class LoginActivity extends AppCompatActivity implements JumpView {
         Intent intent = new Intent(LoginActivity.this,TypeSelectionActivity.class);
         startActivity(intent);
     }
-
 
     @Override public void onResume() {
         super.onResume();

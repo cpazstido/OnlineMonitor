@@ -21,6 +21,8 @@ import com.rey.material.widget.SnackBar;
 
 import java.util.List;
 
+import rx.schedulers.Schedulers;
+
 /**
  * Created by 24363 on 2015/8/12.
  */
@@ -58,7 +60,7 @@ public class UserPresenter extends DefaultSubscriber implements Presenter {
 
     public void getUserInformation(Context mContext) {
         userRepository = new UserDataRepository(new UserDataStoreFactory(mContext), new UserEntityDataMapper());
-        this.UserInformationCase = new UserInformationUseCase(new UIThread(), userRepository, "getUserInformation");
+        this.UserInformationCase = new UserInformationUseCase(new UIThread(),new UIThread().getScheduler(), userRepository, "getUserInformation");
         this.UserInformationCase.execute(new UserInformationSubscriber());
     }
 
@@ -76,7 +78,7 @@ public class UserPresenter extends DefaultSubscriber implements Presenter {
         public void onNext(DomainUser domainUser) {
             User user = new UserDataMapper().transform(domainUser);
             baseActivity.setUser(user);
-            baseActivity.getUserNameTV().setText(domainUser.getUserName());
+            baseActivity.getUserNameTV().setText(domainUser.getCompanyName());
             baseActivity.setupUI();
             baseActivity.initialize();
         }
@@ -85,7 +87,7 @@ public class UserPresenter extends DefaultSubscriber implements Presenter {
     public void upDataUser(int choiceType, Context mContext) {
         this.mContext = mContext;
         userRepository = new UserDataRepository(new UserDataStoreFactory(mContext));
-        this.UserInformationCase = new UserInformationUseCase(new UIThread(), userRepository, choiceType);
+        this.UserInformationCase = new UserInformationUseCase(new UIThread(),new UIThread().getScheduler(), userRepository, choiceType);
         this.UserInformationCase.execute(new upDataUserSubscriber());
     }
 
@@ -113,7 +115,7 @@ public class UserPresenter extends DefaultSubscriber implements Presenter {
 
     public void getUserEquipmentList(Context mContext) {
         userRepository = new UserDataRepository(new UserDataStoreFactory(mContext));
-        this.UserInformationCase = new UserInformationUseCase(new UIThread(), userRepository);
+        this.UserInformationCase = new UserInformationUseCase(new UIThread(), Schedulers.io(), userRepository);
         this.UserInformationCase.execute(new EquipmentListSubscriber());
     }
 
@@ -130,6 +132,9 @@ public class UserPresenter extends DefaultSubscriber implements Presenter {
 
         @Override
         public void onNext(List<String> ownedEquipmentList) {
+            for(String ll:ownedEquipmentList){
+                Log.e("List<String>",ll);
+            }
             typeSelectionActivity.setOwnedEquipmentList(ownedEquipmentList);
         }
     }

@@ -88,16 +88,16 @@ public class TypeSelectionActivity extends AppCompatActivity implements InitView
     public void initialize() {
         for (String equipment : ownedEquipmentList) {
             switch (equipment) {
-                case "山火":
+                case "fire":
                     fire_card.setVisibility(View.VISIBLE);
                     break;
-                case "外破":
+                case "break":
                     break_card.setVisibility(View.VISIBLE);
                     break;
-                case "普通视频":
+                case "video":
                     normal_card.setVisibility(View.VISIBLE);
                     break;
-                case "无人机":
+                case "uav":
                     auto_card.setVisibility(View.VISIBLE);
                     break;
             }

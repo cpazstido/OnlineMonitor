@@ -15,14 +15,14 @@ public class PageDataMapper {
         if (null == doaminEquipmentPage) {
             throw new IllegalArgumentException("Cannot transform a null value");
         }
+        EquipmentDataMapper equipmentDataMapper = new EquipmentDataMapper();
 
         EquipmentPage equipmentPage = new EquipmentPage();
         equipmentPage.setRowCount(doaminEquipmentPage.getRowCount());
-        equipmentPage.setList(doaminEquipmentPage.getList());
         equipmentPage.setPageNum(doaminEquipmentPage.getPageNum());
         equipmentPage.setPageSize(doaminEquipmentPage.getPageSize());
         equipmentPage.setTotalPage(doaminEquipmentPage.getTotalPage());
-
+        equipmentPage.setList(equipmentDataMapper.transform(doaminEquipmentPage.getList()));
         return equipmentPage;
     }
 }

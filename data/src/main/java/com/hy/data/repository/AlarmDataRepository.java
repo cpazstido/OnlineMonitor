@@ -2,7 +2,6 @@ package com.hy.data.repository;
 
 import android.content.Context;
 
-import com.example.bean.DoaminEquipmentPage;
 import com.example.bean.DomainAlarmPage;
 import com.example.repository.AlarmRepository;
 import com.hy.data.entity.mapper.PageEntityDataMapper;
@@ -18,14 +17,14 @@ public class AlarmDataRepository implements AlarmRepository{
 
     private Context mContext;
     private PageEntityDataMapper pageEntityDataMapper;
-    private String userId;
-    public AlarmDataRepository(Context mContext,String userId, String title) {
+    private int userId;
+    public AlarmDataRepository(Context mContext,int userId, String title) {
         this.userId = userId;
         this.mContext = mContext;
         this.pageEntityDataMapper = new PageEntityDataMapper();
     }
 
-    public AlarmDataRepository(Context mContext,String userId, int equipmentSn) {
+    public AlarmDataRepository(Context mContext,int userId, int equipmentSn) {
         this.userId = userId;
         this.mContext = mContext;
         this.pageEntityDataMapper = new PageEntityDataMapper();

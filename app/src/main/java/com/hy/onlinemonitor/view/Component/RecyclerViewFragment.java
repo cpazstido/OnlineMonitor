@@ -43,7 +43,7 @@ public class RecyclerViewFragment extends Fragment implements AlarmListView {
     private AlarmRecyclerAdapter mAdapter;
     private RecyclerView.Adapter RcAdapter;
     private static List<String> alarmTitles;
-    private static String userName;
+    private static int userId;
     private int showType = 1;
     private Context mContext;
     private AlarmPresenter alarmPresenter;
@@ -57,10 +57,10 @@ public class RecyclerViewFragment extends Fragment implements AlarmListView {
         }
     }
 
-    public static RecyclerViewFragment newInstance(List<String> alarmTitle, int postion, String name) {
+    public static RecyclerViewFragment newInstance(List<String> alarmTitle, int postion, int user) {
         Log.e("newInstance", "newInstance");
         alarmTitles = alarmTitle;
-        userName = name;
+        userId = user;
         Bundle bundle = new Bundle();
         bundle.putInt("postion", postion);
         RecyclerViewFragment fragment = new RecyclerViewFragment();
@@ -94,8 +94,8 @@ public class RecyclerViewFragment extends Fragment implements AlarmListView {
         this.alarmPresenter.setView(this);
     }
 
-    private void loadAlarmList(String title, String userName) {
-        this.alarmPresenter.initialize(title, userName);
+    private void loadAlarmList(String title, int userId) {
+        this.alarmPresenter.initialize(title, userId);
     }
 
     @Override
@@ -156,7 +156,7 @@ public class RecyclerViewFragment extends Fragment implements AlarmListView {
             int postion = bundle.getInt("postion");
             isNoInit = false;
             this.initialize();
-            this.loadAlarmList(alarmTitles.get(postion), userName);
+            this.loadAlarmList(alarmTitles.get(postion), userId);
         }
     }
 }

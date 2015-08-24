@@ -12,9 +12,9 @@ public class PageEntityDataMapper {
     public PageEntityDataMapper() {
     }
 
-    public DoaminEquipmentPage transform (EquipmentPageEntity equipmentPageEntity){
-        DoaminEquipmentPage doaminEquipmentPage = null;
+    public DoaminEquipmentPage transform(EquipmentPageEntity equipmentPageEntity) {
         EquipmentAlarmEntityDataMapper equipmentAlarmEntityDataMapper = new EquipmentAlarmEntityDataMapper();
+        DoaminEquipmentPage doaminEquipmentPage = null;
         if (null != equipmentPageEntity) {
             doaminEquipmentPage = new DoaminEquipmentPage();
             doaminEquipmentPage.setTotalPage(equipmentPageEntity.getTotalPage());
@@ -26,10 +26,10 @@ public class PageEntityDataMapper {
         return doaminEquipmentPage;
     }
 
-    public DomainAlarmPage transform (AlarmPageEntity alarmPageEntity){
-        DomainAlarmPage domainAlarmPage =null;
+    public DomainAlarmPage transform(AlarmPageEntity alarmPageEntity) {
+        DomainAlarmPage domainAlarmPage = null;
         AlarmEntityDataMapper alarmEntityDataMapper = new AlarmEntityDataMapper();
-        if(null != alarmPageEntity){
+        if (null != alarmPageEntity) {
             domainAlarmPage = new DomainAlarmPage();
             domainAlarmPage.setTotalPage(alarmPageEntity.getTotalPage());
             domainAlarmPage.setPageSize(alarmPageEntity.getPageSize());

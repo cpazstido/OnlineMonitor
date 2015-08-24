@@ -39,7 +39,6 @@ public class CloudUserDataStore implements UserDataStore {
   public Observable<UserEntity> userEntity(final String loginAccount,final String loginPwd) {
     return this.restApi.userEntity(loginAccount,loginPwd)
             .doOnNext(saveToCacheAction);
-
   }
 
 

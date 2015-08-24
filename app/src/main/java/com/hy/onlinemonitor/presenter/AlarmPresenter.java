@@ -16,13 +16,15 @@ import com.hy.onlinemonitor.view.AlarmListView;
 import java.util.Collection;
 import java.util.List;
 
+import rx.schedulers.Schedulers;
+
 /**
  * Created by 24363 on 2015/8/17.
  */
 public class AlarmPresenter implements Presenter{
 
     private AlarmListView alarmView;
-    private String userId;
+    private int userId;
     private Context mContext;
     private AlarmDataMapper alarmDataMapper;
     private UseCase getAlarmListUseCase;
@@ -31,12 +33,12 @@ public class AlarmPresenter implements Presenter{
         this.alarmDataMapper = new AlarmDataMapper();
     }
 
-    public void initialize(String title,String userId) {
+    public void initialize(String title,int userId) {
         this.userId = userId;
         this.loadUserList(title);
     }
     
-    public void initialize(String userId,int equipmentSn,int page) {
+    public void initialize(int userId,int equipmentSn,int page) {
         this.userId = userId;
         this.loadUserList(equipmentSn);
     }
@@ -61,13 +63,13 @@ public class AlarmPresenter implements Presenter{
 
     private void getAlarmList(String title) {
         AlarmDataRepository alarmDataRepository = new AlarmDataRepository(mContext, userId,title);
-        this.getAlarmListUseCase = new AlarmUseCase(new UIThread(),alarmDataRepository,title);
+        this.getAlarmListUseCase = new AlarmUseCase(new UIThread(), Schedulers.io(),alarmDataRepository,title);
         this.getAlarmListUseCase.execute(new AlarmListSubscriber());
     }
 
     private void getAlarmList(int equipmentSn) {
         AlarmDataRepository alarmDataRepository = new AlarmDataRepository(mContext, userId,equipmentSn);
-        this.getAlarmListUseCase = new AlarmUseCase(new UIThread(),alarmDataRepository,equipmentSn);
+        this.getAlarmListUseCase = new AlarmUseCase(new UIThread(),Schedulers.io(),alarmDataRepository,equipmentSn);
         this.getAlarmListUseCase.execute(new AlarmListSubscriber());
     }
 

@@ -7,6 +7,7 @@ import com.hy.data.entity.MapEntity;
 import com.hy.data.entity.UserEntity;
 
 import java.lang.reflect.Type;
+import java.util.List;
 
 /**
  * Created by 24363 on 2015/8/21.
@@ -26,8 +27,8 @@ public class MapEntityJsonMapper {
      * @return {@link UserEntity}.
      */
 
-    public MapEntity transformMapEntity(String mapJsonResponse) throws JsonSyntaxException {
-        Type mapEntityType = new TypeToken<MapEntity>() {}.getType();
+    public List<MapEntity> transformMapEntity(String mapJsonResponse) throws JsonSyntaxException {
+        Type mapEntityType = new TypeToken<List<MapEntity>>() {}.getType();
         return this.gson.fromJson(mapJsonResponse, mapEntityType);
     }
 

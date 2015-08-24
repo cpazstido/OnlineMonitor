@@ -40,10 +40,10 @@ public class UserDataMapper {
     }
     User user = new User();
 
-    user.setSelectionType(domainUser.getSelectionType());
-    user.setUserName(domainUser.getUserName());
+    user.setUserId(domainUser.getUserId());
+    user.setCompanyName(domainUser.getCompanyName());
     user.setOwnedEquipment(domainUser.getOwnedEquipment());
-
+    user.setSelectionType(domainUser.getSelectionType());
     return user;
   }
 

@@ -5,20 +5,13 @@ package com.example.bean;
  */
 public class DomainUser {
 
-    private int selectionType;
-    private String userName;
-    private int id;
+    private String companyName;
+    private int userId;
     private String OwnedEquipment;
+    private int selectionType;
+    private int id;
     public DomainUser() {
         //empty
-    }
-
-    public String getOwnedEquipment() {
-        return OwnedEquipment;
-    }
-
-    public void setOwnedEquipment(String ownedEquipment) {
-        OwnedEquipment = ownedEquipment;
     }
 
     public int getId() {
@@ -29,22 +22,35 @@ public class DomainUser {
         this.id = id;
     }
 
-    public void setSelectionType(int selectionType) {
-        this.selectionType = selectionType;
+    public String getOwnedEquipment() {
+        return OwnedEquipment;
     }
 
+    public void setOwnedEquipment(String ownedEquipment) {
+        OwnedEquipment = ownedEquipment;
+    }
 
+    public int getUserId() {
+        return userId;
+    }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
+    }
+
+    public String getCompanyName() {
+        return companyName;
     }
 
     public int getSelectionType() {
         return selectionType;
     }
 
-
-    public String getUserName() {
-        return userName;
+    public void setSelectionType(int selectionType) {
+        this.selectionType = selectionType;
     }
 }

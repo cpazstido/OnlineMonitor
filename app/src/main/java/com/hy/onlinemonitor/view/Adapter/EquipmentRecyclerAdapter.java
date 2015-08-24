@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 
 import com.hy.onlinemonitor.R;
 import com.hy.onlinemonitor.bean.EquipmentInformation;
-import com.hy.onlinemonitor.bean.Pages;
+import com.hy.onlinemonitor.bean.EquipmentPage;
 import com.hy.onlinemonitor.view.Activity.Function.SingleAlarmInformationActivity;
 import com.hy.onlinemonitor.view.ViewHolder.EquipmentListViewHolder;
 import com.lid.lib.LabelView;
@@ -25,11 +25,11 @@ public class EquipmentRecyclerAdapter extends RecyclerView.Adapter<EquipmentList
     private Context mContext;
     private List<EquipmentInformation> mList;
     private LabelView label;
-    private String userId;
-    public EquipmentRecyclerAdapter(int selectionType, Context context, Pages page, String userId) {
+    private int userId;
+    public EquipmentRecyclerAdapter(int selectionType, Context context, EquipmentPage equipmentPage, int userId) {
         this.selectionType = selectionType;
         this.mContext = context;
-        this.mList = page.getList();
+        this.mList = equipmentPage.getList();
         this.userId = userId;
     }
 
@@ -160,7 +160,9 @@ public class EquipmentRecyclerAdapter extends RecyclerView.Adapter<EquipmentList
 
     public void setEquipmentCollection(Collection<EquipmentInformation> equipmentInformationCollection){
         this.validateEquipmentCollection(equipmentInformationCollection);
-        this.mList = (List<EquipmentInformation>) equipmentInformationCollection;
+        for(EquipmentInformation EquipmentInformation :(List<EquipmentInformation>)equipmentInformationCollection){
+            mList.add(EquipmentInformation);
+        }
         this.notifyDataSetChanged();
     }
 

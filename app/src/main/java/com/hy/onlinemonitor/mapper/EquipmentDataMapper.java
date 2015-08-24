@@ -30,7 +30,6 @@ public class EquipmentDataMapper {
     }
 
     public List<EquipmentInformation> transform(Collection<DomainEquipmentInformation> domainEquipmentInformations){
-
         List<EquipmentInformation> equipmentInformations = new ArrayList<>();
         EquipmentInformation equipmentInformation;
         for (DomainEquipmentInformation domainEquipmentInformation : domainEquipmentInformations) {

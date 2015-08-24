@@ -1,16 +1,21 @@
 package com.hy.onlinemonitor.bean;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by 24363 on 2015/8/21.
  */
 public class EquipmentPage {
-    private int pageNum;
-    private int pageSize=10;
-    private int rowCount;
-    private List<EquipmentInformation> list;
-    private int totalPage;
+    private int pageNum;                        //当前页数
+    private int pageSize=10;                    //每页显示的数量
+    private int rowCount;                       //总数目
+    private List<EquipmentInformation> list;    //数据
+    private int totalPage;                      //总页数
+
+    public EquipmentPage() {
+        this.list = new ArrayList<>();
+    }
 
     public int getPageNum() {
         return pageNum;

@@ -48,7 +48,7 @@ dependencies {
         transitive = true
     }
     //网络请求的库
-    compile 'com.loopj.android:android-async-http:1.4.7'
+    compile 'com.loopj.android:android-async-http:1.4.8'
     //Gson
     compile 'com.google.code.gson:gson:2.3.1'
     //百度地图
