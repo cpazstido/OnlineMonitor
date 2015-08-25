@@ -16,9 +16,6 @@ import com.hy.onlinemonitor.view.Activity.Function.EquipmentListViewActivity;
 
 import rx.android.schedulers.AndroidSchedulers;
 
-/**
- * Created by 24363 on 2015/8/13.
- */
 public class EquipmentListPresenter implements Presenter
 {
     private UseCase getEquipmentListUseCase;
