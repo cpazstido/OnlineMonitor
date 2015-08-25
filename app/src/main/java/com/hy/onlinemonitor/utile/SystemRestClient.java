@@ -6,9 +6,6 @@ import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
-/**
- * Created by wsw on 2015/7/17.
- */
 public class SystemRestClient {
 
     private static final String BASE_URL = "http://171.221.207.58:8080/eMonitorApp/api";

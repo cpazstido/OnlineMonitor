@@ -15,9 +15,6 @@ import android.widget.TextView;
 import com.hy.onlinemonitor.R;
 
 
-/**
- * Created by wsw on 2015/7/22.
- */
 public class GetLoading {
     public static AlertDialog getDialog(Activity activity,String title){
         Log.i("Dialog","show");
