@@ -206,6 +206,7 @@ public class RestApiImpl implements RestApi {
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                         try {
                             String responseAlarmEntities = new String(responseBody, "UTF-8");
+                            Log.e("alarmPageEntity",responseAlarmEntities);
                             subscriber.onNext(pageEntityJsonMapper.transformAlarmPageEntity(responseAlarmEntities));
                             subscriber.onCompleted();
                         } catch (UnsupportedEncodingException e) {

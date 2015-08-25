@@ -154,13 +154,36 @@ public class RecyclerViewFragment extends Fragment implements AlarmListView {
             int postion = bundle.getInt("postion");
             isNoInit = false;
             this.initialize();
+            String queryAlarmType = null;
+            int status = -1;
+            switch (alarmTitles.get(postion)) {
+                case "山火新报警":
+                    queryAlarmType="fire";
+                    status = 0;
+                    break;
+                case "山火历史报警":
+                    queryAlarmType="fire";
+                    status = 1;
+                    break;
+                case "传感器新报警":
+                    queryAlarmType="sensor";
+                    status = 0;
+                    break;
+                case"传感器历史报警":
+                    queryAlarmType="sensor";
+                    status = 1;
+                    break;
+                case "外破新报警":
+                    queryAlarmType="break";
+                    status = 0;
+                    break;
+                case"外破历史报警":
+                    queryAlarmType="break";
+                    status = 1;
+                    break;
+            }
 
-
-
-
-
-
-            this.loadAlarmList(1,alarmTitles.get(postion),1, 1);
+            this.loadAlarmList(userId, queryAlarmType,status,1);
         }
     }
 }
