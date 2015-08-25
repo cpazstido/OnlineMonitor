@@ -6,25 +6,68 @@ import java.io.Serializable;
  * Created by wsw on 2015/7/15.
  */
 public class AlarmInformation implements Serializable {
-    private String alarmName;
+    private int alarmSn;
+    private int deviceSn;
+    private String poleName;
+    private String deviceId;
+    private String dvrID;
+    private String alarmInformation;
     private String visibleLightImage;
     private String infraredImage;
+    private String breakImage;
     private String isBlowingEquipment;
-    private String alarmInformation;
     private String videoFileName;
-    private String alarmSN;
-    private String isHandle;
-    private int typeAlarm;
+    private String CollectionTime;
 
     public AlarmInformation() {
     }
 
-    public String getAlarmName() {
-        return alarmName;
+    public int getAlarmSn() {
+        return alarmSn;
     }
 
-    public void setAlarmName(String alarmName) {
-        this.alarmName = alarmName;
+    public void setAlarmSn(int alarmSn) {
+        this.alarmSn = alarmSn;
+    }
+
+    public int getDeviceSn() {
+        return deviceSn;
+    }
+
+    public void setDeviceSn(int deviceSn) {
+        this.deviceSn = deviceSn;
+    }
+
+    public String getPoleName() {
+        return poleName;
+    }
+
+    public void setPoleName(String poleName) {
+        this.poleName = poleName;
+    }
+
+    public String getDeviceId() {
+        return deviceId;
+    }
+
+    public void setDeviceId(String deviceId) {
+        this.deviceId = deviceId;
+    }
+
+    public String getDvrID() {
+        return dvrID;
+    }
+
+    public void setDvrID(String dvrID) {
+        this.dvrID = dvrID;
+    }
+
+    public String getAlarmInformation() {
+        return alarmInformation;
+    }
+
+    public void setAlarmInformation(String alarmInformation) {
+        this.alarmInformation = alarmInformation;
     }
 
     public String getVisibleLightImage() {
@@ -43,20 +86,20 @@ public class AlarmInformation implements Serializable {
         this.infraredImage = infraredImage;
     }
 
+    public String getBreakImage() {
+        return breakImage;
+    }
+
+    public void setBreakImage(String breakImage) {
+        this.breakImage = breakImage;
+    }
+
     public String getIsBlowingEquipment() {
         return isBlowingEquipment;
     }
 
     public void setIsBlowingEquipment(String isBlowingEquipment) {
         this.isBlowingEquipment = isBlowingEquipment;
-    }
-
-    public String getAlarmInformation() {
-        return alarmInformation;
-    }
-
-    public void setAlarmInformation(String alarmInformation) {
-        this.alarmInformation = alarmInformation;
     }
 
     public String getVideoFileName() {
@@ -67,43 +110,11 @@ public class AlarmInformation implements Serializable {
         this.videoFileName = videoFileName;
     }
 
-    public String getAlarmSN() {
-        return alarmSN;
+    public String getCollectionTime() {
+        return CollectionTime;
     }
 
-    public void setAlarmSN(String alarmSN) {
-        this.alarmSN = alarmSN;
-    }
-
-    public String getIsHandle() {
-        return isHandle;
-    }
-
-    public void setIsHandle(String isHandle) {
-        this.isHandle = isHandle;
-    }
-
-    public int getTypeAlarm() {
-        return typeAlarm;
-    }
-
-    public void setTypeAlarm(int typeAlarm) {
-        this.typeAlarm = typeAlarm;
-    }
-
-    @Override
-    public String toString() {
-        final StringBuilder sb = new StringBuilder("AlarmInformation{");
-        sb.append("alarmName='").append(alarmName).append('\'');
-        sb.append(", visibleLightImage='").append(visibleLightImage).append('\'');
-        sb.append(", infraredImage='").append(infraredImage).append('\'');
-        sb.append(", isBlowingEquipment='").append(isBlowingEquipment).append('\'');
-        sb.append(", alarmInformation='").append(alarmInformation).append('\'');
-        sb.append(", videoFileName='").append(videoFileName).append('\'');
-        sb.append(", alarmSN='").append(alarmSN).append('\'');
-        sb.append(", isHandle='").append(isHandle).append('\'');
-        sb.append(", typeAlarm=").append(typeAlarm);
-        sb.append('}');
-        return sb.toString();
+    public void setCollectionTime(String collectionTime) {
+        CollectionTime = collectionTime;
     }
 }

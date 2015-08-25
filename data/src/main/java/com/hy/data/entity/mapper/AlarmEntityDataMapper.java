@@ -19,13 +19,18 @@ public class AlarmEntityDataMapper {
 
         if (alarmEntity != null) {
             domainAlarmInformation = new DomainAlarmInformation();
+            domainAlarmInformation.setAlarmSn(alarmEntity.getAlarmSn());
+            domainAlarmInformation.setDeviceSn(alarmEntity.getDeviceSn());
+            domainAlarmInformation.setPoleName(alarmEntity.getPoleName());
+            domainAlarmInformation.setDeviceId(alarmEntity.getDeviceId());
+            domainAlarmInformation.setDvrID(alarmEntity.getDvrID());
             domainAlarmInformation.setAlarmInformation(alarmEntity.getAlarmInformation());
-            domainAlarmInformation.setAlarmName(alarmEntity.getAlarmName());
-            domainAlarmInformation.setInfraredImage(alarmEntity.getInfraredImage());
-            domainAlarmInformation.setIsBlowingEquipment(alarmEntity.getIsBlowingEquipment());
-            domainAlarmInformation.setIsHandle(alarmEntity.getIsHandle());
-            domainAlarmInformation.setTypeAlarm(alarmEntity.getTypeAlarm());
             domainAlarmInformation.setVisibleLightImage(alarmEntity.getVisibleLightImage());
+            domainAlarmInformation.setInfraredImage(alarmEntity.getInfraredImage());
+            domainAlarmInformation.setBreakImage(alarmEntity.getBreakImage());
+            domainAlarmInformation.setIsBlowingEquipment(alarmEntity.getIsBlowingEquipment());
+            domainAlarmInformation.setVideoFileName(alarmEntity.getVideoFileName());
+            domainAlarmInformation.setCollectionTime(alarmEntity.getCollectionTime());
         }
 
         return domainAlarmInformation;
@@ -40,7 +45,6 @@ public class AlarmEntityDataMapper {
                 domainAlarmInformations.add(domainAlarmInformation);
             }
         }
-
         return domainAlarmInformations;
     }
 

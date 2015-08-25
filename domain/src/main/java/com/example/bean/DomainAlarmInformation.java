@@ -4,23 +4,68 @@ package com.example.bean;
  * Created by 24363 on 2015/8/18.
  */
 public class DomainAlarmInformation {
-    private String alarmName;
+    private int alarmSn;
+    private int deviceSn;
+    private String poleName;
+    private String deviceId;
+    private String dvrID;
+    private String alarmInformation;
     private String visibleLightImage;
     private String infraredImage;
+    private String breakImage;
     private String isBlowingEquipment;
-    private String alarmInformation;
-    private String isHandle;
-    private int typeAlarm;
+    private String videoFileName;
+    private String CollectionTime;
 
     public DomainAlarmInformation() {
     }
 
-    public String getAlarmName() {
-        return alarmName;
+    public int getAlarmSn() {
+        return alarmSn;
     }
 
-    public void setAlarmName(String alarmName) {
-        this.alarmName = alarmName;
+    public void setAlarmSn(int alarmSn) {
+        this.alarmSn = alarmSn;
+    }
+
+    public int getDeviceSn() {
+        return deviceSn;
+    }
+
+    public void setDeviceSn(int deviceSn) {
+        this.deviceSn = deviceSn;
+    }
+
+    public String getPoleName() {
+        return poleName;
+    }
+
+    public void setPoleName(String poleName) {
+        this.poleName = poleName;
+    }
+
+    public String getDeviceId() {
+        return deviceId;
+    }
+
+    public void setDeviceId(String deviceId) {
+        this.deviceId = deviceId;
+    }
+
+    public String getDvrID() {
+        return dvrID;
+    }
+
+    public void setDvrID(String dvrID) {
+        this.dvrID = dvrID;
+    }
+
+    public String getAlarmInformation() {
+        return alarmInformation;
+    }
+
+    public void setAlarmInformation(String alarmInformation) {
+        this.alarmInformation = alarmInformation;
     }
 
     public String getVisibleLightImage() {
@@ -39,6 +84,14 @@ public class DomainAlarmInformation {
         this.infraredImage = infraredImage;
     }
 
+    public String getBreakImage() {
+        return breakImage;
+    }
+
+    public void setBreakImage(String breakImage) {
+        this.breakImage = breakImage;
+    }
+
     public String getIsBlowingEquipment() {
         return isBlowingEquipment;
     }
@@ -47,27 +100,19 @@ public class DomainAlarmInformation {
         this.isBlowingEquipment = isBlowingEquipment;
     }
 
-    public String getAlarmInformation() {
-        return alarmInformation;
+    public String getVideoFileName() {
+        return videoFileName;
     }
 
-    public void setAlarmInformation(String alarmInformation) {
-        this.alarmInformation = alarmInformation;
+    public void setVideoFileName(String videoFileName) {
+        this.videoFileName = videoFileName;
     }
 
-    public String getIsHandle() {
-        return isHandle;
+    public String getCollectionTime() {
+        return CollectionTime;
     }
 
-    public void setIsHandle(String isHandle) {
-        this.isHandle = isHandle;
-    }
-
-    public int getTypeAlarm() {
-        return typeAlarm;
-    }
-
-    public void setTypeAlarm(int typeAlarm) {
-        this.typeAlarm = typeAlarm;
+    public void setCollectionTime(String collectionTime) {
+        CollectionTime = collectionTime;
     }
 }

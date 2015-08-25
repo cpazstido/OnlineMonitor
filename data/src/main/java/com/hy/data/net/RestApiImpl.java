@@ -161,20 +161,45 @@ public class RestApiImpl implements RestApi {
         });
     }
 
+    /**
+     * 查看用户的所有报警
+     * @param userId 唯一标示用户
+     * @param queryAlarmType 查看的报警类型
+     * @param status 查看的报警类型的状态(历史,或者新报警)
+     * @param pageNumber 第几页的数据
+     * @return 返回AlarmPage的对象
+     */
     @Override
     public Observable<AlarmPageEntity> alarmEntity(int userId,String queryAlarmType,int status,int pageNumber) {
         return Observable.create(new Observable.OnSubscribe<AlarmPageEntity>() {
             @Override
             public void call(Subscriber<? super AlarmPageEntity> subscriber) {
-                String responseAlarmEntities = null;
-                int choiceType = -1;
-                responseAlarmEntities = getAlarmEntitiesFromApi(userId, queryAlarmType);
-                if (responseAlarmEntities != null) {
-                    subscriber.onNext(pageEntityJsonMapper.transformAlarmPageEntity(responseAlarmEntities));
-                    subscriber.onCompleted();
-                } else {
-                    subscriber.onError(new NetworkConnectionException());
-                }
+                RequestParams params = new RequestParams();
+                params.put("userId", userId);
+                params.put("queryAlarmType", queryAlarmType);
+                params.put("status",status);
+                params.put("pageNum", pageNumber);
+
+                SystemRestClient.post("/getAlarmInfrom", params, new AsyncHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                        try {
+                            String responseAlarmEntities = new String(responseBody, "UTF-8");
+                            Log.e("alarmPageEntity-getAll",responseAlarmEntities);
+                            subscriber.onNext(pageEntityJsonMapper.transformAlarmPageEntity(responseAlarmEntities));
+                            subscriber.onCompleted();
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                        Log.e("getUserEntitiesFromApi", "onFailure");
+                        new SnackBar(context).text("连接失败,请稍后再试....").show();
+                        subscriber.onError(new NetworkConnectionException("链接失败"));
+                    }
+                });
             }
         });
     }
@@ -193,7 +218,6 @@ public class RestApiImpl implements RestApi {
         return Observable.create(new Observable.OnSubscribe<AlarmPageEntity>() {
             @Override
             public void call(Subscriber<? super AlarmPageEntity> subscriber) {
-
                 RequestParams params = new RequestParams();
                 params.put("userId", userId);
                 params.put("queryAlarmType", queryAlarmType);
@@ -206,7 +230,7 @@ public class RestApiImpl implements RestApi {
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                         try {
                             String responseAlarmEntities = new String(responseBody, "UTF-8");
-                            Log.e("alarmPageEntity",responseAlarmEntities);
+                            Log.e("alarmPageEntity-getSome",responseAlarmEntities);
                             subscriber.onNext(pageEntityJsonMapper.transformAlarmPageEntity(responseAlarmEntities));
                             subscriber.onCompleted();
                         } catch (UnsupportedEncodingException e) {

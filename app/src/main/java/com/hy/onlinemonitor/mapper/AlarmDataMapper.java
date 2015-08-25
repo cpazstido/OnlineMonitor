@@ -19,13 +19,18 @@ public class AlarmDataMapper {
         }
         AlarmInformation alarmInformation = new AlarmInformation();
 
-        alarmInformation.setVisibleLightImage(domainAlarmInformation.getVisibleLightImage());
-        alarmInformation.setTypeAlarm(domainAlarmInformation.getTypeAlarm());
-        alarmInformation.setIsHandle(domainAlarmInformation.getIsHandle());
-        alarmInformation.setIsBlowingEquipment(domainAlarmInformation.getIsBlowingEquipment());
+        alarmInformation.setAlarmSn(domainAlarmInformation.getAlarmSn());
+        alarmInformation.setDeviceSn(domainAlarmInformation.getDeviceSn());
+        alarmInformation.setPoleName(domainAlarmInformation.getPoleName());
+        alarmInformation.setDeviceId(domainAlarmInformation.getDeviceId());
+        alarmInformation.setDvrID(domainAlarmInformation.getDvrID());
         alarmInformation.setAlarmInformation(domainAlarmInformation.getAlarmInformation());
-        alarmInformation.setAlarmName(domainAlarmInformation.getAlarmName());
+        alarmInformation.setVisibleLightImage(domainAlarmInformation.getVisibleLightImage());
         alarmInformation.setInfraredImage(domainAlarmInformation.getInfraredImage());
+        alarmInformation.setBreakImage(domainAlarmInformation.getBreakImage());
+        alarmInformation.setIsBlowingEquipment(domainAlarmInformation.getIsBlowingEquipment());
+        alarmInformation.setVideoFileName(domainAlarmInformation.getVideoFileName());
+        alarmInformation.setCollectionTime(domainAlarmInformation.getCollectionTime());
 
         return alarmInformation;
     }
