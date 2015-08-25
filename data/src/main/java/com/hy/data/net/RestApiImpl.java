@@ -6,7 +6,6 @@ import android.net.NetworkInfo;
 import android.util.Log;
 
 import com.google.gson.Gson;
-import com.hy.data.entity.AlarmEntity;
 import com.hy.data.entity.AlarmPageEntity;
 import com.hy.data.entity.EquipmentPageEntity;
 import com.hy.data.entity.MapEntity;
@@ -248,24 +247,6 @@ public class RestApiImpl implements RestApi {
             }
         });
     }
-
-    private String getAlarmEntitiesFromApi(int userName, String title) {
-        AlarmPageEntity alarmPageEntity = new AlarmPageEntity();
-        Gson gson = new Gson();
-        List<AlarmEntity> alarmEntities = new ArrayList<>();
-        alarmEntities.add(new AlarmEntity("分分分", "http://pic.yesky.com/imagelist/07/04/1837387_7424.jpg", "http://www.zgmaimai.cn/uploads/allimg/c120621/1340251A2213Z-2K263.jpg", "是", "紧急的报警", "已处理", 0));
-        alarmEntities.add(new AlarmEntity("水水水", "http://pic.yesky.com/imagelist/07/04/1837387_7424.jpg", "http://www.zgmaimai.cn/uploads/allimg/c120621/1340251A2213Z-2K263.jpg", "是", "紧急的报警", "已处理", 1));
-        alarmEntities.add(new AlarmEntity("哈哈哈", "http://pic.yesky.com/imagelist/07/04/1837387_7424.jpg", "http://www.zgmaimai.cn/uploads/allimg/c120621/1340251A2213Z-2K263.jpg", "是", "紧急的报警", "已处理", 2));
-        alarmEntities.add(new AlarmEntity("多对多", "http://pic.yesky.com/imagelist/07/04/1837387_7424.jpg", "http://www.zgmaimai.cn/uploads/allimg/c120621/1340251A2213Z-2K263.jpg", "是", "紧急的报警", "已处理", 3));
-        alarmEntities.add(new AlarmEntity("啊啊啊", "http://pic.yesky.com/imagelist/07/04/1837387_7424.jpg", "http://www.zgmaimai.cn/uploads/allimg/c120621/1340251A2213Z-2K263.jpg", "是", "紧急的报警", "已处理", 4));
-        alarmPageEntity.setList(alarmEntities);
-        alarmPageEntity.setPageNum(0);
-        alarmPageEntity.setPageSize(10);
-        alarmPageEntity.setTotalPage(1);
-        alarmPageEntity.setRowCount(5);
-        return gson.toJson(alarmPageEntity);
-    }
-
 
     @Override
     public Observable<List<MapEntity>> mapEntity(String userName, int choiceType) {

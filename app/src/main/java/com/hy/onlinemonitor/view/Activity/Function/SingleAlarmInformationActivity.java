@@ -28,7 +28,7 @@ import butterknife.ButterKnife;
 /**
  * Created by 24363 on 2015/8/20.
  */
-public class SingleAlarmInformationActivity extends AppCompatActivity implements AlarmListView,RecyclerViewFragment.AlarmListListener,InitView {
+public class SingleAlarmInformationActivity extends AppCompatActivity implements AlarmListView, RecyclerViewFragment.AlarmListListener, InitView {
     @Bind(R.id.toolbar)
     Toolbar toolbar;
     @Bind(R.id.rv_recyclerview_data)
@@ -42,6 +42,7 @@ public class SingleAlarmInformationActivity extends AppCompatActivity implements
     private AlertDialog loadingDialog;
     private AlarmPage alarmPage;
     private String equipmentName;
+    private String queryAlarmType;
 
     private AlarmRecyclerAdapter.OnItemClickListener onItemClickListener =
             new AlarmRecyclerAdapter.OnItemClickListener() {
@@ -60,20 +61,19 @@ public class SingleAlarmInformationActivity extends AppCompatActivity implements
         ButterKnife.bind(this);
         Intent intent = getIntent();
 
-        String title = intent.getStringExtra("title");
-        String queryAlarmType = intent.getStringExtra("queryAlarmType");
+        queryAlarmType = intent.getStringExtra("queryAlarmType");
         equipmentName = intent.getStringExtra("equipmentName");
         int userId = intent.getIntExtra("userId", -1);
-        status = intent.getIntExtra("status",-1);
-        showType = intent.getIntExtra("showType",-1);
-
+        status = intent.getIntExtra("status", -1);
+        showType = intent.getIntExtra("showType", -1);
+        toolbar.setTitle(intent.getStringExtra("title"));
+        toolbar.setSubtitle(equipmentName);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle(title);
-        getSupportActionBar().setSubtitle(equipmentName);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         setupUI();
         initialize();
-        loadAlarmList(userId,equipmentName,queryAlarmType,status,1);
+        loadAlarmList(userId, equipmentName, queryAlarmType, status, 1);
     }
 
     @Override
@@ -93,8 +93,8 @@ public class SingleAlarmInformationActivity extends AppCompatActivity implements
 
     @Override
     public void onAlarmClicked(AlarmInformation alarmInformation) {
-        Intent intent = new Intent(SingleAlarmInformationActivity.this,DetailedAlarmActivity.class);
-        intent.putExtra("detailedAlarm",alarmInformation);
+        Intent intent = new Intent(SingleAlarmInformationActivity.this, DetailedAlarmActivity.class);
+        intent.putExtra("detailedAlarm", alarmInformation);
         startActivity(intent);
     }
 
@@ -126,7 +126,7 @@ public class SingleAlarmInformationActivity extends AppCompatActivity implements
         rvRecyclerviewData.setHasFixedSize(true);
         alarmPage = new AlarmPage();
 
-        mAdapter = new AlarmRecyclerAdapter(alarmPage, SingleAlarmInformationActivity.this, showType);
+        mAdapter = new AlarmRecyclerAdapter(alarmPage, SingleAlarmInformationActivity.this, showType, queryAlarmType, status);
         mAdapter.setOnItemClickListener(onItemClickListener);
         rvRecyclerviewData.setAdapter(mAdapter);
     }
@@ -147,10 +147,10 @@ public class SingleAlarmInformationActivity extends AppCompatActivity implements
 
     @Override
     public void viewAlarm(AlarmInformation alarmInformation) {
-            this.onAlarmClicked(alarmInformation);
+        this.onAlarmClicked(alarmInformation);
     }
 
-    private void loadAlarmList(int userId,String equipmentName,String queryAlarmType,int status,int pageNumber) {
-        this.alarmPresenter.initialize(userId,equipmentName,queryAlarmType, status,pageNumber);
+    private void loadAlarmList(int userId, String equipmentName, String queryAlarmType, int status, int pageNumber) {
+        this.alarmPresenter.initialize(userId, equipmentName, queryAlarmType, status, pageNumber);
     }
 }

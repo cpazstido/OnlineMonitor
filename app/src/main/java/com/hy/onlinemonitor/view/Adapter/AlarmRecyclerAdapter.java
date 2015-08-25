@@ -1,6 +1,5 @@
 package com.hy.onlinemonitor.view.Adapter;
 
-
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -17,10 +16,6 @@ import com.squareup.picasso.Picasso;
 import java.util.Collection;
 import java.util.List;
 
-/**
- * Created by wsw on 2015/7/15.
- */
-
 public class AlarmRecyclerAdapter extends RecyclerView.Adapter<AlarmViewHolder> {
 
     public interface OnItemClickListener {
@@ -30,14 +25,18 @@ public class AlarmRecyclerAdapter extends RecyclerView.Adapter<AlarmViewHolder> 
     private List<AlarmInformation> mList;
     private Context mContext;
     private int showType;
+    private String queryAlarmType;
+    private int status;
 
     private OnItemClickListener onItemClickListener;
 
-    public AlarmRecyclerAdapter(AlarmPage alarmPage, Context mContext, int showType) {
+    public AlarmRecyclerAdapter(AlarmPage alarmPage, Context mContext, int showType , String queryAlarmType,int status) {
         validateAlarmsCollection(alarmPage.getList());
         this.mList = alarmPage.getList();
         this.mContext = mContext;
         this.showType = showType;
+        this.queryAlarmType = queryAlarmType;
+        this.status = status;
     }
 
     @Override
@@ -55,24 +54,36 @@ public class AlarmRecyclerAdapter extends RecyclerView.Adapter<AlarmViewHolder> 
         /**
          * 设置每一个的显示界面
          */
-        AlarmViewHolder holder = null;
-        if(viewType == 1) { //山火外破等
-            View view = LayoutInflater.from(mContext)
-                    .inflate(R.layout.card_alarm, parent, false);
-            holder = new AlarmViewHolder(view,showType);
-        }else if(viewType == 0){//传感器
-            View view = LayoutInflater.from(mContext)
-                    .inflate(R.layout.card_alarm_tv, parent, false);
-            holder = new AlarmViewHolder(view,showType);
+        View view = null;
+        switch (queryAlarmType){
+            case "fire":
+                view = LayoutInflater.from(mContext)
+                        .inflate(R.layout.card_alarm, parent, false);
+                break;
+            case "break":
+                view = LayoutInflater.from(mContext)
+                        .inflate(R.layout.card_alarm, parent, false);
+                break;
+            case "sensor":
+                view = LayoutInflater.from(mContext)
+                        .inflate(R.layout.card_alarm_tv, parent, false);
+                break;
         }
-        return holder;
+
+        return new AlarmViewHolder(view,showType);
     }
 
     @Override
     public void onBindViewHolder(AlarmViewHolder holder, final int position) {
         final AlarmInformation alarmInformation = this.mList.get(position);
         if (showType == 1) {
-            holder.alarmCardTitle.setText(mList.get(position).getAlarmName());
+            holder.alarmCardTitle.setText(mList.get(position).getCollectionTime());
+            switch (queryAlarmType){
+                case "fire":
+                    break;
+                case "break":
+                    break;
+            }
             Picasso.with(mContext).load(mList.get(position).getVisibleLightImage()).into(holder.alarmCardImage);
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -88,8 +99,8 @@ public class AlarmRecyclerAdapter extends RecyclerView.Adapter<AlarmViewHolder> 
                 }
             });
         }else if(showType == 0){
-            holder.alarmCardTitle.setText(mList.get(position).getAlarmName());
-            holder.equipmentIdentifier.setText(mList.get(position).getAlarmName());
+            holder.alarmCardTitle.setText(mList.get(position).getCollectionTime());
+            holder.equipmentIdentifier.setText(mList.get(position).getDeviceSn());
             holder.alarmInformation.setText(mList.get(position).getAlarmInformation());
             holder.collectionTime.setText(mList.get(position).getIsBlowingEquipment());
         }
