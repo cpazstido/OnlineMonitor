@@ -2,78 +2,99 @@ package com.hy.onlinemonitor.presenter;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.widget.Toast;
 
-import com.example.bean.DomainAlarmInformation;
+import com.example.bean.DomainAlarmPage;
 import com.example.interactor.AlarmUseCase;
 import com.example.interactor.DefaultSubscriber;
 import com.example.interactor.UseCase;
 import com.hy.data.repository.AlarmDataRepository;
 import com.hy.onlinemonitor.UIThread;
 import com.hy.onlinemonitor.bean.AlarmInformation;
-import com.hy.onlinemonitor.mapper.AlarmDataMapper;
+import com.hy.onlinemonitor.bean.AlarmPage;
+import com.hy.onlinemonitor.mapper.PageDataMapper;
 import com.hy.onlinemonitor.view.AlarmListView;
 
-import java.util.Collection;
-import java.util.List;
-
-import rx.schedulers.Schedulers;
+import rx.android.schedulers.AndroidSchedulers;
 
 /**
  * Created by 24363 on 2015/8/17.
  */
-public class AlarmPresenter implements Presenter{
+public class AlarmPresenter implements Presenter {
 
     private AlarmListView alarmView;
     private int userId;
     private Context mContext;
-    private AlarmDataMapper alarmDataMapper;
     private UseCase getAlarmListUseCase;
+    private String queryAlarmType;
+    private PageDataMapper pageDataMapper;
+    private int status;
+
     public AlarmPresenter(Context mContext) {
         this.mContext = mContext;
-        this.alarmDataMapper = new AlarmDataMapper();
+        this.pageDataMapper = new PageDataMapper();
     }
 
-    public void initialize(String title,int userId) {
+    /**
+     * 查看所有的报警
+     * @param queryAlarmType 查看的报警类型
+     * @param status 查看的报警类型的状态(历史,或者新报警)
+     * @param userId 唯一标示用户
+     */
+    public void initialize( int userId ,String queryAlarmType, int status, int pageNumber) {
         this.userId = userId;
-        this.loadUserList(title);
-    }
-    
-    public void initialize(int userId,int equipmentSn,int page) {
-        this.userId = userId;
-        this.loadUserList(equipmentSn);
-    }
-    
-    private void loadUserList(int equipmentSn) {
-        this.showViewLoading();
-        this.getAlarmList(equipmentSn);
+        this.status = status;
+        this.queryAlarmType = queryAlarmType;
+        this.loadUserList(pageNumber);
     }
 
-    private void loadUserList(String title) {
-        this.showViewLoading();
-        this.getAlarmList(title);
+    /**
+     * 查看特定 equipmentName的报警信息
+     * @param userId 唯一标示用户
+     * @param equipmentName 设备名(唯一标示)
+     * @param queryAlarmType 查看的报警类型
+     * @param status 查看的报警类型的状态(历史,或者新报警)
+     */
+    public void initialize(int userId, String equipmentName, String queryAlarmType, int status, int pageNumber) {
+        this.userId = userId;
+        this.status = status;
+        this.queryAlarmType = queryAlarmType;
+        this.loadUserList(equipmentName,pageNumber);
     }
+
+    private void loadUserList(int pageNumber) {
+        this.showViewLoading();
+        this.getAlarmList(pageNumber);
+    }
+
+    private void loadUserList(String equipmentName,int pageNumber) {
+        this.showViewLoading();
+        this.getAlarmList(equipmentName,pageNumber);
+    }
+
     @Override
     public void showViewLoading() {
         this.alarmView.showLoading();
     }
+
     @Override
-    public void hideViewLoading(){
+    public void hideViewLoading() {
         this.alarmView.hideLoading();
     }
 
-    private void getAlarmList(String title) {
-        AlarmDataRepository alarmDataRepository = new AlarmDataRepository(mContext, userId,title);
-        this.getAlarmListUseCase = new AlarmUseCase(new UIThread(), Schedulers.io(),alarmDataRepository,title);
+    private void getAlarmList(int pageNumber) {   //获取所有的设备的报警
+        AlarmDataRepository alarmDataRepository = new AlarmDataRepository(mContext, userId, queryAlarmType, status, pageNumber);
+        this.getAlarmListUseCase = new AlarmUseCase(new UIThread(), AndroidSchedulers.mainThread(), alarmDataRepository);
         this.getAlarmListUseCase.execute(new AlarmListSubscriber());
     }
 
-    private void getAlarmList(int equipmentSn) {
-        AlarmDataRepository alarmDataRepository = new AlarmDataRepository(mContext, userId,equipmentSn);
-        this.getAlarmListUseCase = new AlarmUseCase(new UIThread(),Schedulers.io(),alarmDataRepository,equipmentSn);
+    private void getAlarmList(String equipmentName,int pageNumber) {   //获取名称为equipmentName的设备的报警
+        AlarmDataRepository alarmDataRepository = new AlarmDataRepository(mContext, userId, queryAlarmType, status, pageNumber);
+        this.getAlarmListUseCase = new AlarmUseCase(new UIThread(), AndroidSchedulers.mainThread(), alarmDataRepository, equipmentName);
         this.getAlarmListUseCase.execute(new AlarmListSubscriber());
     }
 
-    private class AlarmListSubscriber extends DefaultSubscriber<List<DomainAlarmInformation>> {
+    private class AlarmListSubscriber extends DefaultSubscriber<DomainAlarmPage> {
 
         @Override
         public void onCompleted() {
@@ -82,22 +103,23 @@ public class AlarmPresenter implements Presenter{
 
         @Override
         public void onError(Throwable e) {
+            AlarmPresenter.this.hideViewLoading();
+            Toast.makeText(mContext,"出现错误",Toast.LENGTH_SHORT).show();
             super.onError(e);
         }
 
         @Override
-        public void onNext(List<DomainAlarmInformation> domainAlarmInformations) {
-            AlarmPresenter.this.showAlarmCollectionInView(domainAlarmInformations);
+        public void onNext(DomainAlarmPage domainAlarmPage) {
+            AlarmPresenter.this.showAlarmCollectionInView(domainAlarmPage);
         }
     }
 
-    private void showAlarmCollectionInView(List<DomainAlarmInformation> domainAlarmInformations) {
-        final Collection<AlarmInformation> alarmInformations =
-                this.alarmDataMapper.transform(domainAlarmInformations);
-        this.alarmView.renderAlarmList(alarmInformations);
+    private void showAlarmCollectionInView(DomainAlarmPage domainAlarmPage) {
+        AlarmPage alarmPage = this.pageDataMapper.transform(domainAlarmPage);
+        this.alarmView.renderAlarmList(alarmPage);
     }
 
-    public void setView(@NonNull AlarmListView view){
+    public void setView(@NonNull AlarmListView view) {
         this.alarmView = view;
     }
 

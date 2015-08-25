@@ -1,6 +1,8 @@
 package com.hy.onlinemonitor.mapper;
 
 import com.example.bean.DoaminEquipmentPage;
+import com.example.bean.DomainAlarmPage;
+import com.hy.onlinemonitor.bean.AlarmPage;
 import com.hy.onlinemonitor.bean.EquipmentPage;
 
 /**
@@ -25,4 +27,20 @@ public class PageDataMapper {
         equipmentPage.setList(equipmentDataMapper.transform(doaminEquipmentPage.getList()));
         return equipmentPage;
     }
+
+    public AlarmPage transform(DomainAlarmPage domainAlarmPage) {
+        if (null == domainAlarmPage) {
+            throw new IllegalArgumentException("Cannot transform a null value");
+        }
+        AlarmDataMapper alarmDataMapper = new AlarmDataMapper();
+
+        AlarmPage alarmPage = new AlarmPage();
+        alarmPage.setRowCount(domainAlarmPage.getRowCount());
+        alarmPage.setPageNum(domainAlarmPage.getPageNum());
+        alarmPage.setPageSize(domainAlarmPage.getPageSize());
+        alarmPage.setTotalPage(domainAlarmPage.getTotalPage());
+        alarmPage.setList(alarmDataMapper.transform(domainAlarmPage.getList()));
+        return alarmPage;
+    }
+
 }

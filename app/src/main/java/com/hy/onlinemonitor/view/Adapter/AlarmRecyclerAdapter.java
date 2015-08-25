@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 
 import com.hy.onlinemonitor.R;
 import com.hy.onlinemonitor.bean.AlarmInformation;
+import com.hy.onlinemonitor.bean.AlarmPage;
 import com.hy.onlinemonitor.view.ViewHolder.AlarmViewHolder;
 import com.squareup.picasso.Picasso;
 
@@ -32,9 +33,9 @@ public class AlarmRecyclerAdapter extends RecyclerView.Adapter<AlarmViewHolder> 
 
     private OnItemClickListener onItemClickListener;
 
-    public AlarmRecyclerAdapter(List<AlarmInformation> mList, Context mContext, int showType) {
-        validateAlarmsCollection(mList);
-        this.mList = mList;
+    public AlarmRecyclerAdapter(AlarmPage alarmPage, Context mContext, int showType) {
+        validateAlarmsCollection(alarmPage.getList());
+        this.mList = alarmPage.getList();
         this.mContext = mContext;
         this.showType = showType;
     }

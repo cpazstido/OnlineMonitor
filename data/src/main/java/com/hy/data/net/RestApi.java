@@ -44,17 +44,23 @@ public interface RestApi {
 
 
   /**
-   * 根据用户id,以及用户徐那种的标题,取得标题下的报警列表
+   * 查看所有的报警
+   * @param queryAlarmType 查看的报警类型
+   * @param status 查看的报警类型的状态(历史,或者新报警)
+   * @param userId 唯一标示用户
+   * @param pageNumber 第几页的数据
    */
-  Observable<AlarmPageEntity> alarmEntity(int userId,String title);
+  Observable<AlarmPageEntity> alarmEntity(int userId,String queryAlarmType,int status,int pageNumber);
 
   /**
-   * 根据用户id,以及设备sn取得设备的报警
-   * @param userId 用户id
-   * @param equipmentSn 标示某一个设备
-   * @return 返回报警信息列表
+   * 查看特定 equipmentName的报警信息
+   * @param userId 唯一标示用户
+   * @param equipmentName 设备名(唯一标示)
+   * @param queryAlarmType 查看的报警类型
+   * @param status 查看的报警类型的状态(历史,或者新报警)
+   * @param pageNumber 第几页的数据
    */
-  Observable<AlarmPageEntity> alarmEntity(int userId,int equipmentSn);
+  Observable<AlarmPageEntity> alarmEntity(int userId,String equipmentName,String queryAlarmType,int status,int pageNumber);
 
   /**
    * 取得地图列表

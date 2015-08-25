@@ -9,8 +9,8 @@ import rx.Observable;
  */
 public interface AlarmRepository {
 
-    Observable<DomainAlarmPage> alarmList(String title);
+    Observable<DomainAlarmPage> alarmList(String equipmentName);
     
-    Observable<DomainAlarmPage> alarmList(int equipmentSn);
+    Observable<DomainAlarmPage> alarmList();
 
 }

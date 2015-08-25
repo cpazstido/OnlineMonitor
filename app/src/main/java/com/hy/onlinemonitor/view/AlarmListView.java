@@ -1,15 +1,14 @@
 package com.hy.onlinemonitor.view;
 
 import com.hy.onlinemonitor.bean.AlarmInformation;
-
-import java.util.Collection;
+import com.hy.onlinemonitor.bean.AlarmPage;
 
 /**
  * Created by 24363 on 2015/8/17.
  */
 public interface AlarmListView extends LoadDataView{
 
-    void renderAlarmList(Collection<AlarmInformation> alarmInformationCollection);
+    void renderAlarmList(AlarmPage alarmPage);
 
     /**
      * View a {@link AlarmInformation} profile/details.

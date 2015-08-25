@@ -95,9 +95,13 @@ public class RestApiImpl implements RestApi {
                              responseUserEntities = new String(responseBody, "UTF-8");
 //                             responseUserEntities = StringTransformation.transform(responseUserEntities);
                              Log.e("result", responseUserEntities);
-                             subscriber.onNext(userEntityJsonMapper.transformUserEntity(
-                                     responseUserEntities));
-                             subscriber.onCompleted();
+                             if(responseUserEntities.equals("false")){
+                                 subscriber.onError(new NetworkConnectionException("用户名或密码错误"));
+                             }else {
+                                 subscriber.onNext(userEntityJsonMapper.transformUserEntity(
+                                         responseUserEntities));
+                                 subscriber.onCompleted();
+                             }
                          } catch (UnsupportedEncodingException e) {
                              e.printStackTrace();
                          }
@@ -133,7 +137,7 @@ public class RestApiImpl implements RestApi {
                 params.put("curProject", choiceType);
                 params.put("pageNum", pageNumber);
 
-                SystemRestClient.get("/getEquipmentList", params, new AsyncHttpResponseHandler() {
+                SystemRestClient.post("/getEquipmentList", params, new AsyncHttpResponseHandler() {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                         String responseEquipmentEntities = null;
@@ -158,13 +162,13 @@ public class RestApiImpl implements RestApi {
     }
 
     @Override
-    public Observable<AlarmPageEntity> alarmEntity(int userId, String title) {
+    public Observable<AlarmPageEntity> alarmEntity(int userId,String queryAlarmType,int status,int pageNumber) {
         return Observable.create(new Observable.OnSubscribe<AlarmPageEntity>() {
             @Override
             public void call(Subscriber<? super AlarmPageEntity> subscriber) {
                 String responseAlarmEntities = null;
                 int choiceType = -1;
-                responseAlarmEntities = getAlarmEntitiesFromApi(userId, title);
+                responseAlarmEntities = getAlarmEntitiesFromApi(userId, queryAlarmType);
                 if (responseAlarmEntities != null) {
                     subscriber.onNext(pageEntityJsonMapper.transformAlarmPageEntity(responseAlarmEntities));
                     subscriber.onCompleted();
@@ -175,40 +179,50 @@ public class RestApiImpl implements RestApi {
         });
     }
 
+    /**
+     * 根据 Equipmentname查看报警
+     * @param userId 唯一标示用户
+     * @param equipmentName 设备名(唯一标示)
+     * @param queryAlarmType 查看的报警类型
+     * @param status 查看的报警类型的状态(历史,或者新报警)
+     * @param pageNumber 第几页的数据
+     * @return 返回AlarmPage的对象
+     */
     @Override
-    public Observable<AlarmPageEntity> alarmEntity(int userId, int equipmentSn) {
+    public Observable<AlarmPageEntity> alarmEntity(int userId,String equipmentName,String queryAlarmType,int status,int pageNumber) {
         return Observable.create(new Observable.OnSubscribe<AlarmPageEntity>() {
             @Override
             public void call(Subscriber<? super AlarmPageEntity> subscriber) {
-                String responseAlarmEntities = null;
-                responseAlarmEntities = getAlarmEntitiesFromApi(userId, equipmentSn);
-                if (responseAlarmEntities != null) {
-                    subscriber.onNext(pageEntityJsonMapper.transformAlarmPageEntity(responseAlarmEntities));
-                    subscriber.onCompleted();
-                } else {
-                    subscriber.onError(new NetworkConnectionException());
-                }
+
+                RequestParams params = new RequestParams();
+                params.put("userId", userId);
+                params.put("queryAlarmType", queryAlarmType);
+                params.put("status",status);
+                params.put("deviceId",equipmentName);
+                params.put("pageNum", pageNumber);
+
+                SystemRestClient.post("/getAlarmInfrom", params, new AsyncHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                        try {
+                            String responseAlarmEntities = new String(responseBody, "UTF-8");
+                            subscriber.onNext(pageEntityJsonMapper.transformAlarmPageEntity(responseAlarmEntities));
+                            subscriber.onCompleted();
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                        Log.e("getUserEntitiesFromApi", "onFailure");
+                        new SnackBar(context).text("连接失败,请稍后再试....").show();
+                        subscriber.onError(new NetworkConnectionException("链接失败"));
+                    }
+                });
             }
         });
     }
-
-    private String getAlarmEntitiesFromApi(int userName, int equipmentSn) {
-        AlarmPageEntity alarmPageEntity = new AlarmPageEntity();
-        Gson gson = new Gson();
-        List<AlarmEntity> alarmEntities = new ArrayList<>();
-        alarmEntities.add(new AlarmEntity("分分分", "http://pic.yesky.com/imagelist/07/04/1837387_7424.jpg", "http://www.zgmaimai.cn/uploads/allimg/c120621/1340251A2213Z-2K263.jpg", "是", "紧急的报警", "已处理", 0));
-        alarmEntities.add(new AlarmEntity("水水水", "http://pic.yesky.com/imagelist/07/04/1837387_7424.jpg", "http://www.zgmaimai.cn/uploads/allimg/c120621/1340251A2213Z-2K263.jpg", "是", "紧急的报警", "已处理", 1));
-        alarmEntities.add(new AlarmEntity("哈哈哈", "http://pic.yesky.com/imagelist/07/04/1837387_7424.jpg", "http://www.zgmaimai.cn/uploads/allimg/c120621/1340251A2213Z-2K263.jpg", "是", "紧急的报警", "已处理", 2));
-        alarmEntities.add(new AlarmEntity("多对多", "http://pic.yesky.com/imagelist/07/04/1837387_7424.jpg", "http://www.zgmaimai.cn/uploads/allimg/c120621/1340251A2213Z-2K263.jpg", "是", "紧急的报警", "已处理", 3));
-        alarmEntities.add(new AlarmEntity("啊啊啊", "http://pic.yesky.com/imagelist/07/04/1837387_7424.jpg", "http://www.zgmaimai.cn/uploads/allimg/c120621/1340251A2213Z-2K263.jpg", "是", "紧急的报警", "已处理", 4));
-        alarmPageEntity.setList(alarmEntities);
-        alarmPageEntity.setPageNum(0);
-        alarmPageEntity.setPageSize(10);
-        alarmPageEntity.setTotalPage(1);
-        alarmPageEntity.setRowCount(5);
-        return gson.toJson(alarmPageEntity);
-    }
-
 
     private String getAlarmEntitiesFromApi(int userName, String title) {
         AlarmPageEntity alarmPageEntity = new AlarmPageEntity();

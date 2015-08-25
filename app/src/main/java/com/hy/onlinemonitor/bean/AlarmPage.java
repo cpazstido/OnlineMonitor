@@ -1,5 +1,6 @@
 package com.hy.onlinemonitor.bean;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -11,6 +12,10 @@ public class AlarmPage {
     private int rowCount;
     private List<AlarmInformation> list;
     private int totalPage;
+
+    public AlarmPage() {
+        list = new ArrayList<>();
+    }
 
     public int getPageNum() {
         return pageNum;

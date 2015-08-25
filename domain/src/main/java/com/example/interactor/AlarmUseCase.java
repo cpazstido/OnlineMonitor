@@ -12,27 +12,27 @@ import rx.Scheduler;
 public class AlarmUseCase extends UseCase{
 
     final private AlarmRepository alarmRepository;
-    private int equipmentId;
-    private String title;
+    private String equipmentName;
     private int returnType =-1;
-    public AlarmUseCase(PostExecutionThread postExecutionThread, Scheduler subExecutionThread, AlarmRepository alarmRepository,String title) {
+    public AlarmUseCase(PostExecutionThread postExecutionThread, Scheduler subExecutionThread, AlarmRepository alarmRepository) {
         super(postExecutionThread,subExecutionThread);
         this.returnType = 0;
         this.alarmRepository = alarmRepository;
     }
-    public AlarmUseCase(PostExecutionThread postExecutionThread,Scheduler subExecutionThread, AlarmRepository alarmRepository,int equipmentId) {
+    public AlarmUseCase(PostExecutionThread postExecutionThread,Scheduler subExecutionThread, AlarmRepository alarmRepository,String equipmentName) {
         super(postExecutionThread,subExecutionThread);
         this.returnType = 1;
+        this.equipmentName = equipmentName;
         this.alarmRepository = alarmRepository;
     }
 
     @Override
     public Observable buildUseCaseObservable() {
-        if(returnType ==0) {
-            return this.alarmRepository.alarmList(equipmentId);
+        if(returnType == 1) {
+            return this.alarmRepository.alarmList(equipmentName);
         }
-        if(returnType == 1){
-            return this.alarmRepository.alarmList(title);
+        if(returnType == 0){
+            return this.alarmRepository.alarmList();
         }
         else
             return null;

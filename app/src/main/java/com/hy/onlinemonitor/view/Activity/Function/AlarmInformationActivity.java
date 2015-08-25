@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.ViewGroup;
@@ -25,6 +26,7 @@ import java.util.List;
 public class AlarmInformationActivity extends BaseActivity implements LoadDataView,RecyclerViewFragment.AlarmListListener{
     private MaterialViewPager mViewPager;
     private List<String> alarmTitles;
+    private AlertDialog loadingDialog;
 
     @Override
     protected Toolbar getToolbar() {
@@ -138,12 +140,12 @@ public class AlarmInformationActivity extends BaseActivity implements LoadDataVi
 
     @Override
     public void showLoading() {
-
+        loadingDialog.show();
     }
 
     @Override
     public void hideLoading() {
-
+        loadingDialog.cancel();
     }
 
     @Override

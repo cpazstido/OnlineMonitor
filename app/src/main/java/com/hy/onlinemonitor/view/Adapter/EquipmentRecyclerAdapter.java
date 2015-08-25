@@ -78,8 +78,9 @@ public class EquipmentRecyclerAdapter extends RecyclerView.Adapter<EquipmentList
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(holder.itemView.getContext(), SingleAlarmInformationActivity.class);
-                intent.putExtra("titleName","外破历史");
-                intent.putExtra("equipmentSn", equipmentInformation.getSN());
+                intent.putExtra("queryAlarmType","break");
+                intent.putExtra("status",1);
+                intent.putExtra("title","外破历史报警");
                 intent.putExtra("equipmentName",equipmentInformation.getEquipmnetName());
                 intent.putExtra("userId",userId);
                 intent.putExtra("showType",1);
@@ -91,8 +92,9 @@ public class EquipmentRecyclerAdapter extends RecyclerView.Adapter<EquipmentList
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(holder.itemView.getContext(), SingleAlarmInformationActivity.class);
-                intent.putExtra("titleName","山火历史");
-                intent.putExtra("equipmentSn", equipmentInformation.getSN());
+                intent.putExtra("queryAlarmType","fire");
+                intent.putExtra("status",1);//1是历史 0是新报警
+                intent.putExtra("title","山火历史报警");
                 intent.putExtra("equipmentName",equipmentInformation.getEquipmnetName());
                 intent.putExtra("userId",userId);
                 intent.putExtra("showType",1);
@@ -104,8 +106,9 @@ public class EquipmentRecyclerAdapter extends RecyclerView.Adapter<EquipmentList
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(holder.itemView.getContext(), SingleAlarmInformationActivity.class);                intent.putExtra("titleName","外破历史");
-                intent.putExtra("titleName","传感器历史");
-                intent.putExtra("equipmentSn", equipmentInformation.getSN());
+                intent.putExtra("queryAlarmType","sensor");
+                intent.putExtra("status",1);//1是历史 0是新报警
+                intent.putExtra("title","传感器历史报警");
                 intent.putExtra("equipmentName",equipmentInformation.getEquipmnetName());
                 intent.putExtra("userId",userId);
                 intent.putExtra("showType",0);
@@ -117,8 +120,9 @@ public class EquipmentRecyclerAdapter extends RecyclerView.Adapter<EquipmentList
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(holder.itemView.getContext(), SingleAlarmInformationActivity.class);
-                intent.putExtra("titleName","新外破");
-                intent.putExtra("equipmentSn", equipmentInformation.getSN());
+                intent.putExtra("queryAlarmType","break");
+                intent.putExtra("status",0);//1是历史 0是新报警
+                intent.putExtra("title","外破新报警");
                 intent.putExtra("equipmentName",equipmentInformation.getEquipmnetName());
                 intent.putExtra("userId",userId);
                 intent.putExtra("showType",1);
@@ -130,8 +134,9 @@ public class EquipmentRecyclerAdapter extends RecyclerView.Adapter<EquipmentList
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(holder.itemView.getContext(), SingleAlarmInformationActivity.class);
-                intent.putExtra("titleName","新山火");
-                intent.putExtra("equipmentSn", equipmentInformation.getSN());
+                intent.putExtra("queryAlarmType","fire");
+                intent.putExtra("title","山火新报警");
+                intent.putExtra("status",0);//1是历史 0是新报警
                 intent.putExtra("equipmentName",equipmentInformation.getEquipmnetName());
                 intent.putExtra("userId",userId);
                 intent.putExtra("showType",1);
@@ -143,8 +148,9 @@ public class EquipmentRecyclerAdapter extends RecyclerView.Adapter<EquipmentList
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(holder.itemView.getContext(), SingleAlarmInformationActivity.class);
-                intent.putExtra("titleName","新传感器");
-                intent.putExtra("equipmentSn", equipmentInformation.getSN());
+                intent.putExtra("queryAlarmType","sensor");
+                intent.putExtra("title","传感器新报警");
+                intent.putExtra("status",1);//1是历史 0是新报警
                 intent.putExtra("equipmentName",equipmentInformation.getEquipmnetName());
                 intent.putExtra("userId",userId);
                 intent.putExtra("showType",0);

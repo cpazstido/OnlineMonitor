@@ -18,27 +18,27 @@ public class AlarmDataRepository implements AlarmRepository{
     private Context mContext;
     private PageEntityDataMapper pageEntityDataMapper;
     private int userId;
-    public AlarmDataRepository(Context mContext,int userId, String title) {
+    private int pageNumber;
+    private String queryAlarmType;
+    private int status;
+    public AlarmDataRepository(Context mContext,int userId,String queryAlarmType,int status,int pageNumber) {
         this.userId = userId;
         this.mContext = mContext;
-        this.pageEntityDataMapper = new PageEntityDataMapper();
-    }
-
-    public AlarmDataRepository(Context mContext,int userId, int equipmentSn) {
-        this.userId = userId;
-        this.mContext = mContext;
+        this.queryAlarmType =queryAlarmType;
+        this.status = status;
+        this.pageNumber = pageNumber;
         this.pageEntityDataMapper = new PageEntityDataMapper();
     }
 
     @Override
-    public Observable<DomainAlarmPage> alarmList(String title) {
+    public Observable<DomainAlarmPage> alarmList() {
         RestApiImpl restApi = new RestApiImpl(mContext,new PageEntityJsonMapper());
-        return restApi.alarmEntity(userId, title).map(this.pageEntityDataMapper::transform);
+        return restApi.alarmEntity(userId, queryAlarmType,status,pageNumber).map(this.pageEntityDataMapper::transform);
     }
 
     @Override
-    public Observable<DomainAlarmPage> alarmList(int equipmentSn) {
+    public Observable<DomainAlarmPage> alarmList(String equipmentName) {
         RestApiImpl restApi = new RestApiImpl(mContext,new PageEntityJsonMapper());
-        return restApi.alarmEntity(userId, equipmentSn).map(this.pageEntityDataMapper::transform);
+        return restApi.alarmEntity(userId,equipmentName,queryAlarmType,status,pageNumber).map(this.pageEntityDataMapper::transform);
     }
 }

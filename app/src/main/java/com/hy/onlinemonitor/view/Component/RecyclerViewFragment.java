@@ -16,20 +16,16 @@ import com.github.florent37.materialviewpager.MaterialViewPagerHelper;
 import com.github.florent37.materialviewpager.adapter.RecyclerViewMaterialAdapter;
 import com.hy.onlinemonitor.R;
 import com.hy.onlinemonitor.bean.AlarmInformation;
+import com.hy.onlinemonitor.bean.AlarmPage;
 import com.hy.onlinemonitor.presenter.AlarmPresenter;
 import com.hy.onlinemonitor.view.Adapter.AlarmRecyclerAdapter;
 import com.hy.onlinemonitor.view.AlarmListView;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-/**
- * Created by wsw on 2015/7/9.
- */
 public class RecyclerViewFragment extends Fragment implements AlarmListView {
 
     public interface AlarmListListener {
@@ -46,6 +42,7 @@ public class RecyclerViewFragment extends Fragment implements AlarmListView {
     private static int userId;
     private int showType = 1;
     private Context mContext;
+    private AlarmPage alarmPage;
     private AlarmPresenter alarmPresenter;
     private AlarmListListener alarmListListener;
 
@@ -82,7 +79,8 @@ public class RecyclerViewFragment extends Fragment implements AlarmListView {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
-        mAdapter = new AlarmRecyclerAdapter(new ArrayList<AlarmInformation>(), mContext, showType);
+        alarmPage = new AlarmPage();
+        mAdapter = new AlarmRecyclerAdapter(alarmPage, mContext, showType);
         this.mAdapter.setOnItemClickListener(onItemClickListener);
         RcAdapter = new RecyclerViewMaterialAdapter(mAdapter);
         recyclerView.setAdapter(RcAdapter);
@@ -94,8 +92,8 @@ public class RecyclerViewFragment extends Fragment implements AlarmListView {
         this.alarmPresenter.setView(this);
     }
 
-    private void loadAlarmList(String title, int userId) {
-        this.alarmPresenter.initialize(title, userId);
+    private void loadAlarmList(int userId,String queryAlarmType,int status,int pageNumber) {
+        this.alarmPresenter.initialize(userId,queryAlarmType,status,pageNumber);
     }
 
     @Override
@@ -125,8 +123,8 @@ public class RecyclerViewFragment extends Fragment implements AlarmListView {
     }
 
     @Override
-    public void renderAlarmList(Collection<AlarmInformation> alarmInformationCollection) {
-        this.mAdapter.setAlarmCollection(alarmInformationCollection);
+    public void renderAlarmList(AlarmPage alarmPage) {
+        this.mAdapter.setAlarmCollection(alarmPage.getList());
         RcAdapter.notifyDataSetChanged();
     }
 
@@ -156,7 +154,13 @@ public class RecyclerViewFragment extends Fragment implements AlarmListView {
             int postion = bundle.getInt("postion");
             isNoInit = false;
             this.initialize();
-            this.loadAlarmList(alarmTitles.get(postion), userId);
+
+
+
+
+
+
+            this.loadAlarmList(1,alarmTitles.get(postion),1, 1);
         }
     }
 }
