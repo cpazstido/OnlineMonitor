@@ -8,9 +8,6 @@ import com.hy.data.entity.EquipmentPageEntity;
 
 import java.lang.reflect.Type;
 
-/**
- * Created by 24363 on 2015/8/21.
- */
 public class PageEntityJsonMapper {
 
     private final Gson gson;
@@ -21,6 +18,7 @@ public class PageEntityJsonMapper {
     public AlarmPageEntity transformAlarmPageEntity(String alarmPageJsonResponse) throws JsonSyntaxException {
         Type AlarmPageEntityType = new TypeToken<AlarmPageEntity>() {}.getType();
         return this.gson.fromJson(alarmPageJsonResponse, AlarmPageEntityType);
+
     }
 
     public EquipmentPageEntity transformEquipmentPageEntity(String equipmentPageJsonResponse) throws JsonSyntaxException {
