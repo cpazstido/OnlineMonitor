@@ -17,9 +17,6 @@ import com.hy.onlinemonitor.view.AlarmListView;
 
 import rx.android.schedulers.AndroidSchedulers;
 
-/**
- * Created by 24363 on 2015/8/17.
- */
 public class AlarmPresenter implements Presenter {
 
     private AlarmListView alarmView;
