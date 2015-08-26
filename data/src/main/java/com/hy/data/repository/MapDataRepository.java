@@ -18,13 +18,13 @@ import rx.Observable;
 public class MapDataRepository implements MapRepository {
 
     private Context mContext;
-    private String userName;
+    private int userId;
     private int selectedType;
     private MapEntityDataMapper mapEntityDataMapper;
 
-    public MapDataRepository(Context mContext, String userName, int selectedType) {
+    public MapDataRepository(Context mContext, int userId, int selectedType) {
         this.mContext = mContext;
-        this.userName = userName;
+        this.userId = userId;
         this.selectedType = selectedType;
         this.mapEntityDataMapper = new MapEntityDataMapper();
     }
@@ -32,7 +32,7 @@ public class MapDataRepository implements MapRepository {
     @Override
     public Observable<List<DomainMap>> mapList() {
         RestApiImpl restApi = new RestApiImpl(mContext,new MapEntityJsonMapper());
-        return restApi.mapEntity(userName, selectedType).map(this.mapEntityDataMapper::transform);
+        return restApi.mapEntity(userId, selectedType).map(this.mapEntityDataMapper::transform);
 
     }
 

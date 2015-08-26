@@ -19,11 +19,12 @@ public class MapEntityDataMapper {
 
         if (mapEntity != null) {
             domainMap = new DomainMap();
-            domainMap.setEquipmentName(mapEntity.getEquipmentName());
-            domainMap.setEquipmentId(mapEntity.getEquipmentId());
-            domainMap.setLatitude(mapEntity.getLatitude());
-            domainMap.setLongitude(mapEntity.getLongitude());
-            domainMap.setSN(mapEntity.getSN());
+            domainMap.setEquipmentName(mapEntity.getDeviceName());
+            domainMap.setDvrType(mapEntity.getDvrType());
+            domainMap.setLatitude(mapEntity.getLat());
+            domainMap.setLongitude(mapEntity.getLng());
+            domainMap.setDvrID(mapEntity.getDvrID());
+            domainMap.setPoleName(mapEntity.getPoleName());
         }
 
         return domainMap;

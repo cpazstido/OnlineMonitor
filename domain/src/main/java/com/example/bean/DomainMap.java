@@ -7,8 +7,9 @@ public class DomainMap {
     private double Longitude;
     private double Latitude;
     private String EquipmentName;
-    private String EquipmentId;
-    private int SN;
+    private int dvrID;
+    private String dvrType;
+    private String poleName;
 
     public DomainMap() {
     }
@@ -37,19 +38,27 @@ public class DomainMap {
         EquipmentName = equipmentName;
     }
 
-    public String getEquipmentId() {
-        return EquipmentId;
+    public int getDvrID() {
+        return dvrID;
     }
 
-    public void setEquipmentId(String equipmentId) {
-        EquipmentId = equipmentId;
+    public void setDvrID(int dvrID) {
+        this.dvrID = dvrID;
     }
 
-    public int getSN() {
-        return SN;
+    public String getDvrType() {
+        return dvrType;
     }
 
-    public void setSN(int SN) {
-        this.SN = SN;
+    public void setDvrType(String dvrType) {
+        this.dvrType = dvrType;
+    }
+
+    public String getPoleName() {
+        return poleName;
+    }
+
+    public void setPoleName(String poleName) {
+        this.poleName = poleName;
     }
 }

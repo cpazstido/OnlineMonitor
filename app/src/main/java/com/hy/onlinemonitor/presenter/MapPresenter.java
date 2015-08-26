@@ -1,6 +1,7 @@
 package com.hy.onlinemonitor.presenter;
 
 import android.content.Context;
+import android.widget.Toast;
 
 import com.example.bean.DomainMap;
 import com.example.interactor.DefaultSubscriber;
@@ -15,7 +16,7 @@ import com.hy.onlinemonitor.view.Activity.Function.MapActivity;
 import java.util.Collection;
 import java.util.List;
 
-import rx.schedulers.Schedulers;
+import rx.android.schedulers.AndroidSchedulers;
 
 /**
  * Created by 24363 on 2015/8/19.
@@ -24,7 +25,7 @@ import rx.schedulers.Schedulers;
 public class MapPresenter implements Presenter{
     private Context mContext;
     private MapActivity mapActivity;
-    private String userName;
+    private int userId;
     private int selectedType;
     private MapDataMapper mapDataMapper;
     private UseCase getMapListUseCase;
@@ -62,9 +63,9 @@ public class MapPresenter implements Presenter{
         this.mapActivity = mapActivity;
     }
 
-    public void initialize(String userName,int selectedType) {
+    public void initialize(int userId,int selectedType) {
         this.selectedType = selectedType;
-        this.userName = userName;
+        this.userId = userId;
         this.loadMapList();
     }
 
@@ -74,8 +75,8 @@ public class MapPresenter implements Presenter{
     }
 
     private void getMapList() {
-        MapDataRepository mapDataRepository = new MapDataRepository(mContext,userName,selectedType);
-        this.getMapListUseCase = new MapUseCase(new UIThread(), Schedulers.io(), mapDataRepository);
+        MapDataRepository mapDataRepository = new MapDataRepository(mContext, userId,selectedType);
+        this.getMapListUseCase = new MapUseCase(new UIThread(), AndroidSchedulers.mainThread(), mapDataRepository);
         this.getMapListUseCase.execute(new MapListSubscriber());
 
     }
@@ -88,6 +89,8 @@ public class MapPresenter implements Presenter{
 
         @Override
         public void onError(Throwable e) {
+            MapPresenter.this.hideViewLoading();
+            Toast.makeText(mContext,"出现错误",Toast.LENGTH_SHORT).show();
             super.onError(e);
         }
 

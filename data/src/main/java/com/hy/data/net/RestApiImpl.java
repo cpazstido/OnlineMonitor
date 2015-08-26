@@ -5,7 +5,6 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Log;
 
-import com.google.gson.Gson;
 import com.hy.data.entity.AlarmPageEntity;
 import com.hy.data.entity.EquipmentPageEntity;
 import com.hy.data.entity.MapEntity;
@@ -22,7 +21,6 @@ import com.rey.material.widget.SnackBar;
 import org.apache.http.Header;
 
 import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
 import java.util.List;
 
 import rx.Observable;
@@ -94,9 +92,9 @@ public class RestApiImpl implements RestApi {
                              responseUserEntities = new String(responseBody, "UTF-8");
 //                             responseUserEntities = StringTransformation.transform(responseUserEntities);
                              Log.e("result", responseUserEntities);
-                             if(responseUserEntities.equals("false")){
+                             if (responseUserEntities.equals("false")) {
                                  subscriber.onError(new NetworkConnectionException("用户名或密码错误"));
-                             }else {
+                             } else {
                                  subscriber.onNext(userEntityJsonMapper.transformUserEntity(
                                          responseUserEntities));
                                  subscriber.onCompleted();
@@ -220,8 +218,8 @@ public class RestApiImpl implements RestApi {
                 RequestParams params = new RequestParams();
                 params.put("userId", userId);
                 params.put("queryAlarmType", queryAlarmType);
-                params.put("status",status);
-                params.put("deviceId",equipmentName);
+                params.put("status", status);
+                params.put("deviceId", equipmentName);
                 params.put("pageNum", pageNumber);
 
                 SystemRestClient.post("/getAlarmInfrom", params, new AsyncHttpResponseHandler() {
@@ -229,7 +227,7 @@ public class RestApiImpl implements RestApi {
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                         try {
                             String responseAlarmEntities = new String(responseBody, "UTF-8");
-                            Log.e("alarmPageEntity-getSome",responseAlarmEntities);
+                            Log.e("alarmPageEntity-getSome", responseAlarmEntities);
                             subscriber.onNext(pageEntityJsonMapper.transformAlarmPageEntity(responseAlarmEntities));
                             subscriber.onCompleted();
                         } catch (UnsupportedEncodingException e) {
@@ -249,38 +247,50 @@ public class RestApiImpl implements RestApi {
     }
 
     @Override
-    public Observable<List<MapEntity>> mapEntity(String userName, int choiceType) {
+    public Observable<List<MapEntity>> mapEntity(int userId, int choiceType) {
         return Observable.create(new Observable.OnSubscribe<List<MapEntity>>() {
             @Override
             public void call(Subscriber<? super List<MapEntity>> subscriber) {
-                String responseMapEntities = null;
-                responseMapEntities = getMapEntitiesFromApi(userName, choiceType);
-                if (responseMapEntities != null) {
-                    Log.e("aa", responseMapEntities);
-                    subscriber.onNext(mapEntityJsonMapper.transformMapEntity(
-                            responseMapEntities));
-                    subscriber.onCompleted();
-                } else {
-                    subscriber.onError(new NetworkConnectionException());
+                String queryType = null;
+                switch(choiceType){
+                    case 0://山火
+                        queryType = "fire";
+                        break;
+                    case 1://外破
+                        queryType = "break";
+                        break;
+                    case 2://普通视频
+                        queryType= "video";
+                        break;
                 }
+
+                RequestParams params = new RequestParams();
+                params.put("userId", userId);
+                params.put("curProject", queryType);
+
+                SystemRestClient.post("/queryPoleLocation", params, new AsyncHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                        try {
+                            String responseMapEntities = new String(responseBody, "UTF-8");
+                            Log.e("alarmPageEntity-getSome",responseMapEntities);
+                            subscriber.onNext(mapEntityJsonMapper.transformMapEntity(responseMapEntities));
+                            subscriber.onCompleted();
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                        Log.e("getUserEntitiesFromApi", "onFailure");
+                        new SnackBar(context).text("连接失败,请稍后再试....").show();
+                        subscriber.onError(new NetworkConnectionException("链接失败"));
+                    }
+                });
             }
         });
     }
-
-    private String getMapEntitiesFromApi(String userName, int choiceType) {
-        try {
-            Thread.sleep(5000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        Gson gson = new Gson();
-        List<MapEntity> mapEntities = new ArrayList<>();
-        mapEntities.add(new MapEntity(116.400244, 39.963175, "盘梁山", "1", 2));
-        mapEntities.add(new MapEntity(116.500244, 39.933175, "西道梁", "3", 7));
-        mapEntities.add(new MapEntity(116.600244, 39.943175, "确诊果汁", "41", 6));
-        return gson.toJson(mapEntities);
-    }
-
 
     private boolean isThereInternetConnection() {
         boolean isConnected;

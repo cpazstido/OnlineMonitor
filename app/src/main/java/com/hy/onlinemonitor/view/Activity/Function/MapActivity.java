@@ -31,9 +31,6 @@ import com.rey.material.widget.SnackBar;
 import java.util.Collection;
 import java.util.List;
 
-/**
- * Created by wsw on 2015/7/13.
- */
 public class MapActivity extends BaseActivity implements MapListView {
     private Toolbar toolbar;
     private MapView mMapView;
@@ -48,12 +45,11 @@ public class MapActivity extends BaseActivity implements MapListView {
     /**
      * 给地图上添加设备的位置的标记
      */
-
     private void initOverlay() {
         for (final Map emv : mapAndVideoList) {
             LatLng ll = new LatLng(emv.getLatitude(), emv.getLongitude());
             OverlayOptions oo = new MarkerOptions().position(ll).icon(bd)
-                    .zIndex(emv.getSN());
+                    .zIndex(emv.getDvrID());
             final Marker Marker = (com.baidu.mapapi.map.Marker) mBaiduMap.addOverlay(oo);
             //设置地图的新中心点
             mBaiduMap.setMapStatus(MapStatusUpdateFactory.newLatLng(ll));
@@ -66,16 +62,18 @@ public class MapActivity extends BaseActivity implements MapListView {
 
                     TextView information = (TextView) layout.findViewById(R.id.map_equipment_information);
                     Button videoBtn = (Button) layout.findViewById(R.id.map_equipment_video);
-                    information.setText(emv.getEquipmentName());
+                    information.setText(emv.getPoleName()+"\n"+emv.getEquipmentName());
                     if(marker == Marker){
                         listener = new InfoWindow.OnInfoWindowClickListener(){
 
                             @Override
                             public void onInfoWindowClick() {
+
                                 /**
                                  * 这里弹出视频播放窗口
                                  */
-                                new SnackBar(MapActivity.this,null).text("播放视频"+emv.getSN()).show();
+
+                                new SnackBar(MapActivity.this,null).text("播放视频"+emv.getDvrID()).show();
                                 mBaiduMap.hideInfoWindow();
                             }
                         };
@@ -90,7 +88,7 @@ public class MapActivity extends BaseActivity implements MapListView {
     }
 
     private void loadMapList() {
-        this.mapPresenter.initialize(getUser().getCompanyName(),getUser().getSelectionType());
+        this.mapPresenter.initialize(getUser().getUserId(), getUser().getSelectionType());
     }
 
     private void initPresenter() {

@@ -7,25 +7,11 @@ public class Map {
     private double Longitude;
     private double Latitude;
     private String EquipmentName;
-    private String EquipmentId;
-    private int SN;
+    private String dvrType;
+    private int dvrID;
+    private String poleName;
 
     public Map() {
-    }
-
-    public Map(double latitude, double longitude, String equipmentName, int sN) {
-        Longitude = longitude;
-        Latitude = latitude;
-        EquipmentName = equipmentName;
-        SN = sN;
-    }
-
-    public int getSN() {
-        return SN;
-    }
-
-    public void setSN(int SN) {
-        this.SN = SN;
     }
 
     public double getLongitude() {
@@ -52,11 +38,27 @@ public class Map {
         EquipmentName = equipmentName;
     }
 
-    public String getEquipmentId() {
-        return EquipmentId;
+    public String getDvrType() {
+        return dvrType;
     }
 
-    public void setEquipmentId(String equipmentId) {
-        EquipmentId = equipmentId;
+    public void setDvrType(String dvrType) {
+        this.dvrType = dvrType;
+    }
+
+    public int getDvrID() {
+        return dvrID;
+    }
+
+    public void setDvrID(int dvrID) {
+        this.dvrID = dvrID;
+    }
+
+    public String getPoleName() {
+        return poleName;
+    }
+
+    public void setPoleName(String poleName) {
+        this.poleName = poleName;
     }
 }

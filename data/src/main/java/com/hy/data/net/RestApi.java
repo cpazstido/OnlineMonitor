@@ -66,6 +66,6 @@ public interface RestApi {
    * 取得地图列表
    */
 
-  Observable<List<MapEntity>> mapEntity(String userName,int choiceType);
+  Observable<List<MapEntity>> mapEntity(int userId,int choiceType);
 
 }

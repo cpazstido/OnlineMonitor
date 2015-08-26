@@ -1,60 +1,61 @@
 package com.hy.data.entity;
 
-/**
- * Created by 24363 on 2015/8/19.
- */
 public class MapEntity {
-    private double Longitude;
-    private double Latitude;
-    private String EquipmentName;
-    private String EquipmentId;
-    private int SN;
-
-    public MapEntity(double longitude, double latitude, String equipmentName, String equipmentId, int SN) {
-        Longitude = longitude;
-        Latitude = latitude;
-        EquipmentName = equipmentName;
-        EquipmentId = equipmentId;
-        this.SN = SN;
+    private double lng;
+    private double lat;
+    private String deviceName;
+    private int dvrID;
+    private String dvrType;
+    private String poleName;
+    public MapEntity() {
     }
 
-    public double getLongitude() {
-        return Longitude;
+    public double getLng() {
+        return lng;
     }
 
-    public void setLongitude(double longitude) {
-        Longitude = longitude;
+    public void setLng(double lng) {
+        this.lng = lng;
     }
 
-    public double getLatitude() {
-        return Latitude;
+    public double getLat() {
+        return lat;
     }
 
-    public void setLatitude(double latitude) {
-        Latitude = latitude;
+    public void setLat(double lat) {
+        this.lat = lat;
     }
 
-    public String getEquipmentName() {
-        return EquipmentName;
+    public String getDeviceName() {
+        return deviceName;
     }
 
-    public void setEquipmentName(String equipmentName) {
-        EquipmentName = equipmentName;
+    public void setDeviceName(String deviceName) {
+        this.deviceName = deviceName;
     }
 
-    public String getEquipmentId() {
-        return EquipmentId;
+
+    public int getDvrID() {
+        return dvrID;
     }
 
-    public void setEquipmentId(String equipmentId) {
-        EquipmentId = equipmentId;
+    public void setDvrID(int dvrID) {
+        this.dvrID = dvrID;
     }
 
-    public int getSN() {
-        return SN;
+    public String getDvrType() {
+        return dvrType;
     }
 
-    public void setSN(int SN) {
-        this.SN = SN;
+    public void setDvrType(String dvrType) {
+        this.dvrType = dvrType;
+    }
+
+    public String getPoleName() {
+        return poleName;
+    }
+
+    public void setPoleName(String poleName) {
+        this.poleName = poleName;
     }
 }

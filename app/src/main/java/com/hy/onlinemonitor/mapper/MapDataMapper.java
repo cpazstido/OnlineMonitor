@@ -16,12 +16,12 @@ public class MapDataMapper {
             throw new IllegalArgumentException("Cannot transform a null value");
         }
         Map map = new Map();
-        map.setSN(domainMap.getSN());
         map.setLongitude(domainMap.getLongitude());
         map.setLatitude(domainMap.getLatitude());
-        map.setEquipmentId(domainMap.getEquipmentId());
         map.setEquipmentName(domainMap.getEquipmentName());
-
+        map.setDvrID(domainMap.getDvrID());
+        map.setDvrType(domainMap.getDvrType());
+        map.setPoleName(domainMap.getPoleName());
         return map;
     }
 
