@@ -74,4 +74,5 @@ dependencies {
     compile project(':data')
     compile project(':domain')
     compile files('src/main/libs/baidumapapi_v3_5_0_1.jar')
+    compile project(':vitamios')
 }
