@@ -138,7 +138,7 @@
     <string name="more_information">详细信息</string>
     <string name="restart">复位</string>
 
-
+    <string name="refresh">刷新</string>
     <string name="default_url">http://171.221.207.58:8080/eMonitorApp/api</string>
 
 

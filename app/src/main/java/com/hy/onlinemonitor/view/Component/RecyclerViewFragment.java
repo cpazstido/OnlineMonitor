@@ -1,6 +1,5 @@
 package com.hy.onlinemonitor.view.Component;
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -15,7 +14,6 @@ import android.view.ViewGroup;
 import com.github.florent37.materialviewpager.MaterialViewPagerHelper;
 import com.github.florent37.materialviewpager.adapter.RecyclerViewMaterialAdapter;
 import com.hy.onlinemonitor.R;
-import com.hy.onlinemonitor.bean.AlarmInformation;
 import com.hy.onlinemonitor.bean.AlarmPage;
 import com.hy.onlinemonitor.presenter.AlarmPresenter;
 import com.hy.onlinemonitor.view.Adapter.AlarmRecyclerAdapter;
@@ -27,10 +25,6 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 public class RecyclerViewFragment extends Fragment implements AlarmListView {
-
-    public interface AlarmListListener {
-        void onAlarmClicked(final AlarmInformation alarmInformation);
-    }
 
     @Bind(R.id.recyclerView)
     RecyclerView recyclerView;
@@ -44,15 +38,8 @@ public class RecyclerViewFragment extends Fragment implements AlarmListView {
     private Context mContext;
     private AlarmPage alarmPage;
     private AlarmPresenter alarmPresenter;
-    private AlarmListListener alarmListListener;
-
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        if (activity instanceof AlarmListListener) {
-            this.alarmListListener = (AlarmListListener) activity;
-        }
-    }
+    private int status = -1;
+    private String queryAlarmType;
 
     public static RecyclerViewFragment newInstance(List<String> alarmTitle, int postion, int user) {
         Log.e("newInstance", "newInstance");
@@ -80,8 +67,7 @@ public class RecyclerViewFragment extends Fragment implements AlarmListView {
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
         alarmPage = new AlarmPage();
-        mAdapter = new AlarmRecyclerAdapter(alarmPage, mContext, showType);
-        this.mAdapter.setOnItemClickListener(onItemClickListener);
+        mAdapter = new AlarmRecyclerAdapter(alarmPage, mContext, showType,queryAlarmType,status);
         RcAdapter = new RecyclerViewMaterialAdapter(mAdapter);
         recyclerView.setAdapter(RcAdapter);
         MaterialViewPagerHelper.registerRecyclerView(getActivity(), recyclerView, null);
@@ -129,24 +115,6 @@ public class RecyclerViewFragment extends Fragment implements AlarmListView {
     }
 
     @Override
-    public void viewAlarm(AlarmInformation alarmInformation) {
-        if (this.alarmListListener != null) {
-            this.alarmListListener.onAlarmClicked(alarmInformation);
-        }
-    }
-
-    private AlarmRecyclerAdapter.OnItemClickListener onItemClickListener =
-            new AlarmRecyclerAdapter.OnItemClickListener() {
-                @Override
-                public void onAlarmItemClicked(AlarmInformation alarmInformation) {
-                    Log.e("OnItemClickListener","OnItemClickListener");
-                    if (RecyclerViewFragment.this.alarmPresenter != null && alarmInformation != null) {
-                        RecyclerViewFragment.this.alarmPresenter.onAlarmClicked(alarmInformation);
-                    }
-                }
-            };
-
-    @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser && isNoInit) {
@@ -154,8 +122,7 @@ public class RecyclerViewFragment extends Fragment implements AlarmListView {
             int postion = bundle.getInt("postion");
             isNoInit = false;
             this.initialize();
-            String queryAlarmType = null;
-            int status = -1;
+
             switch (alarmTitles.get(postion)) {
                 case "山火新报警":
                     queryAlarmType="fire";

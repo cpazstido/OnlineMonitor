@@ -10,7 +10,6 @@ import com.example.interactor.DefaultSubscriber;
 import com.example.interactor.UseCase;
 import com.hy.data.repository.AlarmDataRepository;
 import com.hy.onlinemonitor.UIThread;
-import com.hy.onlinemonitor.bean.AlarmInformation;
 import com.hy.onlinemonitor.bean.AlarmPage;
 import com.hy.onlinemonitor.mapper.PageDataMapper;
 import com.hy.onlinemonitor.view.AlarmListView;
@@ -135,7 +134,4 @@ public class AlarmPresenter implements Presenter {
         this.getAlarmListUseCase.unsubscribe();
     }
 
-    public void onAlarmClicked(AlarmInformation alarmInformation) {
-        this.alarmView.viewAlarm(alarmInformation);
-    }
 }

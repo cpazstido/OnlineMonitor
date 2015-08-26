@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,24 +21,43 @@ import com.r0adkll.slidr.model.SlidrPosition;
 import com.rey.material.widget.Button;
 import com.squareup.picasso.Picasso;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
 
-/**
- * Created by wsw on 2015/7/15.
- */
 public class DetailedAlarmActivity extends AppCompatActivity {
-    TextView isBlowing,alarmMessage;
-    ImageView detailedInfraredPicture,detailedVisablePicture;
-    Button playVideo,handleAlarm;
-    Toolbar toolbar;
+    @Bind(R.id.detailed_toolbar)
+    Toolbar detailedToolbar;
+    @Bind(R.id.detailed_play_video)
+    Button detailedPlayVideo;
+    @Bind(R.id.handle_alarm)
+    Button handleAlarm;
+    @Bind(R.id.detailed_blowing_equipment)
+    TextView detailedBlowingEquipment;
+    @Bind(R.id.show_isblowing)
+    RelativeLayout showIsblowing;
+    @Bind(R.id.detailed_alarm_information)
+    TextView detailedAlarmInformation;
+    @Bind(R.id.detailed_infrared_picture)
+    ImageView detailedInfraredPicture;
+    @Bind(R.id.detailed_visible_picture)
+    ImageView detailedVisiblePicture;
+
+    private String queryAlarmType;
+    private int status;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detailedalarm);
+        ButterKnife.bind(this);
         Intent itemIntent = getIntent();
         AlarmInformation alarmInformation = (AlarmInformation) itemIntent.getSerializableExtra("detailedAlarm");
+        queryAlarmType = itemIntent.getStringExtra("queryAlarmType");
+        status = itemIntent.getIntExtra("status", -1);
 
         SlidrConfig config = new SlidrConfig.Builder()
-                        .position(SlidrPosition.HORIZONTAL)
+                .position(SlidrPosition.HORIZONTAL)
                 .primaryColor(getResources().getColor(R.color.colorPrimary))
                 .secondaryColor(getResources().getColor(R.color.colorPrimaryDark))
                 .sensitivity(1f)
@@ -50,27 +70,31 @@ public class DetailedAlarmActivity extends AppCompatActivity {
 
         Slidr.attach(this, config);
 
-        toolbar = (Toolbar) findViewById(R.id.detailed_toolbar);
-        isBlowing = (TextView) findViewById(R.id.detailed_blowing_equipment);
-        alarmMessage = (TextView) findViewById(R.id.detailed_alarm_information);
-        detailedInfraredPicture = (ImageView) findViewById(R.id.detailed_infrared_picture);
-        detailedVisablePicture = (ImageView) findViewById(R.id.detailed_visible_picture);
-        playVideo = (Button) findViewById(R.id.detailed_play_video);
-        handleAlarm = (Button) findViewById(R.id.handle_alarm);
-        if(alarmInformation.getTypeAlarm() == 2||alarmInformation.getTypeAlarm() == 0||alarmInformation.getTypeAlarm() == 4){
+        if (status == 1) {
             handleAlarm.setVisibility(View.GONE);
         }
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle(alarmInformation.getAlarmName());
+        detailedToolbar.setTitle(alarmInformation.getDeviceId());
+        detailedToolbar.setSubtitle(alarmInformation.getCollectionTime());
+        setSupportActionBar(detailedToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        isBlowing.setText(alarmInformation.getIsBlowingEquipment());
-        alarmMessage.setText(alarmInformation.getAlarmInformation());
+        detailedAlarmInformation.setText(alarmInformation.getAlarmInformation());
 
-        Picasso.with(this).load(alarmInformation.getVisibleLightImage()).into(detailedVisablePicture);
-        Picasso.with(this).load(alarmInformation.getInfraredImage()).into(detailedInfraredPicture);
+        switch (queryAlarmType) {
+            case "fire":
+                detailedBlowingEquipment.setText(alarmInformation.getIsBlowingEquipment());
+                Picasso.with(this).load(alarmInformation.getVisibleLightImage()).into(detailedVisiblePicture);
+                Picasso.with(this).load(alarmInformation.getInfraredImage()).into(detailedInfraredPicture);
+                break;
+            case "break":
+                detailedVisiblePicture.setVisibility(View.GONE);
+                Picasso.with(this).load(alarmInformation.getInfraredImage()).into(detailedInfraredPicture);
+                showIsblowing.setVisibility(View.GONE);
+                break;
+        }
 
-        playVideo.setOnClickListener(new View.OnClickListener() {
+
+        detailedPlayVideo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(DetailedAlarmActivity.this, "播放视频!!", Toast.LENGTH_LONG).show();
@@ -80,7 +104,7 @@ public class DetailedAlarmActivity extends AppCompatActivity {
         handleAlarm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(DetailedAlarmActivity.this,"处理报警",Toast.LENGTH_LONG).show();
+                Toast.makeText(DetailedAlarmActivity.this, "处理报警", Toast.LENGTH_LONG).show();
             }
         });
 
@@ -90,7 +114,7 @@ public class DetailedAlarmActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         Log.e("getItemId", "" + item.getItemId());
 
-        if(item.getItemId() == android.R.id.home){
+        if (item.getItemId() == android.R.id.home) {
             finish();
             return true;
         }

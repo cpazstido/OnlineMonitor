@@ -8,10 +8,6 @@ import android.widget.TextView;
 import com.hy.onlinemonitor.R;
 import com.rey.material.widget.Button;
 
-/**
- * Created by wsw on 2015/7/15.
- */
-
 public class EquipmentListViewHolder extends RecyclerView.ViewHolder{
     public TextView stateShow,equipmentName,equipmentAlarmNull;
     public Button newSensorAlarm,newFireAlarm,newBreakAlarm,historySensorAlarm,historyFireAlarm,historyBreakAlarm,realVideo;

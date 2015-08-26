@@ -8,18 +8,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 
 import com.baoyz.widget.PullRefreshLayout;
 import com.hy.onlinemonitor.R;
-import com.hy.onlinemonitor.bean.AlarmInformation;
 import com.hy.onlinemonitor.bean.AlarmPage;
 import com.hy.onlinemonitor.presenter.AlarmPresenter;
 import com.hy.onlinemonitor.utile.GetLoading;
 import com.hy.onlinemonitor.view.Adapter.AlarmRecyclerAdapter;
 import com.hy.onlinemonitor.view.AlarmListView;
-import com.hy.onlinemonitor.view.Component.RecyclerViewFragment;
 import com.hy.onlinemonitor.view.InitView;
 
 import butterknife.Bind;
@@ -28,7 +25,7 @@ import butterknife.ButterKnife;
 /**
  * Created by 24363 on 2015/8/20.
  */
-public class SingleAlarmInformationActivity extends AppCompatActivity implements AlarmListView, RecyclerViewFragment.AlarmListListener, InitView {
+public class SingleAlarmInformationActivity extends AppCompatActivity implements AlarmListView, InitView {
     @Bind(R.id.toolbar)
     Toolbar toolbar;
     @Bind(R.id.rv_recyclerview_data)
@@ -43,17 +40,6 @@ public class SingleAlarmInformationActivity extends AppCompatActivity implements
     private AlarmPage alarmPage;
     private String equipmentName;
     private String queryAlarmType;
-
-    private AlarmRecyclerAdapter.OnItemClickListener onItemClickListener =
-            new AlarmRecyclerAdapter.OnItemClickListener() {
-                @Override
-                public void onAlarmItemClicked(AlarmInformation alarmInformation) {
-                    Log.e("OnItemClickListener", "OnItemClickListener");
-                    if (SingleAlarmInformationActivity.this.alarmPresenter != null && alarmInformation != null) {
-                        SingleAlarmInformationActivity.this.alarmPresenter.onAlarmClicked(alarmInformation);
-                    }
-                }
-            };
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -92,13 +78,6 @@ public class SingleAlarmInformationActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onAlarmClicked(AlarmInformation alarmInformation) {
-        Intent intent = new Intent(SingleAlarmInformationActivity.this, DetailedAlarmActivity.class);
-        intent.putExtra("detailedAlarm", alarmInformation);
-        startActivity(intent);
-    }
-
-    @Override
     public void showLoading() {
         loadingDialog.show();
     }
@@ -127,7 +106,6 @@ public class SingleAlarmInformationActivity extends AppCompatActivity implements
         alarmPage = new AlarmPage();
 
         mAdapter = new AlarmRecyclerAdapter(alarmPage, SingleAlarmInformationActivity.this, showType, queryAlarmType, status);
-        mAdapter.setOnItemClickListener(onItemClickListener);
         rvRecyclerviewData.setAdapter(mAdapter);
     }
 
@@ -143,11 +121,6 @@ public class SingleAlarmInformationActivity extends AppCompatActivity implements
             this.alarmPage = alarmPage;
             this.mAdapter.setAlarmCollection(alarmPage.getList());
         }
-    }
-
-    @Override
-    public void viewAlarm(AlarmInformation alarmInformation) {
-        this.onAlarmClicked(alarmInformation);
     }
 
     private void loadAlarmList(int userId, String equipmentName, String queryAlarmType, int status, int pageNumber) {

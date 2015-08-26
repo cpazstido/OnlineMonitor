@@ -18,8 +18,17 @@ public class AlarmInformation implements Serializable {
     private String isBlowingEquipment;
     private String videoFileName;
     private String CollectionTime;
+    private int status; //0是新报警,1是历史报警
 
     public AlarmInformation() {
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
     }
 
     public int getAlarmSn() {
