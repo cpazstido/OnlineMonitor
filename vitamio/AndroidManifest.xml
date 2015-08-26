@@ -3,7 +3,6 @@
           android:versionCode="400"
           android:versionName="4.0">
 
-
     <uses-sdk
             android:minSdkVersion="14"
             android:targetSdkVersion="22"/>
