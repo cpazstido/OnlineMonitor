@@ -31,6 +31,7 @@ public class AlarmEntityDataMapper {
             domainAlarmInformation.setIsBlowingEquipment(alarmEntity.getIsBlowingEquipment());
             domainAlarmInformation.setVideoFileName(alarmEntity.getVideoFileName());
             domainAlarmInformation.setCollectionTime(alarmEntity.getCollectionTime());
+            domainAlarmInformation.setLineName(alarmEntity.getCircuitName());
         }
 
         return domainAlarmInformation;

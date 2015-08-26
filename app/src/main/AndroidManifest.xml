@@ -72,7 +72,9 @@
         <activity android:name=".view.Activity.Function.SingleAlarmInformationActivity"
             android:launchMode="singleTask"
             />
-
+        <activity android:name=".view.Activity.Function.VideoActivity"
+            android:launchMode="singleTask"
+            />
     </application>
 
 </manifest>

@@ -12,6 +12,7 @@ import android.widget.EditText;
 import com.hy.onlinemonitor.R;
 import com.hy.onlinemonitor.presenter.LoginPresenter;
 import com.hy.onlinemonitor.utile.GetLoading;
+import com.hy.onlinemonitor.view.Activity.Function.VideoActivity;
 import com.hy.onlinemonitor.view.JumpView;
 import com.rey.material.widget.Button;
 import com.rey.material.widget.SnackBar;
@@ -44,7 +45,7 @@ public class LoginActivity extends AppCompatActivity implements JumpView {
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                loginPresenter.initialize(loginAccount.getText().toString(),loginPwd.getText().toString());
+                loginPresenter.initialize(loginAccount.getText().toString(), loginPwd.getText().toString());
             }
         });
 
@@ -53,7 +54,8 @@ public class LoginActivity extends AppCompatActivity implements JumpView {
             public void onClick(View v) {
                 loginAccount.setText("");
                 loginPwd.setText("");
-                startActivity(new Intent(LoginActivity.this,TestActivity.class));
+                startActivity(new Intent(LoginActivity.this, VideoActivity.class));
+
             }
         });
     }

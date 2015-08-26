@@ -16,8 +16,17 @@ public class AlarmEntity {
     private String isBlowingEquipment;
     private String videoFileName;
     private String CollectionTime;
+    private String circuitName;
 
     public AlarmEntity() {
+    }
+
+    public String getCircuitName() {
+        return circuitName;
+    }
+
+    public void setCircuitName(String circuitName) {
+        this.circuitName = circuitName;
     }
 
     public int getAlarmSn() {

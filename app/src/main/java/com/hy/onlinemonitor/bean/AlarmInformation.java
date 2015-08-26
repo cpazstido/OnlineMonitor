@@ -9,6 +9,7 @@ public class AlarmInformation implements Serializable {
     private int alarmSn;
     private int deviceSn;
     private String poleName;
+    private String lineName;
     private String deviceId;
     private String dvrID;
     private String alarmInformation;
@@ -21,6 +22,14 @@ public class AlarmInformation implements Serializable {
     private int status; //0是新报警,1是历史报警
 
     public AlarmInformation() {
+    }
+
+    public String getLineName() {
+        return lineName;
+    }
+
+    public void setLineName(String lineName) {
+        this.lineName = lineName;
     }
 
     public int getStatus() {

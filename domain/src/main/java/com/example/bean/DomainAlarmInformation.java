@@ -7,6 +7,7 @@ public class DomainAlarmInformation {
     private int alarmSn;
     private int deviceSn;
     private String poleName;
+    private String lineName;
     private String deviceId;
     private String dvrID;
     private String alarmInformation;
@@ -114,5 +115,13 @@ public class DomainAlarmInformation {
 
     public void setCollectionTime(String collectionTime) {
         CollectionTime = collectionTime;
+    }
+
+    public String getLineName() {
+        return lineName;
+    }
+
+    public void setLineName(String lineName) {
+        this.lineName = lineName;
     }
 }

@@ -44,7 +44,7 @@ public class DetailedAlarmActivity extends AppCompatActivity {
 
     private String queryAlarmType;
     private int status;
-
+    private AlarmInformation alarmInformation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +52,7 @@ public class DetailedAlarmActivity extends AppCompatActivity {
         setContentView(R.layout.activity_detailedalarm);
         ButterKnife.bind(this);
         Intent itemIntent = getIntent();
-        AlarmInformation alarmInformation = (AlarmInformation) itemIntent.getSerializableExtra("detailedAlarm");
+        alarmInformation = (AlarmInformation) itemIntent.getSerializableExtra("detailedAlarm");
         queryAlarmType = itemIntent.getStringExtra("queryAlarmType");
         status = itemIntent.getIntExtra("status", -1);
 
@@ -97,7 +97,10 @@ public class DetailedAlarmActivity extends AppCompatActivity {
         detailedPlayVideo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(DetailedAlarmActivity.this, "播放视频!!", Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(DetailedAlarmActivity.this, VideoActivity.class);
+                intent.putExtra("type", "history");
+                intent.putExtra("AlarmInformation", alarmInformation);
+                startActivity(intent);
             }
         });
 

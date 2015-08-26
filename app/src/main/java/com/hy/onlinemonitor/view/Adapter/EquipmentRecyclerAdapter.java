@@ -11,6 +11,7 @@ import com.hy.onlinemonitor.R;
 import com.hy.onlinemonitor.bean.EquipmentInformation;
 import com.hy.onlinemonitor.bean.EquipmentPage;
 import com.hy.onlinemonitor.view.Activity.Function.SingleAlarmInformationActivity;
+import com.hy.onlinemonitor.view.Activity.Function.VideoActivity;
 import com.hy.onlinemonitor.view.ViewHolder.EquipmentListViewHolder;
 import com.lid.lib.LabelView;
 
@@ -70,8 +71,9 @@ public class EquipmentRecyclerAdapter extends RecyclerView.Adapter<EquipmentList
         holder.realVideo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Intent intent = new Intent(holder.itemView.getContext(), VideoActivity.class);
-//                holder.itemView.getContext().startActivity(intent);
+                Intent intent = new Intent(holder.itemView.getContext(), VideoActivity.class);
+                intent.putExtra("type","real");
+                holder.itemView.getContext().startActivity(intent);
             }
         });
         holder.historyBreakAlarm.setOnClickListener(new View.OnClickListener() {
