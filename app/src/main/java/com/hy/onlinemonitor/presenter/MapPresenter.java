@@ -7,6 +7,7 @@ import com.example.bean.DomainMap;
 import com.example.interactor.DefaultSubscriber;
 import com.example.interactor.MapUseCase;
 import com.example.interactor.UseCase;
+import com.example.repository.MapRepository;
 import com.hy.data.repository.MapDataRepository;
 import com.hy.onlinemonitor.UIThread;
 import com.hy.onlinemonitor.bean.Map;
@@ -75,7 +76,7 @@ public class MapPresenter implements Presenter{
     }
 
     private void getMapList() {
-        MapDataRepository mapDataRepository = new MapDataRepository(mContext, userId,selectedType);
+        MapRepository mapDataRepository = new MapDataRepository(mContext, userId,selectedType);
         this.getMapListUseCase = new MapUseCase(new UIThread(), AndroidSchedulers.mainThread(), mapDataRepository);
         this.getMapListUseCase.execute(new MapListSubscriber());
 

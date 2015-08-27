@@ -2,9 +2,6 @@ package com.hy.onlinemonitor.bean;
 
 import java.io.Serializable;
 
-/**
- * Created by wsw on 2015/7/18.
- */
 public class Map implements Serializable{
     private double Longitude;
     private double Latitude;

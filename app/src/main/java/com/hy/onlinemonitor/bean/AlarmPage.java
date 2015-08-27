@@ -3,9 +3,6 @@ package com.hy.onlinemonitor.bean;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by 24363 on 2015/8/21.
- */
 public class AlarmPage {
     private int pageNum;
     private int pageSize=10;

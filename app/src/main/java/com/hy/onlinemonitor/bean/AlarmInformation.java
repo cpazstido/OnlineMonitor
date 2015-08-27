@@ -2,9 +2,6 @@ package com.hy.onlinemonitor.bean;
 
 import java.io.Serializable;
 
-/**
- * Created by wsw on 2015/7/15.
- */
 public class AlarmInformation implements Serializable {
     private int alarmSn;
     private int deviceSn;

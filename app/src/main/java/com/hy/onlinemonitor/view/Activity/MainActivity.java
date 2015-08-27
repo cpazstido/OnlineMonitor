@@ -11,6 +11,7 @@ import com.hy.onlinemonitor.R;
 import com.hy.onlinemonitor.view.Activity.Function.AlarmInformationActivity;
 import com.hy.onlinemonitor.view.Activity.Function.EquipmentListViewActivity;
 import com.hy.onlinemonitor.view.Activity.Function.MapActivity;
+import com.hy.onlinemonitor.view.Activity.SystemManagement.AdministratorManageActivity;
 import com.hy.onlinemonitor.view.Adapter.MainGridAdapter;
 import com.hy.onlinemonitor.view.Component.MyGridView;
 
@@ -104,8 +105,8 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
 //                        startActivity(gridCompanyIntent);
                         break;
                     case 1://管理员
-//                        Intent gridAdministratorIntent = new Intent(MainActivity.this, AdministratorManageActivity.class);
-//                        startActivity(gridAdministratorIntent);
+                        Intent gridAdministratorIntent = new Intent(MainActivity.this, AdministratorManageActivity.class);
+                        startActivity(gridAdministratorIntent);
                         break;
                     case 2://权限
 //                        Intent gridAuthorityIntent = new Intent(MainActivity.this, JurisdictionManageActivity.class);

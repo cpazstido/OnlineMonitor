@@ -112,6 +112,7 @@
     <string name="company_parent">上级公司</string>
 
     <string name="administrator">管理员</string>
+    <string name="role">角色</string>
     <string name="role_name">角色名称</string>
     <string name="role_add">添加角色</string>
     <string name="role_add_hint">角色名不能为空</string>

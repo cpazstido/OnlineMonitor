@@ -10,9 +10,6 @@ import com.hy.data.net.RestApiImpl;
 
 import rx.Observable;
 
-/**
- * Created by 24363 on 2015/8/18.
- */
 public class AlarmDataRepository implements AlarmRepository{
 
     private Context mContext;

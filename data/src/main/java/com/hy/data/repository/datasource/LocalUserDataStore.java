@@ -9,9 +9,7 @@ import java.util.List;
 
 import rx.Observable;
 
-/**
- * Created by 24363 on 2015/8/11.
- */
+
 public class LocalUserDataStore implements UserDataStore{
     UserCache userCache;
     Context mContext;

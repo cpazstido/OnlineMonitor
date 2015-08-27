@@ -63,7 +63,7 @@ dependencies {
     //对话框
     compile 'com.afollestad:material-dialogs:0.7.7.0'
     //树形菜单
-    compile 'com.github.bmelnychuk:atv:1.2.4'
+    compile 'com.github.bmelnychuk:atv:1.2.+'
     compile 'com.github.johnkil.print:print:1.2.2'
     compile 'io.reactivex:rxandroid:1.0.0'
     //viewpager的库

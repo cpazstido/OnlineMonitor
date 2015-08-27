@@ -7,9 +7,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-/**
- * Created by 24363 on 2015/8/13.
- */
 public class EquipmentDataMapper {
     public EquipmentDataMapper() {}
 
@@ -19,13 +16,14 @@ public class EquipmentDataMapper {
         }
         EquipmentInformation equipmentInformation = new EquipmentInformation();
 
-        equipmentInformation.setSN(domainEquipmentInformation.getSN());
+        equipmentInformation.setSn(domainEquipmentInformation.getSN());
         equipmentInformation.setNewSensorAlarm(domainEquipmentInformation.getNewSensorAlarm());
         equipmentInformation.setNewFireAlarm(domainEquipmentInformation.getNewFireAlarm());
         equipmentInformation.setNewBreakAlarm(domainEquipmentInformation.getNewBreakAlarm());
         equipmentInformation.setEquipmnetState(domainEquipmentInformation.getEquipmnetState());
         equipmentInformation.setEquipmnetName(domainEquipmentInformation.getEquipmnetName());
-
+        equipmentInformation.setDvrId(domainEquipmentInformation.getDvrId());
+        equipmentInformation.setDvrType(domainEquipmentInformation.getDvrType());
         return equipmentInformation;
     }
 

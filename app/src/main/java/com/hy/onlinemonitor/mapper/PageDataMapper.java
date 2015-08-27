@@ -1,13 +1,13 @@
 package com.hy.onlinemonitor.mapper;
 
 import com.example.bean.DoaminEquipmentPage;
+import com.example.bean.DomainAdministratorPage;
 import com.example.bean.DomainAlarmPage;
+import com.hy.onlinemonitor.bean.AdministratorPage;
 import com.hy.onlinemonitor.bean.AlarmPage;
 import com.hy.onlinemonitor.bean.EquipmentPage;
 
-/**
- * Created by 24363 on 2015/8/21.
- */
+
 public class PageDataMapper {
 
     public PageDataMapper() {
@@ -43,4 +43,19 @@ public class PageDataMapper {
         return alarmPage;
     }
 
+    public AdministratorPage transform(DomainAdministratorPage domainAdministratorPage) {
+        if (null == domainAdministratorPage) {
+            throw new IllegalArgumentException("Cannot transform a null value");
+        }
+        AdministratorDataMapper administratorDataMapper = new AdministratorDataMapper();
+
+        AdministratorPage administratorPage = new AdministratorPage();
+        administratorPage.setRowCount(domainAdministratorPage.getRowCount());
+        administratorPage.setPageNum(domainAdministratorPage.getPageNum());
+        administratorPage.setPageSize(domainAdministratorPage.getPageSize());
+        administratorPage.setTotalPage(domainAdministratorPage.getTotalPage());
+        administratorPage.setList(administratorDataMapper.transform(domainAdministratorPage.getList()));
+
+        return administratorPage;
+    }
 }

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/toolbar" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <com.rey.material.widget.Button
+            android:visibility="gone"
+            style="@style/RaiseColorButtonRippleStyle"
+            android:id="@+id/choice_btn"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/bt_height"
+            android:layout_weight="0.4"
+            android:textColor="#FFFFFFFF"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Button"
+            app:rd_delayClick="afterRelease"/>
+    </LinearLayout>
+    <com.rey.material.widget.Spinner
+        style="@style/Material.Widget.Spinner.Light"
+        android:id="@+id/spinner_choice_company"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:minWidth="128dp"
+        app:rd_style="@style/Material.Drawable.Ripple.Wave.Light"
+        app:rd_enable="true"
+        app:rd_delayClick="none"
+        app:spn_labelEnable="true"
+        app:spn_label="公司选择:"
+        app:spn_arrowSwitchMode="true"
+        app:spn_arrowAnimDuration="@android:integer/config_shortAnimTime"
+        app:spn_arrowInterpolator="@android:anim/decelerate_interpolator"/>
+    <TextView
+        android:id="@+id/role_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/role_name"
+        android:textSize="@dimen/mTitle"
+        android:visibility="gone" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/sm_rv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+</LinearLayout>

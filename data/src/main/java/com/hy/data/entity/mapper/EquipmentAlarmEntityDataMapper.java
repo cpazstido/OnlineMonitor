@@ -25,6 +25,8 @@ public class EquipmentAlarmEntityDataMapper {
             domainEquipmentInformation.setNewBreakAlarm(equipmentEntity.getNewBreakAlarm());
             domainEquipmentInformation.setNewFireAlarm(equipmentEntity.getNewFireAlarm());
             domainEquipmentInformation.setNewSensorAlarm(equipmentEntity.getNewSensorAlarm());
+            domainEquipmentInformation.setDvrType(equipmentEntity.getDvrType());
+            domainEquipmentInformation.setDvrId(domainEquipmentInformation.getDvrId());
         }
 
         return domainEquipmentInformation;

@@ -1,7 +1,6 @@
 package com.hy.onlinemonitor.view.Activity.Function;
 
 import android.content.Context;
-import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -36,7 +35,7 @@ public class EquipmentListViewActivity extends BaseActivity implements LoadDataV
     private EquipmentListPresenter equipmentListPresenter;
     private AlertDialog loadingDialog;
     private LinearLayoutManager linearLayoutManager;
-    private int pageNumber = 0 ;
+    private int pageNumber = 1 ;
     private int lastVisibleItem;
     @Override
     protected Toolbar getToolbar() {
@@ -48,6 +47,7 @@ public class EquipmentListViewActivity extends BaseActivity implements LoadDataV
     @Override
     protected void setOwnContentView() {
         setContentView(R.layout.activity_equipmentlist);
+        ButterKnife.bind(this);
     }
 
     private void loadEquipmentList(int pageNumber) {
@@ -123,7 +123,6 @@ public class EquipmentListViewActivity extends BaseActivity implements LoadDataV
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 lastVisibleItem = linearLayoutManager.findLastVisibleItemPosition();
                 int totalItemCount = mAdapter.getItemCount();
-
 //                Log.e("show","lastVisibleItem"+lastVisibleItem+"--totalItemCount"+totalItemCount);
 //                Log.e("show","equipmentPage.getRowCount()"+equipmentPage.getRowCount());
                 if(lastVisibleItem == totalItemCount -1 && dy > 0 && equipmentPage.getRowCount() >totalItemCount){
@@ -147,9 +146,39 @@ public class EquipmentListViewActivity extends BaseActivity implements LoadDataV
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
+    protected void onStop() {
+        Log.e("recy","onStop");
+        super.onStop();
+    }
+
+    @Override
+    protected void onPause() {
+        Log.e("recy","onPause");
+        super.onPause();
+    }
+
+    @Override
+    protected void onResume() {
+        Log.e("recy","onResume");
+
+        super.onResume();
+    }
+
+    @Override
+    protected void onDestroy() {
+        Log.e("recy","onDestroy");
+        super.onDestroy();
+    }
+
+    @Override
+    protected void onRestart() {
+        Log.e("recy","onRestart");
+        super.onRestart();
+    }
+
+    @Override
+    protected void onStart() {
+        Log.e("recy","onStart");
+        super.onStart();
     }
 }

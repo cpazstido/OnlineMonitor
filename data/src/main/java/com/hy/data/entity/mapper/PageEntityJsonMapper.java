@@ -3,6 +3,7 @@ package com.hy.data.entity.mapper;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
+import com.hy.data.entity.AdministratorPageEntity;
 import com.hy.data.entity.AlarmPageEntity;
 import com.hy.data.entity.EquipmentPageEntity;
 
@@ -23,7 +24,13 @@ public class PageEntityJsonMapper {
 
     public EquipmentPageEntity transformEquipmentPageEntity(String equipmentPageJsonResponse) throws JsonSyntaxException {
         Type EquipmentPageEntityType = new TypeToken<EquipmentPageEntity>() {}.getType();
+
         return this.gson.fromJson(equipmentPageJsonResponse, EquipmentPageEntityType);
     }
 
+    public AdministratorPageEntity transformAdministratorPageEntity(String administratorPageJsonResponse) throws JsonSyntaxException {
+        Type AdministratorPageEntityType = new TypeToken<AdministratorPageEntity>() {}.getType();
+
+        return this.gson.fromJson(administratorPageJsonResponse, AdministratorPageEntityType);
+    }
 }

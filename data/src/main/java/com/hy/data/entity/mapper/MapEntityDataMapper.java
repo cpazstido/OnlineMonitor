@@ -7,9 +7,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-/**
- * Created by 24363 on 2015/8/19.
- */
 public class MapEntityDataMapper {
     public MapEntityDataMapper() {
     }

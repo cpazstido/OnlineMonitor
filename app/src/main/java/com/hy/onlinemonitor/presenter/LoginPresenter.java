@@ -28,7 +28,6 @@ public class LoginPresenter extends DefaultSubscriber implements Presenter{
     private Context mContext;
     private String loginAccount;
     private String loginPwd;
-    private UserRepository userRepository;
     private UseCase loginUseCase;
 
 
@@ -74,8 +73,8 @@ public class LoginPresenter extends DefaultSubscriber implements Presenter{
     }
 
     private void userLogin() {
-        userRepository = new UserDataRepository(new UserDataStoreFactory(mContext),new UserEntityDataMapper());
-        this.loginUseCase = new LoginUseCase(new UIThread(), AndroidSchedulers.mainThread(),userRepository,loginAccount,loginPwd);
+        UserRepository userRepository = new UserDataRepository(new UserDataStoreFactory(mContext), new UserEntityDataMapper());
+        this.loginUseCase = new LoginUseCase(new UIThread(), AndroidSchedulers.mainThread(), userRepository,loginAccount,loginPwd);
         this.loginUseCase.execute(new UserSubscriber());
     }
 

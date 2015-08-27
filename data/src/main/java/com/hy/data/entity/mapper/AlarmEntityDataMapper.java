@@ -7,14 +7,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-/**
- * Created by 24363 on 2015/8/18.
- */
 public class AlarmEntityDataMapper {
     public AlarmEntityDataMapper() {
     }
 
-    public DomainAlarmInformation transform (AlarmEntity alarmEntity){
+    public DomainAlarmInformation transform(AlarmEntity alarmEntity) {
         DomainAlarmInformation domainAlarmInformation = null;
 
         if (alarmEntity != null) {
@@ -48,6 +45,5 @@ public class AlarmEntityDataMapper {
         }
         return domainAlarmInformations;
     }
-
 
 }

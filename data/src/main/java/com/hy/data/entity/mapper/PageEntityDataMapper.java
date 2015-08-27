@@ -1,7 +1,9 @@
 package com.hy.data.entity.mapper;
 
 import com.example.bean.DoaminEquipmentPage;
+import com.example.bean.DomainAdministratorPage;
 import com.example.bean.DomainAlarmPage;
+import com.hy.data.entity.AdministratorPageEntity;
 import com.hy.data.entity.AlarmPageEntity;
 import com.hy.data.entity.EquipmentPageEntity;
 
@@ -38,5 +40,19 @@ public class PageEntityDataMapper {
             domainAlarmPage.setRowCount(alarmPageEntity.getRowCount());
         }
         return domainAlarmPage;
+    }
+
+    public DomainAdministratorPage transform(AdministratorPageEntity administratorPageEntity) {
+        DomainAdministratorPage domainAdministratorPage = null;
+        AdministratorEntityDataMapper administratorEntityDataMapper = new AdministratorEntityDataMapper();
+        if (null != administratorPageEntity) {
+            domainAdministratorPage = new DomainAdministratorPage();
+            domainAdministratorPage.setTotalPage(administratorPageEntity.getTotalPage());
+            domainAdministratorPage.setPageSize(administratorPageEntity.getPageSize());
+            domainAdministratorPage.setPageNum(administratorPageEntity.getPageNum());
+            domainAdministratorPage.setList(administratorEntityDataMapper.transform(administratorPageEntity.getList()));
+            domainAdministratorPage.setRowCount(administratorPageEntity.getRowCount());
+        }
+        return domainAdministratorPage;
     }
 }

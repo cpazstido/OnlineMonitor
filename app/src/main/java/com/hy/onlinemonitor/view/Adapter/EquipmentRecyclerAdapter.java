@@ -73,6 +73,23 @@ public class EquipmentRecyclerAdapter extends RecyclerView.Adapter<EquipmentList
             public void onClick(View v) {
                 Intent intent = new Intent(holder.itemView.getContext(), VideoActivity.class);
                 intent.putExtra("type","real");
+                String choiceStr =null;
+                switch (selectionType){
+                    case 0:
+                        choiceStr = "fire";
+                        break;
+                    case 1:
+                        choiceStr = "break";
+                        break;
+                    case 2:
+                        choiceStr = "video";
+                        break;
+                    case 3:
+                        choiceStr = "auv";
+                        break;
+                }
+                intent.putExtra("choiceType",choiceStr);
+                intent.putExtra("EquipmentInformation",equipmentInformation);
                 holder.itemView.getContext().startActivity(intent);
             }
         });

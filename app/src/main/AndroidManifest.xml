@@ -75,6 +75,9 @@
         <activity android:name=".view.Activity.Function.VideoActivity"
             android:launchMode="singleTask"
             />
+        <activity android:name=".view.Activity.SystemManagement.AdministratorManageActivity"
+            android:launchMode="singleTask"/>
+
     </application>
 
 </manifest>

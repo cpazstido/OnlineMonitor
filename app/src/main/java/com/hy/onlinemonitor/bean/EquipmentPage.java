@@ -3,9 +3,6 @@ package com.hy.onlinemonitor.bean;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by 24363 on 2015/8/21.
- */
 public class EquipmentPage {
     private int pageNum;                        //当前页数
     private int pageSize=10;                    //每页显示的数量

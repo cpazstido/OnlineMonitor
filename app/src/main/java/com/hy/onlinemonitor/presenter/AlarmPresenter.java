@@ -8,6 +8,7 @@ import com.example.bean.DomainAlarmPage;
 import com.example.interactor.AlarmUseCase;
 import com.example.interactor.DefaultSubscriber;
 import com.example.interactor.UseCase;
+import com.example.repository.AlarmRepository;
 import com.hy.data.repository.AlarmDataRepository;
 import com.hy.onlinemonitor.UIThread;
 import com.hy.onlinemonitor.bean.AlarmPage;
@@ -25,7 +26,7 @@ public class AlarmPresenter implements Presenter {
     private String queryAlarmType;
     private PageDataMapper pageDataMapper;
     private int status;
-
+    private AlarmRepository alarmDataRepository;
     public AlarmPresenter(Context mContext) {
         this.mContext = mContext;
         this.pageDataMapper = new PageDataMapper();
@@ -79,13 +80,13 @@ public class AlarmPresenter implements Presenter {
     }
 
     private void getAlarmList(int pageNumber) {   //获取所有的设备的报警
-        AlarmDataRepository alarmDataRepository = new AlarmDataRepository(mContext, userId, queryAlarmType, status, pageNumber);
+        alarmDataRepository = new AlarmDataRepository(mContext, userId, queryAlarmType, status, pageNumber);
         this.getAlarmListUseCase = new AlarmUseCase(new UIThread(), AndroidSchedulers.mainThread(), alarmDataRepository);
         this.getAlarmListUseCase.execute(new AlarmListSubscriber());
     }
 
     private void getAlarmList(String equipmentName,int pageNumber) {   //获取名称为equipmentName的设备的报警
-        AlarmDataRepository alarmDataRepository = new AlarmDataRepository(mContext, userId, queryAlarmType, status, pageNumber);
+        alarmDataRepository = new AlarmDataRepository(mContext, userId, queryAlarmType, status, pageNumber);
         this.getAlarmListUseCase = new AlarmUseCase(new UIThread(), AndroidSchedulers.mainThread(), alarmDataRepository, equipmentName);
         this.getAlarmListUseCase.execute(new AlarmListSubscriber());
     }
