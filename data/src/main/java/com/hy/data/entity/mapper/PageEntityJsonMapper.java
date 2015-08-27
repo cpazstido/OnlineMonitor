@@ -23,6 +23,7 @@ public class PageEntityJsonMapper {
 
     public EquipmentPageEntity transformEquipmentPageEntity(String equipmentPageJsonResponse) throws JsonSyntaxException {
         Type EquipmentPageEntityType = new TypeToken<EquipmentPageEntity>() {}.getType();
+
         return this.gson.fromJson(equipmentPageJsonResponse, EquipmentPageEntityType);
     }
 

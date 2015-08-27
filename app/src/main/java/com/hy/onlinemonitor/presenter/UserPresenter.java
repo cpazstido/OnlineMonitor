@@ -28,6 +28,7 @@ import rx.schedulers.Schedulers;
  */
 public class UserPresenter extends DefaultSubscriber implements Presenter {
     private TypeSelectionActivity typeSelectionActivity;
+
     private BaseActivity baseActivity;
     private UserRepository userRepository;
     private UseCase UserInformationCase;
@@ -67,6 +68,8 @@ public class UserPresenter extends DefaultSubscriber implements Presenter {
     private final class UserInformationSubscriber extends DefaultSubscriber<DomainUser> {
         @Override
         public void onCompleted() {
+            baseActivity.setupUI();
+            baseActivity.initialize();
         }
 
         @Override
@@ -79,8 +82,7 @@ public class UserPresenter extends DefaultSubscriber implements Presenter {
             User user = new UserDataMapper().transform(domainUser);
             baseActivity.setUser(user);
             baseActivity.getUserNameTV().setText(domainUser.getCompanyName());
-            baseActivity.setupUI();
-            baseActivity.initialize();
+
         }
     }
 
@@ -138,8 +140,7 @@ public class UserPresenter extends DefaultSubscriber implements Presenter {
             typeSelectionActivity.setOwnedEquipmentList(ownedEquipmentList);
         }
     }
-
-    public void setBaseAcitvity(@NonNull BaseActivity baseActivity) {
+    public void setBaseActivity(@NonNull BaseActivity baseActivity) {
         this.baseActivity = baseActivity;
     }
 

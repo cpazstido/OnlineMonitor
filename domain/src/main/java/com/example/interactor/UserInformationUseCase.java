@@ -10,7 +10,7 @@ import rx.Scheduler;
  * Created by 24363 on 2015/8/11.
  */
 public class UserInformationUseCase extends UseCase {
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
     private int choiceType = -1;
     private String getUser = "";
     public UserInformationUseCase(PostExecutionThread postExecutionThread, Scheduler subExecutionThread, UserRepository userRepository, int choiceType) {

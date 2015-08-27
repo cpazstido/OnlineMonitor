@@ -2,19 +2,27 @@ package com.hy.onlinemonitor.view.Activity;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-
-import com.hy.onlinemonitor.R;
+import android.view.MenuItem;
 
 
 /**
  * Created by Administrator on 2015/7/14.
  */
-public class TestActivity extends AppCompatActivity {
-    android.support.v7.app.AlertDialog ad;
+public class TestActivity  extends AppCompatActivity{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_test);
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+
 }

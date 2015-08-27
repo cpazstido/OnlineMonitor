@@ -10,15 +10,8 @@ public class EquipmentEntity {
     private int newFireAlarm;
     private int newBreakAlarm;
     private int newSensorAlarm;
-
-    public EquipmentEntity(String equipmnetName, String equipmnetState, int SN, int newFireAlarm, int newBreakAlarm, int newSensorAlarm) {
-        this.equipmnetName = equipmnetName;
-        this.equipmnetState = equipmnetState;
-        this.SN = SN;
-        this.newFireAlarm = newFireAlarm;
-        this.newBreakAlarm = newBreakAlarm;
-        this.newSensorAlarm = newSensorAlarm;
-    }
+    private int dvrId;
+    private String dvrType;
 
     public EquipmentEntity() {
     }
@@ -69,5 +62,21 @@ public class EquipmentEntity {
 
     public void setNewSensorAlarm(int newSensorAlarm) {
         this.newSensorAlarm = newSensorAlarm;
+    }
+
+    public int getDvrId() {
+        return dvrId;
+    }
+
+    public void setDvrId(int dvrId) {
+        this.dvrId = dvrId;
+    }
+
+    public String getDvrType() {
+        return dvrType;
+    }
+
+    public void setDvrType(String dvrType) {
+        this.dvrType = dvrType;
     }
 }

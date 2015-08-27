@@ -1,26 +1,21 @@
 package com.hy.onlinemonitor.bean;
 
+import java.io.Serializable;
+
 /**
  * Created by wsw on 2015/7/15.
  */
-public class EquipmentInformation {
-
-    private String equipmnetName;
-    private String equipmnetState;
+public class EquipmentInformation implements Serializable{
     private int SN;
+    private String equipmnetState;
+    private String equipmnetName;
+    private int dvrId;
+    private String dvrType;
     private int newFireAlarm;
     private int newBreakAlarm;
     private int newSensorAlarm;
 
     public EquipmentInformation() {
-    }
-
-    public EquipmentInformation(String equipmnetName, String equipmnetState, int newFireAlarm, int newBreakAlarm, int newSensorAlarm) {
-        this.equipmnetName = equipmnetName;
-        this.equipmnetState = equipmnetState;
-        this.newFireAlarm = newFireAlarm;
-        this.newBreakAlarm = newBreakAlarm;
-        this.newSensorAlarm = newSensorAlarm;
     }
 
     public int getSN() {
@@ -71,15 +66,19 @@ public class EquipmentInformation {
         this.newSensorAlarm = newSensorAlarm;
     }
 
-    @Override
-    public String toString() {
-        return "EquipmnetAlarmInformation{" +
-                "equipmnetName='" + equipmnetName + '\'' +
-                ", equipmnetState='" + equipmnetState + '\'' +
-                ", SN=" + SN +
-                ", newFireAlarm=" + newFireAlarm +
-                ", newBreakAlarm=" + newBreakAlarm +
-                ", newSensorAlarm=" + newSensorAlarm +
-                '}';
+    public int getDvrId() {
+        return dvrId;
+    }
+
+    public void setDvrId(int dvrId) {
+        this.dvrId = dvrId;
+    }
+
+    public String getDvrType() {
+        return dvrType;
+    }
+
+    public void setDvrType(String dvrType) {
+        this.dvrType = dvrType;
     }
 }

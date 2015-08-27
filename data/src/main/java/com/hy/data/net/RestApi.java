@@ -1,18 +1,3 @@
-/**
- * Copyright (C) 2015 Fernando Cejas Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package com.hy.data.net;
 
 
@@ -29,8 +14,6 @@ import rx.Observable;
  * RestApi for retrieving data from the network.
  */
 public interface RestApi {
-  static final String API_BASE_URL = "http://www.android10.org/myapi/";
-
   /**
    * 取得用户对象
    */
@@ -68,4 +51,20 @@ public interface RestApi {
 
   Observable<List<MapEntity>> mapEntity(int userId,int choiceType);
 
+  /**
+   * 取得视频播放地址
+   * @param fileName 根据文件名获得播放地址
+   * @return 返回Url
+   */
+  Observable<String> videoUrl(String fileName);
+
+  /**
+   * 取得实时视频播放地址
+   * @param channelID 通道号
+   * @param dvrId dvrId
+   * @param dvrType dvr类型
+   * @param streamType 码流类型
+   * @return 返回Url
+   */
+  Observable<String> videoUrl(String dvrType,int dvrId,int channelID, int streamType);
 }

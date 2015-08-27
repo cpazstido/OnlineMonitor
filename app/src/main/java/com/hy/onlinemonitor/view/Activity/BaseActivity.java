@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -40,6 +41,7 @@ public abstract class BaseActivity extends AppCompatActivity implements InitView
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.e("recy","onCreate");
         super.onCreate(savedInstanceState);
         setOwnContentView();
         initUser();
@@ -136,7 +138,7 @@ public abstract class BaseActivity extends AppCompatActivity implements InitView
 
     private void initUser() {
         userPresenter = new UserPresenter();
-        userPresenter.setBaseAcitvity(this);
+        userPresenter.setBaseActivity(this);
         userPresenter.getUserInformation(this);
     }
 

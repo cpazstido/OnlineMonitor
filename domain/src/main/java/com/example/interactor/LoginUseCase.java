@@ -10,7 +10,7 @@ import rx.Scheduler;
  * Created by wsw on 2015/8/10.
  */
 public class LoginUseCase extends UseCase {
-    private UserRepository userRepository;
+    final private UserRepository userRepository;
     private String loginAccount, loginPwd;
 
     public LoginUseCase(PostExecutionThread postExecutionThread, Scheduler subExecutionThread, UserRepository userRepository, String loginAccount, String loginPwd) {

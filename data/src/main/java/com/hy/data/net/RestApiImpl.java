@@ -67,6 +67,13 @@ public class RestApiImpl implements RestApi {
         this.mapEntityJsonMapper = mapEntityJsonMapper;
     }
 
+    public RestApiImpl(Context context) {
+        if (context == null) {
+            throw new IllegalArgumentException("The constructor parameters cannot be null!!!");
+        }
+        this.context = context;
+    }
+
     /**
      * 获取用户登录信息
      *
@@ -77,42 +84,42 @@ public class RestApiImpl implements RestApi {
     @Override
     public Observable<UserEntity> userEntity(String loginAccount, String loginPwd) {
         return Observable.create(new Observable.OnSubscribe<UserEntity>() {
-             @Override
-             public void call(Subscriber<? super UserEntity> subscriber) {
-                 RequestParams params = new RequestParams();
-                 params.put("uername", loginAccount);
-                 params.put("uerpwd", loginPwd);
+                                     @Override
+                                     public void call(Subscriber<? super UserEntity> subscriber) {
+                                         RequestParams params = new RequestParams();
+                                         params.put("uername", loginAccount);
+                                         params.put("uerpwd", loginPwd);
 
-                 SystemRestClient.get("/login", params, new AsyncHttpResponseHandler() {
-                     @Override
-                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                         Log.i("msg", "登陆成功");
-                         String responseUserEntities = null;
-                         try {
-                             responseUserEntities = new String(responseBody, "UTF-8");
+                                         SystemRestClient.get("/login", params, new AsyncHttpResponseHandler() {
+                                             @Override
+                                             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                                                 Log.i("msg", "登陆成功");
+                                                 String responseUserEntities = null;
+                                                 try {
+                                                     responseUserEntities = new String(responseBody, "UTF-8");
 //                             responseUserEntities = StringTransformation.transform(responseUserEntities);
-                             Log.e("result", responseUserEntities);
-                             if (responseUserEntities.equals("false")) {
-                                 subscriber.onError(new NetworkConnectionException("用户名或密码错误"));
-                             } else {
-                                 subscriber.onNext(userEntityJsonMapper.transformUserEntity(
-                                         responseUserEntities));
-                                 subscriber.onCompleted();
-                             }
-                         } catch (UnsupportedEncodingException e) {
-                             e.printStackTrace();
-                         }
-                     }
+                                                     Log.e("result", responseUserEntities);
+                                                     if (responseUserEntities.equals("false")) {
+                                                         subscriber.onError(new NetworkConnectionException("用户名或密码错误"));
+                                                     } else {
+                                                         subscriber.onNext(userEntityJsonMapper.transformUserEntity(
+                                                                 responseUserEntities));
+                                                         subscriber.onCompleted();
+                                                     }
+                                                 } catch (UnsupportedEncodingException e) {
+                                                     e.printStackTrace();
+                                                 }
+                                             }
 
-                     @Override
-                     public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                         Log.e("getUserEntitiesFromApi", "onFailure");
-                         new SnackBar(context).text("连接失败,请稍后再试....").show();
-                         subscriber.onError(new NetworkConnectionException("链接失败"));
-                     }
-                 });
-             }
-         }
+                                             @Override
+                                             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                                                 Log.e("getUserEntitiesFromApi", "onFailure");
+                                                 new SnackBar(context).text("连接失败,请稍后再试....").show();
+                                                 subscriber.onError(new NetworkConnectionException("链接失败"));
+                                             }
+                                         });
+                                     }
+                                 }
         );
     }
 
@@ -140,6 +147,7 @@ public class RestApiImpl implements RestApi {
                         String responseEquipmentEntities = null;
                         try {
                             responseEquipmentEntities = new String(responseBody, "UTF-8");
+                            Log.i("EquipmentPageEntity",responseEquipmentEntities);
                             subscriber.onNext(pageEntityJsonMapper.transformEquipmentPageEntity(responseEquipmentEntities));
                             subscriber.onCompleted();
                         } catch (UnsupportedEncodingException e) {
@@ -160,21 +168,22 @@ public class RestApiImpl implements RestApi {
 
     /**
      * 查看用户的所有报警
-     * @param userId 唯一标示用户
+     *
+     * @param userId         唯一标示用户
      * @param queryAlarmType 查看的报警类型
-     * @param status 查看的报警类型的状态(历史,或者新报警)
-     * @param pageNumber 第几页的数据
+     * @param status         查看的报警类型的状态(历史,或者新报警)
+     * @param pageNumber     第几页的数据
      * @return 返回AlarmPage的对象
      */
     @Override
-    public Observable<AlarmPageEntity> alarmEntity(int userId,String queryAlarmType,int status,int pageNumber) {
+    public Observable<AlarmPageEntity> alarmEntity(int userId, String queryAlarmType, int status, int pageNumber) {
         return Observable.create(new Observable.OnSubscribe<AlarmPageEntity>() {
             @Override
             public void call(Subscriber<? super AlarmPageEntity> subscriber) {
                 RequestParams params = new RequestParams();
                 params.put("userId", userId);
                 params.put("queryAlarmType", queryAlarmType);
-                params.put("status",status);
+                params.put("status", status);
                 params.put("pageNum", pageNumber);
 
                 SystemRestClient.post("/getAlarmInfrom", params, new AsyncHttpResponseHandler() {
@@ -182,7 +191,7 @@ public class RestApiImpl implements RestApi {
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                         try {
                             String responseAlarmEntities = new String(responseBody, "UTF-8");
-                            Log.e("alarmPageEntity-getAll",responseAlarmEntities);
+                            Log.e("alarmPageEntity-getAll", responseAlarmEntities);
                             subscriber.onNext(pageEntityJsonMapper.transformAlarmPageEntity(responseAlarmEntities));
                             subscriber.onCompleted();
                         } catch (UnsupportedEncodingException e) {
@@ -203,15 +212,16 @@ public class RestApiImpl implements RestApi {
 
     /**
      * 根据 Equipmentname查看报警
-     * @param userId 唯一标示用户
-     * @param equipmentName 设备名(唯一标示)
+     *
+     * @param userId         唯一标示用户
+     * @param equipmentName  设备名(唯一标示)
      * @param queryAlarmType 查看的报警类型
-     * @param status 查看的报警类型的状态(历史,或者新报警)
-     * @param pageNumber 第几页的数据
+     * @param status         查看的报警类型的状态(历史,或者新报警)
+     * @param pageNumber     第几页的数据
      * @return 返回AlarmPage的对象
      */
     @Override
-    public Observable<AlarmPageEntity> alarmEntity(int userId,String equipmentName,String queryAlarmType,int status,int pageNumber) {
+    public Observable<AlarmPageEntity> alarmEntity(int userId, String equipmentName, String queryAlarmType, int status, int pageNumber) {
         return Observable.create(new Observable.OnSubscribe<AlarmPageEntity>() {
             @Override
             public void call(Subscriber<? super AlarmPageEntity> subscriber) {
@@ -252,7 +262,7 @@ public class RestApiImpl implements RestApi {
             @Override
             public void call(Subscriber<? super List<MapEntity>> subscriber) {
                 String queryType = null;
-                switch(choiceType){
+                switch (choiceType) {
                     case 0://山火
                         queryType = "fire";
                         break;
@@ -260,7 +270,7 @@ public class RestApiImpl implements RestApi {
                         queryType = "break";
                         break;
                     case 2://普通视频
-                        queryType= "video";
+                        queryType = "video";
                         break;
                 }
 
@@ -273,8 +283,69 @@ public class RestApiImpl implements RestApi {
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                         try {
                             String responseMapEntities = new String(responseBody, "UTF-8");
-                            Log.e("alarmPageEntity-getSome",responseMapEntities);
+                            Log.e("alarmPageEntity-getSome", responseMapEntities);
                             subscriber.onNext(mapEntityJsonMapper.transformMapEntity(responseMapEntities));
+                            subscriber.onCompleted();
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                        Log.e("getUserEntitiesFromApi", "onFailure");
+                        new SnackBar(context).text("连接失败,请稍后再试....").show();
+                        subscriber.onError(new NetworkConnectionException("链接失败"));
+                    }
+                });
+            }
+        });
+    }
+
+    @Override
+    public Observable<String> videoUrl(String fileName) {
+        return Observable.create(new Observable.OnSubscribe<String>() {
+            @Override
+            public void call(Subscriber<? super String> subscriber) {
+                RequestParams params = new RequestParams();
+                params.put("fileName", fileName);
+                SystemRestClient.post("/", params, new AsyncHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                        try {
+                            String responseVideoUrl = new String(responseBody, "UTF-8");
+                            Log.e("videoUrl", "url--?>" + responseVideoUrl);
+                            subscriber.onNext(responseVideoUrl);
+                            subscriber.onCompleted();
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                        Log.e("getUserEntitiesFromApi", "onFailure");
+                        new SnackBar(context).text("连接失败,请稍后再试....").show();
+                        subscriber.onError(new NetworkConnectionException("链接失败"));
+                    }
+                });
+            }
+        });
+    }
+
+    @Override
+    public Observable<String> videoUrl(String dvrType, int dvrId, int channelID, int streamType) {
+        return Observable.create(new Observable.OnSubscribe<String>() {
+            @Override
+            public void call(Subscriber<? super String> subscriber) {
+                RequestParams params = new RequestParams();
+                SystemRestClient.post("/startRealPlay", dvrType, dvrId, channelID, streamType, params, new AsyncHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                        try {
+                            String responseVideoUrl = new String(responseBody, "UTF-8");
+                            Log.e("videoUrl", "url--?>" + responseVideoUrl);
+                            subscriber.onNext(responseVideoUrl);
                             subscriber.onCompleted();
                         } catch (UnsupportedEncodingException e) {
                             e.printStackTrace();

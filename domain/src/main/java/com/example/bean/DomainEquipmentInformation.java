@@ -10,6 +10,8 @@ public class DomainEquipmentInformation {
     private int newFireAlarm;
     private int newBreakAlarm;
     private int newSensorAlarm;
+    private int dvrId;
+    private String dvrType;
 
     public String getEquipmnetName() {
         return equipmnetName;
@@ -57,5 +59,21 @@ public class DomainEquipmentInformation {
 
     public void setNewSensorAlarm(int newSensorAlarm) {
         this.newSensorAlarm = newSensorAlarm;
+    }
+
+    public int getDvrId() {
+        return dvrId;
+    }
+
+    public void setDvrId(int dvrId) {
+        this.dvrId = dvrId;
+    }
+
+    public String getDvrType() {
+        return dvrType;
+    }
+
+    public void setDvrType(String dvrType) {
+        this.dvrType = dvrType;
     }
 }

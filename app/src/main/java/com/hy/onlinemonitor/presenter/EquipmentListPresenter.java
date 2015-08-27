@@ -8,6 +8,7 @@ import com.example.bean.DoaminEquipmentPage;
 import com.example.interactor.DefaultSubscriber;
 import com.example.interactor.EquipmentUseCase;
 import com.example.interactor.UseCase;
+import com.example.repository.EquipmentRepository;
 import com.hy.data.repository.EquipmentDataRepository;
 import com.hy.onlinemonitor.UIThread;
 import com.hy.onlinemonitor.bean.EquipmentPage;
@@ -58,7 +59,7 @@ public class EquipmentListPresenter implements Presenter
     }
 
     private void getEquipmentList(int userId,int selectedType,int pageNumber) {
-        EquipmentDataRepository equipmentDataRepository = new EquipmentDataRepository(mContext,userId,selectedType,pageNumber);
+        EquipmentRepository equipmentDataRepository = new EquipmentDataRepository(mContext,userId,selectedType,pageNumber);
         this.getEquipmentListUseCase = new EquipmentUseCase(new UIThread(), AndroidSchedulers.mainThread(), equipmentDataRepository);
         this.getEquipmentListUseCase.execute(new EquipmentListSubscriber());
     }
@@ -90,5 +91,10 @@ public class EquipmentListPresenter implements Presenter
     public void setView(@Nullable EquipmentListViewActivity equipmentListActivity) {
         this.equipmentListActivity = equipmentListActivity;
     }
+
+
+
+
+
 
 }
