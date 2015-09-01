@@ -92,4 +92,9 @@ public class EquipmentListPresenter implements Presenter
         this.equipmentListActivity = equipmentListActivity;
     }
 
+
+
+
+
+
 }

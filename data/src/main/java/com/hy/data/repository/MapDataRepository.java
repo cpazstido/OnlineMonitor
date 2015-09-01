@@ -12,6 +12,9 @@ import java.util.List;
 
 import rx.Observable;
 
+/**
+ * Created by 24363 on 2015/8/19.
+ */
 public class MapDataRepository implements MapRepository {
 
     private Context mContext;
