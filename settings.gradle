@@ -1,2 +1,1 @@
-include ':app', ':domain', ':data', ':vitamios'
-project(':vitamios').projectDir = new File('vitamio')
+include ':app', ':domain', ':data'

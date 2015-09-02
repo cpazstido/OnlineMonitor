@@ -1,24 +1,12 @@
-/**
- * Copyright (C) 2015 Fernando Cejas Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package com.hy.data.net;
 
 
+import com.hy.data.entity.AdministratorPageEntity;
 import com.hy.data.entity.AlarmPageEntity;
-import com.hy.data.entity.MapEntity;
+import com.hy.data.entity.CompanyEntity;
 import com.hy.data.entity.EquipmentPageEntity;
+import com.hy.data.entity.MapEntity;
+import com.hy.data.entity.RoleEntity;
 import com.hy.data.entity.UserEntity;
 
 import java.util.List;
@@ -29,43 +17,132 @@ import rx.Observable;
  * RestApi for retrieving data from the network.
  */
 public interface RestApi {
-  static final String API_BASE_URL = "http://www.android10.org/myapi/";
+    /**
+     * 取得用户对象
+     *
+     * @param loginAccount 登录账号
+     * @param loginPwd     登录密码
+     * @return 用户对象
+     */
+    Observable<UserEntity> userEntity(String loginAccount, String loginPwd);
 
-  /**
-   * 取得用户对象
-   */
+    /**
+     * 取得设备列表
+     *
+     * @param userName   唯一标示某一个用户
+     * @param choiceType 标示查看的设备类型
+     * @param pageNumber 页数
+     * @return 设备列表
+     */
+    Observable<EquipmentPageEntity> equipmentEntity(int userName, int choiceType, int pageNumber);
 
-  Observable<UserEntity> userEntity(String loginAccount, String loginPwd);
 
-  /**
-   * 取得设备列表
-   */
-  Observable<EquipmentPageEntity> equipmentEntity(int userName, int choiceType,int pageNumber);
+    /**
+     * 查看所有的报警
+     *
+     * @param queryAlarmType 查看的报警类型
+     * @param status         查看的报警类型的状态(历史,或者新报警)
+     * @param userId         唯一标示用户
+     * @param pageNumber     第几页的数据
+     */
+    Observable<AlarmPageEntity> alarmEntity(int userId, String queryAlarmType, int status, int pageNumber);
+
+    /**
+     * 查看特定 equipmentName的报警信息
+     *
+     * @param userId         唯一标示用户
+     * @param equipmentName  设备名(唯一标示)
+     * @param queryAlarmType 查看的报警类型
+     * @param status         查看的报警类型的状态(历史,或者新报警)
+     * @param pageNumber     第几页的数据
+     */
+    Observable<AlarmPageEntity> alarmEntity(int userId, String equipmentName, String queryAlarmType, int status, int pageNumber);
+
+    /**
+     * 取得地图列表
+     *
+     * @param userId     唯一标示用户
+     * @param choiceType 标示查看的设备类型
+     * @return 地图列表
+     */
+    Observable<List<MapEntity>> mapEntity(int userId, int choiceType);
 
 
-  /**
-   * 查看所有的报警
-   * @param queryAlarmType 查看的报警类型
-   * @param status 查看的报警类型的状态(历史,或者新报警)
-   * @param userId 唯一标示用户
-   * @param pageNumber 第几页的数据
-   */
-  Observable<AlarmPageEntity> alarmEntity(int userId,String queryAlarmType,int status,int pageNumber);
+    /**
+     * 取得视频播放地址
+     *
+     * @param fileName 根据文件名获得播放地址
+     * @return 返回Url
+     */
+    Observable<String> videoUrl(String fileName);
 
-  /**
-   * 查看特定 equipmentName的报警信息
-   * @param userId 唯一标示用户
-   * @param equipmentName 设备名(唯一标示)
-   * @param queryAlarmType 查看的报警类型
-   * @param status 查看的报警类型的状态(历史,或者新报警)
-   * @param pageNumber 第几页的数据
-   */
-  Observable<AlarmPageEntity> alarmEntity(int userId,String equipmentName,String queryAlarmType,int status,int pageNumber);
+    /**
+     * 取得实时视频播放地址
+     *
+     * @param channelID  通道号
+     * @param dvrId      dvrId
+     * @param dvrType    dvr类型
+     * @param streamType 码流类型
+     * @return 返回Url
+     */
+    Observable<String> videoUrl(String dvrType, int dvrId, int channelID, int streamType);
 
-  /**
-   * 取得地图列表
-   */
+    /**
+     * @param userId 用户唯一标示
+     * @return 公司列表
+     */
+    Observable<List<CompanyEntity>> companyList(int userId);
 
-  Observable<List<MapEntity>> mapEntity(int userId,int choiceType);
+    /**
+     * @param userId 用户唯一标示
+     * @return 角色列表
+     */
+    Observable<List<RoleEntity>> roleList(int userId);
+
+    /**
+     * 根据userId获取所有的用户信息
+     *
+     * @param userId userId userId
+     * @return 管理员列表
+     */
+    Observable<AdministratorPageEntity> administratorEntity(int userId);
+
+    /**
+     * 添加管理员
+     *
+     * @param roleSn      角色sn
+     * @param companySn   公司sn
+     * @param loginName   登录名
+     * @param realName    真实姓名
+     * @param password    密码
+     * @param mobilePhone 电话号码
+     * @param isMessage   是否接受短信
+     * @return 管理员的Page对象
+     */
+    Observable<AdministratorPageEntity> addAdministrator(int roleSn, int companySn, String loginName, String realName, String password, String mobilePhone, String isMessage);
+
+    /**
+     * 修改管理员
+     *
+     * @param sn          管理员的sn
+     * @param roleSn      角色sn
+     * @param companySn   公司sn
+     * @param loginName   登录名
+     * @param realName    真实姓名
+     * @param password    密码
+     * @param mobilePhone 电话号码
+     * @param isMessage   是否接受短信
+     * @return 管理员的Page对象
+     */
+    Observable<AdministratorPageEntity> changeAdministrator(int sn, int roleSn, int companySn, String loginName, String realName, String password, String mobilePhone, String isMessage);
+
+    /**
+     * 删除管理员
+     *
+     * @param sn 管理员sn
+     * @return 管理员的Page对象
+     */
+    Observable<AdministratorPageEntity> deleteAdministrator(int sn);
+
 
 }

@@ -5,18 +5,22 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Log;
 
+import com.hy.data.entity.AdministratorPageEntity;
 import com.hy.data.entity.AlarmPageEntity;
+import com.hy.data.entity.CompanyEntity;
 import com.hy.data.entity.EquipmentPageEntity;
 import com.hy.data.entity.MapEntity;
+import com.hy.data.entity.RoleEntity;
 import com.hy.data.entity.UserEntity;
+import com.hy.data.entity.mapper.CompanyEntityJsonMapper;
 import com.hy.data.entity.mapper.MapEntityJsonMapper;
 import com.hy.data.entity.mapper.PageEntityJsonMapper;
+import com.hy.data.entity.mapper.RoleEntityJsonMapper;
 import com.hy.data.entity.mapper.UserEntityJsonMapper;
 import com.hy.data.exception.NetworkConnectionException;
 import com.hy.data.utile.SystemRestClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
-import com.rey.material.widget.SnackBar;
 
 import org.apache.http.Header;
 
@@ -35,6 +39,8 @@ public class RestApiImpl implements RestApi {
     private UserEntityJsonMapper userEntityJsonMapper;
     private MapEntityJsonMapper mapEntityJsonMapper;
     private PageEntityJsonMapper pageEntityJsonMapper;
+    private RoleEntityJsonMapper roleEntityJsonMapper;
+    private CompanyEntityJsonMapper companyEntityJsonMapper;
 
     /**
      * Constructor of the class
@@ -67,6 +73,29 @@ public class RestApiImpl implements RestApi {
         this.mapEntityJsonMapper = mapEntityJsonMapper;
     }
 
+    public RestApiImpl(Context context) {
+        if (context == null) {
+            throw new IllegalArgumentException("The constructor parameters cannot be null!!!");
+        }
+        this.context = context;
+    }
+
+    public RestApiImpl(Context context, CompanyEntityJsonMapper companyEntityJsonMapper) {
+        if (context == null || companyEntityJsonMapper == null) {
+            throw new IllegalArgumentException("The constructor parameters cannot be null!!!");
+        }
+        this.context = context;
+        this.companyEntityJsonMapper = companyEntityJsonMapper;
+    }
+
+    public RestApiImpl(Context context, RoleEntityJsonMapper roleEntityJsonMapper) {
+        if (context == null || roleEntityJsonMapper == null) {
+            throw new IllegalArgumentException("The constructor parameters cannot be null!!!");
+        }
+        this.context = context;
+        this.roleEntityJsonMapper = roleEntityJsonMapper;
+    }
+
     /**
      * 获取用户登录信息
      *
@@ -77,42 +106,40 @@ public class RestApiImpl implements RestApi {
     @Override
     public Observable<UserEntity> userEntity(String loginAccount, String loginPwd) {
         return Observable.create(new Observable.OnSubscribe<UserEntity>() {
-             @Override
-             public void call(Subscriber<? super UserEntity> subscriber) {
-                 RequestParams params = new RequestParams();
-                 params.put("uername", loginAccount);
-                 params.put("uerpwd", loginPwd);
+                                     @Override
+                                     public void call(Subscriber<? super UserEntity> subscriber) {
+                                         RequestParams params = new RequestParams();
+                                         params.put("uername", loginAccount);
+                                         params.put("uerpwd", loginPwd);
 
-                 SystemRestClient.get("/login", params, new AsyncHttpResponseHandler() {
-                     @Override
-                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                         Log.i("msg", "登陆成功");
-                         String responseUserEntities = null;
-                         try {
-                             responseUserEntities = new String(responseBody, "UTF-8");
-//                             responseUserEntities = StringTransformation.transform(responseUserEntities);
-                             Log.e("result", responseUserEntities);
-                             if (responseUserEntities.equals("false")) {
-                                 subscriber.onError(new NetworkConnectionException("用户名或密码错误"));
-                             } else {
-                                 subscriber.onNext(userEntityJsonMapper.transformUserEntity(
-                                         responseUserEntities));
-                                 subscriber.onCompleted();
-                             }
-                         } catch (UnsupportedEncodingException e) {
-                             e.printStackTrace();
-                         }
-                     }
+                                         SystemRestClient.get("/login", params, new AsyncHttpResponseHandler() {
+                                             @Override
+                                             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                                                 Log.i("msg", "登陆成功");
+                                                 String responseUserEntities = null;
+                                                 try {
+                                                     responseUserEntities = new String(responseBody, "UTF-8");
+                                                     Log.e("result", responseUserEntities);
+                                                     if (responseUserEntities.equals("false")) {
+                                                         subscriber.onError(new NetworkConnectionException("用户名或密码错误"));
+                                                     } else {
+                                                         subscriber.onNext(userEntityJsonMapper.transformUserEntity(
+                                                                 responseUserEntities));
+                                                         subscriber.onCompleted();
+                                                     }
+                                                 } catch (UnsupportedEncodingException e) {
+                                                     e.printStackTrace();
+                                                 }
+                                             }
 
-                     @Override
-                     public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                         Log.e("getUserEntitiesFromApi", "onFailure");
-                         new SnackBar(context).text("连接失败,请稍后再试....").show();
-                         subscriber.onError(new NetworkConnectionException("链接失败"));
-                     }
-                 });
-             }
-         }
+                                             @Override
+                                             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                                                 Log.e("getUserEntitiesFromApi", "onFailure");
+                                                 subscriber.onError(new NetworkConnectionException("链接失败"));
+                                             }
+                                         });
+                                     }
+                                 }
         );
     }
 
@@ -150,7 +177,6 @@ public class RestApiImpl implements RestApi {
                     @Override
                     public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                         Log.e("getUserEntitiesFromApi", "onFailure");
-                        new SnackBar(context).text("连接失败,请稍后再试....").show();
                         subscriber.onError(new NetworkConnectionException("链接失败"));
                     }
                 });
@@ -160,21 +186,22 @@ public class RestApiImpl implements RestApi {
 
     /**
      * 查看用户的所有报警
-     * @param userId 唯一标示用户
+     *
+     * @param userId         唯一标示用户
      * @param queryAlarmType 查看的报警类型
-     * @param status 查看的报警类型的状态(历史,或者新报警)
-     * @param pageNumber 第几页的数据
+     * @param status         查看的报警类型的状态(历史,或者新报警)
+     * @param pageNumber     第几页的数据
      * @return 返回AlarmPage的对象
      */
     @Override
-    public Observable<AlarmPageEntity> alarmEntity(int userId,String queryAlarmType,int status,int pageNumber) {
+    public Observable<AlarmPageEntity> alarmEntity(int userId, String queryAlarmType, int status, int pageNumber) {
         return Observable.create(new Observable.OnSubscribe<AlarmPageEntity>() {
             @Override
             public void call(Subscriber<? super AlarmPageEntity> subscriber) {
                 RequestParams params = new RequestParams();
                 params.put("userId", userId);
                 params.put("queryAlarmType", queryAlarmType);
-                params.put("status",status);
+                params.put("status", status);
                 params.put("pageNum", pageNumber);
 
                 SystemRestClient.post("/getAlarmInfrom", params, new AsyncHttpResponseHandler() {
@@ -182,7 +209,7 @@ public class RestApiImpl implements RestApi {
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                         try {
                             String responseAlarmEntities = new String(responseBody, "UTF-8");
-                            Log.e("alarmPageEntity-getAll",responseAlarmEntities);
+                            Log.e("alarmPageEntity-getAll", responseAlarmEntities);
                             subscriber.onNext(pageEntityJsonMapper.transformAlarmPageEntity(responseAlarmEntities));
                             subscriber.onCompleted();
                         } catch (UnsupportedEncodingException e) {
@@ -193,7 +220,6 @@ public class RestApiImpl implements RestApi {
                     @Override
                     public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                         Log.e("getUserEntitiesFromApi", "onFailure");
-                        new SnackBar(context).text("连接失败,请稍后再试....").show();
                         subscriber.onError(new NetworkConnectionException("链接失败"));
                     }
                 });
@@ -203,15 +229,16 @@ public class RestApiImpl implements RestApi {
 
     /**
      * 根据 Equipmentname查看报警
-     * @param userId 唯一标示用户
-     * @param equipmentName 设备名(唯一标示)
+     *
+     * @param userId         唯一标示用户
+     * @param equipmentName  设备名(唯一标示)
      * @param queryAlarmType 查看的报警类型
-     * @param status 查看的报警类型的状态(历史,或者新报警)
-     * @param pageNumber 第几页的数据
+     * @param status         查看的报警类型的状态(历史,或者新报警)
+     * @param pageNumber     第几页的数据
      * @return 返回AlarmPage的对象
      */
     @Override
-    public Observable<AlarmPageEntity> alarmEntity(int userId,String equipmentName,String queryAlarmType,int status,int pageNumber) {
+    public Observable<AlarmPageEntity> alarmEntity(int userId, String equipmentName, String queryAlarmType, int status, int pageNumber) {
         return Observable.create(new Observable.OnSubscribe<AlarmPageEntity>() {
             @Override
             public void call(Subscriber<? super AlarmPageEntity> subscriber) {
@@ -238,7 +265,6 @@ public class RestApiImpl implements RestApi {
                     @Override
                     public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                         Log.e("getUserEntitiesFromApi", "onFailure");
-                        new SnackBar(context).text("连接失败,请稍后再试....").show();
                         subscriber.onError(new NetworkConnectionException("链接失败"));
                     }
                 });
@@ -252,7 +278,7 @@ public class RestApiImpl implements RestApi {
             @Override
             public void call(Subscriber<? super List<MapEntity>> subscriber) {
                 String queryType = null;
-                switch(choiceType){
+                switch (choiceType) {
                     case 0://山火
                         queryType = "fire";
                         break;
@@ -260,7 +286,7 @@ public class RestApiImpl implements RestApi {
                         queryType = "break";
                         break;
                     case 2://普通视频
-                        queryType= "video";
+                        queryType = "video";
                         break;
                 }
 
@@ -273,7 +299,7 @@ public class RestApiImpl implements RestApi {
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                         try {
                             String responseMapEntities = new String(responseBody, "UTF-8");
-                            Log.e("alarmPageEntity-getSome",responseMapEntities);
+                            Log.e("alarmPageEntity-getSome", responseMapEntities);
                             subscriber.onNext(mapEntityJsonMapper.transformMapEntity(responseMapEntities));
                             subscriber.onCompleted();
                         } catch (UnsupportedEncodingException e) {
@@ -284,7 +310,282 @@ public class RestApiImpl implements RestApi {
                     @Override
                     public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                         Log.e("getUserEntitiesFromApi", "onFailure");
-                        new SnackBar(context).text("连接失败,请稍后再试....").show();
+                        subscriber.onError(new NetworkConnectionException("链接失败"));
+                    }
+                });
+            }
+        });
+    }
+
+    @Override
+    public Observable<String> videoUrl(String fileName) {
+        return Observable.create(new Observable.OnSubscribe<String>() {
+            @Override
+            public void call(Subscriber<? super String> subscriber) {
+                RequestParams params = new RequestParams();
+                params.put("fileName", fileName);
+                SystemRestClient.post("/", params, new AsyncHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                        try {
+                            String responseVideoUrl = new String(responseBody, "UTF-8");
+                            Log.e("videoUrl", "url  ?>" + responseVideoUrl);
+                            subscriber.onNext(responseVideoUrl);
+                            subscriber.onCompleted();
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                        Log.e("getUserEntitiesFromApi", "onFailure");
+                        subscriber.onError(new NetworkConnectionException("链接失败"));
+                    }
+                });
+            }
+        });
+    }
+
+    @Override
+    public Observable<String> videoUrl(String dvrType, int dvrId, int channelID, int streamType) {
+        return Observable.create(new Observable.OnSubscribe<String>() {
+            @Override
+            public void call(Subscriber<? super String> subscriber) {
+                RequestParams params = new RequestParams();
+                SystemRestClient.post("/startRealPlay", dvrType, dvrId, channelID, streamType, params, new AsyncHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                        try {
+                            String responseVideoUrl = new String(responseBody, "UTF-8");
+                            Log.e("videoUrl", "url  ?>" + responseVideoUrl);
+                            subscriber.onNext(responseVideoUrl);
+                            subscriber.onCompleted();
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                        Log.e("getUserEntitiesFromApi", "onFailure");
+                        subscriber.onError(new NetworkConnectionException("链接失败"));
+                    }
+                });
+            }
+        });
+    }
+
+    @Override
+    public Observable<List<CompanyEntity>> companyList(int userId) {
+        return Observable.create(new Observable.OnSubscribe<List<CompanyEntity>>() {
+            @Override
+            public void call(Subscriber<? super List<CompanyEntity>> subscriber) {
+                RequestParams params = new RequestParams();
+                params.put("userId", userId);
+                SystemRestClient.post("/getCompanyList", params, new AsyncHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                        try {
+                            String responseCompanyEntities = new String(responseBody, "UTF-8");
+                            Log.e("responseCompanyEntities", responseCompanyEntities);
+                            subscriber.onNext(companyEntityJsonMapper.transformCompanyEntity(responseCompanyEntities));
+                            subscriber.onCompleted();
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                        Log.e("getUserEntitiesFromApi", "onFailure");
+                        subscriber.onError(new NetworkConnectionException("链接失败"));
+                    }
+                });
+            }
+        });
+    }
+
+    @Override
+    public Observable<List<RoleEntity>> roleList(int userId) {
+        return Observable.create(new Observable.OnSubscribe<List<RoleEntity>>() {
+            @Override
+            public void call(Subscriber<? super List<RoleEntity>> subscriber) {
+                RequestParams params = new RequestParams();
+                params.put("userId", userId);
+                SystemRestClient.post("/getRoleList", params, new AsyncHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                        try {
+                            String responseRoleEntities = new String(responseBody, "UTF-8");
+                            Log.e("responseRoleEntities", responseRoleEntities);
+                            subscriber.onNext(roleEntityJsonMapper.transformRoleEntity(responseRoleEntities));
+                            subscriber.onCompleted();
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                        Log.e("getUserEntitiesFromApi", "onFailure");
+                        subscriber.onError(new NetworkConnectionException("链接失败"));
+                    }
+                });
+            }
+        });
+    }
+
+    @Override
+    public Observable<AdministratorPageEntity> administratorEntity(int userId) {
+
+        return Observable.create(new Observable.OnSubscribe<AdministratorPageEntity>() {
+            @Override
+            public void call(Subscriber<? super AdministratorPageEntity> subscriber) {
+                RequestParams params = new RequestParams();
+                params.put("userId", userId);
+
+                SystemRestClient.post("/getAdministratorList", params, new AsyncHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                        try {
+                            String responseAdministratorEntities = new String(responseBody, "UTF-8");
+                            Log.e("administratorEntity", responseAdministratorEntities);
+                            subscriber.onNext(pageEntityJsonMapper.transformAdministratorPageEntity(responseAdministratorEntities));
+                            subscriber.onCompleted();
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                        Log.e("onFailure", "AdministratorPageEntity");
+                        subscriber.onError(new NetworkConnectionException("链接失败"));
+                    }
+                });
+            }
+        });
+    }
+
+    @Override
+    public Observable<AdministratorPageEntity> addAdministrator(int roleSn, int companySn, String loginName, String realName, String password, String mobilePhone, String isMessage) {
+        return Observable.create(new Observable.OnSubscribe<AdministratorPageEntity>() {
+            @Override
+            public void call(Subscriber<? super AdministratorPageEntity> subscriber) {
+                RequestParams params = new RequestParams();
+                params.put("sn", roleSn);
+                params.put("loginName", loginName);
+                params.put("password", password);
+                params.put("realName", realName);
+                params.put("mobilePhone", mobilePhone);
+                params.put("company_SN", companySn);
+                params.put("operator.receiveMessage", isMessage);
+
+                SystemRestClient.post("/addAdministrator", params, new AsyncHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                        try {
+                            String responseAdministratorEntities = new String(responseBody, "UTF-8");
+                            Log.e("administratorEntity", responseAdministratorEntities);
+                            subscriber.onNext(pageEntityJsonMapper.transformAdministratorPageEntity(responseAdministratorEntities));
+                            subscriber.onCompleted();
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                        try {
+                            String aaa = new String(responseBody, "UTF-8");
+                            Log.e("administratorEntity", aaa);
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                        }
+                        Log.e("onFailure", "addAdministrator");
+                        subscriber.onError(new NetworkConnectionException("链接失败"));
+                    }
+                });
+            }
+        });
+    }
+
+    @Override
+    public Observable<AdministratorPageEntity> changeAdministrator(int sn, int roleSn, int companySn, String loginName, String realName, String password, String mobilePhone, String isMessage) {
+        return Observable.create(new Observable.OnSubscribe<AdministratorPageEntity>() {
+            @Override
+            public void call(Subscriber<? super AdministratorPageEntity> subscriber) {
+                RequestParams params = new RequestParams();
+                params.put("sn", sn);
+                params.put("roleSN", roleSn);
+                params.put("loginName", loginName);
+                params.put("password", password);
+                params.put("realName", realName);
+                params.put("mobilePhone", mobilePhone);
+                params.put("company_SN", companySn);
+                params.put("operator.receiveMessage", isMessage);
+                Log.e("changeAdministrator", "changeAdministrator");
+
+                SystemRestClient.post("/changeAdministrator", params, new AsyncHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                        try {
+                            String responseAdministratorEntities = new String(responseBody, "UTF-8");
+                            Log.e("administratorEntity", responseAdministratorEntities);
+                            subscriber.onNext(pageEntityJsonMapper.transformAdministratorPageEntity(responseAdministratorEntities));
+                            subscriber.onCompleted();
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                        try {
+                            String aaa = new String(responseBody, "UTF-8");
+                            Log.e("administratorEntity", aaa);
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                        }
+                        Log.e("onFailure", "addAdministrator");
+                        subscriber.onError(new NetworkConnectionException("链接失败"));
+                    }
+                });
+            }
+        });
+    }
+
+    @Override
+    public Observable<AdministratorPageEntity> deleteAdministrator(int sn) {
+        return Observable.create(new Observable.OnSubscribe<AdministratorPageEntity>() {
+            @Override
+            public void call(Subscriber<? super AdministratorPageEntity> subscriber) {
+                RequestParams params = new RequestParams();
+                params.put("sn", sn);
+
+                SystemRestClient.post("/deleteAdministrator", params, new AsyncHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                        try {
+                            String responseAdministratorEntities = new String(responseBody, "UTF-8");
+                            Log.e("administratorEntity", responseAdministratorEntities);
+                            subscriber.onNext(pageEntityJsonMapper.transformAdministratorPageEntity(responseAdministratorEntities));
+                            subscriber.onCompleted();
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                        try {
+                            String aaa = new String(responseBody, "UTF-8");
+                            Log.e("administratorEntity", aaa);
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                        }
+                        Log.e("onFailure", "addAdministrator");
                         subscriber.onError(new NetworkConnectionException("链接失败"));
                     }
                 });
