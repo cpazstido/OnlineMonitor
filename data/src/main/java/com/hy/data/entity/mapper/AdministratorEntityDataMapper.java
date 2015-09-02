@@ -29,6 +29,7 @@ public class AdministratorEntityDataMapper {
             domainAdministrator.setCompanySn(administratorEntity.getCompany_SN());
             domainAdministrator.setDomainRole(roleEntityDataMapper.transform(administratorEntity.getRole()));
             domainAdministrator.setSn(administratorEntity.getSn());
+            domainAdministrator.setAllPoleSeleceted(administratorEntity.getAllPoleSeleceted());
         }
 
         return domainAdministrator;

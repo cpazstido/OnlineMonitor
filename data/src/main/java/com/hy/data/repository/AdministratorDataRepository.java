@@ -2,12 +2,16 @@ package com.hy.data.repository;
 
 import android.content.Context;
 
+import com.example.bean.DomainAdminLine;
 import com.example.bean.DomainAdministratorPage;
 import com.example.bean.DomainCompany;
 import com.example.bean.DomainRole;
 import com.example.repository.SMAdministratorRepository;
+import com.hy.data.entity.mapper.AdminLineDataMapper;
+import com.hy.data.entity.mapper.AdminLineJsonMapper;
 import com.hy.data.entity.mapper.CompanyEntityDataMapper;
 import com.hy.data.entity.mapper.CompanyEntityJsonMapper;
+import com.hy.data.entity.mapper.ListOfIntegerJsonMapper;
 import com.hy.data.entity.mapper.PageEntityDataMapper;
 import com.hy.data.entity.mapper.PageEntityJsonMapper;
 import com.hy.data.entity.mapper.RoleEntityDataMapper;
@@ -19,7 +23,7 @@ import java.util.List;
 import rx.Observable;
 
 public class AdministratorDataRepository implements SMAdministratorRepository {
-    private Context mContext;
+    private final Context mContext;
     private int userId;
     private  int roleSn;
     private int companySn;
@@ -34,6 +38,11 @@ public class AdministratorDataRepository implements SMAdministratorRepository {
         this.userId = userId;
     }
 
+    public AdministratorDataRepository(Context mContext, int userId,int sn) {
+        this.sn = sn;
+        this.mContext = mContext;
+        this.userId = userId;
+    }
     public AdministratorDataRepository(Context mContext, int roleSn, int companySn, String loginName, String realName, String password, String mobilePhone,String isMessage) {
         this.mContext = mContext;
         this.roleSn = roleSn;
@@ -62,7 +71,6 @@ public class AdministratorDataRepository implements SMAdministratorRepository {
         this.sn = sn;
         this.mContext = mContext;
     }
-
 
     @Override
     public Observable<List<DomainCompany>> companyList() {
@@ -108,5 +116,18 @@ public class AdministratorDataRepository implements SMAdministratorRepository {
         PageEntityDataMapper pageEntityDataMapper = new PageEntityDataMapper();
         return restApi.deleteAdministrator(sn).map(pageEntityDataMapper::transform);
 
+    }
+
+    @Override
+    public Observable<List<DomainAdminLine>> getAllTower() {
+        RestApiImpl restApi = new RestApiImpl(mContext,new AdminLineJsonMapper());
+        AdminLineDataMapper adminLineDataMapper = new AdminLineDataMapper();
+        return restApi.getAllTower(userId,sn).map(adminLineDataMapper::transform);
+    }
+
+    @Override
+    public Observable<List<Integer>> getOwnTower() {
+        RestApiImpl restApi = new RestApiImpl(mContext,new ListOfIntegerJsonMapper());
+        return restApi.getOwnTower(userId,sn);
     }
 }

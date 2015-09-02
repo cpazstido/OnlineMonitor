@@ -11,6 +11,7 @@ public class AdministratorInformation {
     private Role role;
     private int companySn;
     private int sn;
+    private int allPoleSeleceted;
     private List<String> ownTowerList;
     private List<String> allTowerList;
 
@@ -92,5 +93,13 @@ public class AdministratorInformation {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public int getAllPoleSeleceted() {
+        return allPoleSeleceted;
+    }
+
+    public void setAllPoleSeleceted(int allPoleSeleceted) {
+        this.allPoleSeleceted = allPoleSeleceted;
     }
 }

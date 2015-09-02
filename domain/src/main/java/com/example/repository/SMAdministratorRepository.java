@@ -1,5 +1,6 @@
 package com.example.repository;
 
+import com.example.bean.DomainAdminLine;
 import com.example.bean.DomainAdministratorPage;
 import com.example.bean.DomainCompany;
 import com.example.bean.DomainRole;
@@ -24,4 +25,8 @@ public interface SMAdministratorRepository {
     Observable<DomainAdministratorPage> changeAdministrator();
 
     Observable<DomainAdministratorPage> deleteAdministrator();
+
+    Observable<List<DomainAdminLine>> getAllTower();
+
+    Observable<List<Integer>> getOwnTower();
 }

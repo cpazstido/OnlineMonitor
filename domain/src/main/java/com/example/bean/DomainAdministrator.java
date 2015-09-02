@@ -14,6 +14,7 @@ public class DomainAdministrator {
     private DomainRole domainRole;
     private int companySn;
     private int sn;
+    private int allPoleSeleceted;
     private List<String> ownTowerList;
     private List<String> allTowerList;
 
@@ -95,5 +96,13 @@ public class DomainAdministrator {
 
     public void setAllTowerList(List<String> allTowerList) {
         this.allTowerList = allTowerList;
+    }
+
+    public int getAllPoleSeleceted() {
+        return allPoleSeleceted;
+    }
+
+    public void setAllPoleSeleceted(int allPoleSeleceted) {
+        this.allPoleSeleceted = allPoleSeleceted;
     }
 }

@@ -3,6 +3,7 @@ package com.hy.onlinemonitor.presenter;
 import android.content.Context;
 import android.widget.Toast;
 
+import com.example.bean.DomainAdminLine;
 import com.example.bean.DomainAdministratorPage;
 import com.example.bean.DomainCompany;
 import com.example.bean.DomainRole;
@@ -11,9 +12,11 @@ import com.example.interactor.DefaultSubscriber;
 import com.example.repository.SMAdministratorRepository;
 import com.hy.data.repository.AdministratorDataRepository;
 import com.hy.onlinemonitor.UIThread;
+import com.hy.onlinemonitor.bean.AdminLine;
 import com.hy.onlinemonitor.bean.AdministratorPage;
 import com.hy.onlinemonitor.bean.CompanyInformation;
 import com.hy.onlinemonitor.bean.Role;
+import com.hy.onlinemonitor.mapper.AdminLineDataMapper;
 import com.hy.onlinemonitor.mapper.CompanyDataMapper;
 import com.hy.onlinemonitor.mapper.PageDataMapper;
 import com.hy.onlinemonitor.mapper.RoleDataMapper;
@@ -95,6 +98,55 @@ public class SMAdministratorPresenter implements Presenter {
         this.administratorUseCase.execute(new AdministratorListSubscriber());
     }
 
+    public void loadAllTower(int userId,int sn) {
+        showViewLoading();
+        SMAdministratorRepository smAdministratorRepository = new AdministratorDataRepository(mContext, userId, sn);
+        this.administratorUseCase = new AdministratorUseCase(new UIThread(), AndroidSchedulers.mainThread(), smAdministratorRepository, 7);
+        this.administratorUseCase.execute(new AdminLineListSubscriber());
+    }
+
+    private class AdminLineListSubscriber extends DefaultSubscriber<List<DomainAdminLine>> {
+        @Override
+        public void onCompleted() {
+            SMAdministratorPresenter.this.administratorUseCase.setType(8);
+            SMAdministratorPresenter.this.administratorUseCase.execute(new ownTowerListSubscriber());
+        }
+
+        @Override
+        public void onError(Throwable e) {
+            SMAdministratorPresenter.this.hideViewLoading();
+            Toast.makeText(mContext, "出现错误", Toast.LENGTH_SHORT).show();
+            super.onError(e);
+        }
+
+        @Override
+        public void onNext(List<DomainAdminLine> domainAdminLines) {
+            List<AdminLine> mList = AdminLineDataMapper.transform(domainAdminLines);
+            administratorManageActivity.setAdminLines(mList);
+        }
+    }
+
+    private class ownTowerListSubscriber extends DefaultSubscriber<List<Integer>> {
+
+        @Override
+        public void onCompleted() {
+            hideViewLoading();
+            administratorManageActivity.LineDialogShow();
+        }
+
+        @Override
+        public void onError(Throwable e) {
+            SMAdministratorPresenter.this.hideViewLoading();
+            Toast.makeText(mContext, "出现错误", Toast.LENGTH_SHORT).show();
+            super.onError(e);
+        }
+
+        @Override
+        public void onNext(List<Integer> ownTowerList) {
+            administratorManageActivity.setOwnTowerSn(ownTowerList);
+        }
+    }
+
     private class CompanyListSubscriber extends DefaultSubscriber<List<DomainCompany>> {
 
         @Override
@@ -169,7 +221,6 @@ public class SMAdministratorPresenter implements Presenter {
             SMAdministratorPresenter.this.showAdministratorPage(domainAdministratorPage);
         }
     }
-
 
     private void showAdministratorPage(DomainAdministratorPage domainAdministratorPage) {
         AdministratorPage administratorPage = this.pageDataMapper.transform(domainAdministratorPage);

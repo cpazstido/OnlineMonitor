@@ -5,6 +5,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Log;
 
+import com.hy.data.entity.AdminLineEntity;
 import com.hy.data.entity.AdministratorPageEntity;
 import com.hy.data.entity.AlarmPageEntity;
 import com.hy.data.entity.CompanyEntity;
@@ -12,7 +13,9 @@ import com.hy.data.entity.EquipmentPageEntity;
 import com.hy.data.entity.MapEntity;
 import com.hy.data.entity.RoleEntity;
 import com.hy.data.entity.UserEntity;
+import com.hy.data.entity.mapper.AdminLineJsonMapper;
 import com.hy.data.entity.mapper.CompanyEntityJsonMapper;
+import com.hy.data.entity.mapper.ListOfIntegerJsonMapper;
 import com.hy.data.entity.mapper.MapEntityJsonMapper;
 import com.hy.data.entity.mapper.PageEntityJsonMapper;
 import com.hy.data.entity.mapper.RoleEntityJsonMapper;
@@ -41,7 +44,8 @@ public class RestApiImpl implements RestApi {
     private PageEntityJsonMapper pageEntityJsonMapper;
     private RoleEntityJsonMapper roleEntityJsonMapper;
     private CompanyEntityJsonMapper companyEntityJsonMapper;
-
+    private AdminLineJsonMapper adminLineJsonMapper;
+    private ListOfIntegerJsonMapper listOfIntegerJsonMapper;
     /**
      * Constructor of the class
      *
@@ -96,6 +100,21 @@ public class RestApiImpl implements RestApi {
         this.roleEntityJsonMapper = roleEntityJsonMapper;
     }
 
+    public RestApiImpl(Context context, AdminLineJsonMapper adminLineJsonMapper) {
+        if (context == null || adminLineJsonMapper == null) {
+            throw new IllegalArgumentException("The constructor parameters cannot be null!!!");
+        }
+        this.context = context;
+        this.adminLineJsonMapper = adminLineJsonMapper;
+    }
+
+    public RestApiImpl(Context context, ListOfIntegerJsonMapper listOfIntegerJsonMapper) {
+        if (context == null || listOfIntegerJsonMapper == null) {
+            throw new IllegalArgumentException("The constructor parameters cannot be null!!!");
+        }
+        this.context = context;
+        this.listOfIntegerJsonMapper = listOfIntegerJsonMapper;
+    }
     /**
      * 获取用户登录信息
      *
@@ -571,6 +590,81 @@ public class RestApiImpl implements RestApi {
                             String responseAdministratorEntities = new String(responseBody, "UTF-8");
                             Log.e("administratorEntity", responseAdministratorEntities);
                             subscriber.onNext(pageEntityJsonMapper.transformAdministratorPageEntity(responseAdministratorEntities));
+                            subscriber.onCompleted();
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                        try {
+                            String aaa = new String(responseBody, "UTF-8");
+                            Log.e("administratorEntity", aaa);
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                        }
+                        Log.e("onFailure", "addAdministrator");
+                        subscriber.onError(new NetworkConnectionException("链接失败"));
+                    }
+                });
+            }
+        });
+    }
+
+    @Override
+    public Observable<List<AdminLineEntity>> getAllTower(int userId,int sn) {
+        return Observable.create(new Observable.OnSubscribe<List<AdminLineEntity>>() {
+            @Override
+            public void call(Subscriber<? super List<AdminLineEntity>> subscriber) {
+                RequestParams params = new RequestParams();
+                params.put("userId", userId);
+                params.put("operatorSN", sn);
+                SystemRestClient.post("/changetowermanage", params, new AsyncHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                        try {
+                            String responseAdminLineEntities = new String(responseBody, "UTF-8");
+                            Log.e("AdminLineEntity", responseAdminLineEntities);
+                            subscriber.onNext(adminLineJsonMapper.transformAdminLineEntity(responseAdminLineEntities));
+                            subscriber.onCompleted();
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                        try {
+                            String aaa = new String(responseBody, "UTF-8");
+                            Log.e("administratorEntity", aaa);
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                        }
+                        Log.e("onFailure", "addAdministrator");
+                        subscriber.onError(new NetworkConnectionException("链接失败"));
+                    }
+                });
+            }
+        });
+    }
+
+    @Override
+    public Observable<List<Integer>> getOwnTower(int userId, int sn) {
+        return Observable.create(new Observable.OnSubscribe<List<Integer>>() {
+            @Override
+            public void call(Subscriber<? super List<Integer>> subscriber) {
+                RequestParams params = new RequestParams();
+                params.put("userId", userId);
+                params.put("operatorSN", sn);
+
+                SystemRestClient.post("/getPoleSelect", params, new AsyncHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                        try {
+                            String responseOwnTowerEntities = new String(responseBody, "UTF-8");
+                            Log.e("AdminLineEntity", responseOwnTowerEntities);
+                            subscriber.onNext(listOfIntegerJsonMapper.transformIntegerEntity(responseOwnTowerEntities));
                             subscriber.onCompleted();
                         } catch (UnsupportedEncodingException e) {
                             e.printStackTrace();

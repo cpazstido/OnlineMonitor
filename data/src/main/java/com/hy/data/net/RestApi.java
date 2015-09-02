@@ -1,6 +1,7 @@
 package com.hy.data.net;
 
 
+import com.hy.data.entity.AdminLineEntity;
 import com.hy.data.entity.AdministratorPageEntity;
 import com.hy.data.entity.AlarmPageEntity;
 import com.hy.data.entity.CompanyEntity;
@@ -144,5 +145,18 @@ public interface RestApi {
      */
     Observable<AdministratorPageEntity> deleteAdministrator(int sn);
 
+    /**
+     * 获得所有的杆塔列表
+     * @param userId 唯一标示
+     * @return 线路列表,包含了所有的杆塔
+     */
+    Observable<List<AdminLineEntity>> getAllTower(int userId,int sn);
 
+    /**
+     * 获得自己拥有的的杆塔sn
+     * @param userId 唯一标示
+     * @param sn 哪一个sn的杆塔
+     * @return 杆塔sn列表
+     */
+    Observable<List<Integer>> getOwnTower(int userId, int sn);
 }

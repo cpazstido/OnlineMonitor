@@ -26,6 +26,7 @@ public class AdministratorDataMapper {
         administratorInformation.setCompanySn(domainAdministrator.getCompanySn());
         administratorInformation.setRole(RoleDataMapper.transform(domainAdministrator.getDomainRole()));
         administratorInformation.setSn(domainAdministrator.getSn());
+        administratorInformation.setAllPoleSeleceted(domainAdministrator.getAllPoleSeleceted());
         return administratorInformation;
     }
 

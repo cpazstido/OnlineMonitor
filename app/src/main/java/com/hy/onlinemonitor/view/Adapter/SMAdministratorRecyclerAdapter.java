@@ -28,6 +28,15 @@ import java.util.List;
 
 public class SMAdministratorRecyclerAdapter extends RecyclerSwipeAdapter<AdministratorViewHolder> {
 
+    public void setOnTowerManageClickListener(OnTowerManageClickListener onTowerManageClickListener) {
+        this.onTowerManageClickListener = onTowerManageClickListener;
+    }
+
+    public interface OnTowerManageClickListener {
+        void onTowerManageClicked(AdministratorInformation administratorInformation);
+    }
+
+    private OnTowerManageClickListener onTowerManageClickListener;
     private Context mContext;
     private List<AdministratorInformation> mDatas;
     private AndroidTreeView tView;
@@ -79,6 +88,7 @@ public class SMAdministratorRecyclerAdapter extends RecyclerSwipeAdapter<Adminis
     @Override
     public void onBindViewHolder(final AdministratorViewHolder administratorViewHolder, final int position) {
 
+        final AdministratorInformation administratorInformation = this.mDatas.get(position);
         administratorViewHolder.swipeLayout.setShowMode(SwipeLayout.ShowMode.LayDown);
         administratorViewHolder.swipeLayout.addSwipeListener(new SimpleSwipeListener() {
             @Override
@@ -178,83 +188,16 @@ public class SMAdministratorRecyclerAdapter extends RecyclerSwipeAdapter<Adminis
         });
         //.neutralText(R.string.more_info)
 
-        /*
-         *杆塔管理
+
         administratorViewHolder.towerManagement.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MaterialDialog dialog = new MaterialDialog.Builder(mContext)
-                        .title(R.string.tower_management)
-                        .customView(R.layout.dialog_tree_choice, true)
-                        .positiveText(R.string.submit)
-                        .negativeText(R.string.cancel)
-                        .callback(new MaterialDialog.ButtonCallback() {
-                            @Override
-                            public void onAny(MaterialDialog dialog) {
-                                super.onAny(dialog);
-                            }
-
-                            @Override
-                            public void onPositive(MaterialDialog dialog) {
-
-                                List<TreeNode> treeNode = tView.getSelected();
-                                for (TreeNode treeNode1 : treeNode) {
-                                    if (treeNode1.getParent() != root) {
-                                        int baseId = treeNode1.getParent().getId();//这取到的是某条线路的位置
-                                        String LineName = mTowers.get(baseId).getLineName();//得到线路名
-
-                                        int towerId = treeNode1.getId();
-                                        String towerName = mTowers.get(baseId).getTowers().get(towerId).getTowerName();//得到杆塔名
-                                        Log.e("id", LineName + ":" + towerName);//这取到的是某个具体杆塔在list内的位置
-                                    }
-                                }
-
-                                super.onPositive(dialog);
-                            }
-
-                            @Override
-                            public void onNegative(MaterialDialog dialog) {
-                                super.onNegative(dialog);
-                            }
-                        })
-                        .build();
-                ViewGroup containerView = (ViewGroup) dialog.getCustomView().findViewById(R.id.dialog_tree_show);
-
-                RelativeLayout relativeLayout = (RelativeLayout) LayoutInflater.from(mContext).inflate(R.layout.item_check, null);
-
-                CheckBox checkAll = (CheckBox) relativeLayout.findViewById(R.id.check_box);
-
-                checkAll.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                    @Override
-                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                        if (isChecked) {
-                            tView.selectAll(true);
-                        } else {
-                            tView.deselectAll();
-                        }
-                    }
-                });
-                root = TreeNode.root();
-
-                //得到数据
-
-                for (AdministratorTower administratorTower : mTowers) {
-                    TreeNode lineTree = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.string.ic_earth, administratorTower.getLineName())).setViewHolder(new SelectableHeaderHolder(mContext));
-                    for (TowerInformation towerInformation : administratorTower.getTowers()) {
-                        TreeNode towerTree = new TreeNode(towerInformation.getTowerName()).setViewHolder(new SelectableItemHolder(mContext));
-                        lineTree.addChild(towerTree);
-                    }
-                    root.addChild(lineTree);
+                if (SMAdministratorRecyclerAdapter.this.onTowerManageClickListener != null) {
+                    SMAdministratorRecyclerAdapter.this.onTowerManageClickListener.onTowerManageClicked(administratorInformation);
                 }
-                tView = new AndroidTreeView(mContext, root);
-                tView.setDefaultAnimation(true);
-                tView.setSelectionModeEnabled(true);
-                containerView.addView(relativeLayout);
-                containerView.addView(tView.getView());
-                dialog.show();
             }
         });
-            */
+
         mItemManger.bindView(administratorViewHolder.itemView, position);
     }
 
