@@ -1,34 +1,32 @@
 package com.hy.onlinemonitor.bean;
 
-/**
- * Created by wsw on 2015/7/15.
- */
-public class EquipmentInformation {
 
-    private String equipmnetName;
+import java.io.Serializable;
+
+public class EquipmentInformation implements Serializable {
+    private int sn;
     private String equipmnetState;
-    private int SN;
+    private String equipmnetName;
+    private int dvrId;
+    private String dvrType;
     private int newFireAlarm;
     private int newBreakAlarm;
     private int newSensorAlarm;
 
-    public EquipmentInformation() {
+    public int getSn() {
+        return sn;
     }
 
-    public EquipmentInformation(String equipmnetName, String equipmnetState, int newFireAlarm, int newBreakAlarm, int newSensorAlarm) {
-        this.equipmnetName = equipmnetName;
+    public void setSn(int sn) {
+        this.sn = sn;
+    }
+
+    public String getEquipmnetState() {
+        return equipmnetState;
+    }
+
+    public void setEquipmnetState(String equipmnetState) {
         this.equipmnetState = equipmnetState;
-        this.newFireAlarm = newFireAlarm;
-        this.newBreakAlarm = newBreakAlarm;
-        this.newSensorAlarm = newSensorAlarm;
-    }
-
-    public int getSN() {
-        return SN;
-    }
-
-    public void setSN(int SN) {
-        this.SN = SN;
     }
 
     public String getEquipmnetName() {
@@ -39,12 +37,20 @@ public class EquipmentInformation {
         this.equipmnetName = equipmnetName;
     }
 
-    public String getEquipmnetState() {
-        return equipmnetState;
+    public int getDvrId() {
+        return dvrId;
     }
 
-    public void setEquipmnetState(String equipmnetState) {
-        this.equipmnetState = equipmnetState;
+    public void setDvrId(int dvrId) {
+        this.dvrId = dvrId;
+    }
+
+    public String getDvrType() {
+        return dvrType;
+    }
+
+    public void setDvrType(String dvrType) {
+        this.dvrType = dvrType;
     }
 
     public int getNewFireAlarm() {
@@ -69,17 +75,5 @@ public class EquipmentInformation {
 
     public void setNewSensorAlarm(int newSensorAlarm) {
         this.newSensorAlarm = newSensorAlarm;
-    }
-
-    @Override
-    public String toString() {
-        return "EquipmnetAlarmInformation{" +
-                "equipmnetName='" + equipmnetName + '\'' +
-                ", equipmnetState='" + equipmnetState + '\'' +
-                ", SN=" + SN +
-                ", newFireAlarm=" + newFireAlarm +
-                ", newBreakAlarm=" + newBreakAlarm +
-                ", newSensorAlarm=" + newSensorAlarm +
-                '}';
     }
 }
