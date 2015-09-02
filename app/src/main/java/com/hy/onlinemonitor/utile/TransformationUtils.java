@@ -7,9 +7,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-/**
- * Created by wsw on 2015/7/17.
- */
+
 public class TransformationUtils {
     public static List<String> getListFromString(String str,String splitToWhat){
         List<String> list = Arrays.asList(str.split(splitToWhat));
