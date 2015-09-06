@@ -19,8 +19,6 @@ public class AdministratorDataMapper {
         administratorInformation.setRealName(domainAdministrator.getRealName());
         administratorInformation.setPhoneNumber(domainAdministrator.getPhoneNumber());
         administratorInformation.setPassword(domainAdministrator.getPassword());
-        administratorInformation.setOwnTowerList(domainAdministrator.getOwnTowerList());
-        administratorInformation.setAllTowerList(domainAdministrator.getAllTowerList());
         administratorInformation.setIsReceiveMessages(domainAdministrator.getIsReceiveMessages());
         administratorInformation.setLoginName(domainAdministrator.getLoginName());
         administratorInformation.setCompanySn(domainAdministrator.getCompanySn());

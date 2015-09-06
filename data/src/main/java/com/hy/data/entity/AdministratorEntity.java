@@ -1,7 +1,5 @@
 package com.hy.data.entity;
 
-import java.util.List;
-
 public class AdministratorEntity {
     private String loginName;
     private String realName;
@@ -12,8 +10,6 @@ public class AdministratorEntity {
     private int company_SN;
     private int sn;
     private int allPoleSeleceted;
-    private List<String> ownTowerList;
-    private List<String> allTowerList;
 
     public int getSn() {
         return sn;
@@ -78,22 +74,6 @@ public class AdministratorEntity {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public List<String> getOwnTowerList() {
-        return ownTowerList;
-    }
-
-    public void setOwnTowerList(List<String> ownTowerList) {
-        this.ownTowerList = ownTowerList;
-    }
-
-    public List<String> getAllTowerList() {
-        return allTowerList;
-    }
-
-    public void setAllTowerList(List<String> allTowerList) {
-        this.allTowerList = allTowerList;
     }
 
     public int getAllPoleSeleceted() {

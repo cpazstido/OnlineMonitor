@@ -19,10 +19,8 @@ public class AdministratorEntityDataMapper {
         RoleEntityDataMapper roleEntityDataMapper = new RoleEntityDataMapper();
         if (administratorEntity != null) {
             domainAdministrator = new DomainAdministrator();
-            domainAdministrator.setAllTowerList(administratorEntity.getAllTowerList());
             domainAdministrator.setIsReceiveMessages(administratorEntity.getReceiveMessage());
             domainAdministrator.setLoginName(administratorEntity.getLoginName());
-            domainAdministrator.setOwnTowerList(administratorEntity.getOwnTowerList());
             domainAdministrator.setPassword(administratorEntity.getPassword());
             domainAdministrator.setPhoneNumber(administratorEntity.getMobilePhone());
             domainAdministrator.setRealName(administratorEntity.getRealName());

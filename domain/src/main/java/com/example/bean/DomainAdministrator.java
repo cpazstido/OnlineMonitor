@@ -1,7 +1,5 @@
 package com.example.bean;
 
-import java.util.List;
-
 /**
  * Created by 24363 on 2015/8/31.
  */
@@ -15,8 +13,6 @@ public class DomainAdministrator {
     private int companySn;
     private int sn;
     private int allPoleSeleceted;
-    private List<String> ownTowerList;
-    private List<String> allTowerList;
 
     public int getSn() {
         return sn;
@@ -80,22 +76,6 @@ public class DomainAdministrator {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public List<String> getOwnTowerList() {
-        return ownTowerList;
-    }
-
-    public void setOwnTowerList(List<String> ownTowerList) {
-        this.ownTowerList = ownTowerList;
-    }
-
-    public List<String> getAllTowerList() {
-        return allTowerList;
-    }
-
-    public void setAllTowerList(List<String> allTowerList) {
-        this.allTowerList = allTowerList;
     }
 
     public int getAllPoleSeleceted() {

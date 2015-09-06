@@ -1,7 +1,5 @@
 package com.hy.onlinemonitor.bean;
 
-import java.util.List;
-
 public class AdministratorInformation {
     private String loginName;
     private String realName;
@@ -12,8 +10,6 @@ public class AdministratorInformation {
     private int companySn;
     private int sn;
     private int allPoleSeleceted;
-    private List<String> ownTowerList;
-    private List<String> allTowerList;
 
     public int getSn() {
         return sn;
@@ -69,22 +65,6 @@ public class AdministratorInformation {
 
     public void setIsReceiveMessages(String isReceiveMessages) {
         this.isReceiveMessages = isReceiveMessages;
-    }
-
-    public List<String> getOwnTowerList() {
-        return ownTowerList;
-    }
-
-    public void setOwnTowerList(List<String> ownTowerList) {
-        this.ownTowerList = ownTowerList;
-    }
-
-    public List<String> getAllTowerList() {
-        return allTowerList;
-    }
-
-    public void setAllTowerList(List<String> allTowerList) {
-        this.allTowerList = allTowerList;
     }
 
     public String getPassword() {

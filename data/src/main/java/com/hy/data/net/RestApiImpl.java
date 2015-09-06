@@ -633,7 +633,7 @@ public class RestApiImpl implements RestApi {
                 RequestParams params = new RequestParams();
                 params.put("userId", userId);
                 params.put("operatorSN", sn);
-                SystemRestClient.post("/changetowermanage", params, new AsyncHttpResponseHandler() {
+                SystemRestClient.post("/getAllTower", params, new AsyncHttpResponseHandler() {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                         try {
