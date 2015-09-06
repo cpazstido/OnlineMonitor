@@ -159,4 +159,15 @@ public interface RestApi {
      * @return 杆塔sn列表
      */
     Observable<List<Integer>> getOwnTower(int userId, int sn);
+
+    /**
+     * 修改管理的杆塔
+     * @param userId 唯一标示
+     * @param snList 杆塔的sn
+     * @param adminSn 某一个管理员的sn
+     * @param allPoleSelected  是否全选
+     * @return 返回是否处理成功的字符串
+     */
+    Observable<String> changeManageTower(int userId,int adminSn, List<Integer> snList,int allPoleSelected);
+
 }

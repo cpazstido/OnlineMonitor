@@ -20,6 +20,7 @@ import com.hy.onlinemonitor.mapper.AdminLineDataMapper;
 import com.hy.onlinemonitor.mapper.CompanyDataMapper;
 import com.hy.onlinemonitor.mapper.PageDataMapper;
 import com.hy.onlinemonitor.mapper.RoleDataMapper;
+import com.hy.onlinemonitor.utile.ShowUtile;
 import com.hy.onlinemonitor.view.Activity.SystemManagement.AdministratorManageActivity;
 
 import java.util.List;
@@ -31,7 +32,8 @@ public class SMAdministratorPresenter implements Presenter {
     private final Context mContext;
     private AdministratorUseCase administratorUseCase;
     private PageDataMapper pageDataMapper;
-
+    private int adminSn;
+    private int allPoleSelected;
     public void setAdministratorManageActivity(AdministratorManageActivity administratorManageActivity) {
         this.administratorManageActivity = administratorManageActivity;
     }
@@ -100,9 +102,40 @@ public class SMAdministratorPresenter implements Presenter {
 
     public void loadAllTower(int userId,int sn) {
         showViewLoading();
+        this.adminSn = sn;
         SMAdministratorRepository smAdministratorRepository = new AdministratorDataRepository(mContext, userId, sn);
         this.administratorUseCase = new AdministratorUseCase(new UIThread(), AndroidSchedulers.mainThread(), smAdministratorRepository, 7);
         this.administratorUseCase.execute(new AdminLineListSubscriber());
+    }
+
+    public void onlyLoadAllTower(int userId, int sn) {
+        showViewLoading();
+        this.adminSn =sn;
+        SMAdministratorRepository smAdministratorRepository = new AdministratorDataRepository(mContext, userId, sn);
+        this.administratorUseCase = new AdministratorUseCase(new UIThread(), AndroidSchedulers.mainThread(), smAdministratorRepository, 7);
+        this.administratorUseCase.execute(new AdminLineListOnlySubscriber());
+
+    }
+
+    private class AdminLineListOnlySubscriber extends DefaultSubscriber<List<DomainAdminLine>> {
+        @Override
+        public void onCompleted() {
+            showViewLoading();
+            administratorManageActivity.LineDialogShow();
+        }
+
+        @Override
+        public void onError(Throwable e) {
+            SMAdministratorPresenter.this.hideViewLoading();
+            Toast.makeText(mContext, "AdminLineListOnlySubscriber出现错误", Toast.LENGTH_SHORT).show();
+            super.onError(e);
+        }
+
+        @Override
+        public void onNext(List<DomainAdminLine> domainAdminLines) {
+            List<AdminLine> mList = AdminLineDataMapper.transform(domainAdminLines);
+            administratorManageActivity.setAdminLines(mList);
+        }
     }
 
     private class AdminLineListSubscriber extends DefaultSubscriber<List<DomainAdminLine>> {
@@ -115,7 +148,7 @@ public class SMAdministratorPresenter implements Presenter {
         @Override
         public void onError(Throwable e) {
             SMAdministratorPresenter.this.hideViewLoading();
-            Toast.makeText(mContext, "出现错误", Toast.LENGTH_SHORT).show();
+            Toast.makeText(mContext, "AdminLineListSubscriber出现错误", Toast.LENGTH_SHORT).show();
             super.onError(e);
         }
 
@@ -220,6 +253,39 @@ public class SMAdministratorPresenter implements Presenter {
         public void onNext(DomainAdministratorPage domainAdministratorPage) {
             SMAdministratorPresenter.this.showAdministratorPage(domainAdministratorPage);
         }
+    }
+
+    public void changeManageTower(int userId,List<Integer> snList,int allPoleSelected) {
+        showViewLoading();
+        this.allPoleSelected = allPoleSelected;
+        SMAdministratorRepository smAdministratorRepository = new AdministratorDataRepository(mContext, userId,adminSn ,snList,allPoleSelected);
+        this.administratorUseCase = new AdministratorUseCase(new UIThread(), AndroidSchedulers.mainThread(), smAdministratorRepository, 9);
+        this.administratorUseCase.execute(new ChangeTowerManageSubscriber());
+    }
+
+    private class ChangeTowerManageSubscriber extends DefaultSubscriber<String> {
+
+        @Override
+        public void onCompleted() {
+            SMAdministratorPresenter.this.hideViewLoading();
+        }
+
+        @Override
+        public void onError(Throwable e) {
+            SMAdministratorPresenter.this.hideViewLoading();
+            Toast.makeText(mContext, "出现错误", Toast.LENGTH_SHORT).show();
+            super.onError(e);
+        }
+
+        @Override
+        public void onNext(String res) {
+            SMAdministratorPresenter.this.setAdmin(allPoleSelected);
+            ShowUtile.toastShow(mContext,res);
+        }
+    }
+
+    private void setAdmin(int allPoleSelected) {
+        this.administratorManageActivity.setAdmin(allPoleSelected);
     }
 
     private void showAdministratorPage(DomainAdministratorPage domainAdministratorPage) {

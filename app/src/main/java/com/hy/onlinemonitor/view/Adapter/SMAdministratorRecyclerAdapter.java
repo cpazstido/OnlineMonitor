@@ -20,8 +20,6 @@ import com.hy.onlinemonitor.bean.CompanyInformation;
 import com.hy.onlinemonitor.bean.Role;
 import com.hy.onlinemonitor.presenter.SMAdministratorPresenter;
 import com.hy.onlinemonitor.view.ViewHolder.AdministratorViewHolder;
-import com.unnamed.b.atv.model.TreeNode;
-import com.unnamed.b.atv.view.AndroidTreeView;
 
 import java.util.Collection;
 import java.util.List;
@@ -39,8 +37,6 @@ public class SMAdministratorRecyclerAdapter extends RecyclerSwipeAdapter<Adminis
     private OnTowerManageClickListener onTowerManageClickListener;
     private Context mContext;
     private List<AdministratorInformation> mDatas;
-    private AndroidTreeView tView;
-    private TreeNode root;
 
     private List<String> roleNameList;
     private List<String> companyNameList;
@@ -111,7 +107,6 @@ public class SMAdministratorRecyclerAdapter extends RecyclerSwipeAdapter<Adminis
                         .positiveText(R.string.submit)
                         .negativeText(R.string.cancel)
                         .callback(new MaterialDialog.ButtonCallback() {
-
                             @Override
                             public void onPositive(MaterialDialog dialog) {
                                 String loginName = ((EditText) dialog.getCustomView().findViewById(R.id.dialog_administrator_loginName)).getText().toString();
@@ -203,7 +198,6 @@ public class SMAdministratorRecyclerAdapter extends RecyclerSwipeAdapter<Adminis
 
     public void setAdministratorCollection(Collection<AdministratorInformation> administratorInformations) {
         this.validateAdministratorCollection(administratorInformations);
-
 //        for(AdministratorInformation administratorInformation :(List<AdministratorInformation>)administratorInformations){
 //            mDatas.add(administratorInformation);
 //        }

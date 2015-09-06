@@ -19,6 +19,7 @@ import com.hy.data.entity.mapper.ListOfIntegerJsonMapper;
 import com.hy.data.entity.mapper.MapEntityJsonMapper;
 import com.hy.data.entity.mapper.PageEntityJsonMapper;
 import com.hy.data.entity.mapper.RoleEntityJsonMapper;
+import com.hy.data.entity.mapper.StringJsonMapper;
 import com.hy.data.entity.mapper.UserEntityJsonMapper;
 import com.hy.data.exception.NetworkConnectionException;
 import com.hy.data.utile.SystemRestClient;
@@ -43,9 +44,11 @@ public class RestApiImpl implements RestApi {
     private MapEntityJsonMapper mapEntityJsonMapper;
     private PageEntityJsonMapper pageEntityJsonMapper;
     private RoleEntityJsonMapper roleEntityJsonMapper;
+    private StringJsonMapper stringJsonMapper;
     private CompanyEntityJsonMapper companyEntityJsonMapper;
     private AdminLineJsonMapper adminLineJsonMapper;
     private ListOfIntegerJsonMapper listOfIntegerJsonMapper;
+
     /**
      * Constructor of the class
      *
@@ -59,6 +62,14 @@ public class RestApiImpl implements RestApi {
         }
         this.context = context.getApplicationContext();
         this.userEntityJsonMapper = userEntityJsonMapper;
+    }
+
+    public RestApiImpl(Context context, StringJsonMapper stringJsonMapper) {
+        if (context == null || stringJsonMapper == null) {
+            throw new IllegalArgumentException("The constructor parameters cannot be null!!!");
+        }
+        this.context = context.getApplicationContext();
+        this.stringJsonMapper = stringJsonMapper;
     }
 
     public RestApiImpl(Context context, PageEntityJsonMapper pageEntityJsonMapper) {
@@ -115,6 +126,7 @@ public class RestApiImpl implements RestApi {
         this.context = context;
         this.listOfIntegerJsonMapper = listOfIntegerJsonMapper;
     }
+
     /**
      * 获取用户登录信息
      *
@@ -613,10 +625,11 @@ public class RestApiImpl implements RestApi {
     }
 
     @Override
-    public Observable<List<AdminLineEntity>> getAllTower(int userId,int sn) {
+    public Observable<List<AdminLineEntity>> getAllTower(int userId, int sn) {
         return Observable.create(new Observable.OnSubscribe<List<AdminLineEntity>>() {
             @Override
             public void call(Subscriber<? super List<AdminLineEntity>> subscriber) {
+                Log.e("tag","getAllTower");
                 RequestParams params = new RequestParams();
                 params.put("userId", userId);
                 params.put("operatorSN", sn);
@@ -635,12 +648,6 @@ public class RestApiImpl implements RestApi {
 
                     @Override
                     public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                        try {
-                            String aaa = new String(responseBody, "UTF-8");
-                            Log.e("administratorEntity", aaa);
-                        } catch (UnsupportedEncodingException e) {
-                            e.printStackTrace();
-                        }
                         Log.e("onFailure", "addAdministrator");
                         subscriber.onError(new NetworkConnectionException("链接失败"));
                     }
@@ -654,6 +661,7 @@ public class RestApiImpl implements RestApi {
         return Observable.create(new Observable.OnSubscribe<List<Integer>>() {
             @Override
             public void call(Subscriber<? super List<Integer>> subscriber) {
+                Log.e("tag","getOwnTower");
                 RequestParams params = new RequestParams();
                 params.put("userId", userId);
                 params.put("operatorSN", sn);
@@ -680,6 +688,52 @@ public class RestApiImpl implements RestApi {
                             e.printStackTrace();
                         }
                         Log.e("onFailure", "addAdministrator");
+                        subscriber.onError(new NetworkConnectionException("链接失败"));
+                    }
+                });
+            }
+        });
+    }
+
+    @Override
+    public Observable<String> changeManageTower(int userId, int adminSn, List<Integer> snList, int allPoleSelected) {
+        return Observable.create(new Observable.OnSubscribe<String>() {
+            @Override
+            public void call(Subscriber<? super String> subscriber) {
+                Log.e("tag","changeManageTower");
+
+                String newString = null;
+                if (snList != null) {
+                    String str = "";
+                    for (int sn : snList) {
+                        str += sn + ",";
+                    }
+                    newString = str.substring(0, str.length() - 1);
+                }
+
+                RequestParams params = new RequestParams();
+                params.put("userId", userId);
+                params.put("operatorSN", adminSn);
+                params.put("allPoleSelected", allPoleSelected);
+                params.put("poleSnList", newString);
+
+                Log.e("a","--");
+                SystemRestClient.post("/selectOne", params, new AsyncHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                        try {
+                            String responseString = new String(responseBody, "UTF-8");
+                            Log.e("changeManageTower", responseString);
+                            subscriber.onNext(stringJsonMapper.transformString(responseString));
+                            subscriber.onCompleted();
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                        Log.e("onFailure", "selectOne");
                         subscriber.onError(new NetworkConnectionException("链接失败"));
                     }
                 });

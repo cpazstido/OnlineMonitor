@@ -49,6 +49,8 @@ public class AdministratorUseCase extends UseCase{
             case 8:
                 observable = smAdministratorRepository.getOwnTower();
                 break;
+            case 9:
+                observable = smAdministratorRepository.changeManageTower();
         }
 
         return observable;

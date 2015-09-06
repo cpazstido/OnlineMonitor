@@ -16,10 +16,20 @@ import com.unnamed.b.atv.model.TreeNode;
 public class SelectableItemHolder extends TreeNode.BaseNodeViewHolder<String> {
     private TextView tvValue;
     private CheckBox nodeSelector;
+    private CheckBoxClick checkBoxClick;
+
+    public void setCheckBoxClick(CheckBoxClick checkBoxClick) {
+        this.checkBoxClick = checkBoxClick;
+    }
+
+    public interface CheckBoxClick {
+        void checkBoxClick(TreeNode node,SelectableItemHolder selectableItemHolder);
+    }
 
     public SelectableItemHolder(Context context) {
         super(context);
     }
+
 
     @Override
     public View createNodeView(final TreeNode node, String value) {
@@ -28,13 +38,12 @@ public class SelectableItemHolder extends TreeNode.BaseNodeViewHolder<String> {
 
         tvValue = (TextView) view.findViewById(R.id.node_value);
         tvValue.setText(value);
-
-
         nodeSelector = (CheckBox) view.findViewById(R.id.node_selector);
         nodeSelector.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 node.setSelected(isChecked);
+                SelectableItemHolder.this.checkBoxClick.checkBoxClick(node,SelectableItemHolder.this);
             }
         });
         nodeSelector.setChecked(node.isSelected());

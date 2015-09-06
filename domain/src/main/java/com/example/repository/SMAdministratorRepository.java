@@ -29,4 +29,6 @@ public interface SMAdministratorRepository {
     Observable<List<DomainAdminLine>> getAllTower();
 
     Observable<List<Integer>> getOwnTower();
+
+    Observable<String> changeManageTower();
 }

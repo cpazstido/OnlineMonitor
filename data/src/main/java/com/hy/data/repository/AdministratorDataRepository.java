@@ -16,6 +16,7 @@ import com.hy.data.entity.mapper.PageEntityDataMapper;
 import com.hy.data.entity.mapper.PageEntityJsonMapper;
 import com.hy.data.entity.mapper.RoleEntityDataMapper;
 import com.hy.data.entity.mapper.RoleEntityJsonMapper;
+import com.hy.data.entity.mapper.StringJsonMapper;
 import com.hy.data.net.RestApiImpl;
 
 import java.util.List;
@@ -32,7 +33,11 @@ public class AdministratorDataRepository implements SMAdministratorRepository {
     private String password;
     private String mobilePhone;
     private String isMessage;
+    private int adminSn;
     private int sn;
+    private List<Integer> snList;
+    private int allPoleSelected;
+
     public AdministratorDataRepository(Context mContext, int userId) {
         this.mContext = mContext;
         this.userId = userId;
@@ -43,6 +48,7 @@ public class AdministratorDataRepository implements SMAdministratorRepository {
         this.mContext = mContext;
         this.userId = userId;
     }
+
     public AdministratorDataRepository(Context mContext, int roleSn, int companySn, String loginName, String realName, String password, String mobilePhone,String isMessage) {
         this.mContext = mContext;
         this.roleSn = roleSn;
@@ -70,6 +76,14 @@ public class AdministratorDataRepository implements SMAdministratorRepository {
     public AdministratorDataRepository(int sn, Context mContext) {
         this.sn = sn;
         this.mContext = mContext;
+    }
+
+    public AdministratorDataRepository(Context mContext, int userId, int adminSn,List<Integer> snList,int allPoleSelected) {
+        this.mContext = mContext;
+        this.userId = userId;
+        this.adminSn = adminSn;
+        this.snList = snList;
+        this.allPoleSelected = allPoleSelected;
     }
 
     @Override
@@ -130,4 +144,11 @@ public class AdministratorDataRepository implements SMAdministratorRepository {
         RestApiImpl restApi = new RestApiImpl(mContext,new ListOfIntegerJsonMapper());
         return restApi.getOwnTower(userId,sn);
     }
+
+    @Override
+    public Observable<String> changeManageTower() {
+        RestApiImpl restApi = new RestApiImpl(mContext,new StringJsonMapper());
+        return restApi.changeManageTower(userId,adminSn,snList,allPoleSelected);
+    }
+
 }

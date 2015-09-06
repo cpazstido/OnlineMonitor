@@ -1,6 +1,7 @@
 package com.hy.onlinemonitor.view.Activity.SystemManagement;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -41,10 +42,15 @@ public class AdministratorManageActivity extends SMBaseActivity {
     private AdministratorPage administratorPage;
     private SMAdministratorRecyclerAdapter mAdapter;
     private SMAdministratorPresenter smAdministratorPresenter;
-    private TreeNode root;
+    private AdministratorInformation administratorInformation;
+    private TreeNode root, towerTree, lineTree;
     private AndroidTreeView tView;
     private List<AdminLine> adminLines;
     private List<Integer> ownTowerSn;
+    private CheckBox checkAll;
+    private SelectableItemHolder itemHolder;
+    private SelectableHeaderHolder selectableHeaderHolder;
+    private boolean flag = true;
 
     public void setOwnTowerSn(List<Integer> ownTowerSn) {
         this.ownTowerSn = ownTowerSn;
@@ -198,11 +204,39 @@ public class AdministratorManageActivity extends SMBaseActivity {
             new SMAdministratorRecyclerAdapter.OnTowerManageClickListener() {
                 @Override
                 public void onTowerManageClicked(AdministratorInformation administratorInformation) {
-                    smAdministratorPresenter.loadAllTower(getUser().getUserId(),administratorInformation.getSn());
+                    AdministratorManageActivity.this.administratorInformation = administratorInformation;
+                    if (administratorInformation.getAllPoleSeleceted() != 1) {
+                        smAdministratorPresenter.loadAllTower(getUser().getUserId(), administratorInformation.getSn());
+                    } else {
+                        smAdministratorPresenter.onlyLoadAllTower(getUser().getUserId(), administratorInformation.getSn());
+                    }
                 }
             };
 
-    public void LineDialogShow(){
+    private SelectableItemHolder.CheckBoxClick checkBoxClick = new SelectableItemHolder.CheckBoxClick() {
+        @Override
+        public void checkBoxClick(TreeNode node, SelectableItemHolder selectableItemHolder) {
+            flag = false;
+            boolean isItemCheckAll = true;
+            for (TreeNode treeNode : node.getRoot().getChildren()) {
+                boolean itemCheck =true;
+                for(TreeNode treeNode1: treeNode.getChildren()){
+                    if(!treeNode1.isSelected()){
+                        itemCheck =false;
+                    }
+                }
+                treeNode.setSelected(itemCheck);
+                if(!treeNode.isSelected()){
+                    isItemCheckAll = false;
+                }
+            }
+
+            checkAll.setChecked(isItemCheckAll);
+            flag = true;
+        }
+    };
+
+    public void LineDialogShow() {
         MaterialDialog dialog = new MaterialDialog.Builder(AdministratorManageActivity.this)
                 .title(R.string.tower_management)
                 .customView(R.layout.dialog_tree_choice, true)
@@ -216,22 +250,33 @@ public class AdministratorManageActivity extends SMBaseActivity {
 
                     @Override
                     public void onPositive(MaterialDialog dialog) {
-//                        List<TreeNode> treeNode = tView.getSelected();
-//                        for (TreeNode treeNode1 : treeNode) {
-//                            if (treeNode1.getParent() != root) {
-//                                int baseId = treeNode1.getParent().getId();//这取到的是某条线路的位置
-//                                String LineName = mTowers.get(baseId).getLineName();//得到线路名
-//
-//                                int towerId = treeNode1.getId();
-//                                String towerName = mTowers.get(baseId).getTowers().get(towerId).getTowerName();//得到杆塔名
-//                                Log.e("id", LineName + ":" + towerName);//这取到的是某个具体杆塔在list内的位置
-//                            }
-//                        }
+                        if (!checkAll.isChecked()) {//非全选时
+                            List<Integer> TowerSn = new ArrayList<>();
+                            List<TreeNode> treeNode = tView.getSelected();
+                            for (TreeNode treeNode1 : treeNode) {
+                                if (treeNode1.getParent() != root) {
+                                    int baseId = treeNode1.getParent().getId();//这取到的是某条线路的位置
+                                    String LineName = adminLines.get(baseId).getName();//得到线路名
+                                    int towerId = treeNode1.getId();    //取得杆塔的Id
+                                    String towerName = adminLines.get(baseId).getTowers().get(towerId).getTowerName();//得到杆塔名
+                                    int towerSn = adminLines.get(baseId).getTowers().get(towerId).getSn();//得到杆塔sn
+
+                                    Log.e("id", LineName + ":" + towerName);//这取到的是某个具体杆塔在list内的位置
+                                    TowerSn.add(towerSn);
+                                }
+                            }
+                            //非全选时参数为0
+                            smAdministratorPresenter.changeManageTower(getUser().getUserId(), TowerSn, 0);
+                        } else {//全选时,为1
+                            ShowUtile.toastShow(AdministratorManageActivity.this, "全选");
+                            smAdministratorPresenter.changeManageTower(getUser().getUserId(), null, 1);
+                        }
                         super.onPositive(dialog);
                     }
 
                     @Override
                     public void onNegative(MaterialDialog dialog) {
+                        smAdministratorPresenter.hideViewLoading();
                         super.onNegative(dialog);
                     }
                 })
@@ -240,39 +285,55 @@ public class AdministratorManageActivity extends SMBaseActivity {
 
         RelativeLayout relativeLayout = (RelativeLayout) LayoutInflater.from(AdministratorManageActivity.this).inflate(R.layout.item_check, null);
 
-        CheckBox checkAll = (CheckBox) relativeLayout.findViewById(R.id.check_box);
+        checkAll = (CheckBox) relativeLayout.findViewById(R.id.check_box);
 
         checkAll.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    tView.selectAll(true);
-                } else {
-                    tView.deselectAll();
+                if (flag) {
+                    if (isChecked) {
+                        tView.selectAll(true);
+                    } else {
+                        tView.deselectAll();
+                    }
                 }
             }
         });
+
         root = TreeNode.root();
         for (AdminLine adminLine : adminLines) {
-            TreeNode lineTree = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.string.ic_earth, adminLine.getName())).setViewHolder(new SelectableHeaderHolder(AdministratorManageActivity.this));
+            selectableHeaderHolder = new SelectableHeaderHolder(AdministratorManageActivity.this);
+            lineTree = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.string.ic_earth, adminLine.getName())).setViewHolder(selectableHeaderHolder);
             for (AdminTower adminTower : adminLine.getTowers()) {
-                TreeNode towerTree = new TreeNode(adminTower.getTowerName()).setViewHolder(new SelectableItemHolder(AdministratorManageActivity.this));
-                for(int sn :ownTowerSn){
-                    if(sn == adminTower.getSn()){
-                        towerTree.setSelected(true);
+                itemHolder = new SelectableItemHolder(AdministratorManageActivity.this);
+                itemHolder.setCheckBoxClick(checkBoxClick);
+                towerTree = new TreeNode(adminTower.getTowerName()).setViewHolder(itemHolder);
+                if (administratorInformation.getAllPoleSeleceted() != 1) {
+                    for (int sn : ownTowerSn) {
+                        if (sn == adminTower.getSn()) {
+                            towerTree.setSelected(true);
+                        }
                     }
+                }else{
+                    lineTree.setSelected(true);
                 }
                 lineTree.addChild(towerTree);
             }
             root.addChild(lineTree);
         }
+        if(administratorInformation.getAllPoleSeleceted() ==1){
+            Log.e("tag","全选了");
+        }
 
         tView = new AndroidTreeView(AdministratorManageActivity.this, root);
-
         tView.setDefaultAnimation(true);
         tView.setSelectionModeEnabled(true);
         containerView.addView(relativeLayout);
         containerView.addView(tView.getView());
         dialog.show();
+    }
+
+    public void setAdmin(int allPoleSelected) {
+        this.administratorInformation.setAllPoleSeleceted(allPoleSelected);
     }
 }
