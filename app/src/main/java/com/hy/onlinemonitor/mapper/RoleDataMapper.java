@@ -15,7 +15,6 @@ public class RoleDataMapper {
             throw new IllegalArgumentException("Cannot transform a null value");
         }
         Role role = new Role();
-
         role.setSn(domainRole.getSn());
         role.setRoleName(domainRole.getRoleName());
         return role;

@@ -3,7 +3,7 @@ package com.hy.onlinemonitor.presenter;
 import android.content.Context;
 import android.widget.Toast;
 
-import com.example.bean.DomainAdminLine;
+import com.example.bean.DomainLine;
 import com.example.bean.DomainAdministratorPage;
 import com.example.bean.DomainCompany;
 import com.example.bean.DomainRole;
@@ -12,11 +12,11 @@ import com.example.interactor.DefaultSubscriber;
 import com.example.repository.SMAdministratorRepository;
 import com.hy.data.repository.AdministratorDataRepository;
 import com.hy.onlinemonitor.UIThread;
-import com.hy.onlinemonitor.bean.AdminLine;
+import com.hy.onlinemonitor.bean.Line;
 import com.hy.onlinemonitor.bean.AdministratorPage;
-import com.hy.onlinemonitor.bean.CompanyInformation;
+import com.hy.onlinemonitor.bean.Company;
 import com.hy.onlinemonitor.bean.Role;
-import com.hy.onlinemonitor.mapper.AdminLineDataMapper;
+import com.hy.onlinemonitor.mapper.LineDataMapper;
 import com.hy.onlinemonitor.mapper.CompanyDataMapper;
 import com.hy.onlinemonitor.mapper.PageDataMapper;
 import com.hy.onlinemonitor.mapper.RoleDataMapper;
@@ -34,6 +34,7 @@ public class SMAdministratorPresenter implements Presenter {
     private PageDataMapper pageDataMapper;
     private int adminSn;
     private int allPoleSelected;
+
     public void setAdministratorManageActivity(AdministratorManageActivity administratorManageActivity) {
         this.administratorManageActivity = administratorManageActivity;
     }
@@ -50,7 +51,7 @@ public class SMAdministratorPresenter implements Presenter {
 
     @Override
     public void pause() {
-
+        administratorUseCase.unsubscribe();
     }
 
     @Override
@@ -70,6 +71,7 @@ public class SMAdministratorPresenter implements Presenter {
 
     /**
      * 加载公司列表,权限列表
+     * 必须在创建时就加载,在点击添加等时才不会报错
      * @param userId 标示某一个用户
      */
     public void loadData(int userId) {
@@ -117,7 +119,7 @@ public class SMAdministratorPresenter implements Presenter {
 
     }
 
-    private class AdminLineListOnlySubscriber extends DefaultSubscriber<List<DomainAdminLine>> {
+    private class AdminLineListOnlySubscriber extends DefaultSubscriber<List<DomainLine>> {
         @Override
         public void onCompleted() {
             showViewLoading();
@@ -132,13 +134,13 @@ public class SMAdministratorPresenter implements Presenter {
         }
 
         @Override
-        public void onNext(List<DomainAdminLine> domainAdminLines) {
-            List<AdminLine> mList = AdminLineDataMapper.transform(domainAdminLines);
-            administratorManageActivity.setAdminLines(mList);
+        public void onNext(List<DomainLine> domainLines) {
+            List<Line> mList = LineDataMapper.transform(domainLines);
+            administratorManageActivity.setLines(mList);
         }
     }
 
-    private class AdminLineListSubscriber extends DefaultSubscriber<List<DomainAdminLine>> {
+    private class AdminLineListSubscriber extends DefaultSubscriber<List<DomainLine>> {
         @Override
         public void onCompleted() {
             SMAdministratorPresenter.this.administratorUseCase.setType(8);
@@ -153,9 +155,9 @@ public class SMAdministratorPresenter implements Presenter {
         }
 
         @Override
-        public void onNext(List<DomainAdminLine> domainAdminLines) {
-            List<AdminLine> mList = AdminLineDataMapper.transform(domainAdminLines);
-            administratorManageActivity.setAdminLines(mList);
+        public void onNext(List<DomainLine> domainLines) {
+            List<Line> mList = LineDataMapper.transform(domainLines);
+            administratorManageActivity.setLines(mList);
         }
     }
 
@@ -197,7 +199,7 @@ public class SMAdministratorPresenter implements Presenter {
 
         @Override
         public void onNext(List<DomainCompany> companyList) {
-            List<CompanyInformation> mList = CompanyDataMapper.transform(companyList);
+            List<Company> mList = CompanyDataMapper.transform(companyList);
             administratorManageActivity.setCompanyNameList(mList);
         }
     }
@@ -228,7 +230,7 @@ public class SMAdministratorPresenter implements Presenter {
      * 加载管理员列表
      * @param userId 标示某一个用户
      */
-    public void loadAdminData(int userId) {
+    public void  loadAdminData(int userId) {
         showViewLoading();
         SMAdministratorRepository smAdministratorRepository = new AdministratorDataRepository(mContext, userId);
         this.administratorUseCase = new AdministratorUseCase(new UIThread(), AndroidSchedulers.mainThread(), smAdministratorRepository, 3);

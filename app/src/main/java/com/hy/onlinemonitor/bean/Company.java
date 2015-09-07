@@ -1,10 +1,20 @@
 package com.hy.onlinemonitor.bean;
 
-public class CompanyInformation {
+import java.util.List;
+
+public class Company {
     private int sn;
     private String companyName;
+    private List<Line> lineList;
 
-    public CompanyInformation() {
+    public Company() {
+    }
+    public List<Line> getLineList() {
+        return lineList;
+    }
+
+    public void setLineList(List<Line> lineList) {
+        this.lineList = lineList;
     }
 
     public int getSn() {

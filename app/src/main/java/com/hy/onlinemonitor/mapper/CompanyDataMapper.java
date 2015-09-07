@@ -1,7 +1,7 @@
 package com.hy.onlinemonitor.mapper;
 
 import com.example.bean.DomainCompany;
-import com.hy.onlinemonitor.bean.CompanyInformation;
+import com.hy.onlinemonitor.bean.Company;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -10,28 +10,30 @@ import java.util.List;
 public class CompanyDataMapper {
     public CompanyDataMapper() {}
 
-    public static CompanyInformation transform(DomainCompany domainCompany) {
+    public static Company transform(DomainCompany domainCompany) {
         if (null == domainCompany) {
             throw new IllegalArgumentException("Cannot transform a null value");
         }
-        CompanyInformation companyInformation = new CompanyInformation();
-
-        companyInformation.setSn(domainCompany.getSn());
-        companyInformation.setCompanyName(domainCompany.getCompanyName());
-        return companyInformation;
+        Company company = new Company();
+        company.setSn(domainCompany.getSn());
+        company.setCompanyName(domainCompany.getCompanyName());
+        if(domainCompany.getLineList()!=null){
+            company.setLineList(LineDataMapper.transform(domainCompany.getLineList()));
+        }
+        return company;
     }
 
-    public static List<CompanyInformation> transform(Collection<DomainCompany> domainCompanies){
-        List<CompanyInformation> companyInformations = new ArrayList<>();
-        CompanyInformation companyInformation;
+    public static List<Company> transform(Collection<DomainCompany> domainCompanies){
+        List<Company> companies = new ArrayList<>();
+        Company company;
         for (DomainCompany domainCompany : domainCompanies) {
-            companyInformation = transform(domainCompany);
-            if (companyInformation != null) {
-                companyInformations.add(companyInformation);
+            company = transform(domainCompany);
+            if (company != null) {
+                companies.add(company);
             }
         }
 
-        return companyInformations;
+        return companies;
     }
 
 }

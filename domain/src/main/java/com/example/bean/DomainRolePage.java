@@ -1,21 +1,24 @@
-package com.hy.data.entity;
+package com.example.bean;
 
 import java.util.List;
 
 /**
- * Created by 24363 on 2015/8/21.
+ * Created by 24363 on 2015/9/7.
  */
-public class EquipmentPageEntity {
-    //当前页数
+public class DomainRolePage {
     private int pageNum;
-    //每页显示条数
-    private int pageSize = 10;
-    //总记录数
+    private int pageSize=10;
     private int rowCount;
-    //结果放在集合里
-    private List<EquipmentInforEntity> list;
-    //总共有多少页
+    private List<DomainRole> list;
     private int totalPage;
+
+    public List<DomainRole> getList() {
+        return list;
+    }
+
+    public void setList(List<DomainRole> list) {
+        this.list = list;
+    }
 
     public int getPageNum() {
         return pageNum;
@@ -41,14 +44,6 @@ public class EquipmentPageEntity {
         this.rowCount = rowCount;
     }
 
-    public List<EquipmentInforEntity> getList() {
-        return list;
-    }
-
-    public void setList(List<EquipmentInforEntity> list) {
-        this.list = list;
-    }
-
     public int getTotalPage() {
         return totalPage;
     }
@@ -57,4 +52,3 @@ public class EquipmentPageEntity {
         this.totalPage = totalPage;
     }
 }
-

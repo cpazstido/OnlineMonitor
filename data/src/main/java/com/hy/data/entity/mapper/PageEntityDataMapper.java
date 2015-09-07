@@ -3,9 +3,11 @@ package com.hy.data.entity.mapper;
 import com.example.bean.DoaminEquipmentPage;
 import com.example.bean.DomainAdministratorPage;
 import com.example.bean.DomainAlarmPage;
+import com.example.bean.DomainRolePage;
 import com.hy.data.entity.AdministratorPageEntity;
 import com.hy.data.entity.AlarmPageEntity;
 import com.hy.data.entity.EquipmentPageEntity;
+import com.hy.data.entity.RolePageEntity;
 
 /**
  * Created by 24363 on 2015/8/21.
@@ -54,5 +56,19 @@ public class PageEntityDataMapper {
             domainAdministratorPage.setRowCount(administratorPageEntity.getRowCount());
         }
         return domainAdministratorPage;
+    }
+
+    public DomainRolePage transform(RolePageEntity rolePageEntity) {
+        DomainRolePage domainRolePage = null;
+        RoleEntityDataMapper roleEntityDataMapper = new RoleEntityDataMapper();
+        if (null != rolePageEntity) {
+            domainRolePage = new DomainRolePage();
+            domainRolePage.setTotalPage(rolePageEntity.getTotalPage());
+            domainRolePage.setPageSize(rolePageEntity.getPageSize());
+            domainRolePage.setPageNum(rolePageEntity.getPageNum());
+            domainRolePage.setList(roleEntityDataMapper.transform(rolePageEntity.getList()));
+            domainRolePage.setRowCount(rolePageEntity.getRowCount());
+        }
+        return domainRolePage;
     }
 }

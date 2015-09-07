@@ -1,13 +1,24 @@
 package com.hy.data.entity;
 
+import java.util.List;
+
 /**
  * Created by 24363 on 2015/8/31.
  */
 public class CompanyEntity {
     private int sn;
     private String companyName;
+    private List<LineEntity> lineList;
 
     public CompanyEntity() {
+    }
+
+    public List<LineEntity> getLineList() {
+        return lineList;
+    }
+
+    public void setLineList(List<LineEntity> lineList) {
+        this.lineList = lineList;
     }
 
     public int getSn() {

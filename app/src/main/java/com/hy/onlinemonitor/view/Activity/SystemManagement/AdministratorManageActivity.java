@@ -14,11 +14,11 @@ import android.widget.Spinner;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.daimajia.swipe.util.Attributes;
 import com.hy.onlinemonitor.R;
-import com.hy.onlinemonitor.bean.AdminLine;
-import com.hy.onlinemonitor.bean.AdminTower;
+import com.hy.onlinemonitor.bean.Line;
+import com.hy.onlinemonitor.bean.Pole;
 import com.hy.onlinemonitor.bean.AdministratorInformation;
 import com.hy.onlinemonitor.bean.AdministratorPage;
-import com.hy.onlinemonitor.bean.CompanyInformation;
+import com.hy.onlinemonitor.bean.Company;
 import com.hy.onlinemonitor.bean.Role;
 import com.hy.onlinemonitor.presenter.SMAdministratorPresenter;
 import com.hy.onlinemonitor.utile.ShowUtile;
@@ -37,7 +37,7 @@ public class AdministratorManageActivity extends SMBaseActivity {
     private List<String> roleNameList;
     private List<String> companyNameList;
     private List<Role> roleList;
-    private List<CompanyInformation> companyInformations;
+    private List<Company> companies;
     private MaterialDialog dialog;
     private AdministratorPage administratorPage;
     private SMAdministratorRecyclerAdapter mAdapter;
@@ -45,7 +45,7 @@ public class AdministratorManageActivity extends SMBaseActivity {
     private AdministratorInformation administratorInformation;
     private TreeNode root, towerTree, lineTree;
     private AndroidTreeView tView;
-    private List<AdminLine> adminLines;
+    private List<Line> lines;
     private List<Integer> ownTowerSn;
     private CheckBox checkAll;
     private SelectableItemHolder itemHolder;
@@ -56,8 +56,8 @@ public class AdministratorManageActivity extends SMBaseActivity {
         this.ownTowerSn = ownTowerSn;
     }
 
-    public void setAdminLines(List<AdminLine> adminLines) {
-        this.adminLines = adminLines;
+    public void setLines(List<Line> lines) {
+        this.lines = lines;
     }
 
     public void setRoleNameList(List<Role> roleList) {
@@ -68,11 +68,11 @@ public class AdministratorManageActivity extends SMBaseActivity {
         }
     }
 
-    public void setCompanyNameList(List<CompanyInformation> companyInformations) {
-        this.companyInformations = companyInformations;
+    public void setCompanyNameList(List<Company> companies) {
+        this.companies = companies;
         this.companyNameList = new ArrayList<>();
-        for (CompanyInformation companyInformation : companyInformations) {
-            this.companyNameList.add(companyInformation.getCompanyName());
+        for (Company company : companies) {
+            this.companyNameList.add(company.getCompanyName());
         }
     }
 
@@ -114,7 +114,7 @@ public class AdministratorManageActivity extends SMBaseActivity {
                         String password = ((EditText) dialog.getCustomView().findViewById(R.id.dialog_administrator_password)).getText().toString();
                         String phoneNumber = ((EditText) dialog.getCustomView().findViewById(R.id.dialog_administrator_number)).getText().toString();
                         String isMessage = ((Spinner) dialog.getCustomView().findViewById(R.id.dialog_administrator_message)).getSelectedItem().toString();
-                        int companySn = companyInformations.get(((Spinner) dialog.getCustomView().findViewById(R.id.dialog_administrator_company)).getSelectedItemPosition()).getSn();
+                        int companySn = companies.get(((Spinner) dialog.getCustomView().findViewById(R.id.dialog_administrator_company)).getSelectedItemPosition()).getSn();
                         int roleSn = roleList.get(((Spinner) dialog.getCustomView().findViewById(R.id.dialog_administrator_role)).getSelectedItemPosition()).getSn();
 
                         smAdministratorPresenter.addAdministrator(roleSn, companySn, loginName, realName, password, phoneNumber, isMessage);
@@ -165,10 +165,9 @@ public class AdministratorManageActivity extends SMBaseActivity {
     public void setList() {
         mAdapter.setOnTowerManageClickListener(onTowerManageClickListener);
         mAdapter.setPresenter(smAdministratorPresenter);
-        mAdapter.setCompanyInformations(this.companyInformations);
+        mAdapter.setCompanies(this.companies);
         mAdapter.setRoleList(this.roleList);
         mAdapter.setCompanyNameList(this.companyNameList);
-        mAdapter.setRoleNameList(this.roleNameList);
         mAdapter.setRoleNameList(this.roleNameList);
     }
 
@@ -200,8 +199,8 @@ public class AdministratorManageActivity extends SMBaseActivity {
         }
     }
 
-    private SMAdministratorRecyclerAdapter.OnTowerManageClickListener onTowerManageClickListener =
-            new SMAdministratorRecyclerAdapter.OnTowerManageClickListener() {
+    private SMAdministratorRecyclerAdapter.onTowerManageClickListener onTowerManageClickListener =
+            new SMAdministratorRecyclerAdapter.onTowerManageClickListener() {
                 @Override
                 public void onTowerManageClicked(AdministratorInformation administratorInformation) {
                     AdministratorManageActivity.this.administratorInformation = administratorInformation;
@@ -256,10 +255,10 @@ public class AdministratorManageActivity extends SMBaseActivity {
                             for (TreeNode treeNode1 : treeNode) {
                                 if (treeNode1.getParent() != root) {
                                     int baseId = treeNode1.getParent().getId();//这取到的是某条线路的位置
-                                    String LineName = adminLines.get(baseId).getName();//得到线路名
+                                    String LineName = lines.get(baseId).getLineName();//得到线路名
                                     int towerId = treeNode1.getId();    //取得杆塔的Id
-                                    String towerName = adminLines.get(baseId).getTowers().get(towerId).getTowerName();//得到杆塔名
-                                    int towerSn = adminLines.get(baseId).getTowers().get(towerId).getSn();//得到杆塔sn
+                                    String towerName = lines.get(baseId).getPoleList().get(towerId).getPoleName();//得到杆塔名
+                                    int towerSn = lines.get(baseId).getPoleList().get(towerId).getPoleSn();//得到杆塔sn
 
                                     Log.e("id", LineName + ":" + towerName);//这取到的是某个具体杆塔在list内的位置
                                     TowerSn.add(towerSn);
@@ -301,16 +300,16 @@ public class AdministratorManageActivity extends SMBaseActivity {
         });
 
         root = TreeNode.root();
-        for (AdminLine adminLine : adminLines) {
+        for (Line line : lines) {
             selectableHeaderHolder = new SelectableHeaderHolder(AdministratorManageActivity.this);
-            lineTree = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.string.ic_earth, adminLine.getName())).setViewHolder(selectableHeaderHolder);
-            for (AdminTower adminTower : adminLine.getTowers()) {
+            lineTree = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.string.ic_earth, line.getLineName())).setViewHolder(selectableHeaderHolder);
+            for (Pole pole : line.getPoleList()) {
                 itemHolder = new SelectableItemHolder(AdministratorManageActivity.this);
                 itemHolder.setCheckBoxClick(checkBoxClick);
-                towerTree = new TreeNode(adminTower.getTowerName()).setViewHolder(itemHolder);
+                towerTree = new TreeNode(pole.getPoleName()).setViewHolder(itemHolder);
                 if (administratorInformation.getAllPoleSeleceted() != 1) {
                     for (int sn : ownTowerSn) {
-                        if (sn == adminTower.getSn()) {
+                        if (sn == pole.getPoleSn()) {
                             towerTree.setSelected(true);
                         }
                     }

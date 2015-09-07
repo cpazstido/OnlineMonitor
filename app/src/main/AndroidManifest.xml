@@ -78,6 +78,8 @@
         <activity android:name=".view.Activity.SystemManagement.AdministratorManageActivity"
             android:launchMode="singleTask"/>
 
+        <activity android:name=".view.Activity.SystemManagement.JurisdictionManageActivity"
+            android:launchMode="singleTask"/>
     </application>
 
 </manifest>

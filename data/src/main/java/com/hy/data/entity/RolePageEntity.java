@@ -3,19 +3,19 @@ package com.hy.data.entity;
 import java.util.List;
 
 /**
- * Created by 24363 on 2015/8/21.
+ * Created by 24363 on 2015/9/7.
  */
-public class EquipmentPageEntity {
+public class RolePageEntity {
     //当前页数
     private int pageNum;
     //每页显示条数
-    private int pageSize = 10;
+    private int pageSize=10;
     //总记录数
     private int rowCount;
     //结果放在集合里
-    private List<EquipmentInforEntity> list;
+    private List<RoleEntity> list;
     //总共有多少页
-    private int totalPage;
+    private int   totalPage;
 
     public int getPageNum() {
         return pageNum;
@@ -41,11 +41,11 @@ public class EquipmentPageEntity {
         this.rowCount = rowCount;
     }
 
-    public List<EquipmentInforEntity> getList() {
+    public List<RoleEntity> getList() {
         return list;
     }
 
-    public void setList(List<EquipmentInforEntity> list) {
+    public void setList(List<RoleEntity> list) {
         this.list = list;
     }
 
@@ -57,4 +57,3 @@ public class EquipmentPageEntity {
         this.totalPage = totalPage;
     }
 }
-

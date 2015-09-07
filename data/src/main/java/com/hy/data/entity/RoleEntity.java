@@ -1,13 +1,21 @@
 package com.hy.data.entity;
 
-/**
- * Created by 24363 on 2015/8/31.
- */
+import java.util.List;
+
 public class RoleEntity {
     private int sn;
     private String roleName;
+    private List<Integer> snList;
 
     public RoleEntity() {
+    }
+
+    public List<Integer> getSnList() {
+        return snList;
+    }
+
+    public void setSnList(List<Integer> snList) {
+        this.snList = snList;
     }
 
     public int getSn() {

@@ -2,13 +2,13 @@ package com.hy.data.repository;
 
 import android.content.Context;
 
-import com.example.bean.DomainAdminLine;
+import com.example.bean.DomainLine;
 import com.example.bean.DomainAdministratorPage;
 import com.example.bean.DomainCompany;
 import com.example.bean.DomainRole;
 import com.example.repository.SMAdministratorRepository;
-import com.hy.data.entity.mapper.AdminLineDataMapper;
-import com.hy.data.entity.mapper.AdminLineJsonMapper;
+import com.hy.data.entity.mapper.LineDataMapper;
+import com.hy.data.entity.mapper.LineJsonMapper;
 import com.hy.data.entity.mapper.CompanyEntityDataMapper;
 import com.hy.data.entity.mapper.CompanyEntityJsonMapper;
 import com.hy.data.entity.mapper.ListOfIntegerJsonMapper;
@@ -133,10 +133,10 @@ public class AdministratorDataRepository implements SMAdministratorRepository {
     }
 
     @Override
-    public Observable<List<DomainAdminLine>> getAllTower() {
-        RestApiImpl restApi = new RestApiImpl(mContext,new AdminLineJsonMapper());
-        AdminLineDataMapper adminLineDataMapper = new AdminLineDataMapper();
-        return restApi.getAllTower(userId,sn).map(adminLineDataMapper::transform);
+    public Observable<List<DomainLine>> getAllTower() {
+        RestApiImpl restApi = new RestApiImpl(mContext,new LineJsonMapper());
+        LineDataMapper lineDataMapper = new LineDataMapper();
+        return restApi.getAllTower(userId,sn).map(lineDataMapper::transform);
     }
 
     @Override

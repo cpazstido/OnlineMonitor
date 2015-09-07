@@ -21,7 +21,6 @@ import butterknife.ButterKnife;
 
 public abstract class SMBaseActivity extends BaseActivity implements LoadDataView{
 
-    public RecyclerView.Adapter mAdapter;
     public AlertDialog alertDialog;
     @Bind(R.id.toolbar)
     public Toolbar toolbar;

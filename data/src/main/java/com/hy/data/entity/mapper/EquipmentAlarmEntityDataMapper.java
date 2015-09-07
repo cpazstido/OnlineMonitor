@@ -1,7 +1,7 @@
 package com.hy.data.entity.mapper;
 
 import com.example.bean.DomainEquipmentInformation;
-import com.hy.data.entity.EquipmentEntity;
+import com.hy.data.entity.EquipmentInforEntity;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -14,29 +14,29 @@ public class EquipmentAlarmEntityDataMapper {
     public EquipmentAlarmEntityDataMapper() {
     }
 
-    public DomainEquipmentInformation transform(EquipmentEntity equipmentEntity) {
+    public DomainEquipmentInformation transform(EquipmentInforEntity equipmentInforEntity) {
         DomainEquipmentInformation domainEquipmentInformation = null;
 
-        if (equipmentEntity != null) {
+        if (equipmentInforEntity != null) {
             domainEquipmentInformation = new DomainEquipmentInformation();
-            domainEquipmentInformation.setSN(equipmentEntity.getSN());
-            domainEquipmentInformation.setEquipmnetName(equipmentEntity.getEquipmnetName());
-            domainEquipmentInformation.setEquipmnetState(equipmentEntity.getEquipmnetState());
-            domainEquipmentInformation.setNewBreakAlarm(equipmentEntity.getNewBreakAlarm());
-            domainEquipmentInformation.setNewFireAlarm(equipmentEntity.getNewFireAlarm());
-            domainEquipmentInformation.setNewSensorAlarm(equipmentEntity.getNewSensorAlarm());
-            domainEquipmentInformation.setDvrType(equipmentEntity.getDvrType());
+            domainEquipmentInformation.setSN(equipmentInforEntity.getSN());
+            domainEquipmentInformation.setEquipmnetName(equipmentInforEntity.getEquipmnetName());
+            domainEquipmentInformation.setEquipmnetState(equipmentInforEntity.getEquipmnetState());
+            domainEquipmentInformation.setNewBreakAlarm(equipmentInforEntity.getNewBreakAlarm());
+            domainEquipmentInformation.setNewFireAlarm(equipmentInforEntity.getNewFireAlarm());
+            domainEquipmentInformation.setNewSensorAlarm(equipmentInforEntity.getNewSensorAlarm());
+            domainEquipmentInformation.setDvrType(equipmentInforEntity.getDvrType());
             domainEquipmentInformation.setDvrId(domainEquipmentInformation.getDvrId());
         }
 
         return domainEquipmentInformation;
     }
 
-    public List<DomainEquipmentInformation> transform(Collection<EquipmentEntity> equipmentAlarmEntities) {
+    public List<DomainEquipmentInformation> transform(Collection<EquipmentInforEntity> equipmentAlarmEntities) {
         List<DomainEquipmentInformation> equipmentAlarmInformationList = new ArrayList<>();
         DomainEquipmentInformation domainEquipmentInformation;
-        for (EquipmentEntity equipmentEntity : equipmentAlarmEntities) {
-            domainEquipmentInformation = transform(equipmentEntity);
+        for (EquipmentInforEntity equipmentInforEntity : equipmentAlarmEntities) {
+            domainEquipmentInformation = transform(equipmentInforEntity);
             if (domainEquipmentInformation != null) {
                 equipmentAlarmInformationList.add(domainEquipmentInformation);
             }

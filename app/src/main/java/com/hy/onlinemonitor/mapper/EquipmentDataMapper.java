@@ -1,7 +1,7 @@
 package com.hy.onlinemonitor.mapper;
 
-import com.example.bean.DomainEquipmentInformation;
-import com.hy.onlinemonitor.bean.EquipmentInformation;
+import com.example.bean.DomainEquipment;
+import com.hy.onlinemonitor.bean.Equipment;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -10,34 +10,26 @@ import java.util.List;
 public class EquipmentDataMapper {
     public EquipmentDataMapper() {}
 
-    public EquipmentInformation transform(DomainEquipmentInformation domainEquipmentInformation) {
-        if (null == domainEquipmentInformation) {
+    public Equipment transform(DomainEquipment domainEquipment) {
+        if (null == domainEquipment) {
             throw new IllegalArgumentException("Cannot transform a null value");
         }
-        EquipmentInformation equipmentInformation = new EquipmentInformation();
+        Equipment equipment = new Equipment();
 
-        equipmentInformation.setSn(domainEquipmentInformation.getSN());
-        equipmentInformation.setNewSensorAlarm(domainEquipmentInformation.getNewSensorAlarm());
-        equipmentInformation.setNewFireAlarm(domainEquipmentInformation.getNewFireAlarm());
-        equipmentInformation.setNewBreakAlarm(domainEquipmentInformation.getNewBreakAlarm());
-        equipmentInformation.setEquipmnetState(domainEquipmentInformation.getEquipmnetState());
-        equipmentInformation.setEquipmnetName(domainEquipmentInformation.getEquipmnetName());
-        equipmentInformation.setDvrId(domainEquipmentInformation.getDvrId());
-        equipmentInformation.setDvrType(domainEquipmentInformation.getDvrType());
-        return equipmentInformation;
+        return equipment;
     }
 
-    public List<EquipmentInformation> transform(Collection<DomainEquipmentInformation> domainEquipmentInformations){
-        List<EquipmentInformation> equipmentInformations = new ArrayList<>();
-        EquipmentInformation equipmentInformation;
-        for (DomainEquipmentInformation domainEquipmentInformation : domainEquipmentInformations) {
-            equipmentInformation = transform(domainEquipmentInformation);
-            if (equipmentInformation != null) {
-                equipmentInformations.add(equipmentInformation);
+    public List<Equipment> transform(Collection<DomainEquipment> domainEquipments){
+        List<Equipment> equipments = new ArrayList<>();
+        Equipment equipment;
+        for (DomainEquipment domainEquipment : domainEquipments) {
+            equipment = transform(domainEquipment);
+            if (equipment != null) {
+                equipments.add(equipment);
             }
         }
 
-        return equipmentInformations;
+        return equipments;
     }
 
 }

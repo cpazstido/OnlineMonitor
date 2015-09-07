@@ -1,13 +1,14 @@
 package com.hy.data.net;
 
 
-import com.hy.data.entity.AdminLineEntity;
 import com.hy.data.entity.AdministratorPageEntity;
 import com.hy.data.entity.AlarmPageEntity;
 import com.hy.data.entity.CompanyEntity;
 import com.hy.data.entity.EquipmentPageEntity;
+import com.hy.data.entity.LineEntity;
 import com.hy.data.entity.MapEntity;
 import com.hy.data.entity.RoleEntity;
+import com.hy.data.entity.RolePageEntity;
 import com.hy.data.entity.UserEntity;
 
 import java.util.List;
@@ -150,7 +151,7 @@ public interface RestApi {
      * @param userId 唯一标示
      * @return 线路列表,包含了所有的杆塔
      */
-    Observable<List<AdminLineEntity>> getAllTower(int userId,int sn);
+    Observable<List<LineEntity>> getAllTower(int userId,int sn);
 
     /**
      * 获得自己拥有的的杆塔sn
@@ -169,5 +170,47 @@ public interface RestApi {
      * @return 返回是否处理成功的字符串
      */
     Observable<String> changeManageTower(int userId,int adminSn, List<Integer> snList,int allPoleSelected);
+
+
+    /**
+     * 得到角色列表
+     * @param userId 唯一标示
+     * @return 角色列表
+     */
+    Observable<RolePageEntity> getRolePage(int userId);
+
+    /**
+     * 添加角色
+     * @param userId 唯一标示
+     * @param name 新角色名
+     * @return 角色列表
+     */
+    Observable<RolePageEntity> addRole(int userId,String name);
+
+    /**
+     * 修改角色
+     * @param userId 唯一标示
+     * @param name 角色新名
+     * @param roleSn 角色sn
+     * @return 角色列表
+     */
+    Observable<RolePageEntity> changeRole(int userId,int roleSn,String name);
+
+    /**
+     * 删除角色
+     * @param userId 唯一标示
+     * @param roleSn 角色sn
+     * @return 角色列表
+     */
+    Observable<RolePageEntity> deleteRole(int userId,int roleSn);
+
+    /**
+     * 权限修改
+     * @param userId 唯一标示
+     * @param roleSn 角色sn
+     * @param jurisdictionSN 权限sn列表
+     * @return 表示成功或失败字符串
+     */
+    Observable<String> jurisdictionChange(int userId,int roleSn,List<Integer> jurisdictionSN);
 
 }

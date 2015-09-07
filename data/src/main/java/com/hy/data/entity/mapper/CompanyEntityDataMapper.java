@@ -18,6 +18,10 @@ public class CompanyEntityDataMapper {
             domainCompany = new DomainCompany();
             domainCompany.setCompanyName(companyEntity.getCompanyName());
             domainCompany.setSn(companyEntity.getSn());
+            if(companyEntity.getLineList() !=null){
+                LineDataMapper lineDataMapper = new LineDataMapper();
+                domainCompany.setLineList(lineDataMapper.transform(companyEntity.getLineList()));
+            }
         }
         return domainCompany;
     }

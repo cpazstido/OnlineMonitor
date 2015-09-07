@@ -16,7 +16,7 @@ import com.daimajia.swipe.SwipeLayout;
 import com.daimajia.swipe.adapters.RecyclerSwipeAdapter;
 import com.hy.onlinemonitor.R;
 import com.hy.onlinemonitor.bean.AdministratorInformation;
-import com.hy.onlinemonitor.bean.CompanyInformation;
+import com.hy.onlinemonitor.bean.Company;
 import com.hy.onlinemonitor.bean.Role;
 import com.hy.onlinemonitor.presenter.SMAdministratorPresenter;
 import com.hy.onlinemonitor.view.ViewHolder.AdministratorViewHolder;
@@ -26,22 +26,21 @@ import java.util.List;
 
 public class SMAdministratorRecyclerAdapter extends RecyclerSwipeAdapter<AdministratorViewHolder> {
 
-    public void setOnTowerManageClickListener(OnTowerManageClickListener onTowerManageClickListener) {
+    public void setOnTowerManageClickListener(SMAdministratorRecyclerAdapter.onTowerManageClickListener onTowerManageClickListener) {
         this.onTowerManageClickListener = onTowerManageClickListener;
     }
 
-    public interface OnTowerManageClickListener {
+    public interface onTowerManageClickListener {
         void onTowerManageClicked(AdministratorInformation administratorInformation);
     }
-
-    private OnTowerManageClickListener onTowerManageClickListener;
+    private SMAdministratorRecyclerAdapter.onTowerManageClickListener onTowerManageClickListener;
     private Context mContext;
     private List<AdministratorInformation> mDatas;
 
     private List<String> roleNameList;
     private List<String> companyNameList;
     private List<Role> roleList;
-    private List<CompanyInformation> companyInformations;
+    private List<Company> companies;
     private SMAdministratorPresenter smAdministratorPresenter;
 
     public SMAdministratorRecyclerAdapter(Context mContext, List<AdministratorInformation> mDatas) {
@@ -49,8 +48,8 @@ public class SMAdministratorRecyclerAdapter extends RecyclerSwipeAdapter<Adminis
         this.mDatas = mDatas;
     }
 
-    public void setCompanyInformations(List<CompanyInformation> companyInformations) {
-        this.companyInformations = companyInformations;
+    public void setCompanies(List<Company> companies) {
+        this.companies = companies;
     }
 
     public void setRoleList(List<Role> roleList) {
@@ -114,7 +113,7 @@ public class SMAdministratorRecyclerAdapter extends RecyclerSwipeAdapter<Adminis
                                 String password = ((EditText) dialog.getCustomView().findViewById(R.id.dialog_administrator_password)).getText().toString();
                                 String phoneNumber = ((EditText) dialog.getCustomView().findViewById(R.id.dialog_administrator_number)).getText().toString();
                                 String isMessage = ((Spinner) dialog.getCustomView().findViewById(R.id.dialog_administrator_message)).getSelectedItem().toString();
-                                int companySn = companyInformations.get(((Spinner) dialog.getCustomView().findViewById(R.id.dialog_administrator_company)).getSelectedItemPosition()).getSn();
+                                int companySn = companies.get(((Spinner) dialog.getCustomView().findViewById(R.id.dialog_administrator_company)).getSelectedItemPosition()).getSn();
                                 int roleSn = roleList.get(((Spinner) dialog.getCustomView().findViewById(R.id.dialog_administrator_role)).getSelectedItemPosition()).getSn();
                                 int sn = mDatas.get(position).getSn();
                                 smAdministratorPresenter.changeAdministrator(sn, roleSn, companySn, loginName, realName, password, phoneNumber, isMessage);
