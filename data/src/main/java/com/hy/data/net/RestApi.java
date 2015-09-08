@@ -7,6 +7,7 @@ import com.hy.data.entity.CompanyEntity;
 import com.hy.data.entity.EquipmentPageEntity;
 import com.hy.data.entity.LineEntity;
 import com.hy.data.entity.MapEntity;
+import com.hy.data.entity.PrivilegeEntity;
 import com.hy.data.entity.RoleEntity;
 import com.hy.data.entity.RolePageEntity;
 import com.hy.data.entity.UserEntity;
@@ -203,6 +204,21 @@ public interface RestApi {
      * @return 角色列表
      */
     Observable<RolePageEntity> deleteRole(int userId,int roleSn);
+
+    /**
+     * 得到拥有的权限
+     * @param userId 唯一标示
+     * @param roleSn 角色sn
+     * @return 拥有的权限列表
+     */
+    Observable<List<PrivilegeEntity>> getOwnPrivilege(int userId,int roleSn);
+
+    /**
+     * 得到权限列表
+     * @param userId 唯一标示
+     * @return 返回所有的权限列表
+     */
+    Observable<List<PrivilegeEntity>> getAllPrivilege(int userId);
 
     /**
      * 权限修改

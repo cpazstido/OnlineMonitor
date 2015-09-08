@@ -81,7 +81,6 @@ public class AdministratorManageActivity extends SMBaseActivity {
         menuActionAdd();
     }
 
-    @Override
     public void dialogShow() {
         setSpinner();
         dialog.show();

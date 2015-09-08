@@ -14,6 +14,10 @@ public class JurisdictionUseCase extends UseCase{
     private SMJurisdictionRepository smJurisdictionRepository;
     private int type;
 
+    public void setType(int type) {
+        this.type = type;
+    }
+
     public JurisdictionUseCase(PostExecutionThread postExecutionThread, Scheduler subExecutionThread, SMJurisdictionRepository smJurisdictionRepository, int type) {
         super(postExecutionThread, subExecutionThread);
         this.smJurisdictionRepository = smJurisdictionRepository;
@@ -38,6 +42,12 @@ public class JurisdictionUseCase extends UseCase{
                 break;
             case 5:
                 observable = smJurisdictionRepository.jurisdictionChange();
+                break;
+            case 6:
+                observable = smJurisdictionRepository.getAllPrivilege();
+                break;
+            case 7:
+                observable = smJurisdictionRepository.getOwnPrivilege();
                 break;
         }
 

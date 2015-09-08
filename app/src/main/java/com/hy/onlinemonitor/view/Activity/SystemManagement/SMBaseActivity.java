@@ -88,5 +88,4 @@ public abstract class SMBaseActivity extends BaseActivity implements LoadDataVie
 
     protected abstract void menuDataLoad();
 
-    protected abstract void dialogShow();
 }

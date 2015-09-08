@@ -2,10 +2,13 @@ package com.hy.data.repository;
 
 import android.content.Context;
 
+import com.example.bean.DomainPrivilege;
 import com.example.bean.DomainRolePage;
 import com.example.repository.SMJurisdictionRepository;
 import com.hy.data.entity.mapper.PageEntityDataMapper;
 import com.hy.data.entity.mapper.PageEntityJsonMapper;
+import com.hy.data.entity.mapper.PrivilegeEntityDataMapper;
+import com.hy.data.entity.mapper.PrivilegeEntityJsonMapper;
 import com.hy.data.entity.mapper.StringJsonMapper;
 import com.hy.data.net.RestApiImpl;
 
@@ -68,6 +71,20 @@ public class JurisdictionDataRepository implements SMJurisdictionRepository{
         RestApiImpl restApi = new RestApiImpl(mContext,new PageEntityJsonMapper());
         PageEntityDataMapper pageEntityDataMapper = new PageEntityDataMapper();
         return restApi.deleteRole(userId, roleSn).map(pageEntityDataMapper::transform);
+    }
+
+    @Override
+    public Observable<List<DomainPrivilege>> getOwnPrivilege() {
+        RestApiImpl restApi = new RestApiImpl(mContext,new PrivilegeEntityJsonMapper());
+        PrivilegeEntityDataMapper privilegeEntityDataMapper = new PrivilegeEntityDataMapper();
+        return restApi.getOwnPrivilege(userId, roleSn).map(privilegeEntityDataMapper::transform);
+    }
+
+    @Override
+    public Observable<List<DomainPrivilege>> getAllPrivilege() {
+        RestApiImpl restApi = new RestApiImpl(mContext,new PrivilegeEntityJsonMapper());
+        PrivilegeEntityDataMapper privilegeEntityDataMapper = new PrivilegeEntityDataMapper();
+        return restApi.getAllPrivilege(userId).map(privilegeEntityDataMapper::transform);
     }
 
     @Override

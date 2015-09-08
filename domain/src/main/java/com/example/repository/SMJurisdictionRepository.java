@@ -1,6 +1,9 @@
 package com.example.repository;
 
+import com.example.bean.DomainPrivilege;
 import com.example.bean.DomainRolePage;
+
+import java.util.List;
 
 import rx.Observable;
 
@@ -16,6 +19,10 @@ public interface SMJurisdictionRepository {
     Observable<DomainRolePage> changeRole();
 
     Observable<DomainRolePage> deleteRole();
+
+    Observable<List<DomainPrivilege>> getOwnPrivilege();
+
+    Observable<List<DomainPrivilege>> getAllPrivilege();
 
     Observable<String> jurisdictionChange();
 

@@ -29,11 +29,19 @@ public class SMJurisdictionRecyclerAdapter extends RecyclerSwipeAdapter<Jurisdic
     private List<Role> roleList;
     private CharSequence[] mDatase;
     private SMJurisdictionPresenter smJurisdictionPresenter;
-    private int userId;
-    public SMJurisdictionRecyclerAdapter(Context mContext, List<Role> roleList,int userId) {
+    private SMJurisdictionRecyclerAdapter.changeJurisdictionClickListener changeJurisdictionClickListener;
+
+    public void setChangeJurisdictionClickListener(SMJurisdictionRecyclerAdapter.changeJurisdictionClickListener changeJurisdictionClickListener) {
+        this.changeJurisdictionClickListener = changeJurisdictionClickListener;
+    }
+
+    public interface changeJurisdictionClickListener{
+        void onChangeJurisdictionClick(Role role);
+    }
+
+    public SMJurisdictionRecyclerAdapter(Context mContext, List<Role> roleList) {
         this.mContext = mContext;
         this.roleList = roleList;
-        this.userId = userId;
     }
 
     @Override
@@ -106,59 +114,9 @@ public class SMJurisdictionRecyclerAdapter extends RecyclerSwipeAdapter<Jurisdic
         jurisdictionViewHolder.ActionConfig.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                //这里进行网络操作取得数据
-               mDatase = getformInternet();
-
-                new MaterialDialog.Builder(mContext)
-                        .title(R.string.jurisdiction_config)
-                        .items(mDatase)
-                        .itemsCallbackMultiChoice(new Integer[]{1, 3}, new MaterialDialog.ListCallbackMultiChoice() {
-                            @Override
-                            public boolean onSelection(MaterialDialog dialog, Integer[] which, CharSequence[] text) {
-                                StringBuilder str = new StringBuilder();
-                                for (int i = 0; i < which.length; i++) {
-                                    if (i > 0) str.append('\n');
-                                    str.append(which[i]);
-                                    str.append(": ");
-                                    str.append(text[i]);
-                                }
-                                return true; // allow selection
-                            }
-                        })
-                        .callback(new MaterialDialog.ButtonCallback() {
-                            @Override
-                            public void onNeutral(MaterialDialog dialog) {
-                                if(dialog.getSelectedIndices().length == mDatase.length) {
-                                    dialog.clearSelectedIndices();
-                                }else {
-                                    int[] a = new int[mDatase.length];
-                                    for (int i = 0; i < mDatase.length; i++) {
-                                        a[i] = i;
-                                    }
-//                                    Integer[] integes = TransformationUtils.getIntegerFromInt(a);
-//
-//                                    dialog.setSelectedIndices(integes);
-                                }
-                            }
-
-                            @Override
-                            public void onPositive(MaterialDialog dialog) {
-                                super.onPositive(dialog);
-                            }
-
-                            @Override
-                            public void onNegative(MaterialDialog dialog) {
-                                dialog.cancel();
-                                super.onNegative(dialog);
-                            }
-                        })
-                        .alwaysCallMultiChoiceCallback()
-                        .positiveText(R.string.submit)
-                        .negativeText(R.string.cancel)
-                        .neutralText(R.string.check_all)
-                        .autoDismiss(false)
-                        .show();
+                if (SMJurisdictionRecyclerAdapter.this.changeJurisdictionClickListener != null) {
+                    SMJurisdictionRecyclerAdapter.this.changeJurisdictionClickListener.onChangeJurisdictionClick(roleList.get(i));
+                }
             }
         });
 
@@ -174,7 +132,7 @@ public class SMJurisdictionRecyclerAdapter extends RecyclerSwipeAdapter<Jurisdic
                             public void onPositive(MaterialDialog dialog) {
                                 //这里进行网络操作
                                 mItemManger.removeShownLayouts(jurisdictionViewHolder.swipeLayout);
-                                smJurisdictionPresenter.deleteRole(userId, roleList.get(i).getSn());
+                                smJurisdictionPresenter.deleteRole(roleList.get(i).getSn());
                                 roleList.remove(i);
                                 notifyItemRemoved(i);
                                 notifyItemRangeChanged(i, roleList.size());
@@ -192,42 +150,46 @@ public class SMJurisdictionRecyclerAdapter extends RecyclerSwipeAdapter<Jurisdic
 
     private CharSequence[] getformInternet() {
         List<String> mlists = new ArrayList<>();
-        mlists.add("山火");
-        mlists.add("外破");
-        mlists.add("普通视频");
-        mlists.add("呵呵");
-        mlists.add("哈哈");
-        mlists.add("嘿嘿");
-        mlists.add("山火");
-        mlists.add("外破");
-        mlists.add("普通视频");
-        mlists.add("呵呵");
-        mlists.add("哈哈");
-        mlists.add("嘿嘿");
-        mlists.add("山火");
-        mlists.add("外破");
-        mlists.add("普通视频");
-        mlists.add("呵呵");
-        mlists.add("哈哈");
-        mlists.add("嘿嘿");
-        mlists.add("山火");
-        mlists.add("外破");
-        mlists.add("普通视频");
-        mlists.add("呵呵");
-        mlists.add("哈哈");
-        mlists.add("嘿嘿");
-        mlists.add("山火");
-        mlists.add("外破");
-        mlists.add("普通视频");
-        mlists.add("呵呵");
-        mlists.add("哈哈");
-        mlists.add("嘿嘿");
-        mlists.add("山火");
-        mlists.add("外破");
-        mlists.add("普通视频");
-        mlists.add("呵呵");
-        mlists.add("哈哈");
-        mlists.add("嘿嘿");
+        mlists.add("1");
+        mlists.add("2");
+        mlists.add("3");
+        mlists.add("4");
+        mlists.add("5");
+        mlists.add("6");
+        mlists.add("7");
+        mlists.add("8");
+        mlists.add("9");
+        mlists.add("10");
+        mlists.add("11");
+        mlists.add("12");
+        mlists.add("13");
+        mlists.add("14");
+        mlists.add("15");
+        mlists.add("16");
+        mlists.add("17");
+        mlists.add("18");
+        mlists.add("19");
+        mlists.add("20");
+        mlists.add("21");
+        mlists.add("22");
+        mlists.add("23");
+        mlists.add("24");
+        mlists.add("25");
+        mlists.add("26");
+        mlists.add("27");
+        mlists.add("28");
+        mlists.add("29");
+        mlists.add("30");
+        mlists.add("31");
+        mlists.add("32");
+        mlists.add("33");
+        mlists.add("34");
+        mlists.add("35");
+        mlists.add("36");
+        mlists.add("37");
+        mlists.add("38");
+        mlists.add("39");
+        mlists.add("40");
 
         return mlists.toArray(new CharSequence[mlists.size()]);
     }

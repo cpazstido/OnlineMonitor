@@ -11,6 +11,7 @@ import com.hy.data.entity.CompanyEntity;
 import com.hy.data.entity.EquipmentPageEntity;
 import com.hy.data.entity.LineEntity;
 import com.hy.data.entity.MapEntity;
+import com.hy.data.entity.PrivilegeEntity;
 import com.hy.data.entity.RoleEntity;
 import com.hy.data.entity.RolePageEntity;
 import com.hy.data.entity.UserEntity;
@@ -19,6 +20,7 @@ import com.hy.data.entity.mapper.LineJsonMapper;
 import com.hy.data.entity.mapper.ListOfIntegerJsonMapper;
 import com.hy.data.entity.mapper.MapEntityJsonMapper;
 import com.hy.data.entity.mapper.PageEntityJsonMapper;
+import com.hy.data.entity.mapper.PrivilegeEntityJsonMapper;
 import com.hy.data.entity.mapper.RoleEntityJsonMapper;
 import com.hy.data.entity.mapper.StringJsonMapper;
 import com.hy.data.entity.mapper.UserEntityJsonMapper;
@@ -49,6 +51,7 @@ public class RestApiImpl implements RestApi {
     private CompanyEntityJsonMapper companyEntityJsonMapper;
     private LineJsonMapper lineJsonMapper;
     private ListOfIntegerJsonMapper listOfIntegerJsonMapper;
+    private PrivilegeEntityJsonMapper privilegeEntityJsonMapper;
 
     /**
      * Constructor of the class
@@ -128,6 +131,14 @@ public class RestApiImpl implements RestApi {
         this.listOfIntegerJsonMapper = listOfIntegerJsonMapper;
     }
 
+    public RestApiImpl(Context context, PrivilegeEntityJsonMapper privilegeEntityJsonMapper) {
+        if (context == null || privilegeEntityJsonMapper == null) {
+            throw new IllegalArgumentException("The constructor parameters cannot be null!!!");
+        }
+        this.context = context;
+        this.privilegeEntityJsonMapper = privilegeEntityJsonMapper;
+    }
+
     /**
      * 获取用户登录信息
      *
@@ -138,40 +149,40 @@ public class RestApiImpl implements RestApi {
     @Override
     public Observable<UserEntity> userEntity(String loginAccount, String loginPwd) {
         return Observable.create(new Observable.OnSubscribe<UserEntity>() {
-             @Override
-             public void call(Subscriber<? super UserEntity> subscriber) {
-                 RequestParams params = new RequestParams();
-                 params.put("uername", loginAccount);
-                 params.put("uerpwd", loginPwd);
+                                     @Override
+                                     public void call(Subscriber<? super UserEntity> subscriber) {
+                                         RequestParams params = new RequestParams();
+                                         params.put("uername", loginAccount);
+                                         params.put("uerpwd", loginPwd);
 
-                 SystemRestClient.get("/login", params, new AsyncHttpResponseHandler() {
-                     @Override
-                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                         Log.i("msg", "登陆成功");
-                         String responseUserEntities = null;
-                         try {
-                             responseUserEntities = new String(responseBody, "UTF-8");
-                             Log.e("result", responseUserEntities);
-                             if (responseUserEntities.equals("false")) {
-                                 subscriber.onError(new NetworkConnectionException("用户名或密码错误"));
-                             } else {
-                                 subscriber.onNext(userEntityJsonMapper.transformUserEntity(
-                                         responseUserEntities));
-                                 subscriber.onCompleted();
-                             }
-                         } catch (UnsupportedEncodingException e) {
-                             e.printStackTrace();
-                         }
-                     }
+                                         SystemRestClient.get("/login", params, new AsyncHttpResponseHandler() {
+                                             @Override
+                                             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                                                 Log.i("msg", "登陆成功");
+                                                 String responseUserEntities = null;
+                                                 try {
+                                                     responseUserEntities = new String(responseBody, "UTF-8");
+                                                     Log.e("result", responseUserEntities);
+                                                     if (responseUserEntities.equals("false")) {
+                                                         subscriber.onError(new NetworkConnectionException("用户名或密码错误"));
+                                                     } else {
+                                                         subscriber.onNext(userEntityJsonMapper.transformUserEntity(
+                                                                 responseUserEntities));
+                                                         subscriber.onCompleted();
+                                                     }
+                                                 } catch (UnsupportedEncodingException e) {
+                                                     e.printStackTrace();
+                                                 }
+                                             }
 
-                     @Override
-                     public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                         Log.e("getUserEntitiesFromApi", "onFailure");
-                         subscriber.onError(new NetworkConnectionException("链接失败"));
-                     }
-                 });
-             }
-         }
+                                             @Override
+                                             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                                                 Log.e("getUserEntitiesFromApi", "onFailure");
+                                                 subscriber.onError(new NetworkConnectionException("链接失败"));
+                                             }
+                                         });
+                                     }
+                                 }
         );
     }
 
@@ -630,7 +641,7 @@ public class RestApiImpl implements RestApi {
         return Observable.create(new Observable.OnSubscribe<List<LineEntity>>() {
             @Override
             public void call(Subscriber<? super List<LineEntity>> subscriber) {
-                Log.e("tag","getAllTower");
+                Log.e("tag", "getAllTower");
                 RequestParams params = new RequestParams();
                 params.put("userId", userId);
                 params.put("operatorSN", sn);
@@ -661,7 +672,7 @@ public class RestApiImpl implements RestApi {
         return Observable.create(new Observable.OnSubscribe<List<Integer>>() {
             @Override
             public void call(Subscriber<? super List<Integer>> subscriber) {
-                Log.e("tag","getOwnTower");
+                Log.e("tag", "getOwnTower");
                 RequestParams params = new RequestParams();
                 params.put("userId", userId);
                 params.put("operatorSN", sn);
@@ -699,7 +710,7 @@ public class RestApiImpl implements RestApi {
         return Observable.create(new Observable.OnSubscribe<String>() {
             @Override
             public void call(Subscriber<? super String> subscriber) {
-                Log.e("tag","changeManageTower");
+                Log.e("tag", "changeManageTower");
 
                 String newString = null;
                 if (snList != null) {
@@ -716,7 +727,7 @@ public class RestApiImpl implements RestApi {
                 params.put("allPoleSelected", allPoleSelected);
                 params.put("poleSnList", newString);
 
-                Log.e("a","--");
+                Log.e("a", "--");
                 SystemRestClient.post("/selectOne", params, new AsyncHttpResponseHandler() {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
@@ -864,25 +875,88 @@ public class RestApiImpl implements RestApi {
     }
 
     @Override
+    public Observable<List<PrivilegeEntity>> getOwnPrivilege(int userId, int roleSn) {
+        return Observable.create(new Observable.OnSubscribe<List<PrivilegeEntity>>() {
+            @Override
+            public void call(Subscriber<? super List<PrivilegeEntity>> subscriber) {
+                RequestParams params = new RequestParams();
+                params.put("userId", userId);
+                params.put("roleSN", roleSn);
+
+                SystemRestClient.post("/getOwnPrivilege", params, new AsyncHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                        try {
+                            String responseEntities = new String(responseBody, "UTF-8");
+                            Log.e("response", responseEntities);
+                            subscriber.onNext(privilegeEntityJsonMapper.transformPrivilegeEntity(responseEntities));
+                            subscriber.onCompleted();
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                        subscriber.onError(new NetworkConnectionException("链接失败"));
+                    }
+                });
+            }
+        });
+    }
+
+    @Override
+    public Observable<List<PrivilegeEntity>> getAllPrivilege(int userId) {
+        return Observable.create(new Observable.OnSubscribe<List<PrivilegeEntity>>() {
+            @Override
+            public void call(Subscriber<? super List<PrivilegeEntity>> subscriber) {
+                RequestParams params = new RequestParams();
+                params.put("userId", userId);
+
+                SystemRestClient.post("/privilege_showAll", params, new AsyncHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                        try {
+                            String responseEntities = new String(responseBody, "UTF-8");
+                            Log.e("response", responseEntities);
+                            subscriber.onNext(privilegeEntityJsonMapper.transformPrivilegeEntity(responseEntities));
+                            subscriber.onCompleted();
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                        subscriber.onError(new NetworkConnectionException("链接失败"));
+                    }
+                });
+            }
+        });
+    }
+
+    @Override
     public Observable<String> jurisdictionChange(int userId, int roleSn, List<Integer> jurisdictionSN) {
         return Observable.create(new Observable.OnSubscribe<String>() {
             @Override
             public void call(Subscriber<? super String> subscriber) {
-                String newString = null;
-                if (jurisdictionSN != null) {
+                String newString;
+                if (jurisdictionSN.size() != 0) {
                     String str = "";
                     for (int sn : jurisdictionSN) {
                         str += sn + ",";
                     }
                     newString = str.substring(0, str.length() - 1);
+                } else {
+                    newString = "";
                 }
 
                 RequestParams params = new RequestParams();
                 params.put("userId", userId);
-                params.put("roleSn", roleSn);
-                params.put("snList ", newString);
+                params.put("roleSN", roleSn);
+                params.put("privileges", newString);
 
-                SystemRestClient.post("/jurisdictionChange", params, new AsyncHttpResponseHandler() {
+                SystemRestClient.post("/changeJurisdiction", params, new AsyncHttpResponseHandler() {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                         try {
