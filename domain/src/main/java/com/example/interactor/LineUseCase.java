@@ -11,7 +11,7 @@ import rx.Scheduler;
  */
 public class LineUseCase extends UseCase{
 
-    private SMLineRepository smLineRepository;
+    private final SMLineRepository smLineRepository;
     private int type;
 
     public void setType(int type) {

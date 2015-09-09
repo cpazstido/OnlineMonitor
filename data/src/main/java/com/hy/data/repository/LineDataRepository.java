@@ -108,6 +108,6 @@ public class LineDataRepository implements SMLineRepository{
     public Observable<DomainLinePage> getAllLine() {
         RestApiImpl restApi = new RestApiImpl(mContext,new PageEntityJsonMapper());
         PageEntityDataMapper pageEntityDataMapper = new PageEntityDataMapper();
-        return restApi.getAllLine(userId).map(pageEntityDataMapper::transform);
+        return restApi.getAllLinePage(userId).map(pageEntityDataMapper::transform);
     }
 }

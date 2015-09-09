@@ -6,6 +6,7 @@ import android.widget.LinearLayout;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.hy.onlinemonitor.R;
+import com.hy.onlinemonitor.bean.Company;
 import com.unnamed.b.atv.model.TreeNode;
 import com.unnamed.b.atv.view.AndroidTreeView;
 
@@ -15,6 +16,7 @@ import java.util.List;
 public class PoleManageActivity extends SMBaseActivity{
     private AndroidTreeView tView;
     private TreeNode root;
+    private List<Company> companyList;
 
     @Override
     protected void initTitle() {
@@ -137,5 +139,9 @@ public class PoleManageActivity extends SMBaseActivity{
     @Override
     public Context getContext() {
         return PoleManageActivity.this;
+    }
+
+    public void setCompanyList(List<Company> companyList) {
+        this.companyList = companyList;
     }
 }

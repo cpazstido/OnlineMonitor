@@ -12,6 +12,7 @@ import com.hy.data.entity.EquipmentPageEntity;
 import com.hy.data.entity.LineEntity;
 import com.hy.data.entity.LinePageEntity;
 import com.hy.data.entity.MapEntity;
+import com.hy.data.entity.PolePageEntity;
 import com.hy.data.entity.PrivilegeEntity;
 import com.hy.data.entity.RoleEntity;
 import com.hy.data.entity.RolePageEntity;
@@ -457,13 +458,15 @@ public class RestApiImpl implements RestApi {
             public void call(Subscriber<? super List<RoleEntity>> subscriber) {
                 RequestParams params = new RequestParams();
                 params.put("userId", userId);
-                SystemRestClient.post("/getRoleList", params, new AsyncHttpResponseHandler() {
+                SystemRestClient.post("/getRolePage", params, new AsyncHttpResponseHandler() {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                         try {
                             String responseRoleEntities = new String(responseBody, "UTF-8");
                             Log.e("responseRoleEntities", responseRoleEntities);
-                            subscriber.onNext(roleEntityJsonMapper.transformRoleEntity(responseRoleEntities));
+                            PageEntityJsonMapper pageEntityJsonMapper = new PageEntityJsonMapper();
+
+                            subscriber.onNext(pageEntityJsonMapper.transformRolePageEntity(responseRoleEntities).getList());
                             subscriber.onCompleted();
                         } catch (UnsupportedEncodingException e) {
                             e.printStackTrace();
@@ -1011,7 +1014,7 @@ public class RestApiImpl implements RestApi {
     }
 
     @Override
-    public Observable<LinePageEntity> getAllLine(int userId) {
+    public Observable<LinePageEntity> getAllLinePage(int userId) {
         return Observable.create(new Observable.OnSubscribe<LinePageEntity>() {
             @Override
             public void call(Subscriber<? super LinePageEntity> subscriber) {
@@ -1144,25 +1147,167 @@ public class RestApiImpl implements RestApi {
     }
 
     @Override
-    public Observable<LinePageEntity> getPolePage(int userId, int lineSn) {
+    public Observable<PolePageEntity> getPolePage(int userId, int lineSn) {
+        return Observable.create(new Observable.OnSubscribe<PolePageEntity>() {
+            @Override
+            public void call(Subscriber<? super PolePageEntity> subscriber) {
+                RequestParams params = new RequestParams();
+                params.put("userId", userId);
+                params.put("circuitSn", lineSn);
 
-        return null;
+                SystemRestClient.post("/getPolePage", params, new AsyncHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                        try {
+                            String responseEntities = new String(responseBody, "UTF-8");
+                            Log.e("response", responseEntities);
+                            subscriber.onNext(pageEntityJsonMapper.transformPolePageEntity(responseEntities));
+                            subscriber.onCompleted();
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                        subscriber.onError(new NetworkConnectionException("链接失败"));
+                    }
+                });
+            }
+        });
     }
 
     @Override
-    public Observable<LinePageEntity> addPole(int userId, int lineSn, String poleName, String longitude, String latitude, String altitude) {
-        return null;
+    public Observable<PolePageEntity> addPole(int userId, int lineSn, String poleName, String longitude, String latitude, String altitude) {
+        return Observable.create(new Observable.OnSubscribe<PolePageEntity>() {
+            @Override
+            public void call(Subscriber<? super PolePageEntity> subscriber) {
+                RequestParams params = new RequestParams();
+                params.put("userId", userId);
+                params.put("circuitSn", lineSn);
+                params.put("poleName", poleName);
+                params.put("longitude", longitude);
+                params.put("latitude", latitude);
+                params.put("altitude", altitude);
+
+                SystemRestClient.post("/addPole", params, new AsyncHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                        try {
+                            String responseEntities = new String(responseBody, "UTF-8");
+                            Log.e("response", responseEntities);
+                            subscriber.onNext(pageEntityJsonMapper.transformPolePageEntity(responseEntities));
+                            subscriber.onCompleted();
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                        subscriber.onError(new NetworkConnectionException("链接失败"));
+                    }
+                });
+            }
+        });
     }
 
     @Override
-    public Observable<LinePageEntity> deletePole(int userId, int poleSn) {
-        return null;
+    public Observable<PolePageEntity> deletePole(int userId, int poleSn) {
+        return Observable.create(new Observable.OnSubscribe<PolePageEntity>() {
+            @Override
+            public void call(Subscriber<? super PolePageEntity> subscriber) {
+                RequestParams params = new RequestParams();
+                params.put("userId", userId);
+                params.put("poleSn", poleSn);
+
+                SystemRestClient.post("/deletePole", params, new AsyncHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                        try {
+                            String responseEntities = new String(responseBody, "UTF-8");
+                            Log.e("response", responseEntities);
+                            subscriber.onNext(pageEntityJsonMapper.transformPolePageEntity(responseEntities));
+                            subscriber.onCompleted();
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                        subscriber.onError(new NetworkConnectionException("链接失败"));
+                    }
+                });
+            }
+        });
     }
 
     @Override
-    public Observable<LinePageEntity> changegetPole(int userId, int poleSn, int lineSn, String poleName, String longitude, String latitude, String altitude) {
-        return null;
+    public Observable<PolePageEntity> changePole(int userId, int poleSn, int lineSn, String poleName, String longitude, String latitude, String altitude) {
+        return Observable.create(new Observable.OnSubscribe<PolePageEntity>() {
+            @Override
+            public void call(Subscriber<? super PolePageEntity> subscriber) {
+                RequestParams params = new RequestParams();
+                params.put("userId", userId);
+                params.put("circuitSn", lineSn);
+                params.put("poleName", poleName);
+                params.put("longitude", longitude);
+                params.put("latitude", latitude);
+                params.put("altitude", altitude);
+                params.put("poleSn", poleSn);
+
+                SystemRestClient.post("/changePole", params, new AsyncHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                        try {
+                            String responseEntities = new String(responseBody, "UTF-8");
+                            Log.e("response", responseEntities);
+                            subscriber.onNext(pageEntityJsonMapper.transformPolePageEntity(responseEntities));
+                            subscriber.onCompleted();
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                        subscriber.onError(new NetworkConnectionException("链接失败"));
+                    }
+                });
+            }
+        });
     }
+
+    @Override
+    public Observable<List<CompanyEntity>> getAllLine(int userId) {
+        return Observable.create(new Observable.OnSubscribe<List<CompanyEntity>>() {
+            @Override
+            public void call(Subscriber<? super List<CompanyEntity>> subscriber) {
+                RequestParams params = new RequestParams();
+                params.put("userId", userId);
+                SystemRestClient.post("/line_showAll", params, new AsyncHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                        try {
+                            String responseEntities = new String(responseBody, "UTF-8");
+                            Log.e("response", responseEntities);
+                            subscriber.onNext(companyEntityJsonMapper.transformCompanyEntity(responseEntities));
+                            subscriber.onCompleted();
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                        subscriber.onError(new NetworkConnectionException("链接失败"));
+                    }
+                });
+            }
+        });
+    }
+
 
     private boolean isThereInternetConnection() {
         boolean isConnected;

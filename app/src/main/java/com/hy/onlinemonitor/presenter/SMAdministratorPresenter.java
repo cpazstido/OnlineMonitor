@@ -115,11 +115,11 @@ public class SMAdministratorPresenter implements Presenter {
         this.adminSn =sn;
         SMAdministratorRepository smAdministratorRepository = new AdministratorDataRepository(mContext, userId, sn);
         this.administratorUseCase = new AdministratorUseCase(new UIThread(), AndroidSchedulers.mainThread(), smAdministratorRepository, 7);
-        this.administratorUseCase.execute(new AdminLineListOnlySubscriber());
+        this.administratorUseCase.execute(new AdminTowerListOnlySubscriber());
 
     }
 
-    private class AdminLineListOnlySubscriber extends DefaultSubscriber<List<DomainLine>> {
+    private class AdminTowerListOnlySubscriber extends DefaultSubscriber<List<DomainLine>> {
         @Override
         public void onCompleted() {
             showViewLoading();

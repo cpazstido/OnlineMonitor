@@ -8,6 +8,7 @@ import com.hy.data.entity.EquipmentPageEntity;
 import com.hy.data.entity.LineEntity;
 import com.hy.data.entity.LinePageEntity;
 import com.hy.data.entity.MapEntity;
+import com.hy.data.entity.PolePageEntity;
 import com.hy.data.entity.PrivilegeEntity;
 import com.hy.data.entity.RoleEntity;
 import com.hy.data.entity.RolePageEntity;
@@ -255,7 +256,7 @@ public interface RestApi {
      * @param userId 唯一标示
      * @return 线路列表
      */
-    Observable<LinePageEntity> getAllLine(int userId);
+    Observable<LinePageEntity> getAllLinePage(int userId);
 
     /**
      * 添加线路
@@ -300,7 +301,7 @@ public interface RestApi {
      * @param lineSn 线路sn
      * @return 杆塔列表
      */
-    Observable<LinePageEntity> getPolePage(int userId, int lineSn);
+    Observable<PolePageEntity> getPolePage(int userId, int lineSn);
 
     /**
      *  添加杆塔
@@ -312,7 +313,7 @@ public interface RestApi {
      * @param altitude 海拔高度
      * @return 返回杆塔列表
      */
-    Observable<LinePageEntity> addPole(int userId, int lineSn,String poleName,String longitude,String latitude,String altitude);
+    Observable<PolePageEntity> addPole(int userId, int lineSn,String poleName,String longitude,String latitude,String altitude);
 
     /**
      * 删除杆塔
@@ -320,7 +321,7 @@ public interface RestApi {
      * @param poleSn 杆塔sn
      * @return 杆塔列表
      */
-    Observable<LinePageEntity> deletePole(int userId, int poleSn);
+    Observable<PolePageEntity> deletePole(int userId, int poleSn);
 
     /**
      *  修改杆塔
@@ -333,5 +334,13 @@ public interface RestApi {
      * @param poleSn 杆塔sn
      * @return 返回杆塔列表
      */
-    Observable<LinePageEntity> changegetPole(int userId, int poleSn, int lineSn,String poleName,String longitude,String latitude,String altitude);
+    Observable<PolePageEntity> changePole(int userId, int poleSn, int lineSn,String poleName,String longitude,String latitude,String altitude);
+
+    /**
+     * 得到线路列表
+     * @param userId 唯一标示
+     * @return 公司列表,包含了线路
+     */
+    Observable<List<CompanyEntity>> getAllLine(int userId);
+
 }
