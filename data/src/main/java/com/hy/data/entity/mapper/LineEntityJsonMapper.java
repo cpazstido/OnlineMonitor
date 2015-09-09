@@ -10,9 +10,9 @@ import java.util.List;
 /**
  * Created by 24363 on 2015/9/2.
  */
-public class LineJsonMapper {
+public class LineEntityJsonMapper {
     private final Gson gson;
-    public LineJsonMapper() {
+    public LineEntityJsonMapper() {
         this.gson = new Gson();
     }
 

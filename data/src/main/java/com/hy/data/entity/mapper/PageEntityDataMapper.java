@@ -3,10 +3,12 @@ package com.hy.data.entity.mapper;
 import com.example.bean.DoaminEquipmentPage;
 import com.example.bean.DomainAdministratorPage;
 import com.example.bean.DomainAlarmPage;
+import com.example.bean.DomainLinePage;
 import com.example.bean.DomainRolePage;
 import com.hy.data.entity.AdministratorPageEntity;
 import com.hy.data.entity.AlarmPageEntity;
 import com.hy.data.entity.EquipmentPageEntity;
+import com.hy.data.entity.LinePageEntity;
 import com.hy.data.entity.RolePageEntity;
 
 /**
@@ -70,5 +72,19 @@ public class PageEntityDataMapper {
             domainRolePage.setRowCount(rolePageEntity.getRowCount());
         }
         return domainRolePage;
+    }
+
+    public DomainLinePage transform(LinePageEntity linePageEntity) {
+        DomainLinePage domainLinePage = null;
+        LineEntityDataMapper lineEntityDataMapper = new LineEntityDataMapper();
+        if (null != linePageEntity) {
+            domainLinePage = new DomainLinePage();
+            domainLinePage.setTotalPage(linePageEntity.getTotalPage());
+            domainLinePage.setPageSize(linePageEntity.getPageSize());
+            domainLinePage.setPageNum(linePageEntity.getPageNum());
+            domainLinePage.setList(lineEntityDataMapper.transform(linePageEntity.getList()));
+            domainLinePage.setRowCount(linePageEntity.getRowCount());
+        }
+        return domainLinePage;
     }
 }

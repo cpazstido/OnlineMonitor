@@ -7,18 +7,17 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.daimajia.swipe.util.Attributes;
 import com.hy.onlinemonitor.R;
-import com.hy.onlinemonitor.bean.Line;
-import com.hy.onlinemonitor.bean.Pole;
 import com.hy.onlinemonitor.bean.AdministratorInformation;
 import com.hy.onlinemonitor.bean.AdministratorPage;
 import com.hy.onlinemonitor.bean.Company;
+import com.hy.onlinemonitor.bean.Line;
+import com.hy.onlinemonitor.bean.Pole;
 import com.hy.onlinemonitor.bean.Role;
 import com.hy.onlinemonitor.presenter.SMAdministratorPresenter;
 import com.hy.onlinemonitor.utile.ShowUtile;
@@ -78,7 +77,6 @@ public class AdministratorManageActivity extends SMBaseActivity {
 
     @Override
     protected void menuDataLoad() {
-        menuActionAdd();
     }
 
     public void dialogShow() {
@@ -91,48 +89,6 @@ public class AdministratorManageActivity extends SMBaseActivity {
         companySpinner.setAdapter(new ArrayAdapter<>(dialog.getContext(), android.R.layout.simple_list_item_1, companyNameList));
         Spinner jurisdictionSpinner = (Spinner) dialog.getCustomView().findViewById(R.id.dialog_administrator_role);
         jurisdictionSpinner.setAdapter(new ArrayAdapter<>(dialog.getContext(), android.R.layout.simple_list_item_1, roleNameList));
-    }
-
-    @Override
-    public void menuActionAdd() {
-        dialog = new MaterialDialog.Builder(AdministratorManageActivity.this)
-                .title(R.string.administrator_add)
-                .customView(R.layout.dialog_administrator_change, true)
-                .positiveText(R.string.submit)
-                .negativeText(R.string.cancel)
-                .callback(new MaterialDialog.ButtonCallback() {
-                    @Override
-                    public void onAny(MaterialDialog dialog) {
-                        super.onAny(dialog);
-                    }
-
-                    @Override
-                    public void onPositive(MaterialDialog dialog) {
-                        String loginName = ((EditText) dialog.getCustomView().findViewById(R.id.dialog_administrator_loginName)).getText().toString();
-                        String realName = ((EditText) dialog.getCustomView().findViewById(R.id.dialog_administrator_realName)).getText().toString();
-                        String password = ((EditText) dialog.getCustomView().findViewById(R.id.dialog_administrator_password)).getText().toString();
-                        String phoneNumber = ((EditText) dialog.getCustomView().findViewById(R.id.dialog_administrator_number)).getText().toString();
-                        String isMessage = ((Spinner) dialog.getCustomView().findViewById(R.id.dialog_administrator_message)).getSelectedItem().toString();
-                        int companySn = companies.get(((Spinner) dialog.getCustomView().findViewById(R.id.dialog_administrator_company)).getSelectedItemPosition()).getSn();
-                        int roleSn = roleList.get(((Spinner) dialog.getCustomView().findViewById(R.id.dialog_administrator_role)).getSelectedItemPosition()).getSn();
-
-                        smAdministratorPresenter.addAdministrator(roleSn, companySn, loginName, realName, password, phoneNumber, isMessage);
-                        mAdapter.notifyDataSetChanged();
-                        super.onPositive(dialog);
-                    }
-
-                    @Override
-                    public void onNegative(MaterialDialog dialog) {
-                        super.onNegative(dialog);
-                    }
-
-                    @Override
-                    public void onNeutral(MaterialDialog dialog) {
-                        super.onNeutral(dialog);
-                    }
-                })
-                .build();
-        dialogShow();
     }
 
     @Override

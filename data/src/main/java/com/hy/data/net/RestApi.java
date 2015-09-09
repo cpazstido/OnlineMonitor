@@ -6,6 +6,7 @@ import com.hy.data.entity.AlarmPageEntity;
 import com.hy.data.entity.CompanyEntity;
 import com.hy.data.entity.EquipmentPageEntity;
 import com.hy.data.entity.LineEntity;
+import com.hy.data.entity.LinePageEntity;
 import com.hy.data.entity.MapEntity;
 import com.hy.data.entity.PrivilegeEntity;
 import com.hy.data.entity.RoleEntity;
@@ -149,32 +150,36 @@ public interface RestApi {
 
     /**
      * 获得所有的杆塔列表
+     *
      * @param userId 唯一标示
-     * @return 线路列表,包含了所有的杆塔
+     * @return 线路列表, 包含了所有的杆塔
      */
-    Observable<List<LineEntity>> getAllTower(int userId,int sn);
+    Observable<List<LineEntity>> getAllTower(int userId, int sn);
 
     /**
      * 获得自己拥有的的杆塔sn
+     *
      * @param userId 唯一标示
-     * @param sn 哪一个sn的杆塔
+     * @param sn     哪一个sn的杆塔
      * @return 杆塔sn列表
      */
     Observable<List<Integer>> getOwnTower(int userId, int sn);
 
     /**
      * 修改管理的杆塔
-     * @param userId 唯一标示
-     * @param snList 杆塔的sn
-     * @param adminSn 某一个管理员的sn
-     * @param allPoleSelected  是否全选
+     *
+     * @param userId          唯一标示
+     * @param snList          杆塔的sn
+     * @param adminSn         某一个管理员的sn
+     * @param allPoleSelected 是否全选
      * @return 返回是否处理成功的字符串
      */
-    Observable<String> changeManageTower(int userId,int adminSn, List<Integer> snList,int allPoleSelected);
+    Observable<String> changeManageTower(int userId, int adminSn, List<Integer> snList, int allPoleSelected);
 
 
     /**
      * 得到角色列表
+     *
      * @param userId 唯一标示
      * @return 角色列表
      */
@@ -182,39 +187,44 @@ public interface RestApi {
 
     /**
      * 添加角色
+     *
      * @param userId 唯一标示
-     * @param name 新角色名
+     * @param name   新角色名
      * @return 角色列表
      */
-    Observable<RolePageEntity> addRole(int userId,String name);
+    Observable<RolePageEntity> addRole(int userId, String name);
 
     /**
      * 修改角色
+     *
      * @param userId 唯一标示
-     * @param name 角色新名
+     * @param name   角色新名
      * @param roleSn 角色sn
      * @return 角色列表
      */
-    Observable<RolePageEntity> changeRole(int userId,int roleSn,String name);
+    Observable<RolePageEntity> changeRole(int userId, int roleSn, String name);
 
     /**
      * 删除角色
+     *
      * @param userId 唯一标示
      * @param roleSn 角色sn
      * @return 角色列表
      */
-    Observable<RolePageEntity> deleteRole(int userId,int roleSn);
+    Observable<RolePageEntity> deleteRole(int userId, int roleSn);
 
     /**
      * 得到拥有的权限
+     *
      * @param userId 唯一标示
      * @param roleSn 角色sn
      * @return 拥有的权限列表
      */
-    Observable<List<PrivilegeEntity>> getOwnPrivilege(int userId,int roleSn);
+    Observable<List<PrivilegeEntity>> getOwnPrivilege(int userId, int roleSn);
 
     /**
      * 得到权限列表
+     *
      * @param userId 唯一标示
      * @return 返回所有的权限列表
      */
@@ -222,11 +232,66 @@ public interface RestApi {
 
     /**
      * 权限修改
-     * @param userId 唯一标示
-     * @param roleSn 角色sn
+     *
+     * @param userId         唯一标示
+     * @param roleSn         角色sn
      * @param jurisdictionSN 权限sn列表
      * @return 表示成功或失败字符串
      */
-    Observable<String> jurisdictionChange(int userId,int roleSn,List<Integer> jurisdictionSN);
+    Observable<String> jurisdictionChange(int userId, int roleSn, List<Integer> jurisdictionSN);
+
+    /**
+     * 得到线路列表
+     *
+     * @param userId    唯一标示
+     * @param companySn 公司sn
+     * @return 线路列表
+     */
+    Observable<LinePageEntity> getLinePage(int userId, int companySn);
+
+    /**
+     * 得到所有线路列表
+     *
+     * @param userId 唯一标示
+     * @return 线路列表
+     */
+    Observable<LinePageEntity> getAllLine(int userId);
+
+    /**
+     * 添加线路
+     *
+     * @param userId       唯一标示
+     * @param lineName     线路名
+     * @param companySn    公司sn
+     * @param lineStart    线路起点
+     * @param lineFinish   线路终点
+     * @param lineTrend    线路走向
+     * @param voltageLevel 电压等级
+     * @return 线路列表对象
+     */
+    Observable<LinePageEntity> addLine(int userId, int companySn, String lineName, String lineStart, String lineFinish, String lineTrend, String voltageLevel);
+
+    /**
+     * 删除线路
+     *
+     * @param userId 唯一标示
+     * @param lineSn 线路sn
+     * @return 线路列表
+     */
+    Observable<LinePageEntity> deleteLine(int userId, int lineSn);
+
+    /**
+     * 修改线路
+     *
+     * @param userId       唯一标示
+     * @param lineSn       线路sn
+     * @param lineName     线路名
+     * @param lineStart    线路起点
+     * @param lineFinish   线路终点
+     * @param lineTrend    线路走向
+     * @param voltageLevel 电压等级
+     * @return 线路列表
+     */
+    Observable<LinePageEntity> changeLine(int userId, int companySn,int lineSn, String lineName, String lineStart, String lineFinish, String lineTrend, String voltageLevel);
 
 }

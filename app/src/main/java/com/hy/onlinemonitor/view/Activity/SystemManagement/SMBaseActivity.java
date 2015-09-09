@@ -76,8 +76,6 @@ public abstract class SMBaseActivity extends BaseActivity implements LoadDataVie
         return toolbar;
     }
 
-    protected abstract void menuActionAdd();//右上添加按钮的监听内部触发函数
-
     protected abstract void initTitle();//初始化标题
 
     protected abstract void initViewDisplay();//初始化activity_sm中部分隐藏控件的显示以及数据监听等

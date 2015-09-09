@@ -19,7 +19,6 @@ import com.hy.onlinemonitor.bean.Role;
 import com.hy.onlinemonitor.presenter.SMJurisdictionPresenter;
 import com.hy.onlinemonitor.view.ViewHolder.JurisdictionViewHolder;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -27,7 +26,6 @@ public class SMJurisdictionRecyclerAdapter extends RecyclerSwipeAdapter<Jurisdic
 
     private Context mContext;
     private List<Role> roleList;
-    private CharSequence[] mDatase;
     private SMJurisdictionPresenter smJurisdictionPresenter;
     private SMJurisdictionRecyclerAdapter.changeJurisdictionClickListener changeJurisdictionClickListener;
 
@@ -148,55 +146,9 @@ public class SMJurisdictionRecyclerAdapter extends RecyclerSwipeAdapter<Jurisdic
 
     }
 
-    private CharSequence[] getformInternet() {
-        List<String> mlists = new ArrayList<>();
-        mlists.add("1");
-        mlists.add("2");
-        mlists.add("3");
-        mlists.add("4");
-        mlists.add("5");
-        mlists.add("6");
-        mlists.add("7");
-        mlists.add("8");
-        mlists.add("9");
-        mlists.add("10");
-        mlists.add("11");
-        mlists.add("12");
-        mlists.add("13");
-        mlists.add("14");
-        mlists.add("15");
-        mlists.add("16");
-        mlists.add("17");
-        mlists.add("18");
-        mlists.add("19");
-        mlists.add("20");
-        mlists.add("21");
-        mlists.add("22");
-        mlists.add("23");
-        mlists.add("24");
-        mlists.add("25");
-        mlists.add("26");
-        mlists.add("27");
-        mlists.add("28");
-        mlists.add("29");
-        mlists.add("30");
-        mlists.add("31");
-        mlists.add("32");
-        mlists.add("33");
-        mlists.add("34");
-        mlists.add("35");
-        mlists.add("36");
-        mlists.add("37");
-        mlists.add("38");
-        mlists.add("39");
-        mlists.add("40");
-
-        return mlists.toArray(new CharSequence[mlists.size()]);
-    }
-
     @Override
     public int getItemCount() {
-        return roleList.size();
+        return (this.roleList != null) ? this.roleList.size() : 0;
     }
 
     @Override

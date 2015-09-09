@@ -15,10 +15,16 @@ public class LineDataMapper {
             throw new IllegalArgumentException("Cannot transform a null value");
         }
         Line line = new Line();
-        line.setPoleList(PoleDataMapper.transform(domainLine.getTowers()));
+        line.setLineSn(domainLine.getLineSn());
         line.setLineName(domainLine.getName());
         if(domainLine.getTowers()!=null){
             line.setPoleList(PoleDataMapper.transform(domainLine.getTowers()));
+        }
+        if(domainLine.getLineStart()!=null){
+            line.setVoltageLevel(domainLine.getVoltageLevel());
+            line.setLineTrend(domainLine.getLineTrend());
+            line.setLineStart(domainLine.getLineStart());
+            line.setLineFinish(domainLine.getLineFinish());
         }
         return line;
     }

@@ -19,8 +19,8 @@ public class CompanyEntityDataMapper {
             domainCompany.setCompanyName(companyEntity.getCompanyName());
             domainCompany.setSn(companyEntity.getSn());
             if(companyEntity.getLineList() !=null){
-                LineDataMapper lineDataMapper = new LineDataMapper();
-                domainCompany.setLineList(lineDataMapper.transform(companyEntity.getLineList()));
+                LineEntityDataMapper lineEntityDataMapper = new LineEntityDataMapper();
+                domainCompany.setLineList(lineEntityDataMapper.transform(companyEntity.getLineList()));
             }
         }
         return domainCompany;

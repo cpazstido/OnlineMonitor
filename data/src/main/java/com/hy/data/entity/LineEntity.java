@@ -7,18 +7,54 @@ import java.util.List;
  */
 public class LineEntity {
     private String name;
-    private int lineSn;
+    private int circuitSn;
     private List<PoleEntity> poleSet;
 
+    private String circuitOrigin;
+    private String circuitTerminal;
+    private String lineAlignment;
+    private String voltage;
     public LineEntity() {
     }
 
-    public int getLineSn() {
-        return lineSn;
+    public String getCircuitOrigin() {
+        return circuitOrigin;
     }
 
-    public void setLineSn(int lineSn) {
-        this.lineSn = lineSn;
+    public void setCircuitOrigin(String circuitOrigin) {
+        this.circuitOrigin = circuitOrigin;
+    }
+
+    public String getCircuitTerminal() {
+        return circuitTerminal;
+    }
+
+    public void setCircuitTerminal(String circuitTerminal) {
+        this.circuitTerminal = circuitTerminal;
+    }
+
+    public String getLineAlignment() {
+        return lineAlignment;
+    }
+
+    public void setLineAlignment(String lineAlignment) {
+        this.lineAlignment = lineAlignment;
+    }
+
+    public String getVoltage() {
+        return voltage;
+    }
+
+    public void setVoltage(String voltage) {
+        this.voltage = voltage;
+    }
+
+    public int getCircuitSn() {
+        return circuitSn;
+    }
+
+    public void setCircuitSn(int circuitSn) {
+        this.circuitSn = circuitSn;
     }
 
     public String getName() {

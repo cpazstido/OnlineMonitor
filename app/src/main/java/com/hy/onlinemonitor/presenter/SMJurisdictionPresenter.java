@@ -54,7 +54,6 @@ public class SMJurisdictionPresenter implements Presenter {
         SMJurisdictionRepository smJurisdictionRepository = new JurisdictionDataRepository(mContext, userId);
         this.jurisdictionUseCase = new JurisdictionUseCase(new UIThread(), AndroidSchedulers.mainThread(), smJurisdictionRepository, 1);
         this.jurisdictionUseCase.execute(new RolePageSubscriber());
-
     }
 
     public void addRole(String roleName) {

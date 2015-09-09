@@ -28,10 +28,6 @@ public class JurisdictionManageActivity extends SMBaseActivity {
     private List<Privilege> privileges;
     private List<Privilege> ownPrivileges;
     private int roleSn;
-    @Override
-    protected void menuActionAdd() {
-
-    }
 
     @Override
     protected void initTitle() {

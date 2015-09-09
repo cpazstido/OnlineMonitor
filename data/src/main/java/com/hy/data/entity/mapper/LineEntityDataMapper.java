@@ -10,8 +10,8 @@ import java.util.List;
 /**
  * Created by 24363 on 2015/9/2.
  */
-public class LineDataMapper {
-    public LineDataMapper() {
+public class LineEntityDataMapper {
+    public LineEntityDataMapper() {
     }
 
     public DomainLine transform(LineEntity lineEntity) {
@@ -20,10 +20,17 @@ public class LineDataMapper {
         if (lineEntity != null) {
             domainLine = new DomainLine();
             domainLine.setName(lineEntity.getName());
-            domainLine.setTowers(PoleDataMapper.transform(lineEntity.getPoleSet()));
-            if(lineEntity.getLineSn() != 0){
-                domainLine.setLineSn(lineEntity.getLineSn());
+            domainLine.setLineSn(lineEntity.getCircuitSn());
+            if(lineEntity.getPoleSet() != null) {
+                domainLine.setTowers(PoleDataMapper.transform(lineEntity.getPoleSet()));
             }
+            if(lineEntity.getCircuitOrigin()!=null){
+                domainLine.setLineStart(lineEntity.getCircuitOrigin());
+                domainLine.setLineFinish(lineEntity.getCircuitTerminal());
+                domainLine.setLineTrend(lineEntity.getLineAlignment());
+                domainLine.setVoltageLevel(lineEntity.getVoltage());
+            }
+
         }
         return domainLine;
     }

@@ -80,6 +80,12 @@
 
         <activity android:name=".view.Activity.SystemManagement.JurisdictionManageActivity"
             android:launchMode="singleTask"/>
+
+        <activity android:name=".view.Activity.SystemManagement.LineManageActivity"
+            android:launchMode="singleTask"/>
+
+        <activity android:name=".view.Activity.SystemManagement.PoleManageActivity"
+            android:launchMode="singleTask"/>
     </application>
 
 </manifest>

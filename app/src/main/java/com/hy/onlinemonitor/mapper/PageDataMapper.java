@@ -3,10 +3,12 @@ package com.hy.onlinemonitor.mapper;
 import com.example.bean.DoaminEquipmentPage;
 import com.example.bean.DomainAdministratorPage;
 import com.example.bean.DomainAlarmPage;
+import com.example.bean.DomainLinePage;
 import com.example.bean.DomainRolePage;
 import com.hy.onlinemonitor.bean.AdministratorPage;
 import com.hy.onlinemonitor.bean.AlarmPage;
 import com.hy.onlinemonitor.bean.EquipmentPage;
+import com.hy.onlinemonitor.bean.LinePage;
 import com.hy.onlinemonitor.bean.RolePage;
 
 
@@ -74,5 +76,20 @@ public class PageDataMapper {
         rolePage.setList(RoleDataMapper.transform(domainRolePage.getList()));
 
         return rolePage;
+    }
+
+    public LinePage transform(DomainLinePage domainLine) {
+        if (null == domainLine) {
+            throw new IllegalArgumentException("Cannot transform a null value");
+        }
+
+        LinePage linePage = new LinePage();
+        linePage.setRowCount(domainLine.getRowCount());
+        linePage.setPageNum(domainLine.getPageNum());
+        linePage.setPageSize(domainLine.getPageSize());
+        linePage.setTotalPage(domainLine.getTotalPage());
+        linePage.setList(LineDataMapper.transform(domainLine.getList()));
+
+        return linePage;
     }
 }

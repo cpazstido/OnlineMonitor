@@ -10,13 +10,14 @@ import com.hy.data.entity.AlarmPageEntity;
 import com.hy.data.entity.CompanyEntity;
 import com.hy.data.entity.EquipmentPageEntity;
 import com.hy.data.entity.LineEntity;
+import com.hy.data.entity.LinePageEntity;
 import com.hy.data.entity.MapEntity;
 import com.hy.data.entity.PrivilegeEntity;
 import com.hy.data.entity.RoleEntity;
 import com.hy.data.entity.RolePageEntity;
 import com.hy.data.entity.UserEntity;
 import com.hy.data.entity.mapper.CompanyEntityJsonMapper;
-import com.hy.data.entity.mapper.LineJsonMapper;
+import com.hy.data.entity.mapper.LineEntityJsonMapper;
 import com.hy.data.entity.mapper.ListOfIntegerJsonMapper;
 import com.hy.data.entity.mapper.MapEntityJsonMapper;
 import com.hy.data.entity.mapper.PageEntityJsonMapper;
@@ -49,7 +50,7 @@ public class RestApiImpl implements RestApi {
     private RoleEntityJsonMapper roleEntityJsonMapper;
     private StringJsonMapper stringJsonMapper;
     private CompanyEntityJsonMapper companyEntityJsonMapper;
-    private LineJsonMapper lineJsonMapper;
+    private LineEntityJsonMapper lineEntityJsonMapper;
     private ListOfIntegerJsonMapper listOfIntegerJsonMapper;
     private PrivilegeEntityJsonMapper privilegeEntityJsonMapper;
 
@@ -115,12 +116,12 @@ public class RestApiImpl implements RestApi {
         this.roleEntityJsonMapper = roleEntityJsonMapper;
     }
 
-    public RestApiImpl(Context context, LineJsonMapper lineJsonMapper) {
-        if (context == null || lineJsonMapper == null) {
+    public RestApiImpl(Context context, LineEntityJsonMapper lineEntityJsonMapper) {
+        if (context == null || lineEntityJsonMapper == null) {
             throw new IllegalArgumentException("The constructor parameters cannot be null!!!");
         }
         this.context = context;
-        this.lineJsonMapper = lineJsonMapper;
+        this.lineEntityJsonMapper = lineEntityJsonMapper;
     }
 
     public RestApiImpl(Context context, ListOfIntegerJsonMapper listOfIntegerJsonMapper) {
@@ -650,7 +651,7 @@ public class RestApiImpl implements RestApi {
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                         try {
                             String responseAdminLineEntities = new String(responseBody, "UTF-8");
-                            subscriber.onNext(lineJsonMapper.transformAdminLineEntity(responseAdminLineEntities));
+                            subscriber.onNext(lineEntityJsonMapper.transformAdminLineEntity(responseAdminLineEntities));
                             subscriber.onCompleted();
                         } catch (UnsupportedEncodingException e) {
                             e.printStackTrace();
@@ -963,6 +964,170 @@ public class RestApiImpl implements RestApi {
                             String responseEntities = new String(responseBody, "UTF-8");
                             Log.e("response", responseEntities);
                             subscriber.onNext(responseEntities);
+                            subscriber.onCompleted();
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                        subscriber.onError(new NetworkConnectionException("链接失败"));
+                    }
+                });
+            }
+        });
+    }
+
+    @Override
+    public Observable<LinePageEntity> getLinePage(int userId, int companySn) {
+        return Observable.create(new Observable.OnSubscribe<LinePageEntity>() {
+            @Override
+            public void call(Subscriber<? super LinePageEntity> subscriber) {
+                RequestParams params = new RequestParams();
+                params.put("userId", userId);
+                params.put("companySn", companySn);
+
+                SystemRestClient.post("/getLinePage", params, new AsyncHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                        try {
+                            String responseEntities = new String(responseBody, "UTF-8");
+                            Log.e("response", responseEntities);
+                            subscriber.onNext(pageEntityJsonMapper.transformLinePageEntity(responseEntities));
+                            subscriber.onCompleted();
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                        subscriber.onError(new NetworkConnectionException("链接失败"));
+                    }
+                });
+            }
+        });
+    }
+
+    @Override
+    public Observable<LinePageEntity> getAllLine(int userId) {
+        return Observable.create(new Observable.OnSubscribe<LinePageEntity>() {
+            @Override
+            public void call(Subscriber<? super LinePageEntity> subscriber) {
+                RequestParams params = new RequestParams();
+                params.put("userId", userId);
+
+                SystemRestClient.post("/getLinePage", params, new AsyncHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                        try {
+                            String responseEntities = new String(responseBody, "UTF-8");
+                            Log.e("response", responseEntities);
+                            subscriber.onNext(pageEntityJsonMapper.transformLinePageEntity(responseEntities));
+                            subscriber.onCompleted();
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                        subscriber.onError(new NetworkConnectionException("链接失败"));
+                    }
+                });
+            }
+        });
+    }
+
+    @Override
+    public Observable<LinePageEntity> addLine(int userId, int companySn,String lineName, String lineStart, String lineFinish, String lineTrend, String voltageLevel) {
+        return Observable.create(new Observable.OnSubscribe<LinePageEntity>() {
+            @Override
+            public void call(Subscriber<? super LinePageEntity> subscriber) {
+                RequestParams params = new RequestParams();
+                params.put("userId", userId);
+                params.put("companySn", companySn);
+                params.put("circuitName", lineName);
+                params.put("circuitOrigin", lineStart);
+                params.put("circuitTerminal", lineFinish);
+                params.put("lineAlignment", lineTrend);
+                params.put("circuitVoltage", voltageLevel);
+
+                SystemRestClient.post("/addLine", params, new AsyncHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                        try {
+                            String responseEntities = new String(responseBody, "UTF-8");
+                            Log.e("response", responseEntities);
+                            subscriber.onNext(pageEntityJsonMapper.transformLinePageEntity(responseEntities));
+                            subscriber.onCompleted();
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                        subscriber.onError(new NetworkConnectionException("链接失败"));
+                    }
+                });
+            }
+        });
+    }
+
+    @Override
+    public Observable<LinePageEntity> deleteLine(int userId, int lineSn) {
+        return Observable.create(new Observable.OnSubscribe<LinePageEntity>() {
+            @Override
+            public void call(Subscriber<? super LinePageEntity> subscriber) {
+                RequestParams params = new RequestParams();
+                params.put("userId", userId);
+                params.put("circuitSn", lineSn);
+
+                SystemRestClient.post("/deleteLine", params, new AsyncHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                        try {
+                            String responseEntities = new String(responseBody, "UTF-8");
+                            Log.e("response", responseEntities);
+                            subscriber.onNext(pageEntityJsonMapper.transformLinePageEntity(responseEntities));
+                            subscriber.onCompleted();
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                        subscriber.onError(new NetworkConnectionException("链接失败"));
+                    }
+                });
+            }
+        });
+    }
+
+    @Override
+    public Observable<LinePageEntity> changeLine(int userId,int companySn, int lineSn, String lineName, String lineStart, String lineFinish, String lineTrend, String voltageLevel) {
+        return Observable.create(new Observable.OnSubscribe<LinePageEntity>() {
+            @Override
+            public void call(Subscriber<? super LinePageEntity> subscriber) {
+                RequestParams params = new RequestParams();
+                params.put("circuitSn", lineSn);
+                params.put("userId", userId);
+                params.put("companySn", companySn);
+                params.put("circuitName", lineName);
+                params.put("circuitOrigin", lineStart);
+                params.put("circuitTerminal", lineFinish);
+                params.put("lineAlignment", lineTrend);
+                params.put("circuitVoltage", voltageLevel);
+                SystemRestClient.post("/changeLine", params, new AsyncHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                        try {
+                            String responseEntities = new String(responseBody, "UTF-8");
+                            Log.e("response", responseEntities);
+                            subscriber.onNext(pageEntityJsonMapper.transformLinePageEntity(responseEntities));
                             subscriber.onCompleted();
                         } catch (UnsupportedEncodingException e) {
                             e.printStackTrace();

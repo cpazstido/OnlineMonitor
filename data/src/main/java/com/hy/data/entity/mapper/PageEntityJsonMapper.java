@@ -6,6 +6,7 @@ import com.google.gson.reflect.TypeToken;
 import com.hy.data.entity.AdministratorPageEntity;
 import com.hy.data.entity.AlarmPageEntity;
 import com.hy.data.entity.EquipmentPageEntity;
+import com.hy.data.entity.LinePageEntity;
 import com.hy.data.entity.RolePageEntity;
 
 import java.lang.reflect.Type;
@@ -39,5 +40,11 @@ public class PageEntityJsonMapper {
         Type RolePageEntityType = new TypeToken<RolePageEntity>() {}.getType();
 
         return this.gson.fromJson(JsonResponse, RolePageEntityType);
+    }
+
+    public LinePageEntity transformLinePageEntity(String JsonResponse) throws JsonSyntaxException {
+        Type LinePageEntityType = new TypeToken<LinePageEntity>() {}.getType();
+
+        return this.gson.fromJson(JsonResponse, LinePageEntityType);
     }
 }
