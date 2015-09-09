@@ -1,15 +1,11 @@
 package com.hy.onlinemonitor.view.Activity.SystemManagement;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.hy.onlinemonitor.R;
-import com.hy.onlinemonitor.view.ViewHolder.IconTreeItemHolder;
-import com.hy.onlinemonitor.view.ViewHolder.SelectableHeaderHolder;
-import com.hy.onlinemonitor.view.ViewHolder.SelectableItemHolder;
 import com.unnamed.b.atv.model.TreeNode;
 import com.unnamed.b.atv.view.AndroidTreeView;
 
@@ -53,17 +49,17 @@ public class PoleManageActivity extends SMBaseActivity{
                                     if (treeNode1.getParent() != root) {
                                         int baseId = treeNode1.getParent().getId();//这取到的是某条线路的位置
                                         int lineId = treeNode1.getId();
-                                        String treeLineName = mCompanyList.get(baseId).getLineList().get(lineId).getLineName();//得到线路名
-                                        choicedLine.add(treeLineName);
-                                        Log.e("id", treeLineName);//这取到的是某个具体杆塔在list内的位置
+//                                        String treeLineName = mCompanyList.get(baseId).getLineList().get(lineId).getLineName();//得到线路名
+//                                        choicedLine.add(treeLineName);
+//                                        Log.e("id", treeLineName);//这取到的是某个具体杆塔在list内的位置
                                     }
                                 }
 
                                 //这里网络请求,通知adapter改变;
-                                mList.add(mCompanyList.get(0).getLineList().get(0).getTowerList().get(0));
-                                mList.add(mCompanyList.get(0).getLineList().get(0).getTowerList().get(1));
+//                                mList.add(mCompanyList.get(0).getLineList().get(0).getTowerList().get(0));
+//                                mList.add(mCompanyList.get(0).getLineList().get(0).getTowerList().get(1));
 
-                                mAdapter.notifyDataSetChanged();
+//                                mAdapter.notifyDataSetChanged();
 
                                 super.onPositive(dialog);
                             }
@@ -82,7 +78,7 @@ public class PoleManageActivity extends SMBaseActivity{
                 LinearLayout ll = (LinearLayout) dialog.getCustomView().findViewById(R.id.dialog_tree_show);
 
                 root = TreeNode.root();
-                initMoni();
+    /*            initMoni();
 
                 for (CompanyInformation companyInformation : mCompanyList) {
 
@@ -102,6 +98,7 @@ public class PoleManageActivity extends SMBaseActivity{
                 ll.addView(tView.getView());
 
                 dialog.show();
+                */
             }
         });
 

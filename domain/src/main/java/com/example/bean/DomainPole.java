@@ -8,7 +8,6 @@ public class DomainPole {
     private String longitude;
     private String latitude;
     private String altitude;
-    private String line;
     private List<DomainEquipment> equipmentList;
 
     public DomainPole() {
@@ -36,14 +35,6 @@ public class DomainPole {
 
     public void setAltitude(String altitude) {
         this.altitude = altitude;
-    }
-
-    public String getLine() {
-        return line;
-    }
-
-    public void setLine(String line) {
-        this.line = line;
     }
 
     public List<DomainEquipment> getEquipmentList() {

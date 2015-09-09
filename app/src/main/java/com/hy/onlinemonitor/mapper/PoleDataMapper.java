@@ -21,6 +21,12 @@ public class PoleDataMapper {
             EquipmentDataMapper equipmentDataMapper = new EquipmentDataMapper();
             pole.setEquipmentList(equipmentDataMapper.transform(domainPole.getEquipmentList()));
         }
+        if(domainPole.getLatitude() != null){
+            pole.setLatitude(domainPole.getLatitude());
+            pole.setLongitude(domainPole.getLongitude());
+            pole.setAltitude(domainPole.getAltitude());
+        }
+
         return pole;
     }
 

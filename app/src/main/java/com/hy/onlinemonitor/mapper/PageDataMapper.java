@@ -4,11 +4,13 @@ import com.example.bean.DoaminEquipmentPage;
 import com.example.bean.DomainAdministratorPage;
 import com.example.bean.DomainAlarmPage;
 import com.example.bean.DomainLinePage;
+import com.example.bean.DomainPolePage;
 import com.example.bean.DomainRolePage;
 import com.hy.onlinemonitor.bean.AdministratorPage;
 import com.hy.onlinemonitor.bean.AlarmPage;
 import com.hy.onlinemonitor.bean.EquipmentPage;
 import com.hy.onlinemonitor.bean.LinePage;
+import com.hy.onlinemonitor.bean.PolePage;
 import com.hy.onlinemonitor.bean.RolePage;
 
 
@@ -91,5 +93,20 @@ public class PageDataMapper {
         linePage.setList(LineDataMapper.transform(domainLine.getList()));
 
         return linePage;
+    }
+
+    public PolePage transform(DomainPolePage domainPolePage) {
+        if (null == domainPolePage) {
+            throw new IllegalArgumentException("Cannot transform a null value");
+        }
+
+        PolePage polePage = new PolePage();
+        polePage.setRowCount(domainPolePage.getRowCount());
+        polePage.setPageNum(domainPolePage.getPageNum());
+        polePage.setPageSize(domainPolePage.getPageSize());
+        polePage.setTotalPage(domainPolePage.getTotalPage());
+        polePage.setList(PoleDataMapper.transform(domainPolePage.getList()));
+
+        return polePage;
     }
 }

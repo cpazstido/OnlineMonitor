@@ -1143,6 +1143,27 @@ public class RestApiImpl implements RestApi {
         });
     }
 
+    @Override
+    public Observable<LinePageEntity> getPolePage(int userId, int lineSn) {
+
+        return null;
+    }
+
+    @Override
+    public Observable<LinePageEntity> addPole(int userId, int lineSn, String poleName, String longitude, String latitude, String altitude) {
+        return null;
+    }
+
+    @Override
+    public Observable<LinePageEntity> deletePole(int userId, int poleSn) {
+        return null;
+    }
+
+    @Override
+    public Observable<LinePageEntity> changegetPole(int userId, int poleSn, int lineSn, String poleName, String longitude, String latitude, String altitude) {
+        return null;
+    }
+
     private boolean isThereInternetConnection() {
         boolean isConnected;
 

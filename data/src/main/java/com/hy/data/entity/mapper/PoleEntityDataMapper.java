@@ -10,8 +10,8 @@ import java.util.List;
 /**
  * Created by 24363 on 2015/9/2.
  */
-public class PoleDataMapper {
-    public PoleDataMapper() {
+public class PoleEntityDataMapper {
+    public PoleEntityDataMapper() {
     }
 
     public static DomainPole transform(PoleEntity poleEntity) {
@@ -24,6 +24,11 @@ public class PoleDataMapper {
             if(poleEntity.getEquipmentList()!=null){
                 EquipmentDataMapper equipmentDataMapper = new EquipmentDataMapper();
                 domainPole.setEquipmentList(equipmentDataMapper.transform(poleEntity.getEquipmentList()));
+            }
+            if(poleEntity.getLongitude()!= null){
+                domainPole.setAltitude(poleEntity.getAltitude());
+                domainPole.setLongitude(poleEntity.getLongitude());
+                domainPole.setLatitude(poleEntity.getLatitude());
             }
         }
         return domainPole;

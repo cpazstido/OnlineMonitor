@@ -294,4 +294,44 @@ public interface RestApi {
      */
     Observable<LinePageEntity> changeLine(int userId, int companySn,int lineSn, String lineName, String lineStart, String lineFinish, String lineTrend, String voltageLevel);
 
+    /**
+     *  得到杆塔列表
+     * @param userId 唯一标示
+     * @param lineSn 线路sn
+     * @return 杆塔列表
+     */
+    Observable<LinePageEntity> getPolePage(int userId, int lineSn);
+
+    /**
+     *  添加杆塔
+     * @param userId 唯一标示
+     * @param lineSn 线路sn
+     * @param poleName 杆塔名
+     * @param longitude 经度
+     * @param latitude 纬度
+     * @param altitude 海拔高度
+     * @return 返回杆塔列表
+     */
+    Observable<LinePageEntity> addPole(int userId, int lineSn,String poleName,String longitude,String latitude,String altitude);
+
+    /**
+     * 删除杆塔
+     * @param userId 唯一标示
+     * @param poleSn 杆塔sn
+     * @return 杆塔列表
+     */
+    Observable<LinePageEntity> deletePole(int userId, int poleSn);
+
+    /**
+     *  修改杆塔
+     * @param userId 唯一标示
+     * @param lineSn 线路sn
+     * @param poleName 杆塔名
+     * @param longitude 经度
+     * @param latitude 纬度
+     * @param altitude 海拔高度
+     * @param poleSn 杆塔sn
+     * @return 返回杆塔列表
+     */
+    Observable<LinePageEntity> changegetPole(int userId, int poleSn, int lineSn,String poleName,String longitude,String latitude,String altitude);
 }

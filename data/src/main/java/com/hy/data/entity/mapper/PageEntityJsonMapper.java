@@ -7,6 +7,7 @@ import com.hy.data.entity.AdministratorPageEntity;
 import com.hy.data.entity.AlarmPageEntity;
 import com.hy.data.entity.EquipmentPageEntity;
 import com.hy.data.entity.LinePageEntity;
+import com.hy.data.entity.PolePageEntity;
 import com.hy.data.entity.RolePageEntity;
 
 import java.lang.reflect.Type;
@@ -46,5 +47,11 @@ public class PageEntityJsonMapper {
         Type LinePageEntityType = new TypeToken<LinePageEntity>() {}.getType();
 
         return this.gson.fromJson(JsonResponse, LinePageEntityType);
+    }
+
+    public PolePageEntity transformPolePageEntity(String JsonResponse) throws JsonSyntaxException {
+        Type PolePageEntityType = new TypeToken<PolePageEntity>() {}.getType();
+
+        return this.gson.fromJson(JsonResponse, PolePageEntityType);
     }
 }

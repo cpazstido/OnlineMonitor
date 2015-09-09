@@ -22,7 +22,7 @@ public class LineEntityDataMapper {
             domainLine.setName(lineEntity.getName());
             domainLine.setLineSn(lineEntity.getCircuitSn());
             if(lineEntity.getPoleSet() != null) {
-                domainLine.setTowers(PoleDataMapper.transform(lineEntity.getPoleSet()));
+                domainLine.setTowers(PoleEntityDataMapper.transform(lineEntity.getPoleSet()));
             }
             if(lineEntity.getCircuitOrigin()!=null){
                 domainLine.setLineStart(lineEntity.getCircuitOrigin());

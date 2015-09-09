@@ -11,7 +11,6 @@ public class PoleEntity {
     private String longitude;
     private String latitude;
     private String altitude;
-    private String line;
     private List<EquipmentEntity> equipmentList;
     public PoleEntity() {
     }
@@ -38,14 +37,6 @@ public class PoleEntity {
 
     public void setAltitude(String altitude) {
         this.altitude = altitude;
-    }
-
-    public String getLine() {
-        return line;
-    }
-
-    public void setLine(String line) {
-        this.line = line;
     }
 
     public List<EquipmentEntity> getEquipmentList() {

@@ -4,11 +4,13 @@ import com.example.bean.DoaminEquipmentPage;
 import com.example.bean.DomainAdministratorPage;
 import com.example.bean.DomainAlarmPage;
 import com.example.bean.DomainLinePage;
+import com.example.bean.DomainPolePage;
 import com.example.bean.DomainRolePage;
 import com.hy.data.entity.AdministratorPageEntity;
 import com.hy.data.entity.AlarmPageEntity;
 import com.hy.data.entity.EquipmentPageEntity;
 import com.hy.data.entity.LinePageEntity;
+import com.hy.data.entity.PolePageEntity;
 import com.hy.data.entity.RolePageEntity;
 
 /**
@@ -86,5 +88,18 @@ public class PageEntityDataMapper {
             domainLinePage.setRowCount(linePageEntity.getRowCount());
         }
         return domainLinePage;
+    }
+
+    public DomainPolePage transform(PolePageEntity polePageEntity) {
+        DomainPolePage domainPolePage = null;
+        if (null != polePageEntity) {
+            domainPolePage = new DomainPolePage();
+            domainPolePage.setTotalPage(polePageEntity.getTotalPage());
+            domainPolePage.setPageSize(polePageEntity.getPageSize());
+            domainPolePage.setPageNum(polePageEntity.getPageNum());
+            domainPolePage.setList(PoleEntityDataMapper.transform(polePageEntity.getList()));
+            domainPolePage.setRowCount(polePageEntity.getRowCount());
+        }
+        return domainPolePage;
     }
 }
