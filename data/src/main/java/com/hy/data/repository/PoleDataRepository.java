@@ -6,7 +6,7 @@ import com.example.bean.DomainCompany;
 import com.example.bean.DomainPolePage;
 import com.example.repository.SMPoleRepository;
 import com.hy.data.entity.mapper.CompanyEntityDataMapper;
-import com.hy.data.entity.mapper.LineEntityJsonMapper;
+import com.hy.data.entity.mapper.CompanyEntityJsonMapper;
 import com.hy.data.entity.mapper.PageEntityDataMapper;
 import com.hy.data.entity.mapper.PageEntityJsonMapper;
 import com.hy.data.net.RestApiImpl;
@@ -39,19 +39,20 @@ public class PoleDataRepository implements SMPoleRepository {
         this.lineSn = lineSn;
     }
 
-    public PoleDataRepository(Context mContext) {
-        this.mContext = mContext;
-    }
-
-    public PoleDataRepository(Context mContext,int userId, int lineSn, String poleName, String longitude, String latitude, String altitude, int poleSn) {
+    public PoleDataRepository(int poleSn, Context mContext, int userId) {
+        this.poleSn = poleSn;
         this.mContext = mContext;
         this.userId = userId;
-        this.lineSn = lineSn;
+    }
+
+    public PoleDataRepository(Context mContext, int userId, String poleName, String longitude, String latitude, String altitude, int poleSn) {
+        this.mContext = mContext;
+        this.userId = userId;
+        this.poleSn = poleSn;
         this.poleName = poleName;
         this.longitude = longitude;
         this.latitude = latitude;
         this.altitude = altitude;
-        this.poleSn = poleSn;
     }
 
     public PoleDataRepository(Context mContext, int userId, int lineSn, String poleName, String longitude, String latitude, String altitude) {
@@ -66,7 +67,7 @@ public class PoleDataRepository implements SMPoleRepository {
 
     @Override
     public Observable<List<DomainCompany>> getAllLine() {
-        RestApiImpl restApi = new RestApiImpl(mContext,new LineEntityJsonMapper());
+        RestApiImpl restApi = new RestApiImpl(mContext,new CompanyEntityJsonMapper());
         CompanyEntityDataMapper companyEntityDataMapper = new CompanyEntityDataMapper();
         return restApi.getAllLine(userId).map(companyEntityDataMapper::transform);
     }
@@ -96,6 +97,6 @@ public class PoleDataRepository implements SMPoleRepository {
     public Observable<DomainPolePage> changePole() {
         RestApiImpl restApi = new RestApiImpl(mContext,new PageEntityJsonMapper());
         PageEntityDataMapper pageEntityDataMapper = new PageEntityDataMapper();
-        return restApi.changePole(userId, poleSn,lineSn,poleName,longitude,latitude,altitude).map(pageEntityDataMapper::transform);
+        return restApi.changePole(userId, poleSn,poleName,longitude,latitude,altitude).map(pageEntityDataMapper::transform);
     }
 }

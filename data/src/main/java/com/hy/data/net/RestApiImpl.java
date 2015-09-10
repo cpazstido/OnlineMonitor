@@ -23,7 +23,6 @@ import com.hy.data.entity.mapper.ListOfIntegerJsonMapper;
 import com.hy.data.entity.mapper.MapEntityJsonMapper;
 import com.hy.data.entity.mapper.PageEntityJsonMapper;
 import com.hy.data.entity.mapper.PrivilegeEntityJsonMapper;
-import com.hy.data.entity.mapper.RoleEntityJsonMapper;
 import com.hy.data.entity.mapper.StringJsonMapper;
 import com.hy.data.entity.mapper.UserEntityJsonMapper;
 import com.hy.data.exception.NetworkConnectionException;
@@ -48,7 +47,6 @@ public class RestApiImpl implements RestApi {
     private UserEntityJsonMapper userEntityJsonMapper;
     private MapEntityJsonMapper mapEntityJsonMapper;
     private PageEntityJsonMapper pageEntityJsonMapper;
-    private RoleEntityJsonMapper roleEntityJsonMapper;
     private StringJsonMapper stringJsonMapper;
     private CompanyEntityJsonMapper companyEntityJsonMapper;
     private LineEntityJsonMapper lineEntityJsonMapper;
@@ -109,14 +107,6 @@ public class RestApiImpl implements RestApi {
         this.companyEntityJsonMapper = companyEntityJsonMapper;
     }
 
-    public RestApiImpl(Context context, RoleEntityJsonMapper roleEntityJsonMapper) {
-        if (context == null || roleEntityJsonMapper == null) {
-            throw new IllegalArgumentException("The constructor parameters cannot be null!!!");
-        }
-        this.context = context;
-        this.roleEntityJsonMapper = roleEntityJsonMapper;
-    }
-
     public RestApiImpl(Context context, LineEntityJsonMapper lineEntityJsonMapper) {
         if (context == null || lineEntityJsonMapper == null) {
             throw new IllegalArgumentException("The constructor parameters cannot be null!!!");
@@ -151,40 +141,40 @@ public class RestApiImpl implements RestApi {
     @Override
     public Observable<UserEntity> userEntity(String loginAccount, String loginPwd) {
         return Observable.create(new Observable.OnSubscribe<UserEntity>() {
-                                     @Override
-                                     public void call(Subscriber<? super UserEntity> subscriber) {
-                                         RequestParams params = new RequestParams();
-                                         params.put("uername", loginAccount);
-                                         params.put("uerpwd", loginPwd);
+                 @Override
+                 public void call(Subscriber<? super UserEntity> subscriber) {
+                     RequestParams params = new RequestParams();
+                     params.put("uername", loginAccount);
+                     params.put("uerpwd", loginPwd);
 
-                                         SystemRestClient.get("/login", params, new AsyncHttpResponseHandler() {
-                                             @Override
-                                             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                                                 Log.i("msg", "登陆成功");
-                                                 String responseUserEntities = null;
-                                                 try {
-                                                     responseUserEntities = new String(responseBody, "UTF-8");
-                                                     Log.e("result", responseUserEntities);
-                                                     if (responseUserEntities.equals("false")) {
-                                                         subscriber.onError(new NetworkConnectionException("用户名或密码错误"));
-                                                     } else {
-                                                         subscriber.onNext(userEntityJsonMapper.transformUserEntity(
-                                                                 responseUserEntities));
-                                                         subscriber.onCompleted();
-                                                     }
-                                                 } catch (UnsupportedEncodingException e) {
-                                                     e.printStackTrace();
-                                                 }
-                                             }
-
-                                             @Override
-                                             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                                                 Log.e("getUserEntitiesFromApi", "onFailure");
-                                                 subscriber.onError(new NetworkConnectionException("链接失败"));
-                                             }
-                                         });
-                                     }
+                     SystemRestClient.get("/login", params, new AsyncHttpResponseHandler() {
+                         @Override
+                         public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                             Log.i("msg", "登陆成功");
+                             String responseUserEntities = null;
+                             try {
+                                 responseUserEntities = new String(responseBody, "UTF-8");
+                                 Log.e("result", responseUserEntities);
+                                 if (responseUserEntities.equals("false")) {
+                                     subscriber.onError(new NetworkConnectionException("用户名或密码错误"));
+                                 } else {
+                                     subscriber.onNext(userEntityJsonMapper.transformUserEntity(
+                                             responseUserEntities));
+                                     subscriber.onCompleted();
                                  }
+                             } catch (UnsupportedEncodingException e) {
+                                 e.printStackTrace();
+                             }
+                         }
+
+                         @Override
+                         public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                             Log.e("getUserEntitiesFromApi", "onFailure");
+                             subscriber.onError(new NetworkConnectionException("链接失败"));
+                         }
+                     });
+                 }
+             }
         );
     }
 
@@ -464,8 +454,6 @@ public class RestApiImpl implements RestApi {
                         try {
                             String responseRoleEntities = new String(responseBody, "UTF-8");
                             Log.e("responseRoleEntities", responseRoleEntities);
-                            PageEntityJsonMapper pageEntityJsonMapper = new PageEntityJsonMapper();
-
                             subscriber.onNext(pageEntityJsonMapper.transformRolePageEntity(responseRoleEntities).getList());
                             subscriber.onCompleted();
                         } catch (UnsupportedEncodingException e) {
@@ -654,6 +642,7 @@ public class RestApiImpl implements RestApi {
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                         try {
                             String responseAdminLineEntities = new String(responseBody, "UTF-8");
+                            Log.e("getAllTower",responseAdminLineEntities);
                             subscriber.onNext(lineEntityJsonMapper.transformAdminLineEntity(responseAdminLineEntities));
                             subscriber.onCompleted();
                         } catch (UnsupportedEncodingException e) {
@@ -1155,7 +1144,7 @@ public class RestApiImpl implements RestApi {
                 params.put("userId", userId);
                 params.put("circuitSn", lineSn);
 
-                SystemRestClient.post("/getPolePage", params, new AsyncHttpResponseHandler() {
+                SystemRestClient.post("/getPoleData", params, new AsyncHttpResponseHandler() {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                         try {
@@ -1185,12 +1174,12 @@ public class RestApiImpl implements RestApi {
                 RequestParams params = new RequestParams();
                 params.put("userId", userId);
                 params.put("circuitSn", lineSn);
-                params.put("poleName", poleName);
+                params.put("towerName", poleName);
                 params.put("longitude", longitude);
                 params.put("latitude", latitude);
                 params.put("altitude", altitude);
 
-                SystemRestClient.post("/addPole", params, new AsyncHttpResponseHandler() {
+                SystemRestClient.post("/insertPoleData", params, new AsyncHttpResponseHandler() {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                         try {
@@ -1221,7 +1210,7 @@ public class RestApiImpl implements RestApi {
                 params.put("userId", userId);
                 params.put("poleSn", poleSn);
 
-                SystemRestClient.post("/deletePole", params, new AsyncHttpResponseHandler() {
+                SystemRestClient.post("/deletePoleData", params, new AsyncHttpResponseHandler() {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                         try {
@@ -1244,20 +1233,19 @@ public class RestApiImpl implements RestApi {
     }
 
     @Override
-    public Observable<PolePageEntity> changePole(int userId, int poleSn, int lineSn, String poleName, String longitude, String latitude, String altitude) {
+    public Observable<PolePageEntity> changePole(int userId, int poleSn, String poleName, String longitude, String latitude, String altitude) {
         return Observable.create(new Observable.OnSubscribe<PolePageEntity>() {
             @Override
             public void call(Subscriber<? super PolePageEntity> subscriber) {
                 RequestParams params = new RequestParams();
                 params.put("userId", userId);
-                params.put("circuitSn", lineSn);
-                params.put("poleName", poleName);
+                params.put("towerName", poleName);
                 params.put("longitude", longitude);
                 params.put("latitude", latitude);
                 params.put("altitude", altitude);
                 params.put("poleSn", poleSn);
 
-                SystemRestClient.post("/changePole", params, new AsyncHttpResponseHandler() {
+                SystemRestClient.post("/updatePoleData", params, new AsyncHttpResponseHandler() {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                         try {
@@ -1286,7 +1274,7 @@ public class RestApiImpl implements RestApi {
             public void call(Subscriber<? super List<CompanyEntity>> subscriber) {
                 RequestParams params = new RequestParams();
                 params.put("userId", userId);
-                SystemRestClient.post("/line_showAll", params, new AsyncHttpResponseHandler() {
+                SystemRestClient.post("/queryCompanyAndCircut", params, new AsyncHttpResponseHandler() {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                         try {

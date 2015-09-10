@@ -94,7 +94,6 @@ public class SMLineRecyclerAdapter extends RecyclerSwipeAdapter<LineViewHolder> 
                         .callback(new MaterialDialog.ButtonCallback() {
                             @Override
                             public void onPositive(MaterialDialog dialog) {
-
                                 String newName = ((EditText) dialog.getCustomView().findViewById(R.id.dialog_line_name)).getText().toString();
                                 String newTrend = ((EditText) dialog.getCustomView().findViewById(R.id.dialog_line_trend)).getText().toString();
                                 String newFinish = ((EditText) dialog.getCustomView().findViewById(R.id.dialog_line_finish)).getText().toString();

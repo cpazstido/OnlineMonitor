@@ -14,6 +14,7 @@ import com.hy.onlinemonitor.view.Activity.Function.MapActivity;
 import com.hy.onlinemonitor.view.Activity.SystemManagement.AdministratorManageActivity;
 import com.hy.onlinemonitor.view.Activity.SystemManagement.JurisdictionManageActivity;
 import com.hy.onlinemonitor.view.Activity.SystemManagement.LineManageActivity;
+import com.hy.onlinemonitor.view.Activity.SystemManagement.PoleManageActivity;
 import com.hy.onlinemonitor.view.Adapter.MainGridAdapter;
 import com.hy.onlinemonitor.view.Component.MyGridView;
 
@@ -119,8 +120,8 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
                         startActivity(gridLineIntent);
                         break;
                     case 4://杆塔
-//                        Intent gridTowerIntent = new Intent(MainActivity.this, TowerManageActivity.class);
-//                        startActivity(gridTowerIntent);
+                        Intent gridTowerIntent = new Intent(MainActivity.this, PoleManageActivity.class);
+                        startActivity(gridTowerIntent);
                         break;
                     case 5://设备
 //                        Intent gridEquipmentIntent = new Intent(MainActivity.this, EquipmentManageActivity.class);

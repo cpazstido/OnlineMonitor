@@ -4,11 +4,13 @@ import android.content.Context;
 import android.widget.Toast;
 
 import com.example.bean.DomainCompany;
+import com.example.bean.DomainPolePage;
 import com.example.interactor.DefaultSubscriber;
 import com.example.interactor.PoleUseCase;
 import com.hy.data.repository.PoleDataRepository;
 import com.hy.onlinemonitor.UIThread;
 import com.hy.onlinemonitor.bean.Company;
+import com.hy.onlinemonitor.bean.PolePage;
 import com.hy.onlinemonitor.mapper.CompanyDataMapper;
 import com.hy.onlinemonitor.mapper.PageDataMapper;
 import com.hy.onlinemonitor.view.Activity.SystemManagement.PoleManageActivity;
@@ -64,6 +66,7 @@ public class SMPolePresenter implements Presenter{
 
     public void loadAllLine(int userId) {
         showViewLoading();
+        this.userId = userId;
         poleDataRepository = new PoleDataRepository(mContext, userId);
         this.poleUseCase = new PoleUseCase(new UIThread(), AndroidSchedulers.mainThread(), poleDataRepository, 1);
         this.poleUseCase.execute(new LineListSubscriber());
@@ -73,7 +76,6 @@ public class SMPolePresenter implements Presenter{
         @Override
         public void onCompleted() {
             SMPolePresenter.this.hideViewLoading();
-            showViewLoading();
         }
 
         @Override
@@ -87,6 +89,54 @@ public class SMPolePresenter implements Presenter{
         public void onNext(List<DomainCompany> domainCompanies) {
             List<Company> mList = CompanyDataMapper.transform(domainCompanies);
             poleManageActivity.setCompanyList(mList);
+        }
+    }
+
+    public void getPolePage(int lineSn) {
+        showViewLoading();
+        poleDataRepository = new PoleDataRepository(mContext, userId,lineSn);
+        this.poleUseCase = new PoleUseCase(new UIThread(), AndroidSchedulers.mainThread(), poleDataRepository, 2);
+        this.poleUseCase.execute(new PolePageSubscriber());
+    }
+
+    public void addPole(int lineSn,String poleName, String longitude, String latitude, String altitude) {
+        showViewLoading();
+        poleDataRepository = new PoleDataRepository(mContext, userId,lineSn,poleName,longitude,latitude,altitude);
+        this.poleUseCase = new PoleUseCase(new UIThread(), AndroidSchedulers.mainThread(), poleDataRepository, 3);
+        this.poleUseCase.execute(new PolePageSubscriber());
+    }
+
+    public void deletePole(int poleSn) {
+        showViewLoading();
+        poleDataRepository = new PoleDataRepository(poleSn,mContext, userId);
+        this.poleUseCase = new PoleUseCase(new UIThread(), AndroidSchedulers.mainThread(), poleDataRepository, 4);
+        this.poleUseCase.execute(new PolePageSubscriber());
+    }
+
+    public void changePole(String poleName, String longitude, String latitude, String altitude, int poleSn) {
+        showViewLoading();
+        poleDataRepository = new PoleDataRepository(mContext, userId,poleName,longitude,latitude,altitude,poleSn);
+        this.poleUseCase = new PoleUseCase(new UIThread(), AndroidSchedulers.mainThread(), poleDataRepository, 5);
+        this.poleUseCase.execute(new PolePageSubscriber());
+    }
+
+    private class PolePageSubscriber extends DefaultSubscriber<DomainPolePage> {
+        @Override
+        public void onCompleted() {
+            SMPolePresenter.this.hideViewLoading();
+        }
+
+        @Override
+        public void onError(Throwable e) {
+            SMPolePresenter.this.hideViewLoading();
+            Toast.makeText(mContext, "AdminLineListOnlySubscriber出现错误", Toast.LENGTH_SHORT).show();
+            super.onError(e);
+        }
+
+        @Override
+        public void onNext(DomainPolePage domainPolePage) {
+            PolePage polePage = pageDataMapper.transform(domainPolePage);
+            poleManageActivity.renderPoleList(polePage);
         }
     }
 }

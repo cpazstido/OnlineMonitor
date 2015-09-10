@@ -2,20 +2,19 @@ package com.hy.data.repository;
 
 import android.content.Context;
 
-import com.example.bean.DomainLine;
 import com.example.bean.DomainAdministratorPage;
 import com.example.bean.DomainCompany;
+import com.example.bean.DomainLine;
 import com.example.bean.DomainRole;
 import com.example.repository.SMAdministratorRepository;
-import com.hy.data.entity.mapper.LineEntityDataMapper;
-import com.hy.data.entity.mapper.LineEntityJsonMapper;
 import com.hy.data.entity.mapper.CompanyEntityDataMapper;
 import com.hy.data.entity.mapper.CompanyEntityJsonMapper;
+import com.hy.data.entity.mapper.LineEntityDataMapper;
+import com.hy.data.entity.mapper.LineEntityJsonMapper;
 import com.hy.data.entity.mapper.ListOfIntegerJsonMapper;
 import com.hy.data.entity.mapper.PageEntityDataMapper;
 import com.hy.data.entity.mapper.PageEntityJsonMapper;
 import com.hy.data.entity.mapper.RoleEntityDataMapper;
-import com.hy.data.entity.mapper.RoleEntityJsonMapper;
 import com.hy.data.entity.mapper.StringJsonMapper;
 import com.hy.data.net.RestApiImpl;
 
@@ -97,7 +96,7 @@ public class AdministratorDataRepository implements SMAdministratorRepository {
 
     @Override
     public Observable<List<DomainRole>> roleList() {
-        RestApiImpl restApi = new RestApiImpl(mContext,new RoleEntityJsonMapper());
+        RestApiImpl restApi = new RestApiImpl(mContext,new PageEntityJsonMapper());
         RoleEntityDataMapper roleEntityDataMapper = new RoleEntityDataMapper();
         return restApi.roleList(userId).map(roleEntityDataMapper::transform);
     }

@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <com.rey.material.widget.Spinner
+        style="@style/Material.Widget.Spinner.Light"
+        android:id="@+id/spinner_choice_line"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:minWidth="128dp"
+        android:minHeight="35dp"
+        app:rd_style="@style/Material.Drawable.Ripple.Wave.Light"
+        app:rd_enable="true"
+        app:rd_delayClick="none"
+        app:spn_labelEnable="true"
+        app:spn_label="线路选择:"
+        app:spn_arrowSwitchMode="true"
+        app:spn_arrowAnimDuration="@android:integer/config_shortAnimTime"
+        app:spn_arrowInterpolator="@android:anim/decelerate_interpolator"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="18dp"
+        android:text="@string/tower_name"
+        android:textColor="#80000000"
+        android:textSize="@dimen/customTitle" />
+
+    <EditText
+        android:id="@+id/dialog_tower_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:textColor="#000000"
+        android:textSize="@dimen/customEntry" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="18dp"
+        android:text="@string/longitude"
+        android:textColor="#80000000"
+        android:textSize="@dimen/customTitle" />
+
+    <EditText
+        android:id="@+id/dialog_longitude"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:textColor="#000000"
+        android:textSize="@dimen/customEntry" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="18dp"
+        android:text="@string/latitude"
+        android:textColor="#80000000"
+        android:textSize="@dimen/customTitle" />
+
+    <EditText
+        android:id="@+id/dialog_latitude"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:textColor="#000000"
+        android:textSize="@dimen/customEntry" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="18dp"
+        android:text="@string/altitude"
+        android:textColor="#80000000"
+        android:textSize="@dimen/customTitle" />
+
+    <EditText
+        android:id="@+id/dialog_altitude"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:textColor="#000000"
+        android:textSize="@dimen/customEntry" />
+</LinearLayout>

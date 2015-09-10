@@ -326,7 +326,6 @@ public interface RestApi {
     /**
      *  修改杆塔
      * @param userId 唯一标示
-     * @param lineSn 线路sn
      * @param poleName 杆塔名
      * @param longitude 经度
      * @param latitude 纬度
@@ -334,7 +333,7 @@ public interface RestApi {
      * @param poleSn 杆塔sn
      * @return 返回杆塔列表
      */
-    Observable<PolePageEntity> changePole(int userId, int poleSn, int lineSn,String poleName,String longitude,String latitude,String altitude);
+    Observable<PolePageEntity> changePole(int userId, int poleSn, String poleName,String longitude,String latitude,String altitude);
 
     /**
      * 得到线路列表
