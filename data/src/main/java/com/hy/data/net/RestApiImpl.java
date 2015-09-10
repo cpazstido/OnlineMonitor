@@ -8,7 +8,7 @@ import android.util.Log;
 import com.hy.data.entity.AdministratorPageEntity;
 import com.hy.data.entity.AlarmPageEntity;
 import com.hy.data.entity.CompanyEntity;
-import com.hy.data.entity.EquipmentPageEntity;
+import com.hy.data.entity.EquipmentInforPageEntity;
 import com.hy.data.entity.LineEntity;
 import com.hy.data.entity.LinePageEntity;
 import com.hy.data.entity.MapEntity;
@@ -186,10 +186,10 @@ public class RestApiImpl implements RestApi {
      * @return
      */
     @Override
-    public Observable<EquipmentPageEntity> equipmentEntity(int userId, int choiceType, int pageNumber) {
-        return Observable.create(new Observable.OnSubscribe<EquipmentPageEntity>() {
+    public Observable<EquipmentInforPageEntity> equipmentEntity(int userId, int choiceType, int pageNumber) {
+        return Observable.create(new Observable.OnSubscribe<EquipmentInforPageEntity>() {
             @Override
-            public void call(Subscriber<? super EquipmentPageEntity> subscriber) {
+            public void call(Subscriber<? super EquipmentInforPageEntity> subscriber) {
 
                 RequestParams params = new RequestParams();
                 params.put("userId", userId);

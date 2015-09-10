@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * Created by 24363 on 2015/8/21.
  */
-public class EquipmentPageEntity {
+public class EquipmentInforPageEntity {
     //当前页数
     private int pageNum;
     //每页显示条数

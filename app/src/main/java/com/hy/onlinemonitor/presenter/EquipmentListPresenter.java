@@ -4,12 +4,12 @@ import android.content.Context;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
-import com.example.bean.DoaminEquipmentPage;
+import com.example.bean.DoaminEquipmentInforPage;
 import com.example.interactor.DefaultSubscriber;
-import com.example.interactor.EquipmentUseCase;
+import com.example.interactor.EquipmentInforUseCase;
 import com.example.interactor.UseCase;
-import com.example.repository.EquipmentRepository;
-import com.hy.data.repository.EquipmentDataRepository;
+import com.example.repository.EquipmentInforRepository;
+import com.hy.data.repository.EquipmentDataInforRepository;
 import com.hy.onlinemonitor.UIThread;
 import com.hy.onlinemonitor.bean.EquipmentPage;
 import com.hy.onlinemonitor.mapper.PageDataMapper;
@@ -59,12 +59,12 @@ public class EquipmentListPresenter implements Presenter
     }
 
     private void getEquipmentList(int userId,int selectedType,int pageNumber) {
-        EquipmentRepository equipmentDataRepository = new EquipmentDataRepository(mContext,userId,selectedType,pageNumber);
-        this.getEquipmentListUseCase = new EquipmentUseCase(new UIThread(), AndroidSchedulers.mainThread(), equipmentDataRepository);
+        EquipmentInforRepository equipmentDataRepository = new EquipmentDataInforRepository(mContext,userId,selectedType,pageNumber);
+        this.getEquipmentListUseCase = new EquipmentInforUseCase(new UIThread(), AndroidSchedulers.mainThread(), equipmentDataRepository);
         this.getEquipmentListUseCase.execute(new EquipmentListSubscriber());
     }
 
-    private class EquipmentListSubscriber extends DefaultSubscriber<DoaminEquipmentPage> {
+    private class EquipmentListSubscriber extends DefaultSubscriber<DoaminEquipmentInforPage> {
         @Override
         public void onCompleted() {
             EquipmentListPresenter.this.hideViewLoading();
@@ -78,13 +78,13 @@ public class EquipmentListPresenter implements Presenter
         }
 
         @Override
-        public void onNext(DoaminEquipmentPage doaminEquipmentPage) {
-            EquipmentListPresenter.this.showEquipmentPage(doaminEquipmentPage);
+        public void onNext(DoaminEquipmentInforPage doaminEquipmentInforPage) {
+            EquipmentListPresenter.this.showEquipmentPage(doaminEquipmentInforPage);
         }
     }
 
-    private void showEquipmentPage(DoaminEquipmentPage doaminEquipmentPage) {
-        EquipmentPage equipmentPage = this.pageDataMapper.transform(doaminEquipmentPage);
+    private void showEquipmentPage(DoaminEquipmentInforPage doaminEquipmentInforPage) {
+        EquipmentPage equipmentPage = this.pageDataMapper.transform(doaminEquipmentInforPage);
         this.equipmentListActivity.renderEquipmentList(equipmentPage);
     }
 

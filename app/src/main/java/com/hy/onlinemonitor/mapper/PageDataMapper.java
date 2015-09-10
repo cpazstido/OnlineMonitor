@@ -1,6 +1,6 @@
 package com.hy.onlinemonitor.mapper;
 
-import com.example.bean.DoaminEquipmentPage;
+import com.example.bean.DoaminEquipmentInforPage;
 import com.example.bean.DomainAdministratorPage;
 import com.example.bean.DomainAlarmPage;
 import com.example.bean.DomainLinePage;
@@ -19,18 +19,18 @@ public class PageDataMapper {
     public PageDataMapper() {
     }
 
-    public EquipmentPage transform(DoaminEquipmentPage doaminEquipmentPage) {
-        if (null == doaminEquipmentPage) {
+    public EquipmentPage transform(DoaminEquipmentInforPage doaminEquipmentInforPage) {
+        if (null == doaminEquipmentInforPage) {
             throw new IllegalArgumentException("Cannot transform a null value");
         }
         EquipmentInforDataMapper equipmentInforDataMapper = new EquipmentInforDataMapper();
 
         EquipmentPage equipmentPage = new EquipmentPage();
-        equipmentPage.setRowCount(doaminEquipmentPage.getRowCount());
-        equipmentPage.setPageNum(doaminEquipmentPage.getPageNum());
-        equipmentPage.setPageSize(doaminEquipmentPage.getPageSize());
-        equipmentPage.setTotalPage(doaminEquipmentPage.getTotalPage());
-        equipmentPage.setList(equipmentInforDataMapper.transform(doaminEquipmentPage.getList()));
+        equipmentPage.setRowCount(doaminEquipmentInforPage.getRowCount());
+        equipmentPage.setPageNum(doaminEquipmentInforPage.getPageNum());
+        equipmentPage.setPageSize(doaminEquipmentInforPage.getPageSize());
+        equipmentPage.setTotalPage(doaminEquipmentInforPage.getTotalPage());
+        equipmentPage.setList(equipmentInforDataMapper.transform(doaminEquipmentInforPage.getList()));
         return equipmentPage;
     }
 

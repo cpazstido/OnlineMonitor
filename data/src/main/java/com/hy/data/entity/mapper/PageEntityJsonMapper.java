@@ -5,7 +5,7 @@ import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 import com.hy.data.entity.AdministratorPageEntity;
 import com.hy.data.entity.AlarmPageEntity;
-import com.hy.data.entity.EquipmentPageEntity;
+import com.hy.data.entity.EquipmentInforPageEntity;
 import com.hy.data.entity.LinePageEntity;
 import com.hy.data.entity.PolePageEntity;
 import com.hy.data.entity.RolePageEntity;
@@ -25,8 +25,8 @@ public class PageEntityJsonMapper {
 
     }
 
-    public EquipmentPageEntity transformEquipmentPageEntity(String equipmentPageJsonResponse) throws JsonSyntaxException {
-        Type EquipmentPageEntityType = new TypeToken<EquipmentPageEntity>() {}.getType();
+    public EquipmentInforPageEntity transformEquipmentPageEntity(String equipmentPageJsonResponse) throws JsonSyntaxException {
+        Type EquipmentPageEntityType = new TypeToken<EquipmentInforPageEntity>() {}.getType();
 
         return this.gson.fromJson(equipmentPageJsonResponse, EquipmentPageEntityType);
     }

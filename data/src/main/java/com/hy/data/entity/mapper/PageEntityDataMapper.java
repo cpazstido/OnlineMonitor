@@ -1,6 +1,6 @@
 package com.hy.data.entity.mapper;
 
-import com.example.bean.DoaminEquipmentPage;
+import com.example.bean.DoaminEquipmentInforPage;
 import com.example.bean.DomainAdministratorPage;
 import com.example.bean.DomainAlarmPage;
 import com.example.bean.DomainLinePage;
@@ -8,7 +8,7 @@ import com.example.bean.DomainPolePage;
 import com.example.bean.DomainRolePage;
 import com.hy.data.entity.AdministratorPageEntity;
 import com.hy.data.entity.AlarmPageEntity;
-import com.hy.data.entity.EquipmentPageEntity;
+import com.hy.data.entity.EquipmentInforPageEntity;
 import com.hy.data.entity.LinePageEntity;
 import com.hy.data.entity.PolePageEntity;
 import com.hy.data.entity.RolePageEntity;
@@ -20,18 +20,18 @@ public class PageEntityDataMapper {
     public PageEntityDataMapper() {
     }
 
-    public DoaminEquipmentPage transform(EquipmentPageEntity equipmentPageEntity) {
+    public DoaminEquipmentInforPage transform(EquipmentInforPageEntity equipmentInforPageEntity) {
         EquipmentAlarmEntityDataMapper equipmentAlarmEntityDataMapper = new EquipmentAlarmEntityDataMapper();
-        DoaminEquipmentPage doaminEquipmentPage = null;
-        if (null != equipmentPageEntity) {
-            doaminEquipmentPage = new DoaminEquipmentPage();
-            doaminEquipmentPage.setTotalPage(equipmentPageEntity.getTotalPage());
-            doaminEquipmentPage.setPageSize(equipmentPageEntity.getPageSize());
-            doaminEquipmentPage.setPageNum(equipmentPageEntity.getPageNum());
-            doaminEquipmentPage.setList(equipmentAlarmEntityDataMapper.transform(equipmentPageEntity.getList()));
-            doaminEquipmentPage.setRowCount(equipmentPageEntity.getRowCount());
+        DoaminEquipmentInforPage doaminEquipmentInforPage = null;
+        if (null != equipmentInforPageEntity) {
+            doaminEquipmentInforPage = new DoaminEquipmentInforPage();
+            doaminEquipmentInforPage.setTotalPage(equipmentInforPageEntity.getTotalPage());
+            doaminEquipmentInforPage.setPageSize(equipmentInforPageEntity.getPageSize());
+            doaminEquipmentInforPage.setPageNum(equipmentInforPageEntity.getPageNum());
+            doaminEquipmentInforPage.setList(equipmentAlarmEntityDataMapper.transform(equipmentInforPageEntity.getList()));
+            doaminEquipmentInforPage.setRowCount(equipmentInforPageEntity.getRowCount());
         }
-        return doaminEquipmentPage;
+        return doaminEquipmentInforPage;
     }
 
     public DomainAlarmPage transform(AlarmPageEntity alarmPageEntity) {

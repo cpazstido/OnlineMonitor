@@ -2,15 +2,15 @@ package com.hy.data.repository;
 
 import android.content.Context;
 
-import com.example.bean.DoaminEquipmentPage;
-import com.example.repository.EquipmentRepository;
+import com.example.bean.DoaminEquipmentInforPage;
+import com.example.repository.EquipmentInforRepository;
 import com.hy.data.entity.mapper.PageEntityDataMapper;
 import com.hy.data.entity.mapper.PageEntityJsonMapper;
 import com.hy.data.net.RestApiImpl;
 
 import rx.Observable;
 
-public class EquipmentDataRepository implements EquipmentRepository {
+public class EquipmentDataInforRepository implements EquipmentInforRepository {
 
     private Context mContext;
     private int userId;
@@ -18,7 +18,7 @@ public class EquipmentDataRepository implements EquipmentRepository {
     private PageEntityDataMapper pageEntityDataMapper;
     private int pageNumber;
 
-    public EquipmentDataRepository(Context mContext, int userId, int selectedType,int pagaNubmer) {
+    public EquipmentDataInforRepository(Context mContext, int userId, int selectedType, int pagaNubmer) {
         this.mContext = mContext;
         this.userId = userId;
         this.selectedType = selectedType;
@@ -27,7 +27,7 @@ public class EquipmentDataRepository implements EquipmentRepository {
     }
 
     @Override
-    public Observable<DoaminEquipmentPage> equipmentList() {
+    public Observable<DoaminEquipmentInforPage> equipmentList() {
         RestApiImpl restApi = new RestApiImpl(mContext,new PageEntityJsonMapper());
         return restApi.equipmentEntity(userId, selectedType,pageNumber).map(this.pageEntityDataMapper::transform);
     }

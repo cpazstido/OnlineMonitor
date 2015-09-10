@@ -4,7 +4,7 @@ package com.hy.data.net;
 import com.hy.data.entity.AdministratorPageEntity;
 import com.hy.data.entity.AlarmPageEntity;
 import com.hy.data.entity.CompanyEntity;
-import com.hy.data.entity.EquipmentPageEntity;
+import com.hy.data.entity.EquipmentInforPageEntity;
 import com.hy.data.entity.LineEntity;
 import com.hy.data.entity.LinePageEntity;
 import com.hy.data.entity.MapEntity;
@@ -39,7 +39,7 @@ public interface RestApi {
      * @param pageNumber 页数
      * @return 设备列表
      */
-    Observable<EquipmentPageEntity> equipmentEntity(int userName, int choiceType, int pageNumber);
+    Observable<EquipmentInforPageEntity> equipmentEntity(int userName, int choiceType, int pageNumber);
 
 
     /**
