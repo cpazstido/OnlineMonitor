@@ -5,10 +5,12 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Log;
 
+import com.example.bean.DomainSensor;
 import com.hy.data.entity.AdministratorPageEntity;
 import com.hy.data.entity.AlarmPageEntity;
 import com.hy.data.entity.CompanyEntity;
 import com.hy.data.entity.EquipmentInforPageEntity;
+import com.hy.data.entity.EquipmentPageEntity;
 import com.hy.data.entity.LineEntity;
 import com.hy.data.entity.LinePageEntity;
 import com.hy.data.entity.MapEntity;
@@ -141,49 +143,48 @@ public class RestApiImpl implements RestApi {
     @Override
     public Observable<UserEntity> userEntity(String loginAccount, String loginPwd) {
         return Observable.create(new Observable.OnSubscribe<UserEntity>() {
-                 @Override
-                 public void call(Subscriber<? super UserEntity> subscriber) {
-                     RequestParams params = new RequestParams();
-                     params.put("uername", loginAccount);
-                     params.put("uerpwd", loginPwd);
+             @Override
+             public void call(Subscriber<? super UserEntity> subscriber) {
+                 RequestParams params = new RequestParams();
+                 params.put("uername", loginAccount);
+                 params.put("uerpwd", loginPwd);
 
-                     SystemRestClient.get("/login", params, new AsyncHttpResponseHandler() {
-                         @Override
-                         public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                             Log.i("msg", "登陆成功");
-                             String responseUserEntities = null;
-                             try {
-                                 responseUserEntities = new String(responseBody, "UTF-8");
-                                 Log.e("result", responseUserEntities);
-                                 if (responseUserEntities.equals("false")) {
-                                     subscriber.onError(new NetworkConnectionException("用户名或密码错误"));
-                                 } else {
-                                     subscriber.onNext(userEntityJsonMapper.transformUserEntity(
-                                             responseUserEntities));
-                                     subscriber.onCompleted();
-                                 }
-                             } catch (UnsupportedEncodingException e) {
-                                 e.printStackTrace();
+                 SystemRestClient.get("/login", params, new AsyncHttpResponseHandler() {
+                     @Override
+                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                         Log.i("msg", "登陆成功");
+                         try {
+                             String responseUserEntities = new String(responseBody, "UTF-8");
+                             Log.e("result", responseUserEntities);
+                             if (responseUserEntities.equals("false")) {
+                                 subscriber.onError(new NetworkConnectionException("用户名或密码错误"));
+                             } else {
+                                 subscriber.onNext(userEntityJsonMapper.transformUserEntity(
+                                         responseUserEntities));
+                                 subscriber.onCompleted();
                              }
+                         } catch (UnsupportedEncodingException e) {
+                             e.printStackTrace();
                          }
+                     }
 
-                         @Override
-                         public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                             Log.e("getUserEntitiesFromApi", "onFailure");
-                             subscriber.onError(new NetworkConnectionException("链接失败"));
-                         }
-                     });
-                 }
+                     @Override
+                     public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                         Log.e("getUserEntitiesFromApi", "onFailure");
+                         subscriber.onError(new NetworkConnectionException("链接失败"));
+                     }
+                 });
              }
+         }
         );
     }
 
     /**
      * 获取设备列表
      *
-     * @param userId
-     * @param choiceType
-     * @return
+     * @param userId     唯一标示
+     * @param choiceType 选择的类型
+     * @return 设备列表
      */
     @Override
     public Observable<EquipmentInforPageEntity> equipmentEntity(int userId, int choiceType, int pageNumber) {
@@ -199,10 +200,9 @@ public class RestApiImpl implements RestApi {
                 SystemRestClient.post("/getEquipmentList", params, new AsyncHttpResponseHandler() {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                        String responseEquipmentEntities = null;
                         try {
-                            responseEquipmentEntities = new String(responseBody, "UTF-8");
-                            subscriber.onNext(pageEntityJsonMapper.transformEquipmentPageEntity(responseEquipmentEntities));
+                            String responseEquipmentEntities = new String(responseBody, "UTF-8");
+                            subscriber.onNext(pageEntityJsonMapper.transformEquipmentInforPageEntity(responseEquipmentEntities));
                             subscriber.onCompleted();
                         } catch (UnsupportedEncodingException e) {
                             e.printStackTrace();
@@ -636,13 +636,17 @@ public class RestApiImpl implements RestApi {
                 Log.e("tag", "getAllTower");
                 RequestParams params = new RequestParams();
                 params.put("userId", userId);
-                params.put("operatorSN", sn);
+                if (sn > 0) {
+                    params.put("operatorSN", sn);
+                }else{
+                    params.put("operatorSN", userId);
+                }
                 SystemRestClient.post("/getAllTower", params, new AsyncHttpResponseHandler() {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                         try {
                             String responseAdminLineEntities = new String(responseBody, "UTF-8");
-                            Log.e("getAllTower",responseAdminLineEntities);
+                            Log.e("getAllTower", responseAdminLineEntities);
                             subscriber.onNext(lineEntityJsonMapper.transformAdminLineEntity(responseAdminLineEntities));
                             subscriber.onCompleted();
                         } catch (UnsupportedEncodingException e) {
@@ -1033,7 +1037,7 @@ public class RestApiImpl implements RestApi {
     }
 
     @Override
-    public Observable<LinePageEntity> addLine(int userId, int companySn,String lineName, String lineStart, String lineFinish, String lineTrend, String voltageLevel) {
+    public Observable<LinePageEntity> addLine(int userId, int companySn, String lineName, String lineStart, String lineFinish, String lineTrend, String voltageLevel) {
         return Observable.create(new Observable.OnSubscribe<LinePageEntity>() {
             @Override
             public void call(Subscriber<? super LinePageEntity> subscriber) {
@@ -1100,7 +1104,7 @@ public class RestApiImpl implements RestApi {
     }
 
     @Override
-    public Observable<LinePageEntity> changeLine(int userId,int companySn, int lineSn, String lineName, String lineStart, String lineFinish, String lineTrend, String voltageLevel) {
+    public Observable<LinePageEntity> changeLine(int userId, int companySn, int lineSn, String lineName, String lineStart, String lineFinish, String lineTrend, String voltageLevel) {
         return Observable.create(new Observable.OnSubscribe<LinePageEntity>() {
             @Override
             public void call(Subscriber<? super LinePageEntity> subscriber) {
@@ -1294,6 +1298,171 @@ public class RestApiImpl implements RestApi {
                 });
             }
         });
+    }
+
+    @Override
+    public Observable<EquipmentPageEntity> getEquipmentPage(int userId, int poleSn) {
+        return Observable.create(new Observable.OnSubscribe<EquipmentPageEntity>() {
+            @Override
+            public void call(Subscriber<? super EquipmentPageEntity> subscriber) {
+                RequestParams params = new RequestParams();
+                params.put("userId", userId);
+                params.put("poleSn", poleSn);
+                Log.e("params","userId:"+userId+"polesn"+poleSn);
+                SystemRestClient.post("/getEquipmentList", params, new AsyncHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                        try {
+                            String responseEntities = new String(responseBody, "UTF-8");
+                            Log.e("response", responseEntities);
+                            subscriber.onNext(pageEntityJsonMapper.transformEquipmentPageEntity(responseEntities));
+                            subscriber.onCompleted();
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                        subscriber.onError(new NetworkConnectionException("链接失败"));
+                    }
+                });
+            }
+        });
+    }
+
+    @Override
+    public Observable<EquipmentPageEntity> addEquipment(int userId, int poleSn,String deviceID, String dvrID, Double angleRelativeToNorthPole, String deviceType, int sendMmsState, String cma_ID, String sensor_ID, String equipment_ID) {
+        return Observable.create(new Observable.OnSubscribe<EquipmentPageEntity>() {
+            @Override
+            public void call(Subscriber<? super EquipmentPageEntity> subscriber) {
+                RequestParams params = new RequestParams();
+                params.put("userId", userId);
+                params.put("deviceID", deviceID);
+                params.put("dvrID", dvrID);
+                params.put("poleSn", poleSn);
+                params.put("angleRelativeToNorthPole", angleRelativeToNorthPole);
+                params.put("deviceType", deviceType);
+                params.put("sendMmsState", sendMmsState);
+                params.put("cma_ID", cma_ID);
+                params.put("sensor_ID", sensor_ID);
+                params.put("equipment_ID", equipment_ID);
+
+                SystemRestClient.post("/insertDervice", params, new AsyncHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                        try {
+                            String responseEntities = new String(responseBody, "UTF-8");
+                            Log.e("response", responseEntities);
+                            subscriber.onNext(pageEntityJsonMapper.transformEquipmentPageEntity(responseEntities));
+                            subscriber.onCompleted();
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                        subscriber.onError(new NetworkConnectionException("链接失败"));
+                    }
+                });
+            }
+        });
+    }
+
+    @Override
+    public Observable<EquipmentPageEntity> deleteEquipment(int userId, int equipmentSn) {
+        return Observable.create(new Observable.OnSubscribe<EquipmentPageEntity>() {
+            @Override
+            public void call(Subscriber<? super EquipmentPageEntity> subscriber) {
+                RequestParams params = new RequestParams();
+                params.put("userId", userId);
+                params.put("sn", equipmentSn);
+
+                SystemRestClient.post("/deleteDevice", params, new AsyncHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                        try {
+                            String responseEntities = new String(responseBody, "UTF-8");
+                            Log.e("response", responseEntities);
+                            subscriber.onNext(pageEntityJsonMapper.transformEquipmentPageEntity(responseEntities));
+                            subscriber.onCompleted();
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                        subscriber.onError(new NetworkConnectionException("链接失败"));
+                    }
+                });
+            }
+        });
+    }
+
+    @Override
+    public Observable<EquipmentPageEntity> changeEquipment(int userId, int equipmentSn, String deviceID, String dvrID, Double angleRelativeToNorthPole, String deviceType, int sendMmsState, String cma_ID, String sensor_ID, String equipment_ID) {
+        return Observable.create(new Observable.OnSubscribe<EquipmentPageEntity>() {
+            @Override
+            public void call(Subscriber<? super EquipmentPageEntity> subscriber) {
+                RequestParams params = new RequestParams();
+                params.put("userId", userId);
+                params.put("deviceID", deviceID);
+                params.put("dvrID", dvrID);
+                params.put("angleRelativeToNorthPole", angleRelativeToNorthPole);
+                params.put("deviceType", deviceType);
+                params.put("sendMmsState", sendMmsState);
+                params.put("cma_ID", cma_ID);
+                params.put("sensor_ID", sensor_ID);
+                params.put("equipment_ID", equipment_ID);
+                params.put("sn", equipmentSn);
+
+                SystemRestClient.post("/updateDevice", params, new AsyncHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                        try {
+                            String responseEntities = new String(responseBody, "UTF-8");
+                            Log.e("response", responseEntities);
+                            subscriber.onNext(pageEntityJsonMapper.transformEquipmentPageEntity(responseEntities));
+                            subscriber.onCompleted();
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                        subscriber.onError(new NetworkConnectionException("链接失败"));
+                    }
+                });
+            }
+        });
+    }
+
+    @Override
+    public Observable<String> restartEquipment(int userId, int equipmentSn) {
+        return null;
+    }
+
+    @Override
+    public Observable<List<DomainSensor>> getAllSensor(int userId) {
+        return null;
+    }
+
+    @Override
+    public Observable<List<DomainSensor>> addSensor(int userId, String name, String sensorInDeviceID) {
+        return null;
+    }
+
+    @Override
+    public Observable<List<DomainSensor>> deleteSensor(int userId, int sensorSn) {
+        return null;
+    }
+
+    @Override
+    public Observable<List<DomainSensor>> changeSensor(int userId, int sensorSn, String name, String sensorInDeviceID) {
+        return null;
     }
 
 

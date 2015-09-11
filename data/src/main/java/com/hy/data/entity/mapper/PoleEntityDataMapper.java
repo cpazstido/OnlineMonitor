@@ -22,8 +22,8 @@ public class PoleEntityDataMapper {
             domainPole.setPoleSn(poleEntity.getSn());
             domainPole.setPoleName(poleEntity.getName());
             if(poleEntity.getEquipmentList()!=null){
-                EquipmentDataMapper equipmentDataMapper = new EquipmentDataMapper();
-                domainPole.setEquipmentList(equipmentDataMapper.transform(poleEntity.getEquipmentList()));
+                EquipmentEntityDataMapper equipmentEntityDataMapper = new EquipmentEntityDataMapper();
+                domainPole.setEquipmentList(equipmentEntityDataMapper.transform(poleEntity.getEquipmentList()));
             }
             if(poleEntity.getLongitude()!= null){
                 domainPole.setAltitude(poleEntity.getAltitude());

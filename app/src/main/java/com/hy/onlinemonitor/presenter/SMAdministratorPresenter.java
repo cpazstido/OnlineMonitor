@@ -122,7 +122,7 @@ public class SMAdministratorPresenter implements Presenter {
     private class AdminTowerListOnlySubscriber extends DefaultSubscriber<List<DomainLine>> {
         @Override
         public void onCompleted() {
-            showViewLoading();
+            SMAdministratorPresenter.this.hideViewLoading();
             administratorManageActivity.LineDialogShow();
         }
 

@@ -203,7 +203,7 @@ public class SMJurisdictionPresenter implements Presenter {
 
     @Override
     public void destroy() {
-
+        jurisdictionUseCase.unsubscribe();
     }
 
     @Override

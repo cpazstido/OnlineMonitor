@@ -12,6 +12,7 @@ import com.hy.onlinemonitor.view.Activity.Function.AlarmInformationActivity;
 import com.hy.onlinemonitor.view.Activity.Function.EquipmentListViewActivity;
 import com.hy.onlinemonitor.view.Activity.Function.MapActivity;
 import com.hy.onlinemonitor.view.Activity.SystemManagement.AdministratorManageActivity;
+import com.hy.onlinemonitor.view.Activity.SystemManagement.EquipmentManageActivity;
 import com.hy.onlinemonitor.view.Activity.SystemManagement.JurisdictionManageActivity;
 import com.hy.onlinemonitor.view.Activity.SystemManagement.LineManageActivity;
 import com.hy.onlinemonitor.view.Activity.SystemManagement.PoleManageActivity;
@@ -124,8 +125,8 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
                         startActivity(gridTowerIntent);
                         break;
                     case 5://设备
-//                        Intent gridEquipmentIntent = new Intent(MainActivity.this, EquipmentManageActivity.class);
-//                        startActivity(gridEquipmentIntent);
+                        Intent gridEquipmentIntent = new Intent(MainActivity.this, EquipmentManageActivity.class);
+                        startActivity(gridEquipmentIntent);
                         break;
                 }
                 break;

@@ -86,6 +86,13 @@
 
         <activity android:name=".view.Activity.SystemManagement.PoleManageActivity"
             android:launchMode="singleTask"/>
+
+        <activity android:name=".view.Activity.SystemManagement.EquipmentManageActivity"
+            android:launchMode="singleTask"/>
+
+        <activity android:name=".view.Activity.SystemManagement.EquipmentMoreInformationActivity"
+            android:launchMode="singleTask"/>
+
     </application>
 
 </manifest>

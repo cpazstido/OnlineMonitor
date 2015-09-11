@@ -3,12 +3,14 @@ package com.hy.onlinemonitor.mapper;
 import com.example.bean.DoaminEquipmentInforPage;
 import com.example.bean.DomainAdministratorPage;
 import com.example.bean.DomainAlarmPage;
+import com.example.bean.DomainEquipmentPage;
 import com.example.bean.DomainLinePage;
 import com.example.bean.DomainPolePage;
 import com.example.bean.DomainRolePage;
 import com.hy.onlinemonitor.bean.AdministratorPage;
 import com.hy.onlinemonitor.bean.AlarmPage;
 import com.hy.onlinemonitor.bean.EquipmentInforPage;
+import com.hy.onlinemonitor.bean.EquipmentPage;
 import com.hy.onlinemonitor.bean.LinePage;
 import com.hy.onlinemonitor.bean.PolePage;
 import com.hy.onlinemonitor.bean.RolePage;
@@ -108,5 +110,20 @@ public class PageDataMapper {
         polePage.setList(PoleDataMapper.transform(domainPolePage.getList()));
 
         return polePage;
+    }
+
+    public EquipmentPage transform(DomainEquipmentPage domainEquipmentPage) {
+        if (null == domainEquipmentPage) {
+            throw new IllegalArgumentException("Cannot transform a null value");
+        }
+
+        EquipmentPage equipmentPage = new EquipmentPage();
+        equipmentPage.setRowCount(domainEquipmentPage.getRowCount());
+        equipmentPage.setPageNum(domainEquipmentPage.getPageNum());
+        equipmentPage.setPageSize(domainEquipmentPage.getPageSize());
+        equipmentPage.setTotalPage(domainEquipmentPage.getTotalPage());
+        equipmentPage.setList(EquipmentDataMapper.transform(domainEquipmentPage.getList()));
+
+        return equipmentPage;
     }
 }

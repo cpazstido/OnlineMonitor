@@ -1,10 +1,12 @@
 package com.hy.data.net;
 
 
+import com.example.bean.DomainSensor;
 import com.hy.data.entity.AdministratorPageEntity;
 import com.hy.data.entity.AlarmPageEntity;
 import com.hy.data.entity.CompanyEntity;
 import com.hy.data.entity.EquipmentInforPageEntity;
+import com.hy.data.entity.EquipmentPageEntity;
 import com.hy.data.entity.LineEntity;
 import com.hy.data.entity.LinePageEntity;
 import com.hy.data.entity.MapEntity;
@@ -39,7 +41,8 @@ public interface RestApi {
      * @param pageNumber 页数
      * @return 设备列表
      */
-    Observable<EquipmentInforPageEntity> equipmentEntity(int userName, int choiceType, int pageNumber);
+    Observable<EquipmentInforPageEntity> equipmentEntity(int userName, int choiceType,
+                                                         int pageNumber);
 
 
     /**
@@ -50,7 +53,8 @@ public interface RestApi {
      * @param userId         唯一标示用户
      * @param pageNumber     第几页的数据
      */
-    Observable<AlarmPageEntity> alarmEntity(int userId, String queryAlarmType, int status, int pageNumber);
+    Observable<AlarmPageEntity> alarmEntity(int userId, String queryAlarmType,
+                                            int status, int pageNumber);
 
     /**
      * 查看特定 equipmentName的报警信息
@@ -61,7 +65,8 @@ public interface RestApi {
      * @param status         查看的报警类型的状态(历史,或者新报警)
      * @param pageNumber     第几页的数据
      */
-    Observable<AlarmPageEntity> alarmEntity(int userId, String equipmentName, String queryAlarmType, int status, int pageNumber);
+    Observable<AlarmPageEntity> alarmEntity(int userId, String equipmentName,
+                                            String queryAlarmType, int status, int pageNumber);
 
     /**
      * 取得地图列表
@@ -124,7 +129,10 @@ public interface RestApi {
      * @param isMessage   是否接受短信
      * @return 管理员的Page对象
      */
-    Observable<AdministratorPageEntity> addAdministrator(int roleSn, int companySn, String loginName, String realName, String password, String mobilePhone, String isMessage);
+    Observable<AdministratorPageEntity> addAdministrator(int roleSn, int companySn,
+                                                         String loginName, String realName,
+                                                         String password, String mobilePhone,
+                                                         String isMessage);
 
     /**
      * 修改管理员
@@ -139,7 +147,10 @@ public interface RestApi {
      * @param isMessage   是否接受短信
      * @return 管理员的Page对象
      */
-    Observable<AdministratorPageEntity> changeAdministrator(int sn, int roleSn, int companySn, String loginName, String realName, String password, String mobilePhone, String isMessage);
+    Observable<AdministratorPageEntity> changeAdministrator(int sn, int roleSn,
+                                                            int companySn, String loginName,
+                                                            String realName, String password,
+                                                            String mobilePhone, String isMessage);
 
     /**
      * 删除管理员
@@ -175,7 +186,8 @@ public interface RestApi {
      * @param allPoleSelected 是否全选
      * @return 返回是否处理成功的字符串
      */
-    Observable<String> changeManageTower(int userId, int adminSn, List<Integer> snList, int allPoleSelected);
+    Observable<String> changeManageTower(int userId, int adminSn, List<Integer> snList,
+                                         int allPoleSelected);
 
 
     /**
@@ -270,7 +282,9 @@ public interface RestApi {
      * @param voltageLevel 电压等级
      * @return 线路列表对象
      */
-    Observable<LinePageEntity> addLine(int userId, int companySn, String lineName, String lineStart, String lineFinish, String lineTrend, String voltageLevel);
+    Observable<LinePageEntity> addLine(int userId, int companySn,
+                                       String lineName, String lineStart, String lineFinish,
+                                       String lineTrend, String voltageLevel);
 
     /**
      * 删除线路
@@ -293,10 +307,13 @@ public interface RestApi {
      * @param voltageLevel 电压等级
      * @return 线路列表
      */
-    Observable<LinePageEntity> changeLine(int userId, int companySn,int lineSn, String lineName, String lineStart, String lineFinish, String lineTrend, String voltageLevel);
+    Observable<LinePageEntity> changeLine(int userId, int companySn, int lineSn,
+                                          String lineName, String lineStart, String lineFinish,
+                                          String lineTrend, String voltageLevel);
 
     /**
-     *  得到杆塔列表
+     * 得到杆塔列表
+     *
      * @param userId 唯一标示
      * @param lineSn 线路sn
      * @return 杆塔列表
@@ -304,19 +321,22 @@ public interface RestApi {
     Observable<PolePageEntity> getPolePage(int userId, int lineSn);
 
     /**
-     *  添加杆塔
-     * @param userId 唯一标示
-     * @param lineSn 线路sn
-     * @param poleName 杆塔名
+     * 添加杆塔
+     *
+     * @param userId    唯一标示
+     * @param lineSn    线路sn
+     * @param poleName  杆塔名
      * @param longitude 经度
-     * @param latitude 纬度
-     * @param altitude 海拔高度
+     * @param latitude  纬度
+     * @param altitude  海拔高度
      * @return 返回杆塔列表
      */
-    Observable<PolePageEntity> addPole(int userId, int lineSn,String poleName,String longitude,String latitude,String altitude);
+    Observable<PolePageEntity> addPole(int userId, int lineSn, String poleName,
+                                       String longitude, String latitude, String altitude);
 
     /**
      * 删除杆塔
+     *
      * @param userId 唯一标示
      * @param poleSn 杆塔sn
      * @return 杆塔列表
@@ -324,22 +344,127 @@ public interface RestApi {
     Observable<PolePageEntity> deletePole(int userId, int poleSn);
 
     /**
-     *  修改杆塔
-     * @param userId 唯一标示
-     * @param poleName 杆塔名
+     * 修改杆塔
+     *
+     * @param userId    唯一标示
+     * @param poleName  杆塔名
      * @param longitude 经度
-     * @param latitude 纬度
-     * @param altitude 海拔高度
-     * @param poleSn 杆塔sn
+     * @param latitude  纬度
+     * @param altitude  海拔高度
+     * @param poleSn    杆塔sn
      * @return 返回杆塔列表
      */
-    Observable<PolePageEntity> changePole(int userId, int poleSn, String poleName,String longitude,String latitude,String altitude);
+    Observable<PolePageEntity> changePole(int userId, int poleSn, String poleName,
+                                          String longitude, String latitude, String altitude);
 
     /**
      * 得到线路列表
+     *
      * @param userId 唯一标示
-     * @return 公司列表,包含了线路
+     * @return 公司列表, 包含了线路
      */
     Observable<List<CompanyEntity>> getAllLine(int userId);
 
+    /**
+     * 得到 设备page
+     *
+     * @param userId 唯一标示
+     * @param poleSn 选中的杆塔sn
+     * @return 设备page
+     */
+    Observable<EquipmentPageEntity> getEquipmentPage(int userId, int poleSn);
+
+    /**
+     * 添加设备
+     *
+     * @param userId                   唯一标示
+     * @param deviceID                 监测设备编码
+     * @param dvrID                    dvrID
+     * @param angleRelativeToNorthPole 预置位0度相对于北极夹角
+     * @param deviceType               被监测设备类型
+     * @param sendMmsState             该设备是否发送彩信，0不发送，1发送
+     * @param cma_ID                   cma_ID
+     * @param sensor_ID                sensor_ID
+     * @param equipment_ID             equipment_ID
+     * @return 设备page
+     */
+    Observable<EquipmentPageEntity> addEquipment(int userId, int poleSn,String deviceID, String dvrID,
+                                                 Double angleRelativeToNorthPole,
+                                                 String deviceType, int sendMmsState,
+                                                 String cma_ID, String sensor_ID,
+                                                 String equipment_ID);
+
+    /**
+     * 删除设备
+     *
+     * @param userId      唯一标示
+     * @param equipmentSn 设备sn
+     * @return 设备page
+     */
+    Observable<EquipmentPageEntity> deleteEquipment(int userId, int equipmentSn);
+
+    /**
+     * 修改设备
+     *
+     * @param userId                   唯一标示
+     * @param equipmentSn              设备sn
+     * @param deviceID                 监测设备编码
+     * @param dvrID                    dvrID
+     * @param angleRelativeToNorthPole 预置位0度相对于北极夹角
+     * @param deviceType               被监测设备类型
+     * @param sendMmsState             该设备是否发送彩信，0不发送，1发送
+     * @param cma_ID                   cma_ID
+     * @param sensor_ID                sensor_ID
+     * @param equipment_ID             equipment_ID
+     * @return 设备page
+     */
+    Observable<EquipmentPageEntity> changeEquipment(int userId, int equipmentSn, String deviceID, String dvrID,
+                                                    Double angleRelativeToNorthPole,
+                                                    String deviceType, int sendMmsState,
+                                                    String cma_ID, String sensor_ID,
+                                                    String equipment_ID);
+
+    /**
+     * 重置设备
+     *
+     * @param userId      唯一标示
+     * @param equipmentSn 设备sn
+     * @return 成功或失败的string
+     */
+    Observable<String> restartEquipment(int userId, int equipmentSn);
+
+    /**
+     * 得到所有的传感器,用于spinner的显示
+     *
+     * @param userId 唯一标示
+     * @return List的传感器对象
+     */
+    Observable<List<DomainSensor>> getAllSensor(int userId);
+
+    /**
+     * 添加传感器
+     *
+     * @return List的传感器对象
+     */
+    Observable<List<DomainSensor>> addSensor(int userId, String name, String sensorInDeviceID);
+
+    /**
+     * 删除传感器
+     *
+     * @param userId   唯一标示
+     * @param sensorSn 传感器sn
+     * @return 传感器列表
+     */
+    Observable<List<DomainSensor>> deleteSensor(int userId, int sensorSn);
+
+    /**
+     * 修改传感器
+     * @param userId 唯一标示
+     * @param sensorSn 传感器sn
+     * @param name 传感名名
+     * @param sensorInDeviceID 传感器编号
+     * @return
+     */
+    Observable<List<DomainSensor>> changeSensor(int userId, int sensorSn, String name,
+                                                String sensorInDeviceID);
 }

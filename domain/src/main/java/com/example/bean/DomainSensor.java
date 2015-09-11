@@ -1,17 +1,14 @@
-package com.hy.onlinemonitor.bean;
+package com.example.bean;
 
 /**
- * Created by 24363 on 2015/9/7.
+ * Created by 24363 on 2015/9/11.
  */
-public class Sensor {
+public class DomainSensor {
     private int sn;
     private String name; //传感器名称
     private String info; //传感器标识
     private int    count;
     private String sensorInDeviceID;
-
-    public Sensor() {
-    }
 
     public int getSn() {
         return sn;

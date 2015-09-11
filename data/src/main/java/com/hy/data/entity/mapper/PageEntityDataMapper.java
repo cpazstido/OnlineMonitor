@@ -3,12 +3,14 @@ package com.hy.data.entity.mapper;
 import com.example.bean.DoaminEquipmentInforPage;
 import com.example.bean.DomainAdministratorPage;
 import com.example.bean.DomainAlarmPage;
+import com.example.bean.DomainEquipmentPage;
 import com.example.bean.DomainLinePage;
 import com.example.bean.DomainPolePage;
 import com.example.bean.DomainRolePage;
 import com.hy.data.entity.AdministratorPageEntity;
 import com.hy.data.entity.AlarmPageEntity;
 import com.hy.data.entity.EquipmentInforPageEntity;
+import com.hy.data.entity.EquipmentPageEntity;
 import com.hy.data.entity.LinePageEntity;
 import com.hy.data.entity.PolePageEntity;
 import com.hy.data.entity.RolePageEntity;
@@ -101,5 +103,18 @@ public class PageEntityDataMapper {
             domainPolePage.setRowCount(polePageEntity.getRowCount());
         }
         return domainPolePage;
+    }
+
+    public DomainEquipmentPage transform(EquipmentPageEntity equipmentPageEntity) {
+        DomainEquipmentPage domainEquipmentPage = null;
+        if (null != equipmentPageEntity) {
+            domainEquipmentPage = new DomainEquipmentPage();
+            domainEquipmentPage.setTotalPage(equipmentPageEntity.getTotalPage());
+            domainEquipmentPage.setPageSize(equipmentPageEntity.getPageSize());
+            domainEquipmentPage.setPageNum(equipmentPageEntity.getPageNum());
+            domainEquipmentPage.setList(EquipmentEntityDataMapper.transform(equipmentPageEntity.getList()));
+            domainEquipmentPage.setRowCount(equipmentPageEntity.getRowCount());
+        }
+        return domainEquipmentPage;
     }
 }
