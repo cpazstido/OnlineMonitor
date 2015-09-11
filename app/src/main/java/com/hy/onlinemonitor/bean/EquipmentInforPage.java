@@ -3,14 +3,14 @@ package com.hy.onlinemonitor.bean;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EquipmentPage {
+public class EquipmentInforPage {
     private int pageNum;                        //当前页数
     private int pageSize=10;                    //每页显示的数量
     private int rowCount;                       //总数目
     private List<EquipmentInformation> list;    //数据
     private int totalPage;                      //总页数
 
-    public EquipmentPage() {
+    public EquipmentInforPage() {
         this.list = new ArrayList<>();
     }
 

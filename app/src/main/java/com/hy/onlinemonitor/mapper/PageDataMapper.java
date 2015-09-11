@@ -8,7 +8,7 @@ import com.example.bean.DomainPolePage;
 import com.example.bean.DomainRolePage;
 import com.hy.onlinemonitor.bean.AdministratorPage;
 import com.hy.onlinemonitor.bean.AlarmPage;
-import com.hy.onlinemonitor.bean.EquipmentPage;
+import com.hy.onlinemonitor.bean.EquipmentInforPage;
 import com.hy.onlinemonitor.bean.LinePage;
 import com.hy.onlinemonitor.bean.PolePage;
 import com.hy.onlinemonitor.bean.RolePage;
@@ -19,19 +19,19 @@ public class PageDataMapper {
     public PageDataMapper() {
     }
 
-    public EquipmentPage transform(DoaminEquipmentInforPage doaminEquipmentInforPage) {
+    public EquipmentInforPage transform(DoaminEquipmentInforPage doaminEquipmentInforPage) {
         if (null == doaminEquipmentInforPage) {
             throw new IllegalArgumentException("Cannot transform a null value");
         }
         EquipmentInforDataMapper equipmentInforDataMapper = new EquipmentInforDataMapper();
 
-        EquipmentPage equipmentPage = new EquipmentPage();
-        equipmentPage.setRowCount(doaminEquipmentInforPage.getRowCount());
-        equipmentPage.setPageNum(doaminEquipmentInforPage.getPageNum());
-        equipmentPage.setPageSize(doaminEquipmentInforPage.getPageSize());
-        equipmentPage.setTotalPage(doaminEquipmentInforPage.getTotalPage());
-        equipmentPage.setList(equipmentInforDataMapper.transform(doaminEquipmentInforPage.getList()));
-        return equipmentPage;
+        EquipmentInforPage equipmentInforPage = new EquipmentInforPage();
+        equipmentInforPage.setRowCount(doaminEquipmentInforPage.getRowCount());
+        equipmentInforPage.setPageNum(doaminEquipmentInforPage.getPageNum());
+        equipmentInforPage.setPageSize(doaminEquipmentInforPage.getPageSize());
+        equipmentInforPage.setTotalPage(doaminEquipmentInforPage.getTotalPage());
+        equipmentInforPage.setList(equipmentInforDataMapper.transform(doaminEquipmentInforPage.getList()));
+        return equipmentInforPage;
     }
 
     public AlarmPage transform(DomainAlarmPage domainAlarmPage) {

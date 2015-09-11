@@ -11,7 +11,7 @@ import com.example.interactor.UseCase;
 import com.example.repository.EquipmentInforRepository;
 import com.hy.data.repository.EquipmentDataInforRepository;
 import com.hy.onlinemonitor.UIThread;
-import com.hy.onlinemonitor.bean.EquipmentPage;
+import com.hy.onlinemonitor.bean.EquipmentInforPage;
 import com.hy.onlinemonitor.mapper.PageDataMapper;
 import com.hy.onlinemonitor.view.Activity.Function.EquipmentListViewActivity;
 
@@ -84,8 +84,8 @@ public class EquipmentListPresenter implements Presenter
     }
 
     private void showEquipmentPage(DoaminEquipmentInforPage doaminEquipmentInforPage) {
-        EquipmentPage equipmentPage = this.pageDataMapper.transform(doaminEquipmentInforPage);
-        this.equipmentListActivity.renderEquipmentList(equipmentPage);
+        EquipmentInforPage equipmentInforPage = this.pageDataMapper.transform(doaminEquipmentInforPage);
+        this.equipmentListActivity.renderEquipmentList(equipmentInforPage);
     }
 
     public void setView(@Nullable EquipmentListViewActivity equipmentListActivity) {

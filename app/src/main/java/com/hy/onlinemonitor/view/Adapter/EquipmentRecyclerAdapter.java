@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 
 import com.hy.onlinemonitor.R;
 import com.hy.onlinemonitor.bean.EquipmentInformation;
-import com.hy.onlinemonitor.bean.EquipmentPage;
+import com.hy.onlinemonitor.bean.EquipmentInforPage;
 import com.hy.onlinemonitor.view.Activity.Function.SingleAlarmInformationActivity;
 import com.hy.onlinemonitor.view.Activity.Function.VideoActivity;
 import com.hy.onlinemonitor.view.ViewHolder.EquipmentListViewHolder;
@@ -27,10 +27,10 @@ public class EquipmentRecyclerAdapter extends RecyclerView.Adapter<EquipmentList
     private List<EquipmentInformation> mList;
     private LabelView label;
     private int userId;
-    public EquipmentRecyclerAdapter(int selectionType, Context context, EquipmentPage equipmentPage, int userId) {
+    public EquipmentRecyclerAdapter(int selectionType, Context context, EquipmentInforPage equipmentInforPage, int userId) {
         this.selectionType = selectionType;
         this.mContext = context;
-        this.mList = equipmentPage.getList();
+        this.mList = equipmentInforPage.getList();
         this.userId = userId;
     }
 

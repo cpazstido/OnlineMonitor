@@ -10,7 +10,7 @@ import android.widget.Toast;
 
 import com.baoyz.widget.PullRefreshLayout;
 import com.hy.onlinemonitor.R;
-import com.hy.onlinemonitor.bean.EquipmentPage;
+import com.hy.onlinemonitor.bean.EquipmentInforPage;
 import com.hy.onlinemonitor.presenter.EquipmentListPresenter;
 import com.hy.onlinemonitor.utile.GetLoading;
 import com.hy.onlinemonitor.view.Activity.BaseActivity;
@@ -29,7 +29,7 @@ public class EquipmentListViewActivity extends BaseActivity implements LoadDataV
     @Bind(R.id.swipeRefreshLayout)
     PullRefreshLayout swipeRefreshLayout;
     private EquipmentRecyclerAdapter mAdapter;
-    private EquipmentPage equipmentPage;
+    private EquipmentInforPage equipmentInforPage;
     private int selectedType;
     private int userId;
     private EquipmentListPresenter equipmentListPresenter;
@@ -53,10 +53,10 @@ public class EquipmentListViewActivity extends BaseActivity implements LoadDataV
     private void loadEquipmentList(int pageNumber) {
         this.equipmentListPresenter.initialize(userId,selectedType,pageNumber);
     }
-    public void renderEquipmentList(EquipmentPage equipmentPage) {
-        if (equipmentPage != null) {
-            this.equipmentPage = equipmentPage;
-            this.mAdapter.setEquipmentCollection(equipmentPage.getList());
+    public void renderEquipmentList(EquipmentInforPage equipmentInforPage) {
+        if (equipmentInforPage != null) {
+            this.equipmentInforPage = equipmentInforPage;
+            this.mAdapter.setEquipmentCollection(equipmentInforPage.getList());
         }
     }
 
@@ -91,9 +91,9 @@ public class EquipmentListViewActivity extends BaseActivity implements LoadDataV
         linearLayoutManager = new LinearLayoutManager(this);
         rvRecyclerviewData.setLayoutManager(linearLayoutManager);
         rvRecyclerviewData.setHasFixedSize(true);
-        equipmentPage = new EquipmentPage();
+        equipmentInforPage = new EquipmentInforPage();
 
-        mAdapter = new EquipmentRecyclerAdapter(selectedType, EquipmentListViewActivity.this, equipmentPage,getUser().getUserId());
+        mAdapter = new EquipmentRecyclerAdapter(selectedType, EquipmentListViewActivity.this, equipmentInforPage,getUser().getUserId());
         rvRecyclerviewData.setAdapter(mAdapter);
 
         /*下拉刷新更多*/
@@ -113,7 +113,7 @@ public class EquipmentListViewActivity extends BaseActivity implements LoadDataV
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
-                if (newState == RecyclerView.SCROLL_STATE_IDLE && lastVisibleItem + 1 == mAdapter.getItemCount() && mAdapter.getItemCount() >= equipmentPage.getRowCount()) {
+                if (newState == RecyclerView.SCROLL_STATE_IDLE && lastVisibleItem + 1 == mAdapter.getItemCount() && mAdapter.getItemCount() >= equipmentInforPage.getRowCount()) {
                     Log.e("hell","到达底部");
                     Toast.makeText(EquipmentListViewActivity.this,"没有更多数据....",Toast.LENGTH_LONG).show();
                 }
@@ -124,8 +124,7 @@ public class EquipmentListViewActivity extends BaseActivity implements LoadDataV
                 lastVisibleItem = linearLayoutManager.findLastVisibleItemPosition();
                 int totalItemCount = mAdapter.getItemCount();
 //                Log.e("show","lastVisibleItem"+lastVisibleItem+"--totalItemCount"+totalItemCount);
-//                Log.e("show","equipmentPage.getRowCount()"+equipmentPage.getRowCount());
-                if(lastVisibleItem == totalItemCount -1 && dy > 0 && equipmentPage.getRowCount() >totalItemCount){
+                if(lastVisibleItem == totalItemCount -1 && dy > 0 && equipmentInforPage.getRowCount() >totalItemCount){
                     Toast.makeText(EquipmentListViewActivity.this, "加载更多", Toast.LENGTH_SHORT).show();
                     pageNumber ++;
                     loadEquipmentList(pageNumber);//这里多线程也要手动控制isLoadingMore
