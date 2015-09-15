@@ -5,7 +5,6 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Log;
 
-import com.example.bean.DomainSensor;
 import com.hy.data.entity.AdministratorPageEntity;
 import com.hy.data.entity.AlarmPageEntity;
 import com.hy.data.entity.CompanyEntity;
@@ -18,6 +17,7 @@ import com.hy.data.entity.PolePageEntity;
 import com.hy.data.entity.PrivilegeEntity;
 import com.hy.data.entity.RoleEntity;
 import com.hy.data.entity.RolePageEntity;
+import com.hy.data.entity.SensorTypeEntity;
 import com.hy.data.entity.UserEntity;
 import com.hy.data.entity.mapper.CompanyEntityJsonMapper;
 import com.hy.data.entity.mapper.LineEntityJsonMapper;
@@ -25,6 +25,7 @@ import com.hy.data.entity.mapper.ListOfIntegerJsonMapper;
 import com.hy.data.entity.mapper.MapEntityJsonMapper;
 import com.hy.data.entity.mapper.PageEntityJsonMapper;
 import com.hy.data.entity.mapper.PrivilegeEntityJsonMapper;
+import com.hy.data.entity.mapper.SensorTypeEntityJsonMapper;
 import com.hy.data.entity.mapper.StringJsonMapper;
 import com.hy.data.entity.mapper.UserEntityJsonMapper;
 import com.hy.data.exception.NetworkConnectionException;
@@ -46,6 +47,7 @@ import rx.Subscriber;
 public class RestApiImpl implements RestApi {
 
     private final Context context;
+    private SensorTypeEntityJsonMapper sensorTypeEntityJsonMapper;
     private UserEntityJsonMapper userEntityJsonMapper;
     private MapEntityJsonMapper mapEntityJsonMapper;
     private PageEntityJsonMapper pageEntityJsonMapper;
@@ -133,6 +135,13 @@ public class RestApiImpl implements RestApi {
         this.privilegeEntityJsonMapper = privilegeEntityJsonMapper;
     }
 
+    public RestApiImpl(Context context, SensorTypeEntityJsonMapper sensorTypeEntityJsonMapper) {
+        if (context == null || sensorTypeEntityJsonMapper == null) {
+            throw new IllegalArgumentException("The constructor parameters cannot be null!!!");
+        }
+        this.context = context;
+        this.sensorTypeEntityJsonMapper = sensorTypeEntityJsonMapper;
+    }
     /**
      * 获取用户登录信息
      *
@@ -976,13 +985,14 @@ public class RestApiImpl implements RestApi {
     }
 
     @Override
-    public Observable<LinePageEntity> getLinePage(int userId, int companySn) {
+    public Observable<LinePageEntity> getLinePage(int userId, int companySn,int pageNumber) {
         return Observable.create(new Observable.OnSubscribe<LinePageEntity>() {
             @Override
             public void call(Subscriber<? super LinePageEntity> subscriber) {
                 RequestParams params = new RequestParams();
                 params.put("userId", userId);
                 params.put("companySn", companySn);
+                params.put("pageNum", pageNumber);
 
                 SystemRestClient.post("/getLinePage", params, new AsyncHttpResponseHandler() {
                     @Override
@@ -1007,12 +1017,13 @@ public class RestApiImpl implements RestApi {
     }
 
     @Override
-    public Observable<LinePageEntity> getAllLinePage(int userId) {
+    public Observable<LinePageEntity> getAllLinePage(int userId,int pageNumber) {
         return Observable.create(new Observable.OnSubscribe<LinePageEntity>() {
             @Override
             public void call(Subscriber<? super LinePageEntity> subscriber) {
                 RequestParams params = new RequestParams();
                 params.put("userId", userId);
+                params.put("pageNum", pageNumber);
 
                 SystemRestClient.post("/getLinePage", params, new AsyncHttpResponseHandler() {
                     @Override
@@ -1140,13 +1151,45 @@ public class RestApiImpl implements RestApi {
     }
 
     @Override
-    public Observable<PolePageEntity> getPolePage(int userId, int lineSn) {
+    public Observable<PolePageEntity> getPolePage(int userId, int lineSn, int pageNumber) {
         return Observable.create(new Observable.OnSubscribe<PolePageEntity>() {
             @Override
             public void call(Subscriber<? super PolePageEntity> subscriber) {
                 RequestParams params = new RequestParams();
                 params.put("userId", userId);
                 params.put("circuitSn", lineSn);
+                params.put("pageNum", pageNumber);
+
+                SystemRestClient.post("/getPoleData", params, new AsyncHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                        try {
+                            String responseEntities = new String(responseBody, "UTF-8");
+                            Log.e("response", responseEntities);
+                            subscriber.onNext(pageEntityJsonMapper.transformPolePageEntity(responseEntities));
+                            subscriber.onCompleted();
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                        subscriber.onError(new NetworkConnectionException("链接失败"));
+                    }
+                });
+            }
+        });
+    }
+
+    @Override
+    public Observable<PolePageEntity> getPolePage(int userId, int pageNumber) {
+        return Observable.create(new Observable.OnSubscribe<PolePageEntity>() {
+            @Override
+            public void call(Subscriber<? super PolePageEntity> subscriber) {
+                RequestParams params = new RequestParams();
+                params.put("userId", userId);
+                params.put("pageNum", pageNumber);
 
                 SystemRestClient.post("/getPoleData", params, new AsyncHttpResponseHandler() {
                     @Override
@@ -1308,7 +1351,7 @@ public class RestApiImpl implements RestApi {
                 RequestParams params = new RequestParams();
                 params.put("userId", userId);
                 params.put("poleSn", poleSn);
-                Log.e("params","userId:"+userId+"polesn"+poleSn);
+                Log.e("params", "userId:" + userId + "polesn" + poleSn);
                 SystemRestClient.post("/getEquipmentList", params, new AsyncHttpResponseHandler() {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
@@ -1442,29 +1485,98 @@ public class RestApiImpl implements RestApi {
 
     @Override
     public Observable<String> restartEquipment(int userId, int equipmentSn) {
-        return null;
+        return Observable.create(new Observable.OnSubscribe<String>() {
+            @Override
+            public void call(Subscriber<? super String> subscriber) {
+                RequestParams params = new RequestParams();
+                params.put("userId", userId);
+                params.put("sn", equipmentSn);
+                SystemRestClient.post("/deviceReset", params, new AsyncHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                        try {
+                            String responseEntities = new String(responseBody, "UTF-8");
+                            Log.e("response", responseEntities);
+                            subscriber.onNext(responseEntities);
+                            subscriber.onCompleted();
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                        Log.e("response","失败");
+                        subscriber.onError(new NetworkConnectionException("链接失败"));
+                    }
+                });
+            }
+        });
     }
 
     @Override
-    public Observable<List<DomainSensor>> getAllSensor(int userId) {
-        return null;
+    public Observable<List<SensorTypeEntity>> getAllSensor(int userId) {
+        return Observable.create(new Observable.OnSubscribe<List<SensorTypeEntity>>() {
+            @Override
+            public void call(Subscriber<? super List<SensorTypeEntity>> subscriber) {
+                RequestParams params = new RequestParams();
+                params.put("userId", userId);
+
+                SystemRestClient.post("/querySensorTyle", params, new AsyncHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                        try {
+                            String responseEntities = new String(responseBody, "UTF-8");
+                            Log.e("response", responseEntities);
+                            subscriber.onNext(sensorTypeEntityJsonMapper.transformSensorTypeEntity(responseEntities));
+                            subscriber.onCompleted();
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                        subscriber.onError(new NetworkConnectionException("链接失败"));
+                    }
+                });
+            }
+        });
     }
 
     @Override
-    public Observable<List<DomainSensor>> addSensor(int userId, String name, String sensorInDeviceID) {
-        return null;
-    }
+    public Observable<String> changeSensor(int userId,int equipmentSn, String sensorJson) {
+        return Observable.create(new Observable.OnSubscribe<String>() {
+            @Override
+            public void call(Subscriber<? super String> subscriber) {
+                RequestParams params = new RequestParams();
+                params.put("userId", userId);
+                params.put("msg", sensorJson);
+                params.put("sn", equipmentSn);
+                Log.e("msg", "msg----->" + sensorJson);
+                Log.e("sn","sn----->"+equipmentSn);
+                SystemRestClient.post("/changeSensorInDevice", params, new AsyncHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                        try {
+                            String responseEntities = new String(responseBody, "UTF-8");
+                            Log.e("response", responseEntities);
+                            subscriber.onNext(responseEntities);
+                            subscriber.onCompleted();
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                        }
+                    }
 
-    @Override
-    public Observable<List<DomainSensor>> deleteSensor(int userId, int sensorSn) {
-        return null;
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                        Log.e("response","失败");
+                        subscriber.onError(new NetworkConnectionException("链接失败"));
+                    }
+                });
+            }
+        });
     }
-
-    @Override
-    public Observable<List<DomainSensor>> changeSensor(int userId, int sensorSn, String name, String sensorInDeviceID) {
-        return null;
-    }
-
 
     private boolean isThereInternetConnection() {
         boolean isConnected;

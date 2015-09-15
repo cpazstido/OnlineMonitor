@@ -22,6 +22,7 @@ import butterknife.ButterKnife;
 public abstract class SMBaseActivity extends BaseActivity implements LoadDataView{
 
     public AlertDialog alertDialog;
+    public LinearLayoutManager linearLayoutManager;
     @Bind(R.id.toolbar)
     public Toolbar toolbar;
     @Bind(R.id.sm_rv)
@@ -32,7 +33,6 @@ public abstract class SMBaseActivity extends BaseActivity implements LoadDataVie
     Spinner spinnerChoiceCompany;
     @Bind(R.id.choice_btn)
     Button choiceBtn;
-
     @Override
     protected void setOwnContentView() {
         setContentView(R.layout.activity_sm);
@@ -61,7 +61,8 @@ public abstract class SMBaseActivity extends BaseActivity implements LoadDataVie
 
     @Override
     public void setupUI() {
-        smRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        linearLayoutManager = new LinearLayoutManager(this);
+        smRecyclerView.setLayoutManager(linearLayoutManager);
         smRecyclerView.setHasFixedSize(true);
         this.initRvAdapter();
     }

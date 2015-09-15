@@ -1,10 +1,10 @@
 package com.example.repository;
 
-import com.example.bean.DoaminEquipmentInforPage;
+import com.example.bean.DomainEquipmentInforPage;
 
 import rx.Observable;
 
 public interface EquipmentInforRepository {
 
-    Observable<DoaminEquipmentInforPage> equipmentList();
+    Observable<DomainEquipmentInforPage> equipmentList();
 }

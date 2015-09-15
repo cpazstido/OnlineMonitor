@@ -1,6 +1,8 @@
 package com.hy.onlinemonitor.view.Activity.SystemManagement;
 
 import android.content.Context;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -12,6 +14,7 @@ import com.hy.onlinemonitor.bean.Company;
 import com.hy.onlinemonitor.bean.Line;
 import com.hy.onlinemonitor.bean.LinePage;
 import com.hy.onlinemonitor.presenter.SMLinePresenter;
+import com.hy.onlinemonitor.utile.ShowUtile;
 import com.hy.onlinemonitor.view.Adapter.SMLineRecyclerAdapter;
 import com.rey.material.widget.Spinner;
 
@@ -25,9 +28,13 @@ public class LineManageActivity extends SMBaseActivity {
     private SMLineRecyclerAdapter mAdapter;
     private SMLinePresenter smLinePresenter;
     private LinePage linePage;
-    private boolean isFirstIn = true;
+    private boolean isLoadingMore = false;
     private List<Company> companyList;
     private List<String> companyNameList;
+    private int pageNumber = 1;
+    private int lastVisibleItem;
+    private int theCompanySn = -1;
+
     @Override
     protected void initTitle() {
         toolbar.setTitle(R.string.system_management);
@@ -44,6 +51,44 @@ public class LineManageActivity extends SMBaseActivity {
         mAdapter = new SMLineRecyclerAdapter(LineManageActivity.this, new ArrayList<Line>());
         ((SMLineRecyclerAdapter) mAdapter).setMode(Attributes.Mode.Single);
         smRecyclerView.setAdapter(mAdapter);
+
+        smRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                if (newState == RecyclerView.SCROLL_STATE_IDLE && lastVisibleItem + 1 == mAdapter.getItemCount() && mAdapter.getItemCount() >= linePage.getRowCount()) {
+                    Log.e("hell", "到达底部");
+                    ShowUtile.toastShow(LineManageActivity.this, "没有更多数据....");
+
+                }
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                lastVisibleItem = linearLayoutManager.findLastVisibleItemPosition();
+                int totalItemCount = mAdapter.getItemCount();
+                int pageSize = linePage.getPageSize();
+                Log.e("show", "lastVisibleItem" + lastVisibleItem + "--totalItemCount" + totalItemCount+"pageSize"+pageSize);
+                if (lastVisibleItem >= totalItemCount - 1 && dy > 0 && linePage.getRowCount() > totalItemCount) {
+                    if (!isLoadingMore) {
+                        ShowUtile.toastShow(LineManageActivity.this, "加载更多");
+                        isLoadingMore = true;
+                        pageNumber++;
+                        //根据pageNumber加载更多
+                        switch (theCompanySn) {
+                            case 0:
+                                LineManageActivity.this.smLinePresenter.loadAllLine(getUser().getUserId(), pageNumber);
+                                break;
+                            default:
+                                LineManageActivity.this.smLinePresenter.loadLine(getUser().getUserId(), theCompanySn, pageNumber);
+                                break;
+                        }
+                    } else {
+                        ShowUtile.toastShow(LineManageActivity.this, "正在加载中..");
+                    }
+                }
+            }
+        });
     }
 
     @Override
@@ -125,10 +170,14 @@ public class LineManageActivity extends SMBaseActivity {
         spinnerChoiceCompany.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
             @Override
             public void onItemSelected(Spinner spinner, View view, int i, long l) {
-                int theCompanySn = -1;
+                mAdapter.cleanList(); //先清除所有数据
+                pageNumber = 1; //设置加载第一页数据
                 if (i == 0) {
-                    LineManageActivity.this.smLinePresenter.loadAllLine(getUser().getUserId());
+                    //代表选中的是全部公司,加载第一页
+                    theCompanySn = 0;
+                    LineManageActivity.this.smLinePresenter.loadAllLine(getUser().getUserId(), pageNumber);
                 } else {
+                    //加载特定的公司sn的线路
                     for (Company company : companyList) {
                         String a = spinner.getSelectedItem().toString();
                         String b = company.getCompanyName();
@@ -136,7 +185,7 @@ public class LineManageActivity extends SMBaseActivity {
                             theCompanySn = company.getSn();
                         }
                     }
-                    LineManageActivity.this.smLinePresenter.loadLine(getUser().getUserId(), theCompanySn);
+                    LineManageActivity.this.smLinePresenter.loadLine(getUser().getUserId(), theCompanySn, pageNumber);
                 }
             }
         });
@@ -144,7 +193,7 @@ public class LineManageActivity extends SMBaseActivity {
     }
 
     public void firstLoadAll() {
-        LineManageActivity.this.smLinePresenter.loadAllLine(getUser().getUserId());
+        LineManageActivity.this.smLinePresenter.loadAllLine(getUser().getUserId(), pageNumber);
     }
 
     public void renderLinePage(LinePage linePage) {
@@ -155,4 +204,7 @@ public class LineManageActivity extends SMBaseActivity {
         }
     }
 
+    public void setLoading() {
+        isLoadingMore = false;
+    }
 }

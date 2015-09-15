@@ -75,7 +75,7 @@ public class SMPolePresenter implements Presenter{
     private class LineListSubscriber extends DefaultSubscriber<List<DomainCompany>> {
         @Override
         public void onCompleted() {
-            SMPolePresenter.this.hideViewLoading();
+            poleManageActivity.firstLoadAll();
         }
 
         @Override
@@ -91,10 +91,24 @@ public class SMPolePresenter implements Presenter{
             poleManageActivity.setCompanyList(mList);
         }
     }
-
-    public void getPolePage(int lineSn) {
+    public void loadAllPole(int userId, int pageNumber) {
         showViewLoading();
-        poleDataRepository = new PoleDataRepository(mContext, userId,lineSn);
+        //传-1代表加载全部,用于判断,但是在网络请求是并不会使用
+        poleDataRepository = new PoleDataRepository(mContext, userId,-1,pageNumber);
+        this.poleUseCase = new PoleUseCase(new UIThread(), AndroidSchedulers.mainThread(), poleDataRepository, 2);
+        this.poleUseCase.execute(new PolePageSubscriber());
+    }
+
+    public void getPolePage(int lineSn,int pageNumber) {
+        showViewLoading();
+        poleDataRepository = new PoleDataRepository(mContext, userId,lineSn,pageNumber);
+        this.poleUseCase = new PoleUseCase(new UIThread(), AndroidSchedulers.mainThread(), poleDataRepository, 2);
+        this.poleUseCase.execute(new PolePageSubscriber());
+    }
+
+    public void getPolePage(int userId,int lineSn,int pageNumber) {
+        showViewLoading();
+        poleDataRepository = new PoleDataRepository(mContext, userId,lineSn,pageNumber);
         this.poleUseCase = new PoleUseCase(new UIThread(), AndroidSchedulers.mainThread(), poleDataRepository, 2);
         this.poleUseCase.execute(new PolePageSubscriber());
     }

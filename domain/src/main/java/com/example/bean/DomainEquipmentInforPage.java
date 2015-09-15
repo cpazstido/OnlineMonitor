@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * Created by 24363 on 2015/8/21.
  */
-public class DoaminEquipmentInforPage {
+public class DomainEquipmentInforPage {
     private int pageNum;
     private int pageSize=10;
     private int rowCount;

@@ -2,7 +2,7 @@ package com.hy.data.repository;
 
 import android.content.Context;
 
-import com.example.bean.DoaminEquipmentInforPage;
+import com.example.bean.DomainEquipmentInforPage;
 import com.example.repository.EquipmentInforRepository;
 import com.hy.data.entity.mapper.PageEntityDataMapper;
 import com.hy.data.entity.mapper.PageEntityJsonMapper;
@@ -27,7 +27,7 @@ public class EquipmentDataInforRepository implements EquipmentInforRepository {
     }
 
     @Override
-    public Observable<DoaminEquipmentInforPage> equipmentList() {
+    public Observable<DomainEquipmentInforPage> equipmentList() {
         RestApiImpl restApi = new RestApiImpl(mContext,new PageEntityJsonMapper());
         return restApi.equipmentEntity(userId, selectedType,pageNumber).map(this.pageEntityDataMapper::transform);
     }

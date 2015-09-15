@@ -93,6 +93,7 @@
         <activity android:name=".view.Activity.SystemManagement.EquipmentMoreInformationActivity"
             android:launchMode="singleTask"/>
 
+        <activity android:name=".view.Activity.SystemManagement.SensorManageActivity" />
     </application>
 
 </manifest>

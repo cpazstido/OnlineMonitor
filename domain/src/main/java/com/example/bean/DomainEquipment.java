@@ -7,13 +7,13 @@ import java.util.List;
  */
 public class DomainEquipment {
     private int sn;
-    private String deviceID; //监测设备编码
+    private String deviceID;
     private String dvrID;
-    private String deviceType;//设备类型
-    private String dvrType;//用与接入服务器通信时表示设备类型，1为山火，2为外破，3为无人机，4为普通视频
-    private int sensorType; //被监测设备类型
-    private Double angleRelativeToNorthPole;//预置位0度相对于北极夹角
-    private Integer sendMmsState; // 该设备是否发送彩信，0不发送，1发送
+    private String deviceType;
+    private String dvrType;
+    private int sensorType;
+    private Double angleRelativeToNorthPole;
+    private Integer sendMmsState;
     private String cma_ID;
     private String sensor_ID;
     private String equipment_ID;

@@ -76,7 +76,6 @@ public class SMLinePresenter implements Presenter{
         @Override
         public void onCompleted() {
             lineManageActivity.firstLoadAll();
-            SMLinePresenter.this.hideViewLoading();
         }
 
         @Override
@@ -92,19 +91,20 @@ public class SMLinePresenter implements Presenter{
             lineManageActivity.setCompanyList(mList);
         }
     }
-    public void loadAllLine(int userId) {
+
+    public void loadAllLine(int userId,int pageNumber) {
         showViewLoading();
         this.userId = userId;
-        lineDataRepository = new LineDataRepository(mContext, userId);
+        lineDataRepository = new LineDataRepository(mContext, userId,pageNumber);
         this.lineUseCase = new LineUseCase(new UIThread(), AndroidSchedulers.mainThread(), lineDataRepository, 5);
         this.lineUseCase.execute(new LinePageSubscriber());
 
     }
 
-    public void loadLine(int userId,int companySn) {
+    public void loadLine(int userId,int companySn,int pageNumber) {
         showViewLoading();
         this.userId = userId;
-        lineDataRepository = new LineDataRepository(mContext, userId,companySn);
+        lineDataRepository = new LineDataRepository(mContext, userId,companySn,pageNumber);
         this.lineUseCase = new LineUseCase(new UIThread(), AndroidSchedulers.mainThread(), lineDataRepository, 5);
         this.lineUseCase.execute(new LinePageSubscriber());
     }
@@ -141,38 +141,16 @@ public class SMLinePresenter implements Presenter{
         public void onError(Throwable e) {
             SMLinePresenter.this.hideViewLoading();
             Toast.makeText(mContext, "LinePageSubscriber+出现错误", Toast.LENGTH_SHORT).show();
+            lineManageActivity.setLoading();
             super.onError(e);
         }
 
         @Override
         public void onNext(DomainLinePage domainLinePage) {
             SMLinePresenter.this.showLinePageInView(domainLinePage);
+            lineManageActivity.setLoading();
         }
     }
-
-//    private class AddLineSubscriber extends DefaultSubscriber<DomainLinePage> {
-//
-//        @Override
-//        public void onCompleted() {
-//            SMLinePresenter.this.lineUseCase.setType(6);
-//            SMLinePresenter.this.hideViewLoading();
-//        }
-//
-//        @Override
-//        public void onError(Throwable e) {
-//            SMLinePresenter.this.hideViewLoading();
-//            Toast.makeText(mContext, "RolePageSubscriber+出现错误", Toast.LENGTH_SHORT).show();
-//            super.onError(e);
-//        }
-//
-//        @Override
-//        public void onNext(DomainLinePage domainLinePage) {
-//            SMLinePresenter.this.showLinePageInView(domainLinePage);
-//        }
-//    }
-
-
-
 
     private void showLinePageInView(DomainLinePage domainLinePage) {
         LinePage linePage = this.pageDataMapper.transform(domainLinePage);

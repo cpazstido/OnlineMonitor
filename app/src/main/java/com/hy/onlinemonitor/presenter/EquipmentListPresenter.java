@@ -4,7 +4,7 @@ import android.content.Context;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
-import com.example.bean.DoaminEquipmentInforPage;
+import com.example.bean.DomainEquipmentInforPage;
 import com.example.interactor.DefaultSubscriber;
 import com.example.interactor.EquipmentInforUseCase;
 import com.example.interactor.UseCase;
@@ -64,7 +64,7 @@ public class EquipmentListPresenter implements Presenter
         this.getEquipmentListUseCase.execute(new EquipmentListSubscriber());
     }
 
-    private class EquipmentListSubscriber extends DefaultSubscriber<DoaminEquipmentInforPage> {
+    private class EquipmentListSubscriber extends DefaultSubscriber<DomainEquipmentInforPage> {
         @Override
         public void onCompleted() {
             EquipmentListPresenter.this.hideViewLoading();
@@ -78,13 +78,13 @@ public class EquipmentListPresenter implements Presenter
         }
 
         @Override
-        public void onNext(DoaminEquipmentInforPage doaminEquipmentInforPage) {
-            EquipmentListPresenter.this.showEquipmentPage(doaminEquipmentInforPage);
+        public void onNext(DomainEquipmentInforPage domainEquipmentInforPage) {
+            EquipmentListPresenter.this.showEquipmentPage(domainEquipmentInforPage);
         }
     }
 
-    private void showEquipmentPage(DoaminEquipmentInforPage doaminEquipmentInforPage) {
-        EquipmentInforPage equipmentInforPage = this.pageDataMapper.transform(doaminEquipmentInforPage);
+    private void showEquipmentPage(DomainEquipmentInforPage domainEquipmentInforPage) {
+        EquipmentInforPage equipmentInforPage = this.pageDataMapper.transform(domainEquipmentInforPage);
         this.equipmentListActivity.renderEquipmentList(equipmentInforPage);
     }
 

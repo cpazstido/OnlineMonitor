@@ -1,13 +1,15 @@
 package com.hy.onlinemonitor.bean;
 
+import java.io.Serializable;
+
 /**
  * Created by 24363 on 2015/9/7.
  */
-public class Sensor {
+public class Sensor implements Serializable{
     private int sn;
     private String name; //传感器名称
     private String info; //传感器标识
-    private int    count;
+    private int count;
     private String sensorInDeviceID;
 
     public Sensor() {

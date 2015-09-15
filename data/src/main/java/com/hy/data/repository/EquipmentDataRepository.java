@@ -4,12 +4,12 @@ import android.content.Context;
 
 import com.example.bean.DomainEquipmentPage;
 import com.example.bean.DomainLine;
-import com.example.bean.DomainSensor;
 import com.example.repository.SMEquipmentRepository;
 import com.hy.data.entity.mapper.LineEntityDataMapper;
 import com.hy.data.entity.mapper.LineEntityJsonMapper;
 import com.hy.data.entity.mapper.PageEntityDataMapper;
 import com.hy.data.entity.mapper.PageEntityJsonMapper;
+import com.hy.data.entity.mapper.StringJsonMapper;
 import com.hy.data.net.RestApiImpl;
 
 import java.util.List;
@@ -28,8 +28,6 @@ public class EquipmentDataRepository implements SMEquipmentRepository {
     private String deviceID; //监测设备编码
     private String dvrID;
     private String deviceType;//设备类型
-    private String dvrType;//用与接入服务器通信时表示设备类型，1为山火，2为外破，3为无人机，4为普通视频
-    private int sensorType; //被监测设备类型
     private Double angleRelativeToNorthPole;//预置位0度相对于北极夹角
     private Integer sendMmsState; // 该设备是否发送彩信，0不发送，1发送
     private String cma_ID;
@@ -120,30 +118,8 @@ public class EquipmentDataRepository implements SMEquipmentRepository {
 
     @Override
     public Observable<String> restartEquipment() {
-        return null;
+        RestApiImpl restApi = new RestApiImpl(mContext, new StringJsonMapper());
+        return restApi.restartEquipment(userId,equipmentSn);
 
-    }
-
-    @Override
-    public Observable<List<DomainSensor>> getAllSensor() {
-        return null;
-
-    }
-
-    @Override
-    public Observable<List<DomainSensor>> addSensor() {
-        return null;
-
-    }
-
-    @Override
-    public Observable<List<DomainSensor>> deleteSensor() {
-        return null;
-
-    }
-
-    @Override
-    public Observable<List<DomainSensor>> changeSensor() {
-        return null;
     }
 }

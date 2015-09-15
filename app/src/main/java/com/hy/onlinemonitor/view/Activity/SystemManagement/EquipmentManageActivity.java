@@ -1,12 +1,14 @@
 package com.hy.onlinemonitor.view.Activity.SystemManagement;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.daimajia.swipe.util.Attributes;
@@ -16,7 +18,7 @@ import com.hy.onlinemonitor.bean.EquipmentPage;
 import com.hy.onlinemonitor.bean.Line;
 import com.hy.onlinemonitor.bean.Pole;
 import com.hy.onlinemonitor.presenter.SMEquipmentPresenter;
-import com.hy.onlinemonitor.view.Adapter.SMEquipmentRecyclerAdatper;
+import com.hy.onlinemonitor.view.Adapter.SMEquipmentRecyclerAdapter;
 import com.hy.onlinemonitor.view.ViewHolder.IconTreeItemHolder;
 import com.hy.onlinemonitor.view.ViewHolder.SelectableHeaderHolder;
 import com.hy.onlinemonitor.view.ViewHolder.SelectableItemHolder;
@@ -31,7 +33,7 @@ import java.util.List;
  */
 public class EquipmentManageActivity extends SMBaseActivity {
 
-    private SMEquipmentRecyclerAdatper mAdapter;
+    private SMEquipmentRecyclerAdapter mAdapter;
     private AndroidTreeView tView;
     private TreeNode root;
     private List<Line> lines;
@@ -39,11 +41,13 @@ public class EquipmentManageActivity extends SMBaseActivity {
     private EquipmentPage equipmentPage;
     private List<String> deviceTypeList;
     private List<Pole> poles;
+    private int poleSn;
+
     public void setLines(List<Line> lines) {
         this.lines = lines;
         poles = new ArrayList<>();
-        for(Line line:lines){
-            for(Pole pole:line.getPoleList()){
+        for (Line line : lines) {
+            for (Pole pole : line.getPoleList()) {
                 poles.add(pole);
             }
         }
@@ -76,16 +80,21 @@ public class EquipmentManageActivity extends SMBaseActivity {
 
                 for (final Line line : lines) {
                     TreeNode lineTree = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.string.ic_earth, line.getLineName())).setViewHolder(new SelectableHeaderHolder(EquipmentManageActivity.this));
-                    for (final Pole pole : line.getPoleList()) {
-                        TreeNode poleTree = new TreeNode(pole.getPoleName()).setViewHolder(new SelectableItemHolder(EquipmentManageActivity.this));
-                        poleTree.setClickListener(new TreeNode.TreeNodeClickListener() {
-                            @Override
-                            public void onClick(TreeNode treeNode, Object o) {
-                                dialog.cancel();
-                                smEquipmentPresenter.getEquipmentPage(pole.getPoleSn());
-                            }
-                        });
-
+                    if (line.getPoleList().size() != 0) {
+                        for (final Pole pole : line.getPoleList()) {
+                            TreeNode poleTree = new TreeNode(pole.getPoleName()).setViewHolder(new SelectableItemHolder(EquipmentManageActivity.this));
+                            poleTree.setClickListener(new TreeNode.TreeNodeClickListener() {
+                                @Override
+                                public void onClick(TreeNode treeNode, Object o) {
+                                    dialog.cancel();
+                                    poleSn = pole.getPoleSn();
+                                    smEquipmentPresenter.getEquipmentPage(poleSn);
+                                }
+                            });
+                            lineTree.addChild(poleTree);
+                        }
+                    }else{
+                        TreeNode poleTree = new TreeNode("无").setViewHolder(new SelectableItemHolder(EquipmentManageActivity.this));
                         lineTree.addChild(poleTree);
                     }
                     lineTree.setSelectable(false);
@@ -103,8 +112,8 @@ public class EquipmentManageActivity extends SMBaseActivity {
 
     @Override
     protected void initRvAdapter() {
-        mAdapter = new SMEquipmentRecyclerAdatper(EquipmentManageActivity.this, new ArrayList<Equipment>());
-        ((SMEquipmentRecyclerAdatper) mAdapter).setMode(Attributes.Mode.Single);
+        mAdapter = new SMEquipmentRecyclerAdapter(EquipmentManageActivity.this, new ArrayList<Equipment>());
+        ((SMEquipmentRecyclerAdapter) mAdapter).setMode(Attributes.Mode.Single);
         smRecyclerView.setAdapter(mAdapter);
     }
 
@@ -126,11 +135,11 @@ public class EquipmentManageActivity extends SMBaseActivity {
                     @Override
                     public void onPositive(MaterialDialog dialog) {
                         String deviceType = deviceTypeList.get(((Spinner) dialog.getCustomView().findViewById(R.id.dialog_equipment_type)).getSelectedItemPosition());
-                        int isSendMessage  = ((Spinner) dialog.getCustomView().findViewById(R.id.dialog_equipment_type)).getSelectedItemPosition();
+                        int isSendMessage = ((Spinner) dialog.getCustomView().findViewById(R.id.dialog_equipment_type)).getSelectedItemPosition();
                         int poleSn = poles.get(((Spinner) dialog.getCustomView().findViewById(R.id.dialog_equipment_type)).getSelectedItemPosition()).getPoleSn();
-                        if(isSendMessage == 0){
+                        if (isSendMessage == 0) {
                             isSendMessage = 1;
-                        }else{
+                        } else {
                             isSendMessage = 0;
                         }
                         String deviceID = ((EditText) dialog.getCustomView().findViewById(R.id.dialog_equipment_identifier)).getText().toString();
@@ -140,7 +149,7 @@ public class EquipmentManageActivity extends SMBaseActivity {
                         String sensor_ID = ((EditText) dialog.getCustomView().findViewById(R.id.dialog_equipment_sensorid)).getText().toString();
                         String equipment_ID = ((EditText) dialog.getCustomView().findViewById(R.id.dialog_equipment_eqmenid)).getText().toString();
 
-                        smEquipmentPresenter.addEquipment(poleSn,deviceID,dvrid,angleRelativeToNorthPole,deviceType,isSendMessage,cma_ID,sensor_ID,equipment_ID);
+                        smEquipmentPresenter.addEquipment(poleSn, deviceID, dvrid, angleRelativeToNorthPole, deviceType, isSendMessage, cma_ID, sensor_ID, equipment_ID);
                         super.onPositive(dialog);
                     }
 
@@ -151,11 +160,12 @@ public class EquipmentManageActivity extends SMBaseActivity {
 
                 })
                 .build();
+
         Spinner equipmentTypeSpinner = (Spinner) dialog.getCustomView().findViewById(R.id.dialog_equipment_type);
         Spinner informationSendSpinner = (Spinner) dialog.getCustomView().findViewById(R.id.dialog_alarm_information_send);
         Spinner poleChoiceSpinner = (Spinner) dialog.getCustomView().findViewById(R.id.dialog_equipment_tower_choice);
 
-        String[] deviceType ={"山火","外破","普通视频","无人机"};
+        String[] deviceType = {"山火", "外破", "普通视频", "无人机"};
         deviceTypeList = new ArrayList<>();
         deviceTypeList.add("fire");
         deviceTypeList.add("break");
@@ -163,12 +173,11 @@ public class EquipmentManageActivity extends SMBaseActivity {
         deviceTypeList.add("uav");
         equipmentTypeSpinner.setAdapter(new ArrayAdapter<>(dialog.getContext(), android.R.layout.simple_list_item_1, deviceType));
 
-        String[] isSendMessage = {"是","否"};
+        String[] isSendMessage = {"是", "否"};
         informationSendSpinner.setAdapter(new ArrayAdapter<>(dialog.getContext(), android.R.layout.simple_list_item_1, isSendMessage));
 
-
         List<String> poleName = new ArrayList<>();
-        for(Pole pole:poles){
+        for (Pole pole : poles) {
             poleName.add(pole.getPoleName());
         }
         poleChoiceSpinner.setAdapter(new ArrayAdapter<>(dialog.getContext(), android.R.layout.simple_list_item_1, poleName));
@@ -199,8 +208,42 @@ public class EquipmentManageActivity extends SMBaseActivity {
     public void renderEquipmentList(EquipmentPage equipmentPage) {
         if (equipmentPage != null) {
             this.equipmentPage = equipmentPage;
+            mAdapter.setSensorManage(sensorManage);
             mAdapter.setEquipmentPage(equipmentPage.getList());
             mAdapter.setPresenter(smEquipmentPresenter);
+        }
+    }
+
+    private SMEquipmentRecyclerAdapter.SensorManage sensorManage =
+            new SMEquipmentRecyclerAdapter.SensorManage() {
+                @Override
+                public void ToSensorActivity(Equipment equipment) {
+                    Intent sensorIntent = new Intent(EquipmentManageActivity.this, SensorManageActivity.class);
+                    sensorIntent.putExtra("equipment", equipment);
+                    sensorIntent.putExtra("userId", getUser().getUserId());
+                    Log.e("tag", "startActivityForResult");
+                    startActivityForResult(sensorIntent, 88);
+                }
+            };
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Log.e("onActivityResult", "requestCode" + requestCode + "resultCode" + resultCode);
+        switch (resultCode) { //resultCode为回传的标记，我在B中回传的是RESULT_OK
+            case 888:
+                Log.e("onActivityResult", "onActivityResult");
+                smEquipmentPresenter.getEquipmentPage(poleSn);
+                break;
+            default:
+                break;
+        }
+    }
+
+    public void restEquipment(String result) {
+        if (result.equals("true")) {
+            Toast.makeText(EquipmentManageActivity.this, "复位成功", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(EquipmentManageActivity.this, "复位失败，请重试", Toast.LENGTH_SHORT).show();
         }
     }
 }

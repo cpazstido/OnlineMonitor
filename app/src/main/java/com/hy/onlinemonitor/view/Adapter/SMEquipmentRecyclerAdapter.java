@@ -25,18 +25,23 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-
-/**
- * Created by Administrator on 2015/7/27.
- */
-public class SMEquipmentRecyclerAdatper extends RecyclerSwipeAdapter<EquipmentViewHolder> {
+public class SMEquipmentRecyclerAdapter extends RecyclerSwipeAdapter<EquipmentViewHolder> {
 
     private Context mContext;
     private List<Equipment> equipmentList;
     private SMEquipmentPresenter smEquipmentPresenter;
     private List<String> deviceTypeList;
+    private SMEquipmentRecyclerAdapter.SensorManage sensorManage;
 
-    public SMEquipmentRecyclerAdatper(Context mContext, List<Equipment> equipmentList) {
+    public void setSensorManage(SensorManage sensorManage) {
+        this.sensorManage = sensorManage;
+    }
+
+    public interface SensorManage {
+        void ToSensorActivity(Equipment equipment);
+    }
+
+    public SMEquipmentRecyclerAdapter(Context mContext, List<Equipment> equipmentList) {
         this.mContext = mContext;
         this.equipmentList = equipmentList;
     }
@@ -49,6 +54,7 @@ public class SMEquipmentRecyclerAdatper extends RecyclerSwipeAdapter<EquipmentVi
 
     @Override
     public void onBindViewHolder(final EquipmentViewHolder equipmentViewHolder, final int i) {
+        final Equipment equipment = equipmentList.get(i);
         equipmentViewHolder.swipeLayout.setShowMode(SwipeLayout.ShowMode.LayDown);
         equipmentViewHolder.swipeLayout.addSwipeListener(new SimpleSwipeListener() {
             @Override
@@ -74,7 +80,12 @@ public class SMEquipmentRecyclerAdatper extends RecyclerSwipeAdapter<EquipmentVi
                 mContext.startActivity(moreInformationIntent);
             }
         });
-
+        equipmentViewHolder.equipmentRest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                smEquipmentPresenter.equipmentReset(equipment.getSn());
+            }
+        });
         equipmentViewHolder.ActionConfig.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -208,9 +219,10 @@ public class SMEquipmentRecyclerAdatper extends RecyclerSwipeAdapter<EquipmentVi
         equipmentViewHolder.sensorManage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //这里应该传部分参数表示当前的选中的设备
-//                Intent sensorIntent = new Intent(mContext, SensorManangeActivity.class);
-//                mContext.startActivity(sensorIntent);
+                if (SMEquipmentRecyclerAdapter.this.sensorManage != null) {
+                    SMEquipmentRecyclerAdapter.this.sensorManage.ToSensorActivity(equipment);
+                }
+
             }
         });
         mItemManger.bindView(equipmentViewHolder.itemView, i);

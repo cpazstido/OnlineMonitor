@@ -1,6 +1,6 @@
 package com.hy.data.entity.mapper;
 
-import com.example.bean.DoaminEquipmentInforPage;
+import com.example.bean.DomainEquipmentInforPage;
 import com.example.bean.DomainAdministratorPage;
 import com.example.bean.DomainAlarmPage;
 import com.example.bean.DomainEquipmentPage;
@@ -22,18 +22,18 @@ public class PageEntityDataMapper {
     public PageEntityDataMapper() {
     }
 
-    public DoaminEquipmentInforPage transform(EquipmentInforPageEntity equipmentInforPageEntity) {
+    public DomainEquipmentInforPage transform(EquipmentInforPageEntity equipmentInforPageEntity) {
         EquipmentAlarmEntityDataMapper equipmentAlarmEntityDataMapper = new EquipmentAlarmEntityDataMapper();
-        DoaminEquipmentInforPage doaminEquipmentInforPage = null;
+        DomainEquipmentInforPage domainEquipmentInforPage = null;
         if (null != equipmentInforPageEntity) {
-            doaminEquipmentInforPage = new DoaminEquipmentInforPage();
-            doaminEquipmentInforPage.setTotalPage(equipmentInforPageEntity.getTotalPage());
-            doaminEquipmentInforPage.setPageSize(equipmentInforPageEntity.getPageSize());
-            doaminEquipmentInforPage.setPageNum(equipmentInforPageEntity.getPageNum());
-            doaminEquipmentInforPage.setList(equipmentAlarmEntityDataMapper.transform(equipmentInforPageEntity.getList()));
-            doaminEquipmentInforPage.setRowCount(equipmentInforPageEntity.getRowCount());
+            domainEquipmentInforPage = new DomainEquipmentInforPage();
+            domainEquipmentInforPage.setTotalPage(equipmentInforPageEntity.getTotalPage());
+            domainEquipmentInforPage.setPageSize(equipmentInforPageEntity.getPageSize());
+            domainEquipmentInforPage.setPageNum(equipmentInforPageEntity.getPageNum());
+            domainEquipmentInforPage.setList(equipmentAlarmEntityDataMapper.transform(equipmentInforPageEntity.getList()));
+            domainEquipmentInforPage.setRowCount(equipmentInforPageEntity.getRowCount());
         }
-        return doaminEquipmentInforPage;
+        return domainEquipmentInforPage;
     }
 
     public DomainAlarmPage transform(AlarmPageEntity alarmPageEntity) {

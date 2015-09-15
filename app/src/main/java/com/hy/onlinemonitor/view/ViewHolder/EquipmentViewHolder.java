@@ -7,7 +7,7 @@ import com.hy.onlinemonitor.R;
 import com.rey.material.widget.Button;
 
 public class EquipmentViewHolder extends SMBaseViewHolder{
-    public TextView equipmentIdentifier,equipmentDvrid,alarmInformationSend,equipmentType,sensorManage;
+    public TextView equipmentIdentifier,equipmentDvrid,alarmInformationSend,equipmentType,sensorManage,equipmentRest;
     public Button moreInformation;
     public EquipmentViewHolder(View itemView) {
         super(itemView);
@@ -17,6 +17,7 @@ public class EquipmentViewHolder extends SMBaseViewHolder{
         equipmentType = (TextView) itemView.findViewById(R.id.equipment_type);
         sensorManage = (TextView) itemView.findViewById(R.id.sensor_manage);
         moreInformation = (Button) itemView.findViewById(R.id.more_information);
+        equipmentRest = (TextView) itemView.findViewById(R.id.equipment_rest);
     }
 
 }

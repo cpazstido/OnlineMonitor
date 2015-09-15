@@ -121,6 +121,7 @@ public class SMEquipmentPresenter implements Presenter{
         this.equipmentUseCase.execute(new EquipmentPageSubscriber());
 
     }
+
     private class EquipmentPageSubscriber extends DefaultSubscriber<DomainEquipmentPage> {
         @Override
         public void onCompleted() {
@@ -138,6 +139,32 @@ public class SMEquipmentPresenter implements Presenter{
         public void onNext(DomainEquipmentPage domainEquipmentPage) {
             EquipmentPage equipmentPage = pageDataMapper.transform(domainEquipmentPage);
             equipmentManageActivity.renderEquipmentList(equipmentPage);
+        }
+    }
+
+    public void equipmentReset(int equipmentSn) {
+        showViewLoading();
+        SMEquipmentRepository smEquipmentRepository = new EquipmentDataRepository(equipmentSn,mContext, userId);
+        this.equipmentUseCase = new EquipmentUseCase(new UIThread(), AndroidSchedulers.mainThread(), smEquipmentRepository, 6);
+        this.equipmentUseCase.execute(new ResetEquipmentSubscriber());
+    }
+
+    private class ResetEquipmentSubscriber extends DefaultSubscriber<String> {
+        @Override
+        public void onCompleted() {
+            SMEquipmentPresenter.this.hideViewLoading();
+        }
+
+        @Override
+        public void onError(Throwable e) {
+            SMEquipmentPresenter.this.hideViewLoading();
+            Toast.makeText(mContext, "AdminLineListOnlySubscriber出现错误", Toast.LENGTH_SHORT).show();
+            super.onError(e);
+        }
+
+        @Override
+        public void onNext(String result) {
+            equipmentManageActivity.restEquipment(result);
         }
     }
 }

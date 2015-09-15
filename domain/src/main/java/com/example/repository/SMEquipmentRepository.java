@@ -2,7 +2,6 @@ package com.example.repository;
 
 import com.example.bean.DomainEquipmentPage;
 import com.example.bean.DomainLine;
-import com.example.bean.DomainSensor;
 
 import java.util.List;
 
@@ -24,13 +23,5 @@ public interface SMEquipmentRepository {
     Observable<DomainEquipmentPage> changeEquipment();
 
     Observable<String> restartEquipment();
-
-    Observable<List<DomainSensor>> getAllSensor();
-
-    Observable<List<DomainSensor>> addSensor();
-
-    Observable<List<DomainSensor>> deleteSensor();
-
-    Observable<List<DomainSensor>> changeSensor();
 
 }

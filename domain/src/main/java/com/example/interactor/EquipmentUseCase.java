@@ -42,6 +42,9 @@ public class EquipmentUseCase extends UseCase{
             case 5:
                 observable = smEquipmentRepository.changeEquipment();
                 break;
+            case 6:
+                observable = smEquipmentRepository.restartEquipment();
+                break;
         }
         return observable;
     }

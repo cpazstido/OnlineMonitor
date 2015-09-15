@@ -185,9 +185,17 @@ public class EquipmentRecyclerAdapter extends RecyclerView.Adapter<EquipmentList
 
     public void setEquipmentCollection(Collection<EquipmentInformation> equipmentInformationCollection){
         this.validateEquipmentCollection(equipmentInformationCollection);
-        for(EquipmentInformation EquipmentInformation :(List<EquipmentInformation>)equipmentInformationCollection){
-            mList.add(EquipmentInformation);
+
+        if(mList.size() ==0){
+            mList = (List<EquipmentInformation>) equipmentInformationCollection;
+        }else{
+            for (EquipmentInformation equipmentInformation :equipmentInformationCollection){
+                if(!mList.contains(equipmentInformation)){
+                    mList.add(equipmentInformation);
+                }
+            }
         }
+
         this.notifyDataSetChanged();
     }
 

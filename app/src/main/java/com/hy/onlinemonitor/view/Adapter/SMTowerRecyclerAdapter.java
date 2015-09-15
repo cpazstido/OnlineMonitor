@@ -4,7 +4,6 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -14,13 +13,10 @@ import com.daimajia.swipe.SimpleSwipeListener;
 import com.daimajia.swipe.SwipeLayout;
 import com.daimajia.swipe.adapters.RecyclerSwipeAdapter;
 import com.hy.onlinemonitor.R;
-import com.hy.onlinemonitor.bean.Line;
 import com.hy.onlinemonitor.bean.Pole;
 import com.hy.onlinemonitor.presenter.SMPolePresenter;
 import com.hy.onlinemonitor.view.ViewHolder.TowerViewHolder;
-import com.rey.material.widget.Spinner;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -30,7 +26,6 @@ import java.util.List;
 public class SMTowerRecyclerAdapter extends RecyclerSwipeAdapter<TowerViewHolder> {
     private Context mContext;
     private List<Pole> poles;
-    private List<Line> lineList;
     private SMPolePresenter smPolePresenter;
     public SMTowerRecyclerAdapter(Context mContext, List<Pole> poles) {
         this.mContext = mContext;
@@ -128,9 +123,17 @@ public class SMTowerRecyclerAdapter extends RecyclerSwipeAdapter<TowerViewHolder
         return R.id.swipe;
     }
 
-    public void setPoleCollection(Collection<Pole> poles){
-        this.validateEquipmentCollection(poles);
-        this.poles = (List<Pole>) poles;
+    public void setPoleCollection(Collection<Pole> poleCollection){
+        this.validateEquipmentCollection(poleCollection);
+        if(poles.size()==0){
+            poles = (List<Pole>) poleCollection;
+        }else{
+            for(Pole pole :poleCollection){
+                if(!poles.contains(pole)){
+                    poles.add(pole);
+                }
+            }
+        }
         this.notifyDataSetChanged();
     }
 
@@ -140,12 +143,11 @@ public class SMTowerRecyclerAdapter extends RecyclerSwipeAdapter<TowerViewHolder
         }
     }
 
-
-    public void setLineList(List<Line> lineList) {
-        this.lineList = lineList;
-    }
-
     public void setPresenter(SMPolePresenter smPolePresenter) {
         this.smPolePresenter = smPolePresenter;
+    }
+
+    public void cleanList() {
+        poles.clear();
     }
 }

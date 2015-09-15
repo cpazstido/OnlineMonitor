@@ -20,6 +20,7 @@ import rx.Observable;
  */
 public class PoleDataRepository implements SMPoleRepository {
     private final Context mContext;
+    private int pageNumber;
     private int userId;
     private int lineSn;
     private String poleName;
@@ -33,10 +34,11 @@ public class PoleDataRepository implements SMPoleRepository {
         this.userId = userId;
     }
 
-    public PoleDataRepository(Context mContext, int userId, int lineSn) {
+    public PoleDataRepository(Context mContext, int userId, int lineSn,int pageNumber) {
         this.mContext = mContext;
         this.userId = userId;
         this.lineSn = lineSn;
+        this.pageNumber = pageNumber;
     }
 
     public PoleDataRepository(int poleSn, Context mContext, int userId) {
@@ -65,6 +67,12 @@ public class PoleDataRepository implements SMPoleRepository {
         this.altitude = altitude;
     }
 
+    public PoleDataRepository(Context mContext, int userId, int pageNumber) {
+        this.mContext = mContext;
+        this.userId = userId;
+        this.pageNumber = pageNumber;
+    }
+
     @Override
     public Observable<List<DomainCompany>> getAllLine() {
         RestApiImpl restApi = new RestApiImpl(mContext,new CompanyEntityJsonMapper());
@@ -76,7 +84,11 @@ public class PoleDataRepository implements SMPoleRepository {
     public Observable<DomainPolePage> getPolePage() {
         RestApiImpl restApi = new RestApiImpl(mContext,new PageEntityJsonMapper());
         PageEntityDataMapper pageEntityDataMapper = new PageEntityDataMapper();
-        return restApi.getPolePage(userId, lineSn).map(pageEntityDataMapper::transform);
+        if(lineSn != -1) {
+            return restApi.getPolePage(userId, lineSn, pageNumber).map(pageEntityDataMapper::transform);
+        }else{
+            return restApi.getPolePage(userId,pageNumber).map(pageEntityDataMapper::transform);
+        }
     }
 
     @Override

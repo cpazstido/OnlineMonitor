@@ -173,7 +173,6 @@ public class AdministratorManageActivity extends SMBaseActivity {
     @Override
     public void hideLoading() {
         alertDialog.cancel();
-        ShowUtile.toastShow(AdministratorManageActivity.this, "完成");
     }
 
     @Override

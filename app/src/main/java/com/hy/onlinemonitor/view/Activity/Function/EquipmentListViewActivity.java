@@ -6,13 +6,13 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.baoyz.widget.PullRefreshLayout;
 import com.hy.onlinemonitor.R;
 import com.hy.onlinemonitor.bean.EquipmentInforPage;
 import com.hy.onlinemonitor.presenter.EquipmentListPresenter;
 import com.hy.onlinemonitor.utile.GetLoading;
+import com.hy.onlinemonitor.utile.ShowUtile;
 import com.hy.onlinemonitor.view.Activity.BaseActivity;
 import com.hy.onlinemonitor.view.Adapter.EquipmentRecyclerAdapter;
 import com.hy.onlinemonitor.view.LoadDataView;
@@ -37,6 +37,7 @@ public class EquipmentListViewActivity extends BaseActivity implements LoadDataV
     private LinearLayoutManager linearLayoutManager;
     private int pageNumber = 1 ;
     private int lastVisibleItem;
+    private boolean isLoadingMore = false;
     @Override
     protected Toolbar getToolbar() {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -114,8 +115,8 @@ public class EquipmentListViewActivity extends BaseActivity implements LoadDataV
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
                 if (newState == RecyclerView.SCROLL_STATE_IDLE && lastVisibleItem + 1 == mAdapter.getItemCount() && mAdapter.getItemCount() >= equipmentInforPage.getRowCount()) {
-                    Log.e("hell","到达底部");
-                    Toast.makeText(EquipmentListViewActivity.this,"没有更多数据....",Toast.LENGTH_LONG).show();
+                    Log.e("hell", "到达底部");
+                    ShowUtile.toastShow(EquipmentListViewActivity.this, "没有更多数据....");
                 }
             }
 
@@ -125,9 +126,14 @@ public class EquipmentListViewActivity extends BaseActivity implements LoadDataV
                 int totalItemCount = mAdapter.getItemCount();
 //                Log.e("show","lastVisibleItem"+lastVisibleItem+"--totalItemCount"+totalItemCount);
                 if(lastVisibleItem == totalItemCount -1 && dy > 0 && equipmentInforPage.getRowCount() >totalItemCount){
-                    Toast.makeText(EquipmentListViewActivity.this, "加载更多", Toast.LENGTH_SHORT).show();
-                    pageNumber ++;
-                    loadEquipmentList(pageNumber);//这里多线程也要手动控制isLoadingMore
+                    if (!isLoadingMore) {
+                        isLoadingMore = true;
+                        ShowUtile.toastShow(EquipmentListViewActivity.this, "加载更多");
+                        pageNumber++;
+                        loadEquipmentList(pageNumber);//这里多线程也要手动控制isLoadingMore
+                    }else{
+                        ShowUtile.toastShow(EquipmentListViewActivity.this, "正在加载中..");
+                    }
                 }
             }
         });
@@ -144,40 +150,4 @@ public class EquipmentListViewActivity extends BaseActivity implements LoadDataV
         this.loadEquipmentList(1);
     }
 
-    @Override
-    protected void onStop() {
-        Log.e("recy","onStop");
-        super.onStop();
-    }
-
-    @Override
-    protected void onPause() {
-        Log.e("recy","onPause");
-        super.onPause();
-    }
-
-    @Override
-    protected void onResume() {
-        Log.e("recy","onResume");
-
-        super.onResume();
-    }
-
-    @Override
-    protected void onDestroy() {
-        Log.e("recy","onDestroy");
-        super.onDestroy();
-    }
-
-    @Override
-    protected void onRestart() {
-        Log.e("recy","onRestart");
-        super.onRestart();
-    }
-
-    @Override
-    protected void onStart() {
-        Log.e("recy","onStart");
-        super.onStart();
-    }
 }

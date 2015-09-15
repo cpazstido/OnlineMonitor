@@ -3,24 +3,23 @@ package com.hy.onlinemonitor.presenter;
 import android.content.Context;
 import android.widget.Toast;
 
-import com.example.bean.DomainLine;
 import com.example.bean.DomainAdministratorPage;
 import com.example.bean.DomainCompany;
+import com.example.bean.DomainLine;
 import com.example.bean.DomainRole;
 import com.example.interactor.AdministratorUseCase;
 import com.example.interactor.DefaultSubscriber;
 import com.example.repository.SMAdministratorRepository;
 import com.hy.data.repository.AdministratorDataRepository;
 import com.hy.onlinemonitor.UIThread;
-import com.hy.onlinemonitor.bean.Line;
 import com.hy.onlinemonitor.bean.AdministratorPage;
 import com.hy.onlinemonitor.bean.Company;
+import com.hy.onlinemonitor.bean.Line;
 import com.hy.onlinemonitor.bean.Role;
-import com.hy.onlinemonitor.mapper.LineDataMapper;
 import com.hy.onlinemonitor.mapper.CompanyDataMapper;
+import com.hy.onlinemonitor.mapper.LineDataMapper;
 import com.hy.onlinemonitor.mapper.PageDataMapper;
 import com.hy.onlinemonitor.mapper.RoleDataMapper;
-import com.hy.onlinemonitor.utile.ShowUtile;
 import com.hy.onlinemonitor.view.Activity.SystemManagement.AdministratorManageActivity;
 
 import java.util.List;
@@ -282,7 +281,7 @@ public class SMAdministratorPresenter implements Presenter {
         @Override
         public void onNext(String res) {
             SMAdministratorPresenter.this.setAdmin(allPoleSelected);
-            ShowUtile.toastShow(mContext,res);
+//            ShowUtile.toastShow(mContext,res);
         }
     }
 

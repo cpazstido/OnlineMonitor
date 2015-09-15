@@ -1,6 +1,7 @@
 package com.hy.onlinemonitor.view.Activity.SystemManagement;
 
 import android.content.Context;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -15,6 +16,7 @@ import com.hy.onlinemonitor.bean.Line;
 import com.hy.onlinemonitor.bean.Pole;
 import com.hy.onlinemonitor.bean.PolePage;
 import com.hy.onlinemonitor.presenter.SMPolePresenter;
+import com.hy.onlinemonitor.utile.ShowUtile;
 import com.hy.onlinemonitor.view.Adapter.SMTowerRecyclerAdapter;
 import com.hy.onlinemonitor.view.ViewHolder.IconTreeItemHolder;
 import com.hy.onlinemonitor.view.ViewHolder.SelectableHeaderHolder;
@@ -34,6 +36,11 @@ public class PoleManageActivity extends SMBaseActivity {
     private SMTowerRecyclerAdapter mAdapter;
     private SMPolePresenter smPolePresenter;
     private PolePage polePage;
+    private int pageNumber = 1;
+    private boolean isLoadingMore = false;
+    private int lastVisibleItem;
+    private int lineSn = -1;
+
     @Override
     protected void initTitle() {
         toolbar.setTitle(R.string.system_management);
@@ -49,6 +56,8 @@ public class PoleManageActivity extends SMBaseActivity {
             @Override
             public void onClick(View v) {//获取数据,并创建树形菜单对话框
                 Log.e("choiceBtn", "调用了");
+                pageNumber = 1;
+                mAdapter.cleanList();
                 final MaterialDialog dialog = new MaterialDialog.Builder(PoleManageActivity.this)
                         .title(R.string.line_choice)
                         .customView(R.layout.dialog_tree_choice, true)
@@ -64,7 +73,8 @@ public class PoleManageActivity extends SMBaseActivity {
                             @Override
                             public void onClick(TreeNode treeNode, Object o) {
                                 dialog.cancel();
-                                smPolePresenter.getPolePage(line.getLineSn());
+                                lineSn = line.getLineSn();
+                                smPolePresenter.getPolePage(line.getLineSn(), pageNumber);
                             }
                         });
 
@@ -90,6 +100,44 @@ public class PoleManageActivity extends SMBaseActivity {
         mAdapter = new SMTowerRecyclerAdapter(PoleManageActivity.this, new ArrayList<Pole>());
         ((SMTowerRecyclerAdapter) mAdapter).setMode(Attributes.Mode.Single);
         smRecyclerView.setAdapter(mAdapter);
+
+        smRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                if (newState == RecyclerView.SCROLL_STATE_IDLE && lastVisibleItem + 1 == mAdapter.getItemCount() && mAdapter.getItemCount() >= polePage.getRowCount()) {
+                    Log.e("hell", "到达底部");
+                    ShowUtile.toastShow(PoleManageActivity.this, "没有更多数据....");
+
+                }
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                lastVisibleItem = linearLayoutManager.findLastVisibleItemPosition();
+                int totalItemCount = mAdapter.getItemCount();
+                int pageSize = polePage.getPageSize();
+                Log.e("show", "lastVisibleItem" + lastVisibleItem + "--totalItemCount" + totalItemCount + "pageSize" + pageSize);
+                if (lastVisibleItem >= totalItemCount - 1 && dy > 0 && polePage.getRowCount() > totalItemCount) {
+                    if (!isLoadingMore) {
+                        ShowUtile.toastShow(PoleManageActivity.this, "加载更多");
+                        isLoadingMore = true;
+                        pageNumber++;
+                        //根据pageNumber加载更多
+                        switch (lineSn) {
+                            case -1:
+                                PoleManageActivity.this.smPolePresenter.loadAllPole(getUser().getUserId(), pageNumber);
+                                break;
+                            default:
+                                PoleManageActivity.this.smPolePresenter.getPolePage(getUser().getUserId(), lineSn, pageNumber);
+                                break;
+                        }
+                    } else {
+                        ShowUtile.toastShow(PoleManageActivity.this, "正在加载中..");
+                    }
+                }
+            }
+        });
     }
 
     @Override
@@ -167,7 +215,6 @@ public class PoleManageActivity extends SMBaseActivity {
                 this.lineList.add(line);
             }
         }
-        mAdapter.setLineList(lineList);
     }
 
     public void renderPoleList(PolePage polePage) {
@@ -175,5 +222,9 @@ public class PoleManageActivity extends SMBaseActivity {
             this.polePage = polePage;
             this.mAdapter.setPoleCollection(polePage.getList());
         }
+    }
+
+    public void firstLoadAll() {
+        PoleManageActivity.this.smPolePresenter.loadAllPole(getUser().getUserId(), pageNumber);
     }
 }

@@ -5,8 +5,8 @@ package com.example.bean;
  */
 public class DomainSensor {
     private int sn;
-    private String name; //传感器名称
-    private String info; //传感器标识
+    private String name;
+    private String info;
     private int    count;
     private String sensorInDeviceID;
 

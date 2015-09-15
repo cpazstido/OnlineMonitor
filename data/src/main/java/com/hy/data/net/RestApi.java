@@ -1,7 +1,6 @@
 package com.hy.data.net;
 
 
-import com.example.bean.DomainSensor;
 import com.hy.data.entity.AdministratorPageEntity;
 import com.hy.data.entity.AlarmPageEntity;
 import com.hy.data.entity.CompanyEntity;
@@ -14,6 +13,7 @@ import com.hy.data.entity.PolePageEntity;
 import com.hy.data.entity.PrivilegeEntity;
 import com.hy.data.entity.RoleEntity;
 import com.hy.data.entity.RolePageEntity;
+import com.hy.data.entity.SensorTypeEntity;
 import com.hy.data.entity.UserEntity;
 
 import java.util.List;
@@ -257,18 +257,20 @@ public interface RestApi {
      * 得到线路列表
      *
      * @param userId    唯一标示
+     * @param pageNumber 页数
      * @param companySn 公司sn
      * @return 线路列表
      */
-    Observable<LinePageEntity> getLinePage(int userId, int companySn);
+    Observable<LinePageEntity> getLinePage(int userId, int companySn, int pageNumber);
 
     /**
      * 得到所有线路列表
      *
-     * @param userId 唯一标示
+     * @param userId     唯一标示
+     * @param pageNumber 页数
      * @return 线路列表
      */
-    Observable<LinePageEntity> getAllLinePage(int userId);
+    Observable<LinePageEntity> getAllLinePage(int userId, int pageNumber);
 
     /**
      * 添加线路
@@ -314,12 +316,21 @@ public interface RestApi {
     /**
      * 得到杆塔列表
      *
+     * @param pageNumber  页数
      * @param userId 唯一标示
      * @param lineSn 线路sn
      * @return 杆塔列表
      */
-    Observable<PolePageEntity> getPolePage(int userId, int lineSn);
+    Observable<PolePageEntity> getPolePage(int userId, int lineSn,int pageNumber);
 
+    /**
+     * 得到全部的杆塔列表
+     *
+     * @param userId 唯一标示
+     * @param pageNumber  页数
+     * @return 杆塔列表
+     */
+    Observable<PolePageEntity> getPolePage(int userId, int pageNumber);
     /**
      * 添加杆塔
      *
@@ -388,7 +399,7 @@ public interface RestApi {
      * @param equipment_ID             equipment_ID
      * @return 设备page
      */
-    Observable<EquipmentPageEntity> addEquipment(int userId, int poleSn,String deviceID, String dvrID,
+    Observable<EquipmentPageEntity> addEquipment(int userId, int poleSn, String deviceID, String dvrID,
                                                  Double angleRelativeToNorthPole,
                                                  String deviceType, int sendMmsState,
                                                  String cma_ID, String sensor_ID,
@@ -439,32 +450,13 @@ public interface RestApi {
      * @param userId 唯一标示
      * @return List的传感器对象
      */
-    Observable<List<DomainSensor>> getAllSensor(int userId);
-
-    /**
-     * 添加传感器
-     *
-     * @return List的传感器对象
-     */
-    Observable<List<DomainSensor>> addSensor(int userId, String name, String sensorInDeviceID);
-
-    /**
-     * 删除传感器
-     *
-     * @param userId   唯一标示
-     * @param sensorSn 传感器sn
-     * @return 传感器列表
-     */
-    Observable<List<DomainSensor>> deleteSensor(int userId, int sensorSn);
+    Observable<List<SensorTypeEntity>> getAllSensor(int userId);
 
     /**
      * 修改传感器
-     * @param userId 唯一标示
-     * @param sensorSn 传感器sn
-     * @param name 传感名名
-     * @param sensorInDeviceID 传感器编号
-     * @return
+     *
+     * @return List的传感器对象
      */
-    Observable<List<DomainSensor>> changeSensor(int userId, int sensorSn, String name,
-                                                String sensorInDeviceID);
+    Observable<String> changeSensor(int userId, int equipmentSn, String sensorJson);
+
 }

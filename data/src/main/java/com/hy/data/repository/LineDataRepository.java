@@ -22,12 +22,14 @@ public class LineDataRepository implements SMLineRepository{
     private final Context mContext;
     private int userId;
     private int companySn;
+    private int lineSn;
+    private int pageNumber;
     private String lineName;
     private String lineStart;
     private String lineFinish;
     private String lineTrend;
     private String voltageLevel;
-    private int lineSn;
+
 
     public LineDataRepository(Context mContext, int userId, int companySn, String lineName, String lineStart, String lineFinish, String lineTrend, String voltageLevel) {
         this.mContext = mContext;
@@ -57,10 +59,17 @@ public class LineDataRepository implements SMLineRepository{
         this.userId = userId;
     }
 
-    public LineDataRepository(Context mContext, int userId, int companySn) {
+    public LineDataRepository(Context mContext, int userId,int pageNumber) {
+        this.mContext = mContext;
+        this.userId = userId;
+        this.pageNumber = pageNumber;
+    }
+
+    public LineDataRepository(Context mContext, int userId, int companySn,int pageNumber) {
         this.mContext = mContext;
         this.userId = userId;
         this.companySn = companySn;
+        this.pageNumber = pageNumber;
     }
 
     public LineDataRepository(Context mContext, int userId, int lineSn, String isDelete) {
@@ -80,7 +89,7 @@ public class LineDataRepository implements SMLineRepository{
     public Observable<DomainLinePage> getLinePage() {
         RestApiImpl restApi = new RestApiImpl(mContext,new PageEntityJsonMapper());
         PageEntityDataMapper pageEntityDataMapper = new PageEntityDataMapper();
-        return restApi.getLinePage(userId, companySn).map(pageEntityDataMapper::transform);
+        return restApi.getLinePage(userId, companySn,pageNumber).map(pageEntityDataMapper::transform);
     }
 
     @Override
@@ -108,6 +117,6 @@ public class LineDataRepository implements SMLineRepository{
     public Observable<DomainLinePage> getAllLine() {
         RestApiImpl restApi = new RestApiImpl(mContext,new PageEntityJsonMapper());
         PageEntityDataMapper pageEntityDataMapper = new PageEntityDataMapper();
-        return restApi.getAllLinePage(userId).map(pageEntityDataMapper::transform);
+        return restApi.getAllLinePage(userId,pageNumber).map(pageEntityDataMapper::transform);
     }
 }

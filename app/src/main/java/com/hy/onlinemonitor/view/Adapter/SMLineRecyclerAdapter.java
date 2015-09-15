@@ -148,9 +148,18 @@ public class SMLineRecyclerAdapter extends RecyclerSwipeAdapter<LineViewHolder> 
 
     public void setLinePage(Collection<Line> roleCollection) {
         this.validateLineCollection(roleCollection);
-        lines = (List<Line>) roleCollection;
+        if(lines.size()==0){
+            lines = (List<Line>) roleCollection;
+        }else{
+            for(Line line :roleCollection){
+                if(!lines.contains(line)){
+                    lines.add(line);
+                }
+            }
+        }
         this.notifyDataSetChanged();
     }
+
 
     private void validateLineCollection(Collection<Line> roleCollection) {
         if (roleCollection == null) {
@@ -164,5 +173,9 @@ public class SMLineRecyclerAdapter extends RecyclerSwipeAdapter<LineViewHolder> 
 
     public void setCompanyList(List<Company> companyList) {
         this.companyList  = companyList;
+    }
+
+    public void cleanList() {
+        lines.clear();
     }
 }
