@@ -425,14 +425,15 @@ public class RestApiImpl implements RestApi {
         return Observable.create(new Observable.OnSubscribe<List<CompanyEntity>>() {
             @Override
             public void call(Subscriber<? super List<CompanyEntity>> subscriber) {
-                RequestParams params = new RequestParams();
-                params.put("userId", userId);
+                RequestParams params = new RequestParams(); //参数对象
+                params.put("userId", userId); //将参数放入,
                 SystemRestClient.post("/getCompanyList", params, new AsyncHttpResponseHandler() {
                     @Override
-                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) { //成功时调用
                         try {
                             String responseCompanyEntities = new String(responseBody, "UTF-8");
                             Log.e("responseCompanyEntities", responseCompanyEntities);
+                            //通过jsonMapper转化得到的String
                             subscriber.onNext(companyEntityJsonMapper.transformCompanyEntity(responseCompanyEntities));
                             subscriber.onCompleted();
                         } catch (UnsupportedEncodingException e) {

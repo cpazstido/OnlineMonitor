@@ -6,13 +6,10 @@ import com.example.repository.SMLineRepository;
 import rx.Observable;
 import rx.Scheduler;
 
-/**
- * Created by 24363 on 2015/9/8.
- */
-public class LineUseCase extends UseCase{
+public class LineUseCase extends UseCase{ //用于data与Presenter交互
 
-    private final SMLineRepository smLineRepository;
-    private int type;
+    private final SMLineRepository smLineRepository; //domain的仓库对象
+    private int type; //类型
 
     public void setType(int type) {
         this.type = type;
@@ -27,24 +24,24 @@ public class LineUseCase extends UseCase{
     @Override
     protected Observable buildUseCaseObservable() {
         Observable observable = null;
-        switch (type){
+        switch (type){ //根据不同的type调用仓库中的不同的函数
             case 1:
-                observable = smLineRepository.getCompanyList();
+                observable = smLineRepository.getCompanyList(); //得到公司列表
                 break;
             case 2:
-                observable = smLineRepository.addLine();
+                observable = smLineRepository.addLine(); //添加线路
                 break;
             case 3:
-                observable = smLineRepository.deleteLine();
+                observable = smLineRepository.deleteLine(); //删除线路
                 break;
             case 4:
-                observable = smLineRepository.changeLine();
+                observable = smLineRepository.changeLine(); //修改线路
                 break;
             case 5:
-                observable = smLineRepository.getLinePage();
+                observable = smLineRepository.getLinePage(); //得到线路page
                 break;
             case 6:
-                observable = smLineRepository.getAllLine();
+                observable = smLineRepository.getAllLine(); //得到所有线路
                 break;
         }
 

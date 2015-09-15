@@ -15,7 +15,9 @@ import com.hy.onlinemonitor.bean.LinePage;
 import com.hy.onlinemonitor.bean.PolePage;
 import com.hy.onlinemonitor.bean.RolePage;
 
-
+/**
+ * page数据转换,用于将domain对象转换成当前bean对象
+ */
 public class PageDataMapper {
 
     public PageDataMapper() {
