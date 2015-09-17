@@ -449,6 +449,132 @@ public class RestApiImpl implements RestApi {
             }
         });
     }
+    @Override
+    public Observable<List<CompanyEntity>> addCompany(int userId,int sn ,String companyName,String companyAddress) {
+        return Observable.create(new Observable.OnSubscribe<List<CompanyEntity>>() {
+            @Override
+            public void call(Subscriber<? super List<CompanyEntity>> subscriber) {
+                RequestParams params = new RequestParams();
+                params.put("userId", userId);
+                params.put("sn", sn);
+                params.put("companyName", companyName);
+                params.put("companyAddress", companyAddress);
+                SystemRestClient.post("/insertCompany", params, new AsyncHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                        try {
+                            String responseCompanyEntities = new String(responseBody, "UTF-8");
+                            Log.e("responseCompanyEntities", responseCompanyEntities);
+                            subscriber.onNext(companyEntityJsonMapper.transformCompanyEntity(responseCompanyEntities));
+                            subscriber.onCompleted();
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                        Log.e("getUserEntitiesFromApi", "onFailure");
+                        subscriber.onError(new NetworkConnectionException("链接失败"));
+                    }
+                });
+            }
+        });
+    }
+
+    @Override
+    public Observable<List<CompanyEntity>> queryParetSelectCompany(int userId) {
+        return Observable.create(new Observable.OnSubscribe<List<CompanyEntity>>() {
+            @Override
+            public void call(Subscriber<? super List<CompanyEntity>> subscriber) {
+                RequestParams params = new RequestParams();
+                params.put("userId", userId);
+                SystemRestClient.post("/getCompanyList", params, new AsyncHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                        try {
+                            String responseCompanyEntities = new String(responseBody, "UTF-8");
+                            Log.e("responseCompanyEntities", responseCompanyEntities);
+                            subscriber.onNext(companyEntityJsonMapper.transformCompanyEntity(responseCompanyEntities));
+                            subscriber.onCompleted();
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                        Log.e("getUserEntitiesFromApi", "onFailure");
+                        subscriber.onError(new NetworkConnectionException("链接失败"));
+                    }
+                });
+            }
+        });
+    }
+
+    @Override
+    public Observable<List<CompanyEntity>> changeCompany(int userId,int sn ,String companyName,String companyAddress) {
+        return Observable.create(new Observable.OnSubscribe<List<CompanyEntity>>() {
+            @Override
+            public void call(Subscriber<? super List<CompanyEntity>> subscriber) {
+                RequestParams params = new RequestParams();
+                params.put("userId", userId);
+                params.put("companyName", companyName);
+                params.put("companyAddress", companyAddress);
+                params.put("sn", sn);
+                SystemRestClient.post("/updateCompany", params, new AsyncHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                        try {
+                            String responseCompanyEntities = new String(responseBody, "UTF-8");
+                            Log.e("responseCompanyEntities", responseCompanyEntities);
+                            subscriber.onNext(companyEntityJsonMapper.transformCompanyEntity(responseCompanyEntities));
+                            subscriber.onCompleted();
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                        Log.e("getUserEntitiesFromApi", "onFailure");
+                        subscriber.onError(new NetworkConnectionException("链接失败"));
+                    }
+                });
+            }
+        });
+    }
+
+    @Override
+    public Observable<List<CompanyEntity>> deleteCompany(int userId,int sn) {
+        return Observable.create(new Observable.OnSubscribe<List<CompanyEntity>>() {
+            @Override
+            public void call(Subscriber<? super List<CompanyEntity>> subscriber) {
+                RequestParams params = new RequestParams();
+                params.put("userId", userId);
+                params.put("sn", sn);
+                SystemRestClient.post("/deleteCompanyBySn", params, new AsyncHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                        try {
+                            String responseCompanyEntities = new String(responseBody, "UTF-8");
+                            Log.e("responseCompanyEntities", responseCompanyEntities);
+                            subscriber.onNext(companyEntityJsonMapper.transformCompanyEntity(responseCompanyEntities));
+                            subscriber.onCompleted();
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                        Log.e("getUserEntitiesFromApi", "onFailure");
+                        subscriber.onError(new NetworkConnectionException("链接失败"));
+                    }
+                });
+            }
+        });
+    }
 
     @Override
     public Observable<List<RoleEntity>> roleList(int userId) {
@@ -1554,7 +1680,7 @@ public class RestApiImpl implements RestApi {
                 params.put("msg", sensorJson);
                 params.put("sn", equipmentSn);
                 Log.e("msg", "msg----->" + sensorJson);
-                Log.e("sn","sn----->"+equipmentSn);
+                Log.e("sn", "sn----->" + equipmentSn);
                 SystemRestClient.post("/changeSensorInDevice", params, new AsyncHttpResponseHandler() {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
@@ -1588,5 +1714,6 @@ public class RestApiImpl implements RestApi {
 
         return isConnected;
     }
+
 
 }

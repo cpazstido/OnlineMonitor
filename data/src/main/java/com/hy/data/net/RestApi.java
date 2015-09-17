@@ -98,10 +98,43 @@ public interface RestApi {
     Observable<String> videoUrl(String dvrType, int dvrId, int channelID, int streamType);
 
     /**
+     * 得到公司列表
      * @param userId 用户唯一标示
      * @return 公司列表
      */
     Observable<List<CompanyEntity>> companyList(int userId);
+
+    /**
+     * 添加公司
+     * @param userId 用户唯一标示
+     * @return 公司列表
+     */
+    Observable<List<CompanyEntity>> addCompany(int userId,int sn ,String companyName,String companyAddress);
+
+    /**
+     * 查询添加公司时可以选择的父公司
+     * @param userId 用户唯一标示
+     * @return 公司列表
+     */
+    Observable<List<CompanyEntity>> queryParetSelectCompany(int userId);
+
+    /**
+     * 修改公司
+     * @param userId 用户唯一标示
+     * @param sn sn
+     * @param companyName 公司名
+     * @param companyAddress 公司地址
+     * @return 返回公司列表
+     */
+    Observable<List<CompanyEntity>> changeCompany(int userId,int sn ,String companyName,String companyAddress);
+
+    /**
+     * 删除公司
+     * @param userId 用户唯一表示
+     * @param sn sn
+     * @return 公司列表
+     */
+    Observable<List<CompanyEntity>> deleteCompany(int userId,int sn);
 
     /**
      * @param userId 用户唯一标示
