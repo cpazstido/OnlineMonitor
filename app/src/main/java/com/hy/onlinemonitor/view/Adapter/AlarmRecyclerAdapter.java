@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.hy.data.utile.SystemRestClient;
 import com.hy.onlinemonitor.R;
 import com.hy.onlinemonitor.bean.AlarmInformation;
 import com.hy.onlinemonitor.bean.AlarmPage;
@@ -75,7 +76,7 @@ public class AlarmRecyclerAdapter extends RecyclerView.Adapter<AlarmViewHolder> 
                 break;
             case "fire":
                 holder.alarmCardTitle.setText(alarmInformation.getDeviceId());
-                Picasso.with(mContext).load(alarmInformation.getVisibleLightImage()).into(holder.alarmCardImage);
+                Picasso.with(mContext).load(SystemRestClient.BASE_PICTURE_URL+alarmInformation.getVisibleLightImage()).into(holder.alarmCardImage);
                 holder.alarmCardView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -89,7 +90,7 @@ public class AlarmRecyclerAdapter extends RecyclerView.Adapter<AlarmViewHolder> 
                 break;
             case "break":
                 holder.alarmCardTitle.setText(alarmInformation.getCollectionTime());
-                Picasso.with(mContext).load(alarmInformation.getBreakImage()).into(holder.alarmCardImage);
+                Picasso.with(mContext).load(SystemRestClient.BASE_PICTURE_URL+alarmInformation.getBreakImage()).into(holder.alarmCardImage);
                 holder.alarmCardView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {

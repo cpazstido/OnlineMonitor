@@ -8,7 +8,7 @@ import rx.Scheduler;
 
 public class LineUseCase extends UseCase{ //用于data与Presenter交互
 
-    private final SMLineRepository smLineRepository; //domain的仓库对象
+    private final SMLineRepository smLineRepository;
     private int type; //类型
 
     public void setType(int type) {
@@ -24,7 +24,7 @@ public class LineUseCase extends UseCase{ //用于data与Presenter交互
     @Override
     protected Observable buildUseCaseObservable() {
         Observable observable = null;
-        switch (type){ //根据不同的type调用仓库中的不同的函数
+        switch (type){
             case 1:
                 observable = smLineRepository.getCompanyList(); //得到公司列表
                 break;
@@ -41,7 +41,7 @@ public class LineUseCase extends UseCase{ //用于data与Presenter交互
                 observable = smLineRepository.getLinePage(); //得到线路page
                 break;
             case 6:
-                observable = smLineRepository.getAllLine(); //得到所有线路
+                observable = smLineRepository.getAllLine();
                 break;
         }
 

@@ -24,7 +24,7 @@ public class AlarmEntityDataMapper {
             domainAlarmInformation.setAlarmInformation(alarmEntity.getAlarmInformation());
             domainAlarmInformation.setVisibleLightImage(alarmEntity.getVisibleLightImage());
             domainAlarmInformation.setInfraredImage(alarmEntity.getInfraredImage());
-            domainAlarmInformation.setBreakImage(alarmEntity.getBreakImage());
+            domainAlarmInformation.setBreakImage(alarmEntity.getBrokenImage());
             domainAlarmInformation.setIsBlowingEquipment(alarmEntity.getIsBlowingEquipment());
             domainAlarmInformation.setVideoFileName(alarmEntity.getVideoFileName());
             domainAlarmInformation.setCollectionTime(alarmEntity.getCollectionTime());

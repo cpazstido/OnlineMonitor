@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">在线监测</string>
 
+    <string name="no_data">暂无数据</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="action_add">添加</string>

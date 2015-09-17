@@ -206,11 +206,12 @@ public class RestApiImpl implements RestApi {
                 params.put("curProject", choiceType);
                 params.put("pageNum", pageNumber);
 
-                SystemRestClient.post("/getEquipmentList", params, new AsyncHttpResponseHandler() {
+                SystemRestClient.post("/getEquipmentInformationPage", params, new AsyncHttpResponseHandler() {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                         try {
                             String responseEquipmentEntities = new String(responseBody, "UTF-8");
+                            Log.e("getEquipment",responseEquipmentEntities);
                             subscriber.onNext(pageEntityJsonMapper.transformEquipmentInforPageEntity(responseEquipmentEntities));
                             subscriber.onCompleted();
                         } catch (UnsupportedEncodingException e) {

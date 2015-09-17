@@ -17,7 +17,7 @@ import butterknife.ButterKnife;
  * Created by Administrator on 2015/7/14.
  */
 public class TestActivity extends AppCompatActivity {
-
+    public static String aaa = new String();
     @Bind(R.id.toolbar)
     Toolbar toolbar;
     @Bind(R.id.btn)

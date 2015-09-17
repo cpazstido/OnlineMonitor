@@ -12,10 +12,10 @@ public class AlarmEntity {
     private String alarmInformation;
     private String visibleLightImage;
     private String infraredImage;
-    private String breakImage;
+    private String brokenImage;
     private String isBlowingEquipment;
     private String videoFileName;
-    private String CollectionTime;
+    private String collectionTime;
     private String circuitName;
 
     public AlarmEntity() {
@@ -93,12 +93,12 @@ public class AlarmEntity {
         this.infraredImage = infraredImage;
     }
 
-    public String getBreakImage() {
-        return breakImage;
+    public String getBrokenImage() {
+        return brokenImage;
     }
 
-    public void setBreakImage(String breakImage) {
-        this.breakImage = breakImage;
+    public void setBrokenImage(String brokenImage) {
+        this.brokenImage = brokenImage;
     }
 
     public String getIsBlowingEquipment() {
@@ -118,10 +118,10 @@ public class AlarmEntity {
     }
 
     public String getCollectionTime() {
-        return CollectionTime;
+        return collectionTime;
     }
 
     public void setCollectionTime(String collectionTime) {
-        CollectionTime = collectionTime;
+        this.collectionTime = collectionTime;
     }
 }
