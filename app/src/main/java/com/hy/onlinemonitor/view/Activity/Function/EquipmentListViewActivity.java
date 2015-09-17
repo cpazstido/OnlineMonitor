@@ -6,6 +6,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.View;
+import android.widget.TextView;
 
 import com.baoyz.widget.PullRefreshLayout;
 import com.hy.onlinemonitor.R;
@@ -22,12 +24,14 @@ import butterknife.ButterKnife;
 
 public class EquipmentListViewActivity extends BaseActivity implements LoadDataView {
 
-    @Bind(R.id.toolbar)
+    @Bind(R.id.equipment_toolbar)
     Toolbar toolbar;
     @Bind(R.id.rv_recyclerview_data)
     RecyclerView rvRecyclerviewData;
     @Bind(R.id.swipeRefreshLayout)
     PullRefreshLayout swipeRefreshLayout;
+    @Bind(R.id.show_no_data)
+    TextView showNoData;
     private EquipmentRecyclerAdapter mAdapter;
     private EquipmentInforPage equipmentInforPage;
     private int selectedType;
@@ -35,12 +39,12 @@ public class EquipmentListViewActivity extends BaseActivity implements LoadDataV
     private EquipmentListPresenter equipmentListPresenter;
     private AlertDialog loadingDialog;
     private LinearLayoutManager linearLayoutManager;
-    private int pageNumber = 1 ;
+    private int pageNumber = 1;
     private int lastVisibleItem;
     private boolean isLoadingMore = false;
+
     @Override
     protected Toolbar getToolbar() {
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle(R.string.equipment_list);
         return toolbar;
     }
@@ -52,12 +56,18 @@ public class EquipmentListViewActivity extends BaseActivity implements LoadDataV
     }
 
     private void loadEquipmentList(int pageNumber) {
-        this.equipmentListPresenter.initialize(userId,selectedType,pageNumber);
+        this.equipmentListPresenter.initialize(userId, selectedType, pageNumber);
     }
+
     public void renderEquipmentList(EquipmentInforPage equipmentInforPage) {
         if (equipmentInforPage != null) {
-            this.equipmentInforPage = equipmentInforPage;
-            this.mAdapter.setEquipmentCollection(equipmentInforPage.getList());
+            if(equipmentInforPage.getList().size() !=0) {
+                showNoData.setVisibility(View.GONE);
+                this.equipmentInforPage = equipmentInforPage;
+                this.mAdapter.setEquipmentCollection(equipmentInforPage.getList());
+            }else{
+                showNoData.setVisibility(View.VISIBLE);
+            }
         }
     }
 
@@ -87,14 +97,12 @@ public class EquipmentListViewActivity extends BaseActivity implements LoadDataV
         selectedType = this.getUser().getSelectionType();
         userId = this.getUser().getUserId();
         initPresenter();
-        rvRecyclerviewData = (RecyclerView) findViewById(R.id.rv_recyclerview_data);
-        swipeRefreshLayout = (PullRefreshLayout) findViewById(R.id.swipeRefreshLayout);
         linearLayoutManager = new LinearLayoutManager(this);
         rvRecyclerviewData.setLayoutManager(linearLayoutManager);
         rvRecyclerviewData.setHasFixedSize(true);
         equipmentInforPage = new EquipmentInforPage();
 
-        mAdapter = new EquipmentRecyclerAdapter(selectedType, EquipmentListViewActivity.this, equipmentInforPage,getUser().getUserId());
+        mAdapter = new EquipmentRecyclerAdapter(selectedType, EquipmentListViewActivity.this, equipmentInforPage, getUser().getUserId());
         rvRecyclerviewData.setAdapter(mAdapter);
 
         /*下拉刷新更多*/
@@ -104,6 +112,7 @@ public class EquipmentListViewActivity extends BaseActivity implements LoadDataV
                 swipeRefreshLayout.postDelayed(new Runnable() {
                     @Override
                     public void run() {
+                        EquipmentListViewActivity.this.loadEquipmentList(1);
                         swipeRefreshLayout.setRefreshing(false);
                     }
                 }, 4000);
@@ -125,13 +134,13 @@ public class EquipmentListViewActivity extends BaseActivity implements LoadDataV
                 lastVisibleItem = linearLayoutManager.findLastVisibleItemPosition();
                 int totalItemCount = mAdapter.getItemCount();
 //                Log.e("show","lastVisibleItem"+lastVisibleItem+"--totalItemCount"+totalItemCount);
-                if(lastVisibleItem == totalItemCount -1 && dy > 0 && equipmentInforPage.getRowCount() >totalItemCount){
+                if (lastVisibleItem == totalItemCount - 1 && dy > 0 && equipmentInforPage.getRowCount() > totalItemCount) {
                     if (!isLoadingMore) {
                         isLoadingMore = true;
                         ShowUtile.toastShow(EquipmentListViewActivity.this, "加载更多");
                         pageNumber++;
                         loadEquipmentList(pageNumber);//这里多线程也要手动控制isLoadingMore
-                    }else{
+                    } else {
                         ShowUtile.toastShow(EquipmentListViewActivity.this, "正在加载中..");
                     }
                 }
@@ -149,5 +158,4 @@ public class EquipmentListViewActivity extends BaseActivity implements LoadDataV
         this.pageNumber = 1;
         this.loadEquipmentList(1);
     }
-
 }

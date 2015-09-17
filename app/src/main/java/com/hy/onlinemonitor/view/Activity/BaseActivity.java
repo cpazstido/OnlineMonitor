@@ -1,6 +1,7 @@
 package com.hy.onlinemonitor.view.Activity;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -13,6 +14,14 @@ import android.widget.TextView;
 import com.hy.onlinemonitor.R;
 import com.hy.onlinemonitor.bean.User;
 import com.hy.onlinemonitor.presenter.UserPresenter;
+import com.hy.onlinemonitor.view.Activity.Function.AlarmInformationActivity;
+import com.hy.onlinemonitor.view.Activity.Function.EquipmentListViewActivity;
+import com.hy.onlinemonitor.view.Activity.Function.MapActivity;
+import com.hy.onlinemonitor.view.Activity.SystemManagement.AdministratorManageActivity;
+import com.hy.onlinemonitor.view.Activity.SystemManagement.EquipmentManageActivity;
+import com.hy.onlinemonitor.view.Activity.SystemManagement.JurisdictionManageActivity;
+import com.hy.onlinemonitor.view.Activity.SystemManagement.LineManageActivity;
+import com.hy.onlinemonitor.view.Activity.SystemManagement.PoleManageActivity;
 import com.hy.onlinemonitor.view.InitView;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.iconics.typeface.FontAwesome;
@@ -41,7 +50,7 @@ public abstract class BaseActivity extends AppCompatActivity implements InitView
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.e("recy","onCreate");
+        Log.e("recy", "onCreate");
         super.onCreate(savedInstanceState);
         setOwnContentView();
         initUser();
@@ -49,27 +58,28 @@ public abstract class BaseActivity extends AppCompatActivity implements InitView
         setSupportActionBar(toolbar);
         headView = LayoutInflater.from(this).inflate(R.layout.drawer_header, null);
         userNameTV = (TextView) headView.findViewById(R.id.tv_user_name);
-
+        Drawable companyDrawable = getResources().getDrawable(R.drawable.ic_company);
+        Drawable towerDrawable = getResources().getDrawable(R.drawable.ic_tower);
         result = new DrawerBuilder().withActivity(this)
                 .withToolbar(toolbar)
                 .addDrawerItems(
-                        new PrimaryDrawerItem().withName(R.string.main).withIcon(GoogleMaterial.Icon.gmd_menu).withIdentifier(2).withCheckable(true),
-                        new PrimaryDrawerItem().withName(R.string.change_equipment).withIcon(GoogleMaterial.Icon.gmd_track_changes).withIdentifier(1).withCheckable(true),
+                        new PrimaryDrawerItem().withName(R.string.main).withIcon(GoogleMaterial.Icon.gmd_home).withIdentifier(2).withCheckable(true),
+                        new PrimaryDrawerItem().withName(R.string.change_equipment).withIcon(GoogleMaterial.Icon.gmd_swap_horiz).withIdentifier(1).withCheckable(true),
                         new SectionDrawerItem().withName(R.string.function),
-                        new SecondaryDrawerItem().withName(R.string.equipment_list).withIcon(FontAwesome.Icon.faw_legal).withIdentifier(3).withCheckable(true),
-                        new SecondaryDrawerItem().withName(R.string.alarm_information).withIcon(GoogleMaterial.Icon.gmd_format_color_fill).withIdentifier(4).withTag("Bullhorn"),
-                        new SecondaryDrawerItem().withName(R.string.map).withIcon(GoogleMaterial.Icon.gmd_format_color_fill).withIdentifier(5).withTag("Bullhorn"),
+                        new SecondaryDrawerItem().withName(R.string.equipment_list).withIcon(FontAwesome.Icon.faw_list).withIdentifier(3).withCheckable(true),
+                        new SecondaryDrawerItem().withName(R.string.alarm_information).withIcon(FontAwesome.Icon.faw_bell).withIdentifier(4).withTag("Bullhorn"),
+                        new SecondaryDrawerItem().withName(R.string.map).withIcon(GoogleMaterial.Icon.gmd_pin_drop).withIdentifier(5).withTag("Bullhorn"),
                         new SectionDrawerItem().withName(R.string.system_management),
-                        new SecondaryDrawerItem().withName(R.string.company).withIcon(FontAwesome.Icon.faw_github).withIdentifier(6).withCheckable(true),
-                        new SecondaryDrawerItem().withName(R.string.administrator).withIcon(GoogleMaterial.Icon.gmd_format_color_fill).withIdentifier(7).withTag("Bullhorn"),
-                        new SecondaryDrawerItem().withName(R.string.jurisdiction).withIcon(GoogleMaterial.Icon.gmd_airline_seat_flat).withIdentifier(8).withTag("Bullhorn"),
-                        new SecondaryDrawerItem().withName(R.string.line).withIcon(GoogleMaterial.Icon.gmd_format_color_fill).withIdentifier(9).withTag("Bullhorn"),
-                        new SecondaryDrawerItem().withName(R.string.tower).withIcon(GoogleMaterial.Icon.gmd_format_color_fill).withIdentifier(10).withTag("Bullhorn"),
-                        new SecondaryDrawerItem().withName(R.string.equipment).withIcon(GoogleMaterial.Icon.gmd_format_color_fill).withIdentifier(11).withTag("Bullhorn"),
+                        new SecondaryDrawerItem().withName(R.string.company).withIcon(companyDrawable).withIdentifier(6).withCheckable(true),
+                        new SecondaryDrawerItem().withName(R.string.administrator).withIcon(GoogleMaterial.Icon.gmd_perm_identity).withIdentifier(7).withTag("Bullhorn"),
+                        new SecondaryDrawerItem().withName(R.string.jurisdiction).withIcon(FontAwesome.Icon.faw_key).withIdentifier(8).withTag("Bullhorn"),
+                        new SecondaryDrawerItem().withName(R.string.line).withIcon(FontAwesome.Icon.faw_minus).withIdentifier(9).withTag("Bullhorn"),
+                        new SecondaryDrawerItem().withName(R.string.tower).withIcon(towerDrawable).withIdentifier(10).withTag("Bullhorn"),
+                        new SecondaryDrawerItem().withName(R.string.equipment).withIcon(GoogleMaterial.Icon.gmd_devices).withIdentifier(11).withTag("Bullhorn"),
                         new DividerDrawerItem(),
-                        new PrimaryDrawerItem().withName(R.string.personal_information).withIcon(GoogleMaterial.Icon.gmd_wb_sunny).withIdentifier(12).withCheckable(true),
-                        new PrimaryDrawerItem().withName(R.string.about).withIcon(GoogleMaterial.Icon.gmd_wb_sunny).withIdentifier(13).withCheckable(true),
-                        new PrimaryDrawerItem().withName(R.string.exit).withIcon(GoogleMaterial.Icon.gmd_wb_sunny).withIdentifier(14).withCheckable(true)
+                        new PrimaryDrawerItem().withName(R.string.personal_information).withIcon(GoogleMaterial.Icon.gmd_account_circle).withIdentifier(12).withCheckable(true),
+                        new PrimaryDrawerItem().withName(R.string.about).withIcon(GoogleMaterial.Icon.gmd_info_outline).withIdentifier(13).withCheckable(true),
+                        new PrimaryDrawerItem().withName(R.string.exit).withIcon(GoogleMaterial.Icon.gmd_exit_to_app).withIdentifier(14).withCheckable(true)
                 )
                 .withOnDrawerItemClickListener(
                         new Drawer.OnDrawerItemClickListener() {
@@ -84,8 +94,8 @@ public abstract class BaseActivity extends AppCompatActivity implements InitView
                                         case 2://主界面
                                             intent = new Intent(BaseActivity.this, MainActivity.class);
                                             break;
-                                      /*  case 3://设备列表
-                                            intent = new Intent(BaseActivity.this, );
+                                        case 3://设备列表
+                                            intent = new Intent(BaseActivity.this, EquipmentListViewActivity.class);
                                             break;
                                         case 4://报警信息
                                             intent = new Intent(BaseActivity.this, AlarmInformationActivity.class);
@@ -93,23 +103,23 @@ public abstract class BaseActivity extends AppCompatActivity implements InitView
                                         case 5://电子地图
                                             intent = new Intent(BaseActivity.this, MapActivity.class);
                                             break;
-                                        case 6:
+                                        case 6://系统管理-公司
 //                                            intent = new Intent(BaseActivity.this,);
                                             break;
-                                        case 7:
-//                                            intent = new Intent(BaseActivity.this,);
+                                        case 7://系统管理-管理员
+                                            intent = new Intent(BaseActivity.this, AdministratorManageActivity.class);
                                             break;
-                                        case 8:
-//                                            intent = new Intent(BaseActivity.this,);
+                                        case 8://系统管理-权限
+                                            intent = new Intent(BaseActivity.this, JurisdictionManageActivity.class);
                                             break;
-                                        case 9:
-//                                            intent = new Intent(BaseActivity.this,);
+                                        case 9://系统管理-线路
+                                            intent = new Intent(BaseActivity.this, LineManageActivity.class);
                                             break;
-                                        case 10:
-//                                            intent = new Intent(BaseActivity.this,);
+                                        case 10://系统管理-杆塔
+                                            intent = new Intent(BaseActivity.this, PoleManageActivity.class);
                                             break;
-                                        case 11:
-//                                            intent = new Intent(BaseActivity.this,);
+                                        case 11://系统管理-设备
+                                            intent = new Intent(BaseActivity.this, EquipmentManageActivity.class);
                                             break;
                                         case 12://个人信息
 //                                            intent = new Intent(BaseActivity.this,);
@@ -120,7 +130,7 @@ public abstract class BaseActivity extends AppCompatActivity implements InitView
                                         case 14://退出
 //                                            intent = new Intent(BaseActivity.this,);
                                             break;
-                                            */
+
                                     }
                                     if (intent != null) {
                                         BaseActivity.this.startActivity(intent);

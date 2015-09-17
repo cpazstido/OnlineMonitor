@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.github.florent37.materialviewpager.MaterialViewPagerHelper;
 import com.github.florent37.materialviewpager.adapter.RecyclerViewMaterialAdapter;
@@ -28,7 +29,8 @@ public class RecyclerViewFragment extends Fragment implements AlarmListView {
 
     @Bind(R.id.recyclerView)
     RecyclerView recyclerView;
-
+    @Bind(R.id.show_no_data)
+    TextView showNoData;
     private boolean isNoInit = true;
     private AlarmRecyclerAdapter mAdapter;
     private RecyclerView.Adapter RcAdapter;
@@ -67,7 +69,7 @@ public class RecyclerViewFragment extends Fragment implements AlarmListView {
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
         alarmPage = new AlarmPage();
-        mAdapter = new AlarmRecyclerAdapter(alarmPage, mContext, showType,queryAlarmType,status);
+        mAdapter = new AlarmRecyclerAdapter(alarmPage, mContext, showType, queryAlarmType, status);
         RcAdapter = new RecyclerViewMaterialAdapter(mAdapter);
         recyclerView.setAdapter(RcAdapter);
         MaterialViewPagerHelper.registerRecyclerView(getActivity(), recyclerView, null);
@@ -78,8 +80,8 @@ public class RecyclerViewFragment extends Fragment implements AlarmListView {
         this.alarmPresenter.setView(this);
     }
 
-    private void loadAlarmList(int userId,String queryAlarmType,int status,int pageNumber) {
-        this.alarmPresenter.initialize(userId,queryAlarmType,status,pageNumber);
+    private void loadAlarmList(int userId, String queryAlarmType, int status, int pageNumber) {
+        this.alarmPresenter.initialize(userId, queryAlarmType, status, pageNumber);
     }
 
     @Override
@@ -90,7 +92,6 @@ public class RecyclerViewFragment extends Fragment implements AlarmListView {
 
     @Override
     public void showLoading() {
-
     }
 
     @Override
@@ -110,8 +111,16 @@ public class RecyclerViewFragment extends Fragment implements AlarmListView {
 
     @Override
     public void renderAlarmList(AlarmPage alarmPage) {
-        this.mAdapter.setAlarmCollection(alarmPage.getList());
-        RcAdapter.notifyDataSetChanged();
+        Log.e("alarmPage",alarmPage.toString());
+        if (alarmPage.getRowCount() == 0) {
+            recyclerView.setVisibility(View.GONE);
+            showNoData.setVisibility(View.VISIBLE);
+        } else {
+            recyclerView.setVisibility(View.VISIBLE);
+            showNoData.setVisibility(View.GONE);
+            this.mAdapter.setAlarmCollection(alarmPage.getList());
+            RcAdapter.notifyDataSetChanged();
+        }
     }
 
     @Override
@@ -125,32 +134,32 @@ public class RecyclerViewFragment extends Fragment implements AlarmListView {
 
             switch (alarmTitles.get(postion)) {
                 case "山火新报警":
-                    queryAlarmType="fire";
+                    queryAlarmType = "fire";
                     status = 0;
                     break;
                 case "山火历史报警":
-                    queryAlarmType="fire";
+                    queryAlarmType = "fire";
                     status = 1;
                     break;
                 case "传感器新报警":
-                    queryAlarmType="sensor";
+                    queryAlarmType = "sensor";
                     status = 0;
                     break;
-                case"传感器历史报警":
-                    queryAlarmType="sensor";
+                case "传感器历史报警":
+                    queryAlarmType = "sensor";
                     status = 1;
                     break;
                 case "外破新报警":
-                    queryAlarmType="break";
+                    queryAlarmType = "break";
                     status = 0;
                     break;
-                case"外破历史报警":
-                    queryAlarmType="break";
+                case "外破历史报警":
+                    queryAlarmType = "break";
                     status = 1;
                     break;
             }
 
-            this.loadAlarmList(userId, queryAlarmType,status,1);
+            this.loadAlarmList(userId, queryAlarmType, status, 1);
         }
     }
 }

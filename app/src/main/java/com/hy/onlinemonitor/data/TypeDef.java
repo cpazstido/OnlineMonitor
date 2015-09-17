@@ -85,29 +85,29 @@ public class TypeDef {
 
     //子分类--功能
     public static final String[] typeFireFunctionText = { "设备列表", "报警信息", "电子地图"};
-    public static final int[] typeFireFunctionImages = {R.drawable.gv_tower, R.drawable.gv_fire, R.drawable.gv_tower};
+    public static final int[] typeFireFunctionImages = {R.drawable.ic_equipemnt_list, R.drawable.ic_arlarm, R.drawable.ic_map};
 
     public static final String[] typeBreakFunction = { "设备列表", "报警信息", "电子地图"};
-    public static final int[] typeBreakFunctionImages = {R.drawable.gv_tower, R.drawable.gv_fire,R.drawable.gv_tower};
+    public static final int[] typeBreakFunctionImages = {R.drawable.ic_equipemnt_list, R.drawable.ic_arlarm,R.drawable.ic_map};
 
     public static final String[] typeNormalFunction = { "设备列表", "报警信息","电子地图"};
-    public static final int[] typeNormalFunctionImages = {R.drawable.gv_tower, R.drawable.gv_fire,R.drawable.gv_tower};
+    public static final int[] typeNormalFunctionImages = {R.drawable.ic_equipemnt_list, R.drawable.ic_arlarm,R.drawable.ic_map};
 
     public static final String[] typeAutoPlaneFunction = { "设备列表","电子地图"};
-    public static final int[] typeAutoPlaneFunctionImages = {R.drawable.gv_tower,R.drawable.gv_tower};
+    public static final int[] typeAutoPlaneFunctionImages = {R.drawable.ic_equipemnt_list,R.drawable.ic_map};
 
     //子分类--系统管理
     public static final String[] typeFireManage = {"公司", "管理员", "权限", "线路", "杆塔", "设备"};
-    public static final int[] typeFireManageImages = {R.drawable.gv_tower, R.drawable.gv_tower, R.drawable.gv_tower, R.drawable.gv_tower, R.drawable.gv_tower, R.drawable.gv_tower};
+    public static final int[] typeFireManageImages = {R.drawable.ic_companys, R.drawable.ic_admin, R.drawable.ic_jurisdiction, R.drawable.ic_line, R.drawable.ic_pole, R.drawable.ic_equipment};
 
     public static final String[] typeBreakManage = {"公司", "管理员", "权限", "线路", "杆塔", "设备"};
-    public static final int[] typeBreakManageImages = {R.drawable.gv_tower, R.drawable.gv_tower, R.drawable.gv_tower, R.drawable.gv_tower, R.drawable.gv_tower, R.drawable.gv_tower};
+    public static final int[] typeBreakManageImages = {R.drawable.ic_companys, R.drawable.ic_admin, R.drawable.ic_jurisdiction, R.drawable.ic_line, R.drawable.ic_pole, R.drawable.ic_equipment};
 
     public static final String[] typeNormalManage = {"公司", "管理员", "权限", "线路", "杆塔", "设备"};
-    public static final int[] typeNormalManageImages = {R.drawable.gv_tower, R.drawable.gv_tower, R.drawable.gv_tower, R.drawable.gv_tower, R.drawable.gv_tower, R.drawable.gv_tower};
+    public static final int[] typeNormalManageImages = {R.drawable.ic_companys, R.drawable.ic_admin, R.drawable.ic_jurisdiction, R.drawable.ic_line, R.drawable.ic_pole, R.drawable.ic_equipment};
 
     public static final String[] typeAutoPlaneManage = {"公司", "管理员", "权限", "线路", "杆塔", "设备"};
-    public static final int[] typeAutoPlaneManageImages = {R.drawable.gv_tower, R.drawable.gv_tower, R.drawable.gv_tower, R.drawable.gv_tower, R.drawable.gv_tower, R.drawable.gv_tower};
+    public static final int[] typeAutoPlaneManageImages = {R.drawable.ic_companys, R.drawable.ic_admin, R.drawable.ic_jurisdiction, R.drawable.ic_line, R.drawable.ic_pole, R.drawable.ic_equipment};
 
     public static final String[] typeFireMonitor = { "状态统计", "状态"};
     public static final int[] typeFireMonitorImages =  {R.drawable.gv_tower, R.drawable.gv_tower};

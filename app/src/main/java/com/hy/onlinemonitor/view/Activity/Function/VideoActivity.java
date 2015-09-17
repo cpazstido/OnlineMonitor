@@ -24,6 +24,7 @@ import com.rey.material.widget.Button;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import io.vov.vitamio.LibsChecker;
+import io.vov.vitamio.MediaPlayer;
 import io.vov.vitamio.widget.MediaController;
 import io.vov.vitamio.widget.VideoView;
 
@@ -115,14 +116,14 @@ public class VideoActivity extends AppCompatActivity implements InitView, LoadDa
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
-//        videoView.setMediaController(new MediaController(this));
-//        videoView.requestFocus();
-//        videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-//            @Override
-//            public void onPrepared(MediaPlayer mediaPlayer) {
-//                mediaPlayer.setPlaybackSpeed(1.0f);
-//            }
-//        });
+        videoView.setMediaController(new MediaController(this));
+        videoView.requestFocus();
+        videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            @Override
+            public void onPrepared(MediaPlayer mediaPlayer) {
+                mediaPlayer.setPlaybackSpeed(1.0f);
+            }
+        });
     }
 
     @Override

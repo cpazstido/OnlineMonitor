@@ -9,6 +9,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
 import com.baoyz.widget.PullRefreshLayout;
 import com.hy.onlinemonitor.R;
@@ -26,12 +28,14 @@ import butterknife.ButterKnife;
  * Created by 24363 on 2015/8/20.
  */
 public class SingleAlarmInformationActivity extends AppCompatActivity implements AlarmListView, InitView {
-    @Bind(R.id.toolbar)
+    @Bind(R.id.equipment_toolbar)
     Toolbar toolbar;
     @Bind(R.id.rv_recyclerview_data)
     RecyclerView rvRecyclerviewData;
     @Bind(R.id.swipeRefreshLayout)
     PullRefreshLayout swipeRefreshLayout;
+    @Bind(R.id.show_no_data)
+    TextView showNoData;
     private AlarmRecyclerAdapter mAdapter;
     private int showType;
     private AlarmPresenter alarmPresenter;
@@ -118,8 +122,13 @@ public class SingleAlarmInformationActivity extends AppCompatActivity implements
     @Override
     public void renderAlarmList(AlarmPage alarmPage) {
         if (alarmPage != null) {
-            this.alarmPage = alarmPage;
-            this.mAdapter.setAlarmCollection(alarmPage.getList());
+            if(alarmPage.getList().size() != 0 ) {
+                showNoData.setVisibility(View.GONE);
+                this.alarmPage = alarmPage;
+                this.mAdapter.setAlarmCollection(alarmPage.getList());
+            }else{
+                showNoData.setVisibility(View.VISIBLE);
+            }
         }
     }
 
