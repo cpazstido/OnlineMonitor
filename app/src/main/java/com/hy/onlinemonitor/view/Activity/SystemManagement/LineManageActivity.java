@@ -21,65 +21,64 @@ import com.rey.material.widget.Spinner;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by 24363 on 2015/9/8.
- */
-public class LineManageActivity extends SMBaseActivity {
-    private SMLineRecyclerAdapter mAdapter;
-    private SMLinePresenter smLinePresenter;
-    private LinePage linePage;
-    private boolean isLoadingMore = false;
-    private List<Company> companyList;
-    private List<String> companyNameList;
-    private int pageNumber = 1;
-    private int lastVisibleItem;
-    private int theCompanySn = -1;
+public class LineManageActivity extends SMBaseActivity {//系统管理-线路管理界面
+    private SMLineRecyclerAdapter mAdapter; //RecycleView的适配器
+    private SMLinePresenter smLinePresenter;//线路Presenter
+    private LinePage linePage;//线路page对象
+    private boolean isLoadingMore = false; //是否正在加载中
+    private List<Company> companyList; //公司列表
+    private int pageNumber = 1; //当前显示页数
+    private int lastVisibleItem; //最后一个课件的item的序号
+    private int theCompanySn = -1; //公司sn
 
+    //第一步执行
     @Override
-    protected void initTitle() {
-        toolbar.setTitle(R.string.system_management);
-        toolbar.setSubtitle(R.string.line_management);
+    protected void initTitle() {//初始化标题
+        toolbar.setTitle(R.string.system_management); //主标题设置
+        toolbar.setSubtitle(R.string.line_management); //副标题设置
     }
 
+    //第二步执行
     @Override
-    protected void initViewDisplay() {
-        spinnerChoiceCompany.setVisibility(View.VISIBLE);
+    protected void initViewDisplay() {//初始化页面显示
+        spinnerChoiceCompany.setVisibility(View.VISIBLE); //设置spinner显示
     }
 
+    //第三部执行
     @Override
-    protected void initRvAdapter() {
-        mAdapter = new SMLineRecyclerAdapter(LineManageActivity.this, new ArrayList<Line>());
-        ((SMLineRecyclerAdapter) mAdapter).setMode(Attributes.Mode.Single);
-        smRecyclerView.setAdapter(mAdapter);
+    protected void initRvAdapter() {//初始化适配器
+        mAdapter = new SMLineRecyclerAdapter(LineManageActivity.this, new ArrayList<Line>());//创建一个适配器,传入context对象以及一个ArrayList
+        mAdapter.setMode(Attributes.Mode.Single);//设置适配器模式
+        smRecyclerView.setAdapter(mAdapter); //为RecyclerView设置适配器
 
-        smRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+        smRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {//为RecyclerView添加滚动事件监听
             @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) { //滚动完成后出发
                 super.onScrollStateChanged(recyclerView, newState);
+                //判断是否到达底部
                 if (newState == RecyclerView.SCROLL_STATE_IDLE && lastVisibleItem + 1 == mAdapter.getItemCount() && mAdapter.getItemCount() >= linePage.getRowCount()) {
                     Log.e("hell", "到达底部");
-                    ShowUtile.toastShow(LineManageActivity.this, "没有更多数据....");
-
+                    ShowUtile.toastShow(LineManageActivity.this, "没有更多数据....");//显示
                 }
             }
 
             @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                lastVisibleItem = linearLayoutManager.findLastVisibleItemPosition();
-                int totalItemCount = mAdapter.getItemCount();
-                int pageSize = linePage.getPageSize();
-                Log.e("show", "lastVisibleItem" + lastVisibleItem + "--totalItemCount" + totalItemCount+"pageSize"+pageSize);
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) { //滚动中监听
+                lastVisibleItem = linearLayoutManager.findLastVisibleItemPosition();//得到最后一个可见的item的序号
+                int totalItemCount = mAdapter.getItemCount(); //得到当前显示的总个数
+//                Log.e("show", "lastVisibleItem" + lastVisibleItem + "--totalItemCount" + totalItemCount+"pageSize"+pageSize);
+                //当可见到达总个数-1是,并且page对象总总数大于当前加载了的数目,则进行加载更多
                 if (lastVisibleItem >= totalItemCount - 1 && dy > 0 && linePage.getRowCount() > totalItemCount) {
-                    if (!isLoadingMore) {
+                    if (!isLoadingMore) { //没有处于正在加载中
                         ShowUtile.toastShow(LineManageActivity.this, "加载更多");
-                        isLoadingMore = true;
-                        pageNumber++;
-                        //根据pageNumber加载更多
+                        isLoadingMore = true; //正在加载中..
+                        pageNumber++; //页数+1
+                        //根据CompanySn来判断是加载所有的还是加载部分
                         switch (theCompanySn) {
-                            case 0:
+                            case 0: //加载所有
                                 LineManageActivity.this.smLinePresenter.loadAllLine(getUser().getUserId(), pageNumber);
                                 break;
-                            default:
+                            default: //加载指定公司的线路
                                 LineManageActivity.this.smLinePresenter.loadLine(getUser().getUserId(), theCompanySn, pageNumber);
                                 break;
                         }
@@ -91,63 +90,63 @@ public class LineManageActivity extends SMBaseActivity {
         });
     }
 
+    //第四部执行
     @Override
-    protected void initRvData() {
-        smLinePresenter = new SMLinePresenter(LineManageActivity.this);
-        smLinePresenter.setLineManageActivity(this);
-        smLinePresenter.loadCompany(getUser().getUserId());
+    protected void initRvData() {//初始化数据
+        smLinePresenter = new SMLinePresenter(LineManageActivity.this); //创建一个presenter
+        smLinePresenter.setLineManageActivity(this); //将当前Activity对象传入到presenter,方便presenter调用Activity中的函数控制界面显示
+        smLinePresenter.loadCompany(getUser().getUserId());//加载公司列表
     }
 
     @Override
-    protected void menuDataLoad() {
+    protected void menuDataLoad() { //点击了右上角的添加按钮触发的函数
+        //创建一个对话框,进行线路的添加
         MaterialDialog dialog = new MaterialDialog.Builder(LineManageActivity.this)
-                .title(R.string.line_add)
-                .customView(R.layout.dialog_line_change, true)
-                .positiveText(R.string.submit)
-                .negativeText(R.string.cancel)
-                .callback(new MaterialDialog.ButtonCallback() {
+                .title(R.string.line_add) //对话框标题
+                .customView(R.layout.dialog_line_change, true) //对话框使用的自定义界面
+                .positiveText(R.string.submit) //positive按钮文字
+                .negativeText(R.string.cancel)//negative按钮文字
+                .callback(new MaterialDialog.ButtonCallback() { //回调函数
                     @Override
                     public void onPositive(MaterialDialog dialog) {
-                        String newName = ((EditText) dialog.getCustomView().findViewById(R.id.dialog_line_name)).getText().toString();
-                        String newTrend = ((EditText) dialog.getCustomView().findViewById(R.id.dialog_line_trend)).getText().toString();
-                        String newFinish = ((EditText) dialog.getCustomView().findViewById(R.id.dialog_line_finish)).getText().toString();
-                        String newStart = ((EditText) dialog.getCustomView().findViewById(R.id.dialog_line_start)).getText().toString();
-                        String newVoltageLevel = ((EditText) dialog.getCustomView().findViewById(R.id.dialog_line_voltage_level)).getText().toString();
-                        int companySn = companyList.get(((android.widget.Spinner) dialog.getCustomView().findViewById(R.id.dialog_line_company)).getSelectedItemPosition()).getSn();
-                        LineManageActivity.this.smLinePresenter.addLine(companySn, newName, newStart, newFinish, newTrend, newVoltageLevel);
-                        spinnerChoiceCompany.setSelection(0);
+                        String newName = ((EditText) dialog.getCustomView().findViewById(R.id.dialog_line_name)).getText().toString(); //取得对话框上的线路名
+                        String newTrend = ((EditText) dialog.getCustomView().findViewById(R.id.dialog_line_trend)).getText().toString(); //取得对话框上的线路走向
+                        String newFinish = ((EditText) dialog.getCustomView().findViewById(R.id.dialog_line_finish)).getText().toString(); ////取得对话框上的重点
+                        String newStart = ((EditText) dialog.getCustomView().findViewById(R.id.dialog_line_start)).getText().toString();//取得对话框上的起点
+                        String newVoltageLevel = ((EditText) dialog.getCustomView().findViewById(R.id.dialog_line_voltage_level)).getText().toString(); //取得对话框上的电压等级
+                        int companySn = companyList.get(((android.widget.Spinner) dialog.getCustomView().findViewById(R.id.dialog_line_company)).getSelectedItemPosition()).getSn(); ////取得对话框上的spinner上的选择,并获取公司sn
+                        LineManageActivity.this.smLinePresenter.addLine(companySn, newName, newStart, newFinish, newTrend, newVoltageLevel);//添加线路
+                        spinnerChoiceCompany.setSelection(0);//设置spinner的selection
                         super.onPositive(dialog);
                     }
 
-                    @Override
-                    public void onNegative(MaterialDialog dialog) {
-                        super.onNegative(dialog);
-                    }
                 })
                 .build();
 
         android.widget.Spinner companySpinner = (android.widget.Spinner) dialog.getCustomView().findViewById(R.id.dialog_line_company);
-        companyNameList = new ArrayList<>();
+        List<String> companyNameList = new ArrayList<>();
         for (Company company : companyList) {
-            companyNameList.add(company.getCompanyName());
+            companyNameList.add(company.getCompanyName()); //取得所有的公司名
         }
+        //为spinner设置适配器
         companySpinner.setAdapter(new ArrayAdapter<>(dialog.getContext(), android.R.layout.simple_list_item_1, companyNameList));
 
+        //显示对话框
         dialog.show();
     }
 
     @Override
-    public void showLoading() {
+    public void showLoading() {//显示等待对话框
         alertDialog.show();
     }
 
     @Override
-    public void hideLoading() {
+    public void hideLoading() {//隐藏等待对话框
         alertDialog.cancel();
     }
 
     @Override
-    public void showError(String message) {
+    public void showError(String message) {//显示错误信息
 
     }
 
@@ -156,7 +155,7 @@ public class LineManageActivity extends SMBaseActivity {
         return LineManageActivity.this;
     }
 
-    public void setCompanyList(List<Company> mList) {
+    public void setCompanyList(List<Company> mList) { //通过presenter调用的函数,设置公司列表
         List<String> list = new ArrayList<>();
         list.add("所有公司");
         for (Company company : mList) {
@@ -192,11 +191,11 @@ public class LineManageActivity extends SMBaseActivity {
         spinnerChoiceCompany.setSelection(0);
     }
 
-    public void firstLoadAll() {
+    public void firstLoadAll() { //第一次进入时,加载所有的数据
         LineManageActivity.this.smLinePresenter.loadAllLine(getUser().getUserId(), pageNumber);
     }
 
-    public void renderLinePage(LinePage linePage) {
+    public void renderLinePage(LinePage linePage) { //通知数据改变
         if (linePage != null) {
             this.linePage = linePage;
             mAdapter.setLinePage(linePage.getList());
@@ -204,7 +203,7 @@ public class LineManageActivity extends SMBaseActivity {
         }
     }
 
-    public void setLoading() {
+    public void setLoading() { //设置加载状态
         isLoadingMore = false;
     }
 }

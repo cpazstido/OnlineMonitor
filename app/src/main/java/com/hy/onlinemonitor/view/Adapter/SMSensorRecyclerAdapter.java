@@ -5,6 +5,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
+import com.daimajia.swipe.SimpleSwipeListener;
+import com.daimajia.swipe.SwipeLayout;
 import com.daimajia.swipe.adapters.RecyclerSwipeAdapter;
 import com.hy.onlinemonitor.R;
 import com.hy.onlinemonitor.bean.Sensor;
@@ -17,8 +21,6 @@ import java.util.List;
 public class SMSensorRecyclerAdapter extends RecyclerSwipeAdapter<SensorViewHolder> {
 
     private Context mContext;
-
-
     private List<Sensor> sensors;
     private SMSensorPresenter smSensorPresenter;
 
@@ -38,6 +40,13 @@ public class SMSensorRecyclerAdapter extends RecyclerSwipeAdapter<SensorViewHold
 
     @Override
     public void onBindViewHolder(final SensorViewHolder sensorViewHolder, final int i) {
+        sensorViewHolder.swipeLayout.setShowMode(SwipeLayout.ShowMode.LayDown);
+        sensorViewHolder.swipeLayout.addSwipeListener(new SimpleSwipeListener() {
+            @Override
+            public void onOpen(SwipeLayout layout) {
+                YoYo.with(Techniques.Tada).duration(500).delay(100).playOn(layout.findViewById(R.id.item_delete));
+            }
+        });
         sensorViewHolder.sensorName.setText(sensors.get(i).getName());
         sensorViewHolder.sensorIdentifier.setText(sensors.get(i).getSensorInDeviceID());
         sensorViewHolder.ActionDelete.setOnClickListener(new View.OnClickListener() {

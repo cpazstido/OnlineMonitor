@@ -38,17 +38,18 @@ public class SMLineRecyclerAdapter extends RecyclerSwipeAdapter<LineViewHolder> 
     }
 
     @Override
-    public LineViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
+    public LineViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) { //创建viewHolder
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_sm_line, viewGroup, false);
         return new LineViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(final LineViewHolder lineViewHolder, final int i) {
-        lineViewHolder.swipeLayout.setShowMode(SwipeLayout.ShowMode.LayDown);
+    public void onBindViewHolder(final LineViewHolder lineViewHolder, final int i) { //给viewholder绑定数据
+        lineViewHolder.swipeLayout.setShowMode(SwipeLayout.ShowMode.LayDown); //设置swipe的模式
         lineViewHolder.swipeLayout.addSwipeListener(new SimpleSwipeListener() {
             @Override
-            public void onOpen(SwipeLayout layout) {
+            public void onOpen(SwipeLayout layout) { //添加监听
+                //设置动画
                 YoYo.with(Techniques.Tada).duration(500).delay(100).playOn(layout.findViewById(R.id.item_delete));
             }
         });
@@ -59,6 +60,7 @@ public class SMLineRecyclerAdapter extends RecyclerSwipeAdapter<LineViewHolder> 
         lineViewHolder.lineTrend.setText(lines.get(i).getLineTrend());
         lineViewHolder.voltageLevel.setText(lines.get(i).getVoltageLevel());
 
+        //设置删除的触发函数
         lineViewHolder.ActionDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -82,7 +84,7 @@ public class SMLineRecyclerAdapter extends RecyclerSwipeAdapter<LineViewHolder> 
                         .show();
             }
         });
-
+        //设置按钮设置监听
         lineViewHolder.ActionConfig.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -146,7 +148,7 @@ public class SMLineRecyclerAdapter extends RecyclerSwipeAdapter<LineViewHolder> 
         return R.id.swipe;
     }
 
-    public void setLinePage(Collection<Line> roleCollection) {
+    public void setLinePage(Collection<Line> roleCollection) { //设置数据
         this.validateLineCollection(roleCollection);
         if(lines.size()==0){
             lines = (List<Line>) roleCollection;
@@ -160,7 +162,7 @@ public class SMLineRecyclerAdapter extends RecyclerSwipeAdapter<LineViewHolder> 
         this.notifyDataSetChanged();
     }
 
-
+    //检查数据是否为空
     private void validateLineCollection(Collection<Line> roleCollection) {
         if (roleCollection == null) {
             throw new IllegalArgumentException("The list cannot be null");

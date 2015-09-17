@@ -80,8 +80,11 @@ public class LineDataRepository implements SMLineRepository{
 
     @Override
     public Observable<List<DomainCompany>> getCompanyList() {
+        //创建一个RestApiImpl实例,同时将用于解析数据的jsonMapper传入
         RestApiImpl restApi = new RestApiImpl(mContext,new CompanyEntityJsonMapper());
+        //将Entity转换成domain数据
         CompanyEntityDataMapper companyEntityDataMapper = new CompanyEntityDataMapper();
+        //调用函数,并同时转换,运用了rxJava,与java8中的特性
         return restApi.companyList(userId).map(companyEntityDataMapper::transform);
     }
 
