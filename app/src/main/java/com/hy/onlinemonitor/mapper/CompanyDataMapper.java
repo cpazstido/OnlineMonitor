@@ -20,6 +20,9 @@ public class CompanyDataMapper {
         if(domainCompany.getLineList()!=null){
             company.setLineList(LineDataMapper.transform(domainCompany.getLineList()));
         }
+        company.setCompanyAddress(domainCompany.getCompanyAddress());
+        company.setCompanySuperior(domainCompany.getParentCompanyName());
+
         return company;
     }
 

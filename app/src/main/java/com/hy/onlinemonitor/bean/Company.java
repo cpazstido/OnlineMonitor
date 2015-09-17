@@ -6,6 +6,9 @@ public class Company {
     private int sn;
     private String companyName;
     private List<Line> lineList;
+    private String companyAddress;
+    private String CompanySuperior;
+
 
     public Company() {
     }
@@ -31,5 +34,21 @@ public class Company {
 
     public void setCompanyName(String companyName) {
         this.companyName = companyName;
+    }
+
+    public String getCompanyAddress() {
+        return companyAddress;
+    }
+
+    public void setCompanyAddress(String companyAddress) {
+        this.companyAddress = companyAddress;
+    }
+
+    public String getCompanySuperior() {
+        return CompanySuperior;
+    }
+
+    public void setCompanySuperior(String companySuperior) {
+        CompanySuperior = companySuperior;
     }
 }

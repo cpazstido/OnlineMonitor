@@ -9,8 +9,26 @@ public class CompanyEntity {
     private int sn;
     private String companyName;
     private List<LineEntity> lineList;
+    private String companyAddress;
+    private String parentCompanyName;
 
     public CompanyEntity() {
+    }
+
+    public String getCompanyAddress() {
+        return companyAddress;
+    }
+
+    public void setCompanyAddress(String companyAddress) {
+        this.companyAddress = companyAddress;
+    }
+
+    public String getParentCompanyName() {
+        return parentCompanyName;
+    }
+
+    public void setParentCompanyName(String parentCompanyName) {
+        this.parentCompanyName = parentCompanyName;
     }
 
     public List<LineEntity> getLineList() {

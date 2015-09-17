@@ -22,6 +22,10 @@ public class CompanyEntityDataMapper {
                 LineEntityDataMapper lineEntityDataMapper = new LineEntityDataMapper();
                 domainCompany.setLineList(lineEntityDataMapper.transform(companyEntity.getLineList()));
             }
+            if(companyEntity.getCompanyAddress()!= null){
+                domainCompany.setCompanyAddress(companyEntity.getCompanyAddress());
+                domainCompany.setParentCompanyName(companyEntity.getParentCompanyName());
+            }
         }
         return domainCompany;
     }

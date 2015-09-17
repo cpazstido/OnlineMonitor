@@ -12,6 +12,7 @@ import com.hy.onlinemonitor.view.Activity.Function.AlarmInformationActivity;
 import com.hy.onlinemonitor.view.Activity.Function.EquipmentListViewActivity;
 import com.hy.onlinemonitor.view.Activity.Function.MapActivity;
 import com.hy.onlinemonitor.view.Activity.SystemManagement.AdministratorManageActivity;
+import com.hy.onlinemonitor.view.Activity.SystemManagement.CompanyManageActivity;
 import com.hy.onlinemonitor.view.Activity.SystemManagement.EquipmentManageActivity;
 import com.hy.onlinemonitor.view.Activity.SystemManagement.JurisdictionManageActivity;
 import com.hy.onlinemonitor.view.Activity.SystemManagement.LineManageActivity;
@@ -105,8 +106,8 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
             case R.id.main_gv_manage:    //系统管理gridView
                 switch(position) {
                     case 0://公司
-//                        Intent gridCompanyIntent = new Intent(MainActivity.this, CompanyManageActivity.class);
-//                        startActivity(gridCompanyIntent);
+                        Intent gridCompanyIntent = new Intent(MainActivity.this, CompanyManageActivity.class);
+                        startActivity(gridCompanyIntent);
                         break;
                     case 1://管理员
                         Intent gridAdministratorIntent = new Intent(MainActivity.this, AdministratorManageActivity.class);
