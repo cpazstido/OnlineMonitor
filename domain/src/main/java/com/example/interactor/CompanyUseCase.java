@@ -6,9 +6,6 @@ import com.example.repository.SMCompanyRepository;
 import rx.Observable;
 import rx.Scheduler;
 
-/**
- * Created by Administrator on 2015/9/15.
- */
 public class CompanyUseCase extends UseCase {
     private final SMCompanyRepository companyRepository;
     private int type;
