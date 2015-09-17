@@ -142,6 +142,7 @@ public class RestApiImpl implements RestApi {
         this.context = context;
         this.sensorTypeEntityJsonMapper = sensorTypeEntityJsonMapper;
     }
+
     /**
      * 获取用户登录信息
      *
@@ -211,7 +212,7 @@ public class RestApiImpl implements RestApi {
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                         try {
                             String responseEquipmentEntities = new String(responseBody, "UTF-8");
-                            Log.e("getEquipment",responseEquipmentEntities);
+                            Log.e("getEquipment", responseEquipmentEntities);
                             subscriber.onNext(pageEntityJsonMapper.transformEquipmentInforPageEntity(responseEquipmentEntities));
                             subscriber.onCompleted();
                         } catch (UnsupportedEncodingException e) {
@@ -451,8 +452,9 @@ public class RestApiImpl implements RestApi {
             }
         });
     }
+
     @Override
-    public Observable<List<CompanyEntity>> addCompany(int userId,int sn ,String companyName,String companyAddress) {
+    public Observable<List<CompanyEntity>> addCompany(int userId, int sn, String companyName, String companyAddress) {
         return Observable.create(new Observable.OnSubscribe<List<CompanyEntity>>() {
             @Override
             public void call(Subscriber<? super List<CompanyEntity>> subscriber) {
@@ -515,7 +517,7 @@ public class RestApiImpl implements RestApi {
     }
 
     @Override
-    public Observable<List<CompanyEntity>> changeCompany(int userId,int sn ,String companyName,String companyAddress) {
+    public Observable<List<CompanyEntity>> changeCompany(int userId, int sn, String companyName, String companyAddress) {
         return Observable.create(new Observable.OnSubscribe<List<CompanyEntity>>() {
             @Override
             public void call(Subscriber<? super List<CompanyEntity>> subscriber) {
@@ -548,7 +550,7 @@ public class RestApiImpl implements RestApi {
     }
 
     @Override
-    public Observable<List<CompanyEntity>> deleteCompany(int userId,int sn) {
+    public Observable<List<CompanyEntity>> deleteCompany(int userId, int sn) {
         return Observable.create(new Observable.OnSubscribe<List<CompanyEntity>>() {
             @Override
             public void call(Subscriber<? super List<CompanyEntity>> subscriber) {
@@ -775,7 +777,7 @@ public class RestApiImpl implements RestApi {
                 params.put("userId", userId);
                 if (sn > 0) {
                     params.put("operatorSN", sn);
-                }else{
+                } else {
                     params.put("operatorSN", userId);
                 }
                 SystemRestClient.post("/getAllTower", params, new AsyncHttpResponseHandler() {
@@ -1113,7 +1115,7 @@ public class RestApiImpl implements RestApi {
     }
 
     @Override
-    public Observable<LinePageEntity> getLinePage(int userId, int companySn,int pageNumber) {
+    public Observable<LinePageEntity> getLinePage(int userId, int companySn, int pageNumber) {
         return Observable.create(new Observable.OnSubscribe<LinePageEntity>() {
             @Override
             public void call(Subscriber<? super LinePageEntity> subscriber) {
@@ -1145,7 +1147,7 @@ public class RestApiImpl implements RestApi {
     }
 
     @Override
-    public Observable<LinePageEntity> getAllLinePage(int userId,int pageNumber) {
+    public Observable<LinePageEntity> getAllLinePage(int userId, int pageNumber) {
         return Observable.create(new Observable.OnSubscribe<LinePageEntity>() {
             @Override
             public void call(Subscriber<? super LinePageEntity> subscriber) {
@@ -1503,7 +1505,7 @@ public class RestApiImpl implements RestApi {
     }
 
     @Override
-    public Observable<EquipmentPageEntity> addEquipment(int userId, int poleSn,String deviceID, String dvrID, Double angleRelativeToNorthPole, String deviceType, int sendMmsState, String cma_ID, String sensor_ID, String equipment_ID) {
+    public Observable<EquipmentPageEntity> addEquipment(int userId, int poleSn, String deviceID, String dvrID, Double angleRelativeToNorthPole, String deviceType, int sendMmsState, String cma_ID, String sensor_ID, String equipment_ID) {
         return Observable.create(new Observable.OnSubscribe<EquipmentPageEntity>() {
             @Override
             public void call(Subscriber<? super EquipmentPageEntity> subscriber) {
@@ -1634,7 +1636,7 @@ public class RestApiImpl implements RestApi {
 
                     @Override
                     public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                        Log.e("response","失败");
+                        Log.e("response", "失败");
                         subscriber.onError(new NetworkConnectionException("链接失败"));
                     }
                 });
@@ -1673,7 +1675,7 @@ public class RestApiImpl implements RestApi {
     }
 
     @Override
-    public Observable<String> changeSensor(int userId,int equipmentSn, String sensorJson) {
+    public Observable<String> changeSensor(int userId, int equipmentSn, String sensorJson) {
         return Observable.create(new Observable.OnSubscribe<String>() {
             @Override
             public void call(Subscriber<? super String> subscriber) {
@@ -1698,7 +1700,7 @@ public class RestApiImpl implements RestApi {
 
                     @Override
                     public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                        Log.e("response","失败");
+                        Log.e("response", "失败");
                         subscriber.onError(new NetworkConnectionException("链接失败"));
                     }
                 });

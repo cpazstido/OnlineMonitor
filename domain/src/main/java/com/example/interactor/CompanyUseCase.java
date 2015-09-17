@@ -9,7 +9,7 @@ import rx.Scheduler;
 /**
  * Created by Administrator on 2015/9/15.
  */
-public class CompanyUseCase extends UseCase{
+public class CompanyUseCase extends UseCase {
     private final SMCompanyRepository companyRepository;
     private int type;
 
@@ -26,7 +26,7 @@ public class CompanyUseCase extends UseCase{
     @Override
     protected Observable buildUseCaseObservable() {
         Observable observable = null;
-        switch (type){
+        switch (type) {
             case 1:
                 observable = companyRepository.getCompanyList();
                 break;

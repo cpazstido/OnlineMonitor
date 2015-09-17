@@ -6,7 +6,6 @@ import android.widget.Toast;
 import com.example.bean.DomainCompany;
 import com.example.interactor.CompanyUseCase;
 import com.example.interactor.DefaultSubscriber;
-import com.example.interactor.LineUseCase;
 import com.hy.data.repository.CompanyDataRepository;
 import com.hy.onlinemonitor.UIThread;
 import com.hy.onlinemonitor.bean.Company;

@@ -11,9 +11,13 @@ import rx.Observable;
  */
 public interface SMCompanyRepository {
     Observable<List<DomainCompany>> getCompanyList();
+
     Observable<List<DomainCompany>> modifCompany();
+
     Observable<List<DomainCompany>> deleteCompany();
+
     Observable<List<DomainCompany>> addCompany();
+
     //得到上级公司列表
     Observable<List<DomainCompany>> getParentCompanyList();
 

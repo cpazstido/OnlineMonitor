@@ -99,6 +99,7 @@ public interface RestApi {
 
     /**
      * 得到公司列表
+     *
      * @param userId 用户唯一标示
      * @return 公司列表
      */
@@ -106,13 +107,15 @@ public interface RestApi {
 
     /**
      * 添加公司
+     *
      * @param userId 用户唯一标示
      * @return 公司列表
      */
-    Observable<List<CompanyEntity>> addCompany(int userId,int sn ,String companyName,String companyAddress);
+    Observable<List<CompanyEntity>> addCompany(int userId, int sn, String companyName, String companyAddress);
 
     /**
      * 查询添加公司时可以选择的父公司
+     *
      * @param userId 用户唯一标示
      * @return 公司列表
      */
@@ -120,21 +123,23 @@ public interface RestApi {
 
     /**
      * 修改公司
-     * @param userId 用户唯一标示
-     * @param sn sn
-     * @param companyName 公司名
+     *
+     * @param userId         用户唯一标示
+     * @param sn             sn
+     * @param companyName    公司名
      * @param companyAddress 公司地址
      * @return 返回公司列表
      */
-    Observable<List<CompanyEntity>> changeCompany(int userId,int sn ,String companyName,String companyAddress);
+    Observable<List<CompanyEntity>> changeCompany(int userId, int sn, String companyName, String companyAddress);
 
     /**
      * 删除公司
+     *
      * @param userId 用户唯一表示
-     * @param sn sn
+     * @param sn     sn
      * @return 公司列表
      */
-    Observable<List<CompanyEntity>> deleteCompany(int userId,int sn);
+    Observable<List<CompanyEntity>> deleteCompany(int userId, int sn);
 
     /**
      * @param userId 用户唯一标示
@@ -289,9 +294,9 @@ public interface RestApi {
     /**
      * 得到线路列表
      *
-     * @param userId    唯一标示
+     * @param userId     唯一标示
      * @param pageNumber 页数
-     * @param companySn 公司sn
+     * @param companySn  公司sn
      * @return 线路列表
      */
     Observable<LinePageEntity> getLinePage(int userId, int companySn, int pageNumber);
@@ -349,21 +354,22 @@ public interface RestApi {
     /**
      * 得到杆塔列表
      *
-     * @param pageNumber  页数
-     * @param userId 唯一标示
-     * @param lineSn 线路sn
+     * @param pageNumber 页数
+     * @param userId     唯一标示
+     * @param lineSn     线路sn
      * @return 杆塔列表
      */
-    Observable<PolePageEntity> getPolePage(int userId, int lineSn,int pageNumber);
+    Observable<PolePageEntity> getPolePage(int userId, int lineSn, int pageNumber);
 
     /**
      * 得到全部的杆塔列表
      *
-     * @param userId 唯一标示
-     * @param pageNumber  页数
+     * @param userId     唯一标示
+     * @param pageNumber 页数
      * @return 杆塔列表
      */
     Observable<PolePageEntity> getPolePage(int userId, int pageNumber);
+
     /**
      * 添加杆塔
      *
