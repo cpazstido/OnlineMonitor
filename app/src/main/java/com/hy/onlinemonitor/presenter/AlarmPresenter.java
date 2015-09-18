@@ -113,7 +113,7 @@ public class AlarmPresenter implements Presenter {
 
     private void showAlarmCollectionInView(DomainAlarmPage domainAlarmPage) {
         AlarmPage alarmPage = this.pageDataMapper.transform(domainAlarmPage);
-        this.alarmView.renderAlarmList(alarmPage);
+        this.alarmView.renderAlarmList(alarmPage,queryAlarmType);
     }
 
     public void setView(@NonNull AlarmListView view) {

@@ -12,6 +12,7 @@ import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.BitmapDescriptor;
 import com.baidu.mapapi.map.BitmapDescriptorFactory;
 import com.baidu.mapapi.map.InfoWindow;
+import com.baidu.mapapi.map.MapPoi;
 import com.baidu.mapapi.map.MapStatusUpdate;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
@@ -26,7 +27,6 @@ import com.hy.onlinemonitor.utile.GetLoading;
 import com.hy.onlinemonitor.view.Activity.BaseActivity;
 import com.hy.onlinemonitor.view.MapListView;
 import com.rey.material.widget.Button;
-import com.rey.material.widget.SnackBar;
 
 import java.util.Collection;
 import java.util.List;
@@ -53,6 +53,17 @@ public class MapActivity extends BaseActivity implements MapListView {
             final Marker Marker = (com.baidu.mapapi.map.Marker) mBaiduMap.addOverlay(oo);
             //设置地图的新中心点
             mBaiduMap.setMapStatus(MapStatusUpdateFactory.newLatLng(ll));
+            mBaiduMap.setOnMapClickListener(new BaiduMap.OnMapClickListener() {
+                @Override
+                public void onMapClick(LatLng latLng) {
+                    mBaiduMap.hideInfoWindow();
+                }
+
+                @Override
+                public boolean onMapPoiClick(MapPoi mapPoi) {
+                    return false;
+                }
+            });
             mBaiduMap.setOnMarkerClickListener(new BaiduMap.OnMarkerClickListener() {
                 @Override
                 public boolean onMarkerClick(com.baidu.mapapi.map.Marker marker) {
@@ -60,9 +71,11 @@ public class MapActivity extends BaseActivity implements MapListView {
                     LayoutInflater inflater = LayoutInflater.from(MapActivity.this);
                     View layout = inflater.inflate(R.layout.popup_view, null);
 
-                    TextView information = (TextView) layout.findViewById(R.id.map_equipment_information);
+                    TextView equipment = (TextView) layout.findViewById(R.id.map_equipment_information);
+                    TextView pole = (TextView) layout.findViewById(R.id.map_pole_information);
                     Button videoBtn = (Button) layout.findViewById(R.id.map_equipment_video);
-                    information.setText(emv.getPoleName()+"\n"+emv.getEquipmentName());
+                    pole.setText(emv.getPoleName());
+                    equipment.setText(emv.getEquipmentName());
                     if(marker == Marker){
                         listener = new InfoWindow.OnInfoWindowClickListener(){
 
@@ -72,8 +85,6 @@ public class MapActivity extends BaseActivity implements MapListView {
                                 /**
                                  * 这里弹出视频播放窗口
                                  */
-
-                                new SnackBar(MapActivity.this,null).text("播放视频"+emv.getDvrID()).show();
                                 mBaiduMap.hideInfoWindow();
                             }
                         };

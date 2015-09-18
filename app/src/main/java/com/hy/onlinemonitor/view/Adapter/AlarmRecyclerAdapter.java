@@ -3,6 +3,7 @@ package com.hy.onlinemonitor.view.Adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,10 +24,15 @@ public class AlarmRecyclerAdapter extends RecyclerView.Adapter<AlarmViewHolder> 
     private List<AlarmInformation> mList;
     private Context mContext;
     private int showType;
+
+    public void setQueryAlarmType(String queryAlarmType) {
+        this.queryAlarmType = queryAlarmType;
+    }
+
     private String queryAlarmType;
     private int status;
 
-    public AlarmRecyclerAdapter(AlarmPage alarmPage, Context mContext, int showType, String queryAlarmType, int status) {
+    public AlarmRecyclerAdapter(AlarmPage alarmPage, Context mContext, int showType,String queryAlarmType, int status) {
         validateAlarmsCollection(alarmPage.getList());
         this.mList = alarmPage.getList();
         this.mContext = mContext;
@@ -76,7 +82,9 @@ public class AlarmRecyclerAdapter extends RecyclerView.Adapter<AlarmViewHolder> 
                 break;
             case "fire":
                 holder.alarmCardTitle.setText(alarmInformation.getDeviceId());
+                Log.e("fire", SystemRestClient.BASE_PICTURE_URL + alarmInformation.getVisibleLightImage());
                 Picasso.with(mContext).load(SystemRestClient.BASE_PICTURE_URL+alarmInformation.getVisibleLightImage()).into(holder.alarmCardImage);
+//                Picasso.with(mContext).load("http://172.16.8.129:8081/eMonitorApp/alarm/visiblePicture/217-1-20150916-150333.jpg").into(holder.alarmCardImage);
                 holder.alarmCardView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -90,6 +98,7 @@ public class AlarmRecyclerAdapter extends RecyclerView.Adapter<AlarmViewHolder> 
                 break;
             case "break":
                 holder.alarmCardTitle.setText(alarmInformation.getCollectionTime());
+                Log.e("break", SystemRestClient.BASE_PICTURE_URL +alarmInformation.getBreakImage());
                 Picasso.with(mContext).load(SystemRestClient.BASE_PICTURE_URL+alarmInformation.getBreakImage()).into(holder.alarmCardImage);
                 holder.alarmCardView.setOnClickListener(new View.OnClickListener() {
                     @Override

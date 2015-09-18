@@ -1,25 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="150dp"
     android:background="?attr/colorPrimaryDark"
-    android:gravity="center"
     android:orientation="vertical"
     android:padding="8dp"
-    android:theme="@style/ThemeOverlay.AppCompat.Dark">
+    android:theme="@style/ThemeOverlay.AppCompat.Dark"
+    >
 
     <ImageView
-        android:src="@drawable/starry_night_over_the_rhone"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:src="@drawable/ic_head_tower"
+        android:scaleType="fitXY"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
         />
+
     <TextView
         android:id="@+id/tv_user_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
         android:gravity="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:textSize="@dimen/mTitle"/>
+        android:textSize="@dimen/mTitle"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
-</LinearLayout>
+</RelativeLayout>	

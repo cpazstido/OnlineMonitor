@@ -110,12 +110,13 @@ public class RecyclerViewFragment extends Fragment implements AlarmListView {
     }
 
     @Override
-    public void renderAlarmList(AlarmPage alarmPage) {
-        Log.e("alarmPage",alarmPage.toString());
+    public void renderAlarmList(AlarmPage alarmPage,String queryAlarmType) {
         if (alarmPage.getRowCount() == 0) {
+            mAdapter.setQueryAlarmType(queryAlarmType);
             recyclerView.setVisibility(View.GONE);
             showNoData.setVisibility(View.VISIBLE);
         } else {
+            mAdapter.setQueryAlarmType(queryAlarmType);
             recyclerView.setVisibility(View.VISIBLE);
             showNoData.setVisibility(View.GONE);
             this.mAdapter.setAlarmCollection(alarmPage.getList());

@@ -13,6 +13,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.hy.data.utile.SystemRestClient;
 import com.hy.onlinemonitor.R;
 import com.hy.onlinemonitor.bean.AlarmInformation;
 import com.r0adkll.slidr.Slidr;
@@ -83,12 +84,12 @@ public class DetailedAlarmActivity extends AppCompatActivity {
         switch (queryAlarmType) {
             case "fire":
                 detailedBlowingEquipment.setText(alarmInformation.getIsBlowingEquipment());
-                Picasso.with(this).load(alarmInformation.getVisibleLightImage()).into(detailedVisiblePicture);
-                Picasso.with(this).load(alarmInformation.getInfraredImage()).into(detailedInfraredPicture);
+                Picasso.with(this).load(SystemRestClient.BASE_PICTURE_URL + alarmInformation.getVisibleLightImage()).into(detailedVisiblePicture);
+                Picasso.with(this).load(SystemRestClient.BASE_PICTURE_URL+alarmInformation.getInfraredImage()).into(detailedInfraredPicture);
                 break;
             case "break":
                 detailedVisiblePicture.setVisibility(View.GONE);
-                Picasso.with(this).load(alarmInformation.getInfraredImage()).into(detailedInfraredPicture);
+                Picasso.with(this).load(SystemRestClient.BASE_PICTURE_URL+alarmInformation.getInfraredImage()).into(detailedInfraredPicture);
                 showIsblowing.setVisibility(View.GONE);
                 break;
         }

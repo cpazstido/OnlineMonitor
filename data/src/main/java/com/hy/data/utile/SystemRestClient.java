@@ -12,7 +12,7 @@ import com.loopj.android.http.RequestParams;
 public class SystemRestClient {
     private static final String BASE_URL = "http://172.16.8.129:8081/eMonitorApp/android";
 
-    public static final String BASE_PICTURE_URL = "http://172.16.8.129:8081/eMonitorApp/";
+    public static final String BASE_PICTURE_URL = "http://172.16.8.129:8081/eMonitorApp/alarm/";
     private static final String BASE_VIDEO_URL = "http://172.16.8.129:8080/eMonitorApp/accessServer";
     private static AsyncHttpClient client = new AsyncHttpClient();
 

@@ -63,6 +63,7 @@
             android:launchMode="singleTask" />
 
         <activity android:name=".view.Activity.Function.DetailedAlarmActivity"
+            android:theme="@style/MySilderTheme"
             android:launchMode="singleTask"
             />
 

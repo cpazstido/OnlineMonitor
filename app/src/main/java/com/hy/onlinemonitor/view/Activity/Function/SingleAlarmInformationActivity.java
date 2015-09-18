@@ -120,7 +120,7 @@ public class SingleAlarmInformationActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void renderAlarmList(AlarmPage alarmPage) {
+    public void renderAlarmList(AlarmPage alarmPage,String queryAlarmType) {
         if (alarmPage != null) {
             if(alarmPage.getList().size() != 0 ) {
                 showNoData.setVisibility(View.GONE);

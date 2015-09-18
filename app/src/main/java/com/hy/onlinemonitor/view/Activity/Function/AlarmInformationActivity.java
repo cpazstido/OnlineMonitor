@@ -66,7 +66,6 @@ public class AlarmInformationActivity extends BaseActivity implements LoadDataVi
         mViewPager.getViewPager().setAdapter(new FragmentPagerAdapter(getSupportFragmentManager()) {
             @Override
             public Fragment getItem(int position) {
-                Log.e("aaa","getItem");
                 return RecyclerViewFragment.newInstance(alarmTitles,position,AlarmInformationActivity.this.getUser().getUserId());
             }
 
