@@ -1,44 +1,75 @@
 package com.hy.data.utile;
 
-import org.w3c.dom.Document;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
+import org.apache.http.entity.StringEntity;
 
-import java.io.IOException;
-import java.io.StringReader;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
+import java.io.UnsupportedEncodingException;
 
 /**
  * Created by 24363 on 2015/8/27.
  */
 public class VideoPlayUtils {
-    static Document getXml(String fileName){
 
-        String xmlStr = "......";
-        Document doc = null;
-        StringReader sr = new StringReader(xmlStr);
+    public static StringEntity getRecordPlayXml(String fileNames) throws UnsupportedEncodingException {
+        //通过StringBuffer对象拼接
+        StringBuffer sb = new StringBuffer();
+        //添加xml声明
+        sb.append("<?xml version='1.0' encoding='UTF-8'?>");
+        //添加根节点
+        sb.append("<RecordPlay>");
+        //添加子节点
+        sb.append("<FileName>");
+        //添加内容节点
+        sb.append(fileNames);
+        sb.append("</FileName>");
+        sb.append("</RecordPlay>");
+        return new StringEntity(sb.toString());
+    }
 
-        InputSource is = new InputSource(sr);
 
-        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+    public static StringEntity getVideoControlXml(String type) throws UnsupportedEncodingException {
+        //通过StringBuffer对象拼接
 
-        DocumentBuilder builder= null;
-        try {
-            builder = factory.newDocumentBuilder();
-        } catch (ParserConfigurationException e) {
-            e.printStackTrace();
+        int ptzSpeedValue = 60;
+        String PTZSpeed="0x1F";
+        StringBuffer sb = new StringBuffer();
+        sb.append("<?xml version='1.0' encoding='UTF-8'?>");
+        sb.append("<PTZData>");
+        sb.append("<pan>");
+        switch (type){
+            case "left":
+                sb.append(-ptzSpeedValue);
+                break;
+            case "right":
+                sb.append(ptzSpeedValue);
+                break;
+            case "up":
+                sb.append(0);
+                break;
+            case "down":
+                sb.append(0);
+                break;
         }
-        try {
-             doc = builder.parse(is);
-        } catch (SAXException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+        sb.append("</pan>");
+        sb.append("<tilt>");
+        switch (type){
+            case "left":
+                sb.append(0);
+                break;
+            case "right":
+                sb.append(0);
+                break;
+            case "up":
+                sb.append(ptzSpeedValue);
+                break;
+            case "down":
+                sb.append(-ptzSpeedValue);
+                break;
         }
-
-        return doc;
+        sb.append("</tilt>");
+        sb.append("<PTZSpeed>");
+        sb.append(PTZSpeed);
+        sb.append("</PTZSpeed>");
+        sb.append("</PTZData>");
+        return new StringEntity(sb.toString());
     }
 }

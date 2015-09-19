@@ -98,6 +98,13 @@ public interface RestApi {
     Observable<String> videoUrl(String dvrType, int dvrId, int channelID, int streamType);
 
     /**
+     * 控制云台转动
+     * @param type 选择云台转动方向
+     * @return 字符串代表指令发送是否成功
+     */
+    Observable<String> videoControl(String type,int dvrID,int channelID,String dvrType);
+
+    /**
      * 得到公司列表
      *
      * @param userId 用户唯一标示

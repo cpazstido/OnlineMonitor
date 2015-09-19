@@ -17,6 +17,7 @@ import com.hy.onlinemonitor.bean.AlarmInformation;
 import com.hy.onlinemonitor.bean.EquipmentInformation;
 import com.hy.onlinemonitor.presenter.VideoPresenter;
 import com.hy.onlinemonitor.utile.GetLoading;
+import com.hy.onlinemonitor.utile.ShowUtile;
 import com.hy.onlinemonitor.view.InitView;
 import com.hy.onlinemonitor.view.LoadDataView;
 import com.rey.material.widget.Button;
@@ -34,6 +35,8 @@ public class VideoActivity extends AppCompatActivity implements InitView, LoadDa
     Toolbar toolbar;
     @Bind(R.id.video_line_tv)
     TextView videoLineTv;
+    @Bind(R.id.video_tower_show)
+    TextView videoTowerShow;
     @Bind(R.id.video_tower_tv)
     TextView videoTowerTv;
     @Bind(R.id.video_time_tv)
@@ -66,6 +69,10 @@ public class VideoActivity extends AppCompatActivity implements InitView, LoadDa
     private EquipmentInformation equipmentInformation;
     private String choiceType;
 
+    private static int CONTROL_LEFT = 2;
+    private static int CONTROL_RIGHT = 3;
+    private static int CONTROL_UP = 4;
+    private static int CONTROL_DOWN = 5;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -100,6 +107,40 @@ public class VideoActivity extends AppCompatActivity implements InitView, LoadDa
                 toolbar.setSubtitle(equipmentInformation.getEquipmnetName());
                 videoEquipmentStatusTv.setText(equipmentInformation.getEquipmnetState());
                 videoPlayTv.setText("获取地址中...");
+
+                controlLeft.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        ShowUtile.toastShow(VideoActivity.this,"左转中...");
+                        videoPresenter.videoControl(CONTROL_LEFT);
+                    }
+                });
+
+                controlUp.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        ShowUtile.toastShow(VideoActivity.this,"上转中...");
+                        videoPresenter.videoControl(CONTROL_UP);
+                    }
+                });
+
+                controlDown.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        ShowUtile.toastShow(VideoActivity.this,"下转中...");
+
+                        videoPresenter.videoControl(CONTROL_DOWN);
+                    }
+                });
+
+                controlRight.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        ShowUtile.toastShow(VideoActivity.this,"右转中...");
+                        videoPresenter.videoControl(CONTROL_RIGHT);
+                    }
+                });
+
                 historyVideoShow.setVisibility(View.GONE);
                 break;
             case "history":
@@ -107,8 +148,19 @@ public class VideoActivity extends AppCompatActivity implements InitView, LoadDa
                 realPlayShow.setVisibility(View.GONE);
                 toolbar.setTitle(R.string.play_alarm_video);
                 toolbar.setSubtitle(alarmInformation.getDeviceId());
+
+                if(alarmInformation.getLineName() !=null){
                 videoLineTv.setText(alarmInformation.getLineName());
-                videoTowerTv.setText(alarmInformation.getPoleName());
+                }else{
+                    videoLineTv.setVisibility(View.GONE);
+                }
+                if(alarmInformation.getPoleName() !=null){
+                    videoTowerTv.setText(alarmInformation.getPoleName());
+                }else{
+                    videoTowerTv.setVisibility(View.GONE);
+                    videoTowerShow.setVisibility(View.GONE);
+                }
+
                 videoTimeTv.setText(alarmInformation.getCollectionTime());
                 break;
         }
@@ -185,13 +237,11 @@ public class VideoActivity extends AppCompatActivity implements InitView, LoadDa
             videoView.start();
         }else{
             videoPlayTv.setText("播放地址获取失败");
-            videoView.setVideoPath("rtsp://218.204.223.237:554/live/1/66251FC11353191F/e7ooqwcfbqjoo80j.sdp");
-            videoView.requestFocus();
-            videoView.setMediaController(new MediaController(this));
-            videoView.start();
-
+//            videoView.setVideoPath("rtsp://218.204.223.237:554/live/1/66251FC11353191F/e7ooqwcfbqjoo80j.sdp");
+//            videoView.requestFocus();
+//            videoView.setMediaController(new MediaController(this));
+//            videoView.start();
         }
-
     }
 
     @Override

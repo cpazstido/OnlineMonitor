@@ -21,7 +21,7 @@ public class VideoPresenter implements Presenter{
     private VideoActivity videoActivity;
     private UseCase videoUseCase;
     private String fileName;
-    private int channleID;
+    private int channelID;
     private int streamType;
     private int dvrId;
     private String dvrType;
@@ -44,10 +44,10 @@ public class VideoPresenter implements Presenter{
 
     @Override
     public void destroy() {
-        this.videoUseCase.unsubscribe();
-
+        if (this.videoUseCase != null) {
+            this.videoUseCase.unsubscribe();
+        }
     }
-
     @Override
     public void showViewLoading() {
         this.videoActivity.showLoading();
@@ -71,12 +71,12 @@ public class VideoPresenter implements Presenter{
 
     public void getVideoUrl() {
         videoRepository = new VideoDataRepository(mContext,fileName);
-        this.videoUseCase = new VideoUseCase(new UIThread(), AndroidSchedulers.mainThread(),videoRepository);
+        this.videoUseCase = new VideoUseCase(new UIThread(), AndroidSchedulers.mainThread(),videoRepository, 1);
         this.videoUseCase.execute(new VideoUrlSubscriber());
     }
 
     public void getUrlForRealPlay(int channleID,int streamType,int dvrId,String dvrType){
-        this.channleID = channleID;
+        this.channelID = channleID;
         this.streamType = streamType;
         this.dvrId = dvrId;
         this.dvrType = dvrType;
@@ -90,8 +90,8 @@ public class VideoPresenter implements Presenter{
 
 
     public void getRealPlayUrl() {
-        videoRepository = new VideoDataRepository(mContext,channleID,streamType,dvrId,dvrType);
-        this.videoUseCase = new VideoUseCase(new UIThread(), AndroidSchedulers.mainThread(),videoRepository);
+        videoRepository = new VideoDataRepository(mContext, channelID,streamType,dvrId,dvrType);
+        this.videoUseCase = new VideoUseCase(new UIThread(), AndroidSchedulers.mainThread(),videoRepository, 1);
         this.videoUseCase.execute(new VideoUrlSubscriber());
     }
 
@@ -115,9 +115,7 @@ public class VideoPresenter implements Presenter{
     }
 
     private void startVideoPlay(String videoUrl) {
-
         if(this.videoActivity != null){
-
             this.videoActivity.startVideoPlay(videoUrl);
         }
     }
@@ -126,4 +124,27 @@ public class VideoPresenter implements Presenter{
         this.videoActivity = videoActivity;
     }
 
+    public void videoControl(int type) {
+        videoRepository = new VideoDataRepository(mContext,channelID,dvrId,dvrType);
+        this.videoUseCase = new VideoUseCase(new UIThread(), AndroidSchedulers.mainThread(),videoRepository, type);
+        this.videoUseCase.execute(new ControlSubscriber());
+    }
+
+    private class ControlSubscriber extends DefaultSubscriber<String> {
+        @Override
+        public void onCompleted() {
+            VideoPresenter.this.hideViewLoading();
+        }
+
+        @Override
+        public void onError(Throwable e) {
+            VideoPresenter.this.hideViewLoading();
+            Toast.makeText(mContext, "出现错误", Toast.LENGTH_SHORT).show();
+            super.onError(e);
+        }
+
+        @Override
+        public void onNext(String controlStatus) {
+        }
+    }
 }

@@ -83,13 +83,21 @@ public class DetailedAlarmActivity extends AppCompatActivity {
 
         switch (queryAlarmType) {
             case "fire":
-                detailedBlowingEquipment.setText(alarmInformation.getIsBlowingEquipment());
+                switch (alarmInformation.getIsBlowingEquipment()) {
+                    case "0":
+                        detailedBlowingEquipment.setText("否");
+                        break;
+                    case "1":
+                        detailedBlowingEquipment.setText("是");
+                        break;
+                }
+
                 Picasso.with(this).load(SystemRestClient.BASE_PICTURE_URL + alarmInformation.getVisibleLightImage()).into(detailedVisiblePicture);
-                Picasso.with(this).load(SystemRestClient.BASE_PICTURE_URL+alarmInformation.getInfraredImage()).into(detailedInfraredPicture);
+                Picasso.with(this).load(SystemRestClient.BASE_PICTURE_URL + alarmInformation.getInfraredImage()).into(detailedInfraredPicture);
                 break;
             case "break":
                 detailedVisiblePicture.setVisibility(View.GONE);
-                Picasso.with(this).load(SystemRestClient.BASE_PICTURE_URL+alarmInformation.getInfraredImage()).into(detailedInfraredPicture);
+                Picasso.with(this).load(SystemRestClient.BASE_PICTURE_URL + alarmInformation.getInfraredImage()).into(detailedInfraredPicture);
                 showIsblowing.setVisibility(View.GONE);
                 break;
         }

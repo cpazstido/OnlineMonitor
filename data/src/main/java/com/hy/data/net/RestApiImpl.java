@@ -30,6 +30,7 @@ import com.hy.data.entity.mapper.StringJsonMapper;
 import com.hy.data.entity.mapper.UserEntityJsonMapper;
 import com.hy.data.exception.NetworkConnectionException;
 import com.hy.data.utile.SystemRestClient;
+import com.hy.data.utile.VideoPlayUtils;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
@@ -155,35 +156,42 @@ public class RestApiImpl implements RestApi {
         return Observable.create(new Observable.OnSubscribe<UserEntity>() {
              @Override
              public void call(Subscriber<? super UserEntity> subscriber) {
-                 RequestParams params = new RequestParams();
-                 params.put("uername", loginAccount);
-                 params.put("uerpwd", loginPwd);
-
-                 SystemRestClient.get("/login", params, new AsyncHttpResponseHandler() {
-                     @Override
-                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                         Log.i("msg", "登陆成功");
-                         try {
-                             String responseUserEntities = new String(responseBody, "UTF-8");
-                             Log.e("result", responseUserEntities);
-                             if (responseUserEntities.equals("false")) {
-                                 subscriber.onError(new NetworkConnectionException("用户名或密码错误"));
-                             } else {
-                                 subscriber.onNext(userEntityJsonMapper.transformUserEntity(
-                                         responseUserEntities));
-                                 subscriber.onCompleted();
+                 if (isThereInternetConnection()) {
+                     try {
+                         RequestParams params = new RequestParams();
+                         params.put("uername", loginAccount);
+                         params.put("uerpwd", loginPwd);
+                         SystemRestClient.get("/login", params, new AsyncHttpResponseHandler() {
+                             @Override
+                             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                                 Log.i("msg", "登陆成功");
+                                 try {
+                                     String responseUserEntities = new String(responseBody, "UTF-8");
+                                     Log.e("result", responseUserEntities);
+                                     if (responseUserEntities.equals("false")) {
+                                         subscriber.onError(new NetworkConnectionException("用户名或密码错误"));
+                                     } else {
+                                         subscriber.onNext(userEntityJsonMapper.transformUserEntity(
+                                                 responseUserEntities));
+                                         subscriber.onCompleted();
+                                     }
+                                 } catch (UnsupportedEncodingException e) {
+                                     e.printStackTrace();
+                                 }
                              }
-                         } catch (UnsupportedEncodingException e) {
-                             e.printStackTrace();
-                         }
-                     }
 
-                     @Override
-                     public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                         Log.e("getUserEntitiesFromApi", "onFailure");
-                         subscriber.onError(new NetworkConnectionException("链接失败"));
+                             @Override
+                             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                                 Log.e("getUserEntitiesFromApi", "onFailure");
+                                 subscriber.onError(new NetworkConnectionException("链接失败"));
+                             }
+                         });
+                     } catch (Exception e) {
+                         subscriber.onError(new NetworkConnectionException(e.getCause()));
                      }
-                 });
+                 } else {
+                     subscriber.onError(new NetworkConnectionException());
+                 }
              }
          }
         );
@@ -368,27 +376,30 @@ public class RestApiImpl implements RestApi {
         return Observable.create(new Observable.OnSubscribe<String>() {
             @Override
             public void call(Subscriber<? super String> subscriber) {
-                RequestParams params = new RequestParams();
-                params.put("fileName", fileName);
-                SystemRestClient.post("/", params, new AsyncHttpResponseHandler() {
-                    @Override
-                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                        try {
-                            String responseVideoUrl = new String(responseBody, "UTF-8");
-                            Log.e("videoUrl", "url  ?>" + responseVideoUrl);
-                            subscriber.onNext(responseVideoUrl);
-                            subscriber.onCompleted();
-                        } catch (UnsupportedEncodingException e) {
-                            e.printStackTrace();
+                Log.e("videoUrl", "inVideoUrl");
+                try {
+                    SystemRestClient.XmlPost(context, "/recordPlay", VideoPlayUtils.getRecordPlayXml(fileName), "text/xml; charset=UTF-8", new AsyncHttpResponseHandler() {
+                        @Override
+                        public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                            try {
+                                String responseVideoUrl = new String(responseBody, "UTF-8");
+                                Log.e("videoUrl", "videoUrl->" + responseVideoUrl);
+                                subscriber.onNext(responseVideoUrl);
+                                subscriber.onCompleted();
+                            } catch (UnsupportedEncodingException e) {
+                                e.printStackTrace();
+                            }
                         }
-                    }
 
-                    @Override
-                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                        Log.e("getUserEntitiesFromApi", "onFailure");
-                        subscriber.onError(new NetworkConnectionException("链接失败"));
-                    }
-                });
+                        @Override
+                        public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                            Log.e("videoUrl", "onFailure");
+                            subscriber.onError(new NetworkConnectionException("链接失败"));
+                        }
+                    });
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
             }
         });
     }
@@ -418,8 +429,42 @@ public class RestApiImpl implements RestApi {
                         subscriber.onError(new NetworkConnectionException("链接失败"));
                     }
                 });
+
             }
         });
+    }
+
+    @Override
+    public Observable<String> videoControl(String type,int dvrID,int channelID,String dvrType) {
+        return Observable.create(new Observable.OnSubscribe<String>() {
+            @Override
+            public void call(Subscriber<? super String> subscriber) {
+                try {
+                    SystemRestClient.XmlControlPost(context, "/continuous", dvrID,channelID,dvrType,VideoPlayUtils.getVideoControlXml(type), "text/xml; charset=UTF-8", new AsyncHttpResponseHandler() {
+                        @Override
+                        public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                            try {
+                                String responseVideoUrl = new String(responseBody, "UTF-8");
+                                Log.e("videoUrl", "url" + responseVideoUrl);
+                                subscriber.onNext(responseVideoUrl);
+                                subscriber.onCompleted();
+                            } catch (UnsupportedEncodingException e) {
+                                e.printStackTrace();
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                            Log.e("getUserEntitiesFromApi", "onFailure");
+                            subscriber.onError(new NetworkConnectionException("链接失败"));
+                        }
+                    });
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
     }
 
     @Override

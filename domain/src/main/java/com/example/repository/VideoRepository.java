@@ -4,4 +4,12 @@ import rx.Observable;
 
 public interface VideoRepository {
     Observable<String> getVideoUrl();
+
+    Observable<String> leftControl();
+
+    Observable<String> rightControl();
+
+    Observable<String> upControl();
+
+    Observable<String> downControl();
 }

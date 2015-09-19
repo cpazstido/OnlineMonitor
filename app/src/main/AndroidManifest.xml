@@ -25,7 +25,8 @@
             android:name="io.vov.vitamio.activity.InitActivity"
             android:configChanges="orientation|screenSize|smallestScreenSize|keyboard|keyboardHidden|navigation"
             android:launchMode="singleTop"
-            android:theme="@android:style/Theme.NoTitleBar"
+            tools:replace="android:theme"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen"
             android:windowSoftInputMode="stateAlwaysHidden" />
 
         <meta-data

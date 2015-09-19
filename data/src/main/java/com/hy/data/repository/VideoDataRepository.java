@@ -31,6 +31,12 @@ public class VideoDataRepository implements VideoRepository{
         this.streamType = streamType;
     }
 
+    public VideoDataRepository(Context mContext,int channelID,int dvrId,String dvrType) {
+        this.mContext = mContext;
+        this.dvrId = dvrId;
+        this.dvrType = dvrType;
+        this.channelID = channelID;
+    }
     @Override
     public Observable<String> getVideoUrl() {
         RestApiImpl restApi = new RestApiImpl(mContext);
@@ -46,5 +52,30 @@ public class VideoDataRepository implements VideoRepository{
         }
 
         return observable;
+    }
+
+    @Override
+    public Observable<String> leftControl() {
+        RestApiImpl restApi = new RestApiImpl(mContext);
+        return restApi.videoControl("left",dvrId,channelID,dvrType);
+    }
+
+    @Override
+    public Observable<String> rightControl() {
+        RestApiImpl restApi = new RestApiImpl(mContext);
+        return restApi.videoControl("right",dvrId,channelID,dvrType);
+
+    }
+
+    @Override
+    public Observable<String> upControl() {
+        RestApiImpl restApi = new RestApiImpl(mContext);
+        return restApi.videoControl("up",dvrId,channelID,dvrType);
+    }
+
+    @Override
+    public Observable<String> downControl() {
+        RestApiImpl restApi = new RestApiImpl(mContext);
+        return restApi.videoControl("down",dvrId,channelID,dvrType);
     }
 }
