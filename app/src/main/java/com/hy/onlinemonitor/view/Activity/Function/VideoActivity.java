@@ -22,6 +22,9 @@ import com.hy.onlinemonitor.view.InitView;
 import com.hy.onlinemonitor.view.LoadDataView;
 import com.rey.material.widget.Button;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import io.vov.vitamio.LibsChecker;
@@ -63,16 +66,23 @@ public class VideoActivity extends AppCompatActivity implements InitView, LoadDa
     VideoView videoView;
     private AlertDialog loadingDialog;
     private String type;
+    private Timer timer;
 
     private AlarmInformation alarmInformation;
     private VideoPresenter videoPresenter;
     private EquipmentInformation equipmentInformation;
     private String choiceType;
+    private int channelID = -1; //6789,一般用7
+    private int streamType = 7;
+    private String videoUrl = "";
 
     private static int CONTROL_LEFT = 2;
     private static int CONTROL_RIGHT = 3;
     private static int CONTROL_UP = 4;
     private static int CONTROL_DOWN = 5;
+
+    private static int OPEN_POWER = 3;
+    private static int OPEN_SYSTEM_POWER = 5;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -111,33 +121,52 @@ public class VideoActivity extends AppCompatActivity implements InitView, LoadDa
                 controlLeft.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        ShowUtile.toastShow(VideoActivity.this,"左转中...");
-                        videoPresenter.videoControl(CONTROL_LEFT);
+                        if (videoView.isPlaying()) {
+                            videoContrlStatusTv.setText("手动控制中");
+                            ShowUtile.toastShow(VideoActivity.this, "左转中...");
+                            videoPresenter.videoControl(CONTROL_LEFT);
+                        } else {
+                            ShowUtile.toastShow(VideoActivity.this, "没有在播放状态，请先播放！");
+                        }
                     }
                 });
 
                 controlUp.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        ShowUtile.toastShow(VideoActivity.this,"上转中...");
-                        videoPresenter.videoControl(CONTROL_UP);
+                        if (videoView.isPlaying()) {
+                            videoContrlStatusTv.setText("手动控制中");
+                            ShowUtile.toastShow(VideoActivity.this, "上转中...");
+                            videoPresenter.videoControl(CONTROL_UP);
+                        } else {
+                            ShowUtile.toastShow(VideoActivity.this, "没有在播放状态，请先播放！");
+                        }
                     }
                 });
 
                 controlDown.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        ShowUtile.toastShow(VideoActivity.this,"下转中...");
-
-                        videoPresenter.videoControl(CONTROL_DOWN);
+                        if (videoView.isPlaying()) {
+                            videoContrlStatusTv.setText("手动控制中");
+                            ShowUtile.toastShow(VideoActivity.this, "下转中...");
+                            videoPresenter.videoControl(CONTROL_DOWN);
+                        } else {
+                            ShowUtile.toastShow(VideoActivity.this, "没有在播放状态，请先播放！");
+                        }
                     }
                 });
 
                 controlRight.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        ShowUtile.toastShow(VideoActivity.this,"右转中...");
-                        videoPresenter.videoControl(CONTROL_RIGHT);
+                        if (videoView.isPlaying()) {
+                            videoContrlStatusTv.setText("手动控制中");
+                            ShowUtile.toastShow(VideoActivity.this, "右转中...");
+                            videoPresenter.videoControl(CONTROL_RIGHT);
+                        } else {
+                            ShowUtile.toastShow(VideoActivity.this, "没有在播放状态，请先播放！");
+                        }
                     }
                 });
 
@@ -149,14 +178,23 @@ public class VideoActivity extends AppCompatActivity implements InitView, LoadDa
                 toolbar.setTitle(R.string.play_alarm_video);
                 toolbar.setSubtitle(alarmInformation.getDeviceId());
 
-                if(alarmInformation.getLineName() !=null){
-                videoLineTv.setText(alarmInformation.getLineName());
-                }else{
+                videoView.setMediaController(new MediaController(this));
+                videoView.requestFocus();
+                videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                    @Override
+                    public void onPrepared(MediaPlayer mediaPlayer) {
+                        mediaPlayer.setPlaybackSpeed(1.0f);
+                    }
+                });
+
+                if (alarmInformation.getLineName() != null) {
+                    videoLineTv.setText(alarmInformation.getLineName());
+                } else {
                     videoLineTv.setVisibility(View.GONE);
                 }
-                if(alarmInformation.getPoleName() !=null){
+                if (alarmInformation.getPoleName() != null) {
                     videoTowerTv.setText(alarmInformation.getPoleName());
-                }else{
+                } else {
                     videoTowerTv.setVisibility(View.GONE);
                     videoTowerShow.setVisibility(View.GONE);
                 }
@@ -168,46 +206,39 @@ public class VideoActivity extends AppCompatActivity implements InitView, LoadDa
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
-        videoView.setMediaController(new MediaController(this));
-        videoView.requestFocus();
-        videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-            @Override
-            public void onPrepared(MediaPlayer mediaPlayer) {
-                mediaPlayer.setPlaybackSpeed(1.0f);
-            }
-        });
+
+        this.videoPresenter = new VideoPresenter(VideoActivity.this);
+        this.videoPresenter.setVideoActivity(VideoActivity.this);
     }
 
     @Override
     public void initialize() {
-        this.videoPresenter = new VideoPresenter(VideoActivity.this);
-        this.videoPresenter.setVideoActivity(VideoActivity.this);
-        int channleID = -1;
-        //6789,一般用7
-        int streamType = 7;
         switch (type) {
             case "real":
                 switch (choiceType) {
                     case "break":
                         /**
-                         * 这里取得用户选择的channleId;
+                         * 这里取得用户选择的ChannelID;
                          */
-                        channleID = 2;
+                        channelID = 2;
                         break;
                     default:
-                        channleID = 1;
+                        channelID = 1;
                         break;
                 }
-                this.videoPresenter.getUrlForRealPlay(channleID, streamType, equipmentInformation.getDvrId(), equipmentInformation.getDvrType());
+                timer = new Timer();
+                timer.schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        VideoActivity.this.videoPresenter.getEquipmentStatus(equipmentInformation.getSn());
+                    }
+                }, 0, 10000);
                 break;
 
             case "history":
                 this.videoPresenter.getUrlByFileName(alarmInformation.getVideoFileName());
                 break;
         }
-
-//        videoView.setVideoPath("rtsp://218.204.223.237:554/live/1/66251FC11353191F/e7ooqwcfbqjoo80j.sdp");
-//        videoView.start();
     }
 
     @Override
@@ -222,7 +253,9 @@ public class VideoActivity extends AppCompatActivity implements InitView, LoadDa
 
     @Override
     public void showError(String message) {
-
+        if(timer !=null)
+            timer.cancel();
+        ShowUtile.toastShow(VideoActivity.this,message);
     }
 
     @Override
@@ -231,17 +264,21 @@ public class VideoActivity extends AppCompatActivity implements InitView, LoadDa
     }
 
     public void startVideoPlay(String videoUrl) {
+        this.videoUrl = videoUrl;
         Log.e("startVideoPlay", videoUrl);
-        if(!videoUrl.isEmpty()){
+        if (!videoUrl.isEmpty()) {
             videoView.setVideoPath(videoUrl);
             videoView.start();
-        }else{
+        } else {
             videoPlayTv.setText("播放地址获取失败");
-//            videoView.setVideoPath("rtsp://218.204.223.237:554/live/1/66251FC11353191F/e7ooqwcfbqjoo80j.sdp");
-//            videoView.requestFocus();
-//            videoView.setMediaController(new MediaController(this));
-//            videoView.start();
+            initialize();
         }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        timer.cancel();
     }
 
     @Override
@@ -249,5 +286,49 @@ public class VideoActivity extends AppCompatActivity implements InitView, LoadDa
         super.onDestroy();
         this.videoPresenter.destroy();
         ButterKnife.unbind(this);
+    }
+
+    public void EquipmentStatus(String controlStatus) {
+        switch (controlStatus) {
+            case "\"摄像机电源打开\"":
+                if (!videoUrl.isEmpty()) { //已经在播放
+                    videoPlayTv.setText("正在播放中");
+                    break;
+                } else {
+                    videoPlayTv.setText("获取地址中");
+                    this.videoPresenter.getUrlForRealPlay(channelID, streamType, equipmentInformation.getDvrId(), equipmentInformation.getDvrType());
+                }
+                break;
+            case "\"前端监测设备电源关闭\"":
+                videoPlayTv.setText("打开电源中");
+                switch (choiceType) {
+                    case "video":
+                        this.videoPresenter.openCameraPower(equipmentInformation.getSn(),OPEN_SYSTEM_POWER);
+                        break;
+                    default:
+                        this.videoPresenter.openCameraPower(equipmentInformation.getSn(),OPEN_POWER);
+                        break;
+                }
+                break;
+            case "\"摄像机电源关闭\"":
+                videoPlayTv.setText("打开电源中");
+                switch (choiceType) {
+                    case "video":
+                        this.videoPresenter.openCameraPower(equipmentInformation.getSn(),OPEN_SYSTEM_POWER);
+                        break;
+                    default:
+                        this.videoPresenter.openCameraPower(equipmentInformation.getSn(),OPEN_SYSTEM_POWER);
+                        break;
+                }
+                break;
+            case "\"通信主机关闭\"":
+            case "\"前端监测设备通信中\"":
+                videoPlayTv.setText("播放失败");
+                //do nothing
+                videoUrl = "";
+                break;
+            default:
+                break;
+        }
     }
 }

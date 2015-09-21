@@ -99,10 +99,11 @@ public interface RestApi {
 
     /**
      * 控制云台转动
+     *
      * @param type 选择云台转动方向
      * @return 字符串代表指令发送是否成功
      */
-    Observable<String> videoControl(String type,int dvrID,int channelID,String dvrType);
+    Observable<String> videoControl(String type, int dvrID, int channelID, String dvrType);
 
     /**
      * 得到公司列表
@@ -504,5 +505,21 @@ public interface RestApi {
      * @return List的传感器对象
      */
     Observable<String> changeSensor(int userId, int equipmentSn, String sensorJson);
+
+    /**
+     * 得到设备状态
+     *
+     * @param equipmentSn 设备sn
+     * @return 返回设备状态字符串
+     */
+    Observable<String> getEquipmentStatus(int equipmentSn);
+
+    /**
+     * 打开设备电源
+     *
+     * @param equipmentSn 设备sn
+     * @return 返回指令是否成功
+     */
+    Observable<String> openPower(int equipmentSn,int operationType);
 
 }

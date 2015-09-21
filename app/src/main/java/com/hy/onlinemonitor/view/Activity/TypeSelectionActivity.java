@@ -49,6 +49,7 @@ public class TypeSelectionActivity extends AppCompatActivity implements InitView
 
     @Override public void onResume() {
         super.onResume();
+
         this.userPresenter.resume();
     }
 
@@ -86,23 +87,6 @@ public class TypeSelectionActivity extends AppCompatActivity implements InitView
 
     @Override
     public void initialize() {
-        for (String equipment : ownedEquipmentList) {
-            switch (equipment) {
-                case "fire":
-                    fire_card.setVisibility(View.VISIBLE);
-                    break;
-                case "break":
-                    break_card.setVisibility(View.VISIBLE);
-                    break;
-                case "video":
-                    normal_card.setVisibility(View.VISIBLE);
-                    break;
-                case "uav":
-                    auto_card.setVisibility(View.VISIBLE);
-                    break;
-            }
-        }
-
         fire_tv.setText(R.string.the_fire);
         break_tv.setText(R.string.the_break);
         auto_tv.setText(R.string.the_auto);
@@ -140,5 +124,41 @@ public class TypeSelectionActivity extends AppCompatActivity implements InitView
                 userPresenter.upDataUser(3, TypeSelectionActivity.this);
             }
         });
+
+        for (String equipment : ownedEquipmentList) {
+            switch (equipment) {
+                case "fire":
+                    fire_card.setVisibility(View.VISIBLE);
+                    break;
+                case "break":
+                    break_card.setVisibility(View.VISIBLE);
+                    break;
+                case "video":
+                    normal_card.setVisibility(View.VISIBLE);
+                    break;
+                case "uav":
+                    auto_card.setVisibility(View.VISIBLE);
+                    break;
+            }
+        }
+
+        if (ownedEquipmentList.size() == 1){
+            String type = ownedEquipmentList.get(0);
+            switch (type){
+                case "fire":
+                    userPresenter.upDataUser(0, TypeSelectionActivity.this);
+                    break;
+                case "break":
+                    userPresenter.upDataUser(1, TypeSelectionActivity.this);
+                    break;
+                case "video":
+                    userPresenter.upDataUser(2, TypeSelectionActivity.this);
+                    break;
+                case "uav":
+                    userPresenter.upDataUser(3, TypeSelectionActivity.this);
+                    break;
+            }
+        }
+
     }
 }

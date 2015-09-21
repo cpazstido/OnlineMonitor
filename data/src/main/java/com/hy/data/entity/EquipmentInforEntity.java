@@ -6,11 +6,11 @@ package com.hy.data.entity;
 public class EquipmentInforEntity {
     private String equipmnetName;
     private String equipmnetState;
-    private int SN;
+    private int sn;
     private int newFireAlarm;
     private int newBreakAlarm;
     private int newSensorAlarm;
-    private int dvrId;
+    private int dvrID;
     private String dvrType;
 
     public EquipmentInforEntity() {
@@ -32,12 +32,12 @@ public class EquipmentInforEntity {
         this.equipmnetState = equipmnetState;
     }
 
-    public int getSN() {
-        return SN;
+    public int getSn() {
+        return sn;
     }
 
-    public void setSN(int SN) {
-        this.SN = SN;
+    public void setSn(int sn) {
+        this.sn = sn;
     }
 
     public int getNewFireAlarm() {
@@ -64,12 +64,12 @@ public class EquipmentInforEntity {
         this.newSensorAlarm = newSensorAlarm;
     }
 
-    public int getDvrId() {
-        return dvrId;
+    public int getDvrID() {
+        return dvrID;
     }
 
-    public void setDvrId(int dvrId) {
-        this.dvrId = dvrId;
+    public void setDvrID(int dvrID) {
+        this.dvrID = dvrID;
     }
 
     public String getDvrType() {

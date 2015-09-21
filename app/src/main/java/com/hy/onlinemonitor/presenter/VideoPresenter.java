@@ -1,7 +1,6 @@
 package com.hy.onlinemonitor.presenter;
 
 import android.content.Context;
-import android.widget.Toast;
 
 import com.example.interactor.DefaultSubscriber;
 import com.example.interactor.UseCase;
@@ -104,7 +103,7 @@ public class VideoPresenter implements Presenter{
         @Override
         public void onError(Throwable e) {
             VideoPresenter.this.hideViewLoading();
-            Toast.makeText(mContext, "出现错误", Toast.LENGTH_SHORT).show();
+            VideoPresenter.this.videoActivity.showError(e.getMessage());
             super.onError(e);
         }
 
@@ -139,12 +138,62 @@ public class VideoPresenter implements Presenter{
         @Override
         public void onError(Throwable e) {
             VideoPresenter.this.hideViewLoading();
-            Toast.makeText(mContext, "出现错误", Toast.LENGTH_SHORT).show();
+            VideoPresenter.this.videoActivity.showError(e.getMessage());
             super.onError(e);
         }
 
         @Override
         public void onNext(String controlStatus) {
+        }
+    }
+
+    public void getEquipmentStatus(int sn) {
+        videoRepository = new VideoDataRepository(mContext,sn);
+        this.videoUseCase = new VideoUseCase(new UIThread(), AndroidSchedulers.mainThread(),videoRepository, 6);
+        this.videoUseCase.execute(new StatusSubscriber());
+    }
+
+    private class StatusSubscriber extends DefaultSubscriber<String> {
+        @Override
+        public void onCompleted() {
+            VideoPresenter.this.hideViewLoading();
+        }
+
+        @Override
+        public void onError(Throwable e) {
+            VideoPresenter.this.hideViewLoading();
+            VideoPresenter.this.videoActivity.showError(e.getMessage());
+            super.onError(e);
+        }
+
+        @Override
+        public void onNext(String controlStatus) {
+            VideoPresenter.this.videoActivity.EquipmentStatus(controlStatus);
+        }
+    }
+
+    public void openCameraPower(int sn,int operationType) {
+        videoRepository = new VideoDataRepository(mContext,sn,operationType);
+        this.videoUseCase = new VideoUseCase(new UIThread(), AndroidSchedulers.mainThread(),videoRepository, 7);
+        this.videoUseCase.execute(new OpenPowerSubscriber());
+    }
+
+    private class OpenPowerSubscriber extends DefaultSubscriber<String> {
+        @Override
+        public void onCompleted() {
+            VideoPresenter.this.hideViewLoading();
+        }
+
+        @Override
+        public void onError(Throwable e) {
+            VideoPresenter.this.hideViewLoading();
+            VideoPresenter.this.videoActivity.showError(e.getMessage());
+            super.onError(e);
+        }
+
+        @Override
+        public void onNext(String controlStatus) {
+            VideoPresenter.this.videoActivity.EquipmentStatus(controlStatus);
         }
     }
 }

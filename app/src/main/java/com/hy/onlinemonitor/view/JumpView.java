@@ -8,6 +8,6 @@ public interface JumpView extends LoadDataView {
     /**
      * 跳转界面
      */
-    public void GoToView();
+    void GoToView();
 
 }

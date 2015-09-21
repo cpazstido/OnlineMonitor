@@ -19,14 +19,14 @@ public class EquipmentAlarmEntityDataMapper {
 
         if (equipmentInforEntity != null) {
             domainEquipmentInformation = new DomainEquipmentInformation();
-            domainEquipmentInformation.setSN(equipmentInforEntity.getSN());
+            domainEquipmentInformation.setSN(equipmentInforEntity.getSn());
             domainEquipmentInformation.setEquipmnetName(equipmentInforEntity.getEquipmnetName());
             domainEquipmentInformation.setEquipmnetState(equipmentInforEntity.getEquipmnetState());
             domainEquipmentInformation.setNewBreakAlarm(equipmentInforEntity.getNewBreakAlarm());
             domainEquipmentInformation.setNewFireAlarm(equipmentInforEntity.getNewFireAlarm());
             domainEquipmentInformation.setNewSensorAlarm(equipmentInforEntity.getNewSensorAlarm());
             domainEquipmentInformation.setDvrType(equipmentInforEntity.getDvrType());
-            domainEquipmentInformation.setDvrId(domainEquipmentInformation.getDvrId());
+            domainEquipmentInformation.setDvrId(equipmentInforEntity.getDvrID());
         }
 
         return domainEquipmentInformation;

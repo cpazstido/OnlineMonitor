@@ -17,6 +17,7 @@ public class SystemRestClient {
 
     public static final String BASE_PICTURE_URL = "http://172.16.8.129:8081/eMonitorApp/alarm/";
     private static final String BASE_VIDEO_URL = "http://172.16.8.129:8081/eMonitorApp/accessServer";
+    private static final String BASE_POWER_URL = "http://172.16.8.129:8081/eMonitorApp/frontendconfig";
     private static AsyncHttpClient client = new AsyncHttpClient();
 
     public static void get(String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {
@@ -58,5 +59,13 @@ public class SystemRestClient {
     private static  String getXmlAbsoluteUrl(String relativeUrl, String dvrType, int dvrId, int channelID, int streamType){
         Log.i("getAbsoluteUrl", BASE_VIDEO_URL + relativeUrl + "?DvrID=" + dvrId + "&StreamType=" + streamType + "&ChannelID=" + channelID + "&DvrType=" + dvrType);
         return BASE_VIDEO_URL+relativeUrl+"?DvrID="+dvrId+"&StreamType="+streamType+"&ChannelID="+channelID+"&DvrType="+dvrType;
+    }
+
+    public static void openPower(String url,int deviceSn,int operationType,AsyncHttpResponseHandler responseHandler){
+        client.post(getAbsoluteUrl(url,deviceSn,operationType), null, responseHandler);
+    }
+
+    private static String getAbsoluteUrl(String relativeUrl,int deviceSn,int operationType) {
+        return BASE_POWER_URL + relativeUrl+"?deviceID="+deviceSn+"&operationType="+operationType;
     }
 }

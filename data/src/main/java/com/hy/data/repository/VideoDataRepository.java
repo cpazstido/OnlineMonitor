@@ -15,6 +15,8 @@ public class VideoDataRepository implements VideoRepository{
     private int choiceType =-1;
     private int channelID;
     private int streamType ;
+    private int equipmentSn ;
+    private int operationType;
 
     public VideoDataRepository(Context mContext, String fileName) {
         this.choiceType = 0;
@@ -37,6 +39,18 @@ public class VideoDataRepository implements VideoRepository{
         this.dvrType = dvrType;
         this.channelID = channelID;
     }
+
+    public VideoDataRepository(Context mContext, int sn,int operationType) {
+        this.mContext = mContext;
+        this.equipmentSn = sn;
+        this.operationType = operationType;
+    }
+
+    public VideoDataRepository(Context mContext, int sn) {
+        this.mContext = mContext;
+        this.equipmentSn = sn;
+    }
+
     @Override
     public Observable<String> getVideoUrl() {
         RestApiImpl restApi = new RestApiImpl(mContext);
@@ -77,5 +91,17 @@ public class VideoDataRepository implements VideoRepository{
     public Observable<String> downControl() {
         RestApiImpl restApi = new RestApiImpl(mContext);
         return restApi.videoControl("down",dvrId,channelID,dvrType);
+    }
+
+    @Override
+    public Observable<String> getStatus() {
+        RestApiImpl restApi = new RestApiImpl(mContext);
+        return restApi.getEquipmentStatus(equipmentSn);
+    }
+
+    @Override
+    public Observable<String> openPower() {
+        RestApiImpl restApi = new RestApiImpl(mContext);
+        return restApi.openPower(equipmentSn,operationType);
     }
 }

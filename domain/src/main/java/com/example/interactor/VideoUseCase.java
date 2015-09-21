@@ -44,6 +44,12 @@ public class VideoUseCase extends UseCase {
             case 5:
                 observable = videoRepository.downControl();
                 break;
+            case 6:
+                observable = videoRepository.getStatus();
+                break;
+            case 7:
+                observable = videoRepository.openPower();
+                break;
         }
         return observable;
     }

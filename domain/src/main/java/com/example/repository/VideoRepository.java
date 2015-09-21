@@ -12,4 +12,9 @@ public interface VideoRepository {
     Observable<String> upControl();
 
     Observable<String> downControl();
+
+    Observable<String> getStatus();
+
+    Observable<String> openPower();
+
 }

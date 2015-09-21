@@ -83,7 +83,7 @@ public class AlarmRecyclerAdapter extends RecyclerView.Adapter<AlarmViewHolder> 
             case "fire":
                 holder.alarmCardTitle.setText(alarmInformation.getDeviceId());
                 Log.e("fire", SystemRestClient.BASE_PICTURE_URL + alarmInformation.getVisibleLightImage());
-                Picasso.with(mContext).load(SystemRestClient.BASE_PICTURE_URL+alarmInformation.getVisibleLightImage()).into(holder.alarmCardImage);
+                Picasso.with(mContext).load(SystemRestClient.BASE_PICTURE_URL+alarmInformation.getVisibleLightImage()).placeholder(R.drawable.picture_loading).error(R.drawable.loading_error).into(holder.alarmCardImage);
 //                Picasso.with(mContext).load("http://172.16.8.129:8081/eMonitorApp/alarm/visiblePicture/217-1-20150916-150333.jpg").into(holder.alarmCardImage);
                 holder.alarmCardView.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -99,7 +99,7 @@ public class AlarmRecyclerAdapter extends RecyclerView.Adapter<AlarmViewHolder> 
             case "break":
                 holder.alarmCardTitle.setText(alarmInformation.getCollectionTime());
                 Log.e("break", SystemRestClient.BASE_PICTURE_URL +alarmInformation.getBreakImage());
-                Picasso.with(mContext).load(SystemRestClient.BASE_PICTURE_URL+alarmInformation.getBreakImage()).into(holder.alarmCardImage);
+                Picasso.with(mContext).load(SystemRestClient.BASE_PICTURE_URL+alarmInformation.getBreakImage()).placeholder(R.drawable.picture_loading).error(R.drawable.loading_error).into(holder.alarmCardImage);
                 holder.alarmCardView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
