@@ -50,12 +50,12 @@ public class SMAdministratorPresenter implements Presenter {
 
     @Override
     public void pause() {
-        administratorUseCase.unsubscribe();
+
     }
 
     @Override
     public void destroy() {
-
+        administratorUseCase.unsubscribe();
     }
 
     @Override

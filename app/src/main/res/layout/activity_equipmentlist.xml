@@ -7,17 +7,7 @@
     <include
         android:id="@+id/equipment_toolbar"
         layout="@layout/toolbar"/>
-    <TextView
-        android:id="@+id/show_no_data"
-        android:visibility="gone"
-        android:text="暂无数据"
-        android:gravity="center"
-        android:textSize="@dimen/md_title_textsize"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+
     <com.baoyz.widget.PullRefreshLayout
         android:id="@+id/swipeRefreshLayout"
         android:layout_width="match_parent"
@@ -31,4 +21,7 @@
             android:layout_weight="1"
             android:scrollbars="none" />
     </com.baoyz.widget.PullRefreshLayout>
+
+    <include
+        layout="@layout/error_message"/>
 </RelativeLayout>

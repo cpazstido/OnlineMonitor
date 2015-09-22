@@ -1,6 +1,8 @@
 package com.hy.onlinemonitor.view.Activity.SystemManagement;
 
 import android.content.Context;
+import android.content.res.Resources;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -10,7 +12,6 @@ import com.daimajia.swipe.util.Attributes;
 import com.hy.onlinemonitor.R;
 import com.hy.onlinemonitor.bean.Company;
 import com.hy.onlinemonitor.presenter.SMCompanyPresenter;
-import com.hy.onlinemonitor.presenter.SMEquipmentPresenter;
 import com.hy.onlinemonitor.view.Adapter.SMCompanyRecyclerAdapter;
 
 import java.util.ArrayList;
@@ -67,7 +68,7 @@ public class CompanyManageActivity extends SMBaseActivity {
                         String name = newName.getText().toString();
                         String address = newAddress.getText().toString();
                         int companySn = parentCompanyList.get(((android.widget.Spinner) dialog.getCustomView().findViewById(R.id.dialog_company_parent)).getSelectedItemPosition()).getSn();
-                        smCompanyPresenter.addCompany(name,address,companySn);
+                        smCompanyPresenter.addCompany(name, address, companySn);
                         super.onPositive(dialog);
                     }
 
@@ -90,17 +91,24 @@ public class CompanyManageActivity extends SMBaseActivity {
 
     @Override
     public void showLoading() {
-
+        alertDialog.show();
     }
 
     @Override
     public void hideLoading() {
-
+        alertDialog.cancel();
     }
 
     @Override
     public void showError(String message) {
-
+        errorMessageLl.setVisibility(View.VISIBLE);
+        errorMessageTv.setText(message);
+        refreshButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                smCompanyPresenter.loadParentCompany(getUser().getUserId());
+            }
+        });
     }
 
     @Override
@@ -109,9 +117,11 @@ public class CompanyManageActivity extends SMBaseActivity {
     }
 
     public void setCompanyList(List<Company> mList) {
-        if (mList != null) {
+        if (mList != null &&mList.size() !=0) {
             mAdapter.setCompanyList(mList);
             mAdapter.setPresenter(smCompanyPresenter);
+        }else{
+            showError(Resources.getSystem().getString(R.string.not_data));
         }
     }
 
@@ -119,5 +129,11 @@ public class CompanyManageActivity extends SMBaseActivity {
         if (mList != null) {
             parentCompanyList = mList;
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        smCompanyPresenter.destroy();
     }
 }

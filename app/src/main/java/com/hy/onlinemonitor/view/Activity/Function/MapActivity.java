@@ -1,8 +1,10 @@
 package com.hy.onlinemonitor.view.Activity.Function;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
@@ -21,6 +23,7 @@ import com.baidu.mapapi.map.MarkerOptions;
 import com.baidu.mapapi.map.OverlayOptions;
 import com.baidu.mapapi.model.LatLng;
 import com.hy.onlinemonitor.R;
+import com.hy.onlinemonitor.bean.EquipmentInformation;
 import com.hy.onlinemonitor.bean.Map;
 import com.hy.onlinemonitor.presenter.MapPresenter;
 import com.hy.onlinemonitor.utile.GetLoading;
@@ -73,18 +76,39 @@ public class MapActivity extends BaseActivity implements MapListView {
 
                     TextView equipment = (TextView) layout.findViewById(R.id.map_equipment_information);
                     TextView pole = (TextView) layout.findViewById(R.id.map_pole_information);
-                    Button videoBtn = (Button) layout.findViewById(R.id.map_equipment_video);
+                    final Button videoBtn = (Button) layout.findViewById(R.id.map_equipment_video);
                     pole.setText(emv.getPoleName());
                     equipment.setText(emv.getEquipmentName());
-                    if(marker == Marker){
-                        listener = new InfoWindow.OnInfoWindowClickListener(){
-
+                    if (marker == Marker) {
+                        listener = new InfoWindow.OnInfoWindowClickListener() {
                             @Override
                             public void onInfoWindowClick() {
-
-                                /**
-                                 * 这里弹出视频播放窗口
-                                 */
+                                Log.e("tag", "videoBtn-Map");
+                                Intent intent = new Intent(MapActivity.this, VideoActivity.class);
+                                intent.putExtra("type", "real");
+                                String choiceStr = null;
+                                switch (getUser().getSelectionType()) {
+                                    case 0:
+                                        choiceStr = "fire";
+                                        break;
+                                    case 1:
+                                        choiceStr = "break";
+                                        break;
+                                    case 2:
+                                        choiceStr = "video";
+                                        break;
+                                    case 3:
+                                        choiceStr = "auv";
+                                        break;
+                                }
+                                intent.putExtra("choiceType", choiceStr);
+                                EquipmentInformation equipmentInformation = new EquipmentInformation();
+                                equipmentInformation.setDvrType(emv.getDvrType());
+                                equipmentInformation.setDvrId(emv.getDvrID());
+                                equipmentInformation.setSn(emv.getEquipmentSn());
+                                equipmentInformation.setEquipmnetName(emv.getEquipmentName());
+                                intent.putExtra("EquipmentInformation",equipmentInformation);
+                                startActivity(intent);
                                 mBaiduMap.hideInfoWindow();
                             }
                         };
@@ -92,10 +116,12 @@ public class MapActivity extends BaseActivity implements MapListView {
                         mInfoWindow = new InfoWindow(BitmapDescriptorFactory.fromView(layout), ll, -47, listener);
                         mBaiduMap.showInfoWindow(mInfoWindow);
                     }
+
                     return true;
                 }
             });
         }
+
     }
 
     private void loadMapList() {
@@ -159,6 +185,7 @@ public class MapActivity extends BaseActivity implements MapListView {
         // MapView的生命周期与Activity同步，当activity销毁时需调用MapView.destroy()
         mMapView.onDestroy();
         super.onDestroy();
+        mapPresenter.destroy();
         // 回收 bitmap 资源
         bd.recycle();
     }

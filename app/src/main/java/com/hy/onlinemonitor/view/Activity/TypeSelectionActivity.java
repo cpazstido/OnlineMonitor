@@ -21,7 +21,7 @@ import java.util.List;
 /**
  * Created by wsw on 2015/7/11.
  */
-public class TypeSelectionActivity extends AppCompatActivity implements InitView{
+public class TypeSelectionActivity extends AppCompatActivity implements InitView {
 
     private CardView fire_card, break_card, auto_card, normal_card;
     private TextView fire_tv, break_tv, auto_tv, normal_tv;
@@ -41,24 +41,26 @@ public class TypeSelectionActivity extends AppCompatActivity implements InitView
         setupUI();
     }
 
-    public void GotoActivity(){
+    public void GotoActivity() {
         Log.e("TypeSelectionActivity", "GotoActivity");
         Intent intent = new Intent(TypeSelectionActivity.this, MainActivity.class);
         startActivity(intent);
     }
 
-    @Override public void onResume() {
+    @Override
+    public void onResume() {
         super.onResume();
-
         this.userPresenter.resume();
     }
 
-    @Override public void onPause() {
+    @Override
+    public void onPause() {
         super.onPause();
         this.userPresenter.pause();
     }
 
-    @Override public void onDestroy() {
+    @Override
+    public void onDestroy() {
         super.onDestroy();
         this.userPresenter.destroy();
     }
@@ -102,26 +104,26 @@ public class TypeSelectionActivity extends AppCompatActivity implements InitView
         fire_card.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                userPresenter.upDataUser(0, TypeSelectionActivity.this);
+                userPresenter.setCurrentPorject(0, TypeSelectionActivity.this, "fire");
             }
         });
         break_card.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                userPresenter.upDataUser(1, TypeSelectionActivity.this);
+                userPresenter.setCurrentPorject(1, TypeSelectionActivity.this, "break");
             }
         });
 
         normal_card.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                userPresenter.upDataUser(2, TypeSelectionActivity.this);
+                userPresenter.setCurrentPorject(2, TypeSelectionActivity.this, "video");
             }
         });
         auto_card.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                userPresenter.upDataUser(3, TypeSelectionActivity.this);
+                userPresenter.setCurrentPorject(3, TypeSelectionActivity.this, "uav");
             }
         });
 
@@ -142,23 +144,22 @@ public class TypeSelectionActivity extends AppCompatActivity implements InitView
             }
         }
 
-        if (ownedEquipmentList.size() == 1){
+        if (ownedEquipmentList.size() == 1) {
             String type = ownedEquipmentList.get(0);
-            switch (type){
+            switch (type) {
                 case "fire":
-                    userPresenter.upDataUser(0, TypeSelectionActivity.this);
+                    userPresenter.setCurrentPorject(0, TypeSelectionActivity.this, type);
                     break;
                 case "break":
-                    userPresenter.upDataUser(1, TypeSelectionActivity.this);
+                    userPresenter.setCurrentPorject(1, TypeSelectionActivity.this, type);
                     break;
                 case "video":
-                    userPresenter.upDataUser(2, TypeSelectionActivity.this);
+                    userPresenter.setCurrentPorject(2, TypeSelectionActivity.this, type);
                     break;
                 case "uav":
-                    userPresenter.upDataUser(3, TypeSelectionActivity.this);
+                    userPresenter.setCurrentPorject(3, TypeSelectionActivity.this, type);
                     break;
             }
         }
-
     }
 }

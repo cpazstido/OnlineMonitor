@@ -17,7 +17,6 @@ import com.hy.onlinemonitor.bean.User;
 import com.hy.onlinemonitor.mapper.UserDataMapper;
 import com.hy.onlinemonitor.view.Activity.BaseActivity;
 import com.hy.onlinemonitor.view.Activity.TypeSelectionActivity;
-import com.rey.material.widget.SnackBar;
 
 import java.util.List;
 
@@ -33,8 +32,9 @@ public class UserPresenter extends DefaultSubscriber implements Presenter {
     private UserRepository userRepository;
     private UseCase UserInformationCase;
     private String message;
+    private String setResult;
     private Context mContext;
-
+    private int choiceType;
     @Override
     public void resume() {
 
@@ -61,7 +61,7 @@ public class UserPresenter extends DefaultSubscriber implements Presenter {
 
     public void getUserInformation(Context mContext) {
         userRepository = new UserDataRepository(new UserDataStoreFactory(mContext), new UserEntityDataMapper());
-        this.UserInformationCase = new UserInformationUseCase(new UIThread(),new UIThread().getScheduler(), userRepository, "getUserInformation");
+        this.UserInformationCase = new UserInformationUseCase(new UIThread(),new UIThread().getScheduler(), userRepository,0);
         this.UserInformationCase.execute(new UserInformationSubscriber());
     }
 
@@ -89,18 +89,17 @@ public class UserPresenter extends DefaultSubscriber implements Presenter {
     public void upDataUser(int choiceType, Context mContext) {
         this.mContext = mContext;
         userRepository = new UserDataRepository(new UserDataStoreFactory(mContext));
-        this.UserInformationCase = new UserInformationUseCase(new UIThread(),new UIThread().getScheduler(), userRepository, choiceType);
+        this.UserInformationCase = new UserInformationUseCase(new UIThread(),new UIThread().getScheduler(), userRepository, choiceType,1);
         this.UserInformationCase.execute(new upDataUserSubscriber());
     }
 
     private final class upDataUserSubscriber extends DefaultSubscriber<String> {
         @Override
         public void onCompleted() {
+            hideViewLoading();
             if (message != null) {
                 if ("success".equals(message))
                     typeSelectionActivity.GotoActivity();
-                else
-                    new SnackBar(mContext).text("错误").show();
             }
         }
 
@@ -117,7 +116,7 @@ public class UserPresenter extends DefaultSubscriber implements Presenter {
 
     public void getUserEquipmentList(Context mContext) {
         userRepository = new UserDataRepository(new UserDataStoreFactory(mContext));
-        this.UserInformationCase = new UserInformationUseCase(new UIThread(), Schedulers.io(), userRepository);
+        this.UserInformationCase = new UserInformationUseCase(new UIThread(), Schedulers.io(), userRepository,2);
         this.UserInformationCase.execute(new EquipmentListSubscriber());
     }
 
@@ -140,6 +139,7 @@ public class UserPresenter extends DefaultSubscriber implements Presenter {
             typeSelectionActivity.setOwnedEquipmentList(ownedEquipmentList);
         }
     }
+
     public void setBaseActivity(@NonNull BaseActivity baseActivity) {
         this.baseActivity = baseActivity;
     }
@@ -148,4 +148,29 @@ public class UserPresenter extends DefaultSubscriber implements Presenter {
         this.typeSelectionActivity = typeSelectionActivity;
     }
 
+    public void setCurrentPorject(int choiceType, Context mContext,String curProject){
+        this.showViewLoading();
+        this.mContext = mContext;
+        this.choiceType =choiceType;
+        userRepository = new UserDataRepository(new UserDataStoreFactory(mContext),curProject);
+        this.UserInformationCase = new UserInformationUseCase(new UIThread(), new UIThread().getScheduler(), userRepository,3);
+        this.UserInformationCase.execute(new CurrentPorjectSubscriber());
+    }
+
+    private final class CurrentPorjectSubscriber extends DefaultSubscriber<String> {
+        @Override
+        public void onCompleted() {
+            UserPresenter.this.upDataUser(choiceType,mContext);
+        }
+
+        @Override
+        public void onError(Throwable e) {
+            Log.e("sub", "onError");
+        }
+
+        @Override
+        public void onNext(String result) {
+            setResult = result;
+        }
+    }
 }

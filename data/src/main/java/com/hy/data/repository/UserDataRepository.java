@@ -18,7 +18,7 @@ public class UserDataRepository implements UserRepository {
 
   private final UserDataStoreFactory userDataStoreFactory;
   private  UserEntityDataMapper userEntityDataMapper;
-
+  private String curProject;
   /**
    * Constructs a {@link UserRepository}.
    *
@@ -36,6 +36,10 @@ public class UserDataRepository implements UserRepository {
     this.userDataStoreFactory = userDataStoreFactory;
   }
 
+  public UserDataRepository(UserDataStoreFactory userDataStoreFactory,String curProject) {
+    this.userDataStoreFactory = userDataStoreFactory;
+    this.curProject = curProject;
+  }
   @Override
   public Observable<DomainUser> user(String loginAccount, String loginPwd) {
     final UserDataStore userDataStore = this.userDataStoreFactory.createCloudDataStore(loginAccount, loginPwd);
@@ -58,7 +62,12 @@ public class UserDataRepository implements UserRepository {
   @Override
   public Observable<DomainUser> getUserInfor() {
     final UserDataStore userDataStore = this.userDataStoreFactory.createLocalDataStore();
-
     return userDataStore.getUserInfor().map(this.userEntityDataMapper::transform);
+  }
+
+  @Override
+  public Observable<String> setCurrentPorject() {
+    final UserDataStore userDataStore = this.userDataStoreFactory.createCloudDataStore(curProject);
+    return userDataStore.setCurrentPorject(curProject);
   }
 }

@@ -1,8 +1,10 @@
 package com.hy.onlinemonitor.view.Activity.SystemManagement;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
@@ -177,7 +179,14 @@ public class AdministratorManageActivity extends SMBaseActivity {
 
     @Override
     public void showError(String message) {
-
+        errorMessageLl.setVisibility(View.VISIBLE);
+        errorMessageTv.setText(message);
+        refreshButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                smAdministratorPresenter.loadAdminData(getUser().getUserId());
+            }
+        });
     }
 
     @Override
@@ -186,9 +195,11 @@ public class AdministratorManageActivity extends SMBaseActivity {
     }
 
     public void renderEquipmentList(AdministratorPage administratorPage) {
-        if (administratorPage != null) {
+        if (administratorPage != null &&administratorPage.getList().size() !=0) {
             this.administratorPage = administratorPage;
             this.mAdapter.setAdministratorCollection(administratorPage.getList());
+        }else{
+            showError(Resources.getSystem().getString(R.string.not_data));
         }
     }
 
@@ -327,5 +338,11 @@ public class AdministratorManageActivity extends SMBaseActivity {
 
     public void setAdmin(int allPoleSelected) {
         this.administratorInformation.setAllPoleSeleceted(allPoleSelected);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        smAdministratorPresenter.destroy();
     }
 }

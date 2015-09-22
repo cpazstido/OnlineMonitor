@@ -7,6 +7,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.hy.onlinemonitor.R;
@@ -19,7 +20,7 @@ import com.rey.material.widget.Spinner;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public abstract class SMBaseActivity extends BaseActivity implements LoadDataView{
+public abstract class SMBaseActivity extends BaseActivity implements LoadDataView {
 
     public AlertDialog alertDialog;
     public LinearLayoutManager linearLayoutManager;
@@ -33,11 +34,18 @@ public abstract class SMBaseActivity extends BaseActivity implements LoadDataVie
     Spinner spinnerChoiceCompany;
     @Bind(R.id.choice_btn)
     Button choiceBtn;
+    @Bind(R.id.error_message_tv)
+    TextView errorMessageTv;
+    @Bind(R.id.refresh_button)
+    Button refreshButton;
+    @Bind(R.id.error_message_ll)
+    RelativeLayout errorMessageLl;
+
     @Override
     protected void setOwnContentView() {
         setContentView(R.layout.activity_sm);
         ButterKnife.bind(this);
-        alertDialog = GetLoading.getDialog(SMBaseActivity.this,"加载数据中....");
+        alertDialog = GetLoading.getDialog(SMBaseActivity.this, "加载数据中....");
         initTitle();
         initViewDisplay();
     }

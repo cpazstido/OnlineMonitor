@@ -62,10 +62,23 @@
         android:layout_alignTop="@+id/login_pwd" />
 
     <LinearLayout
+        android:id="@+id/choice_box"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/login_pwd"
+        android:layout_alignLeft="@+id/textView2"
+        android:layout_alignStart="@+id/textView2"
+        android:layout_alignRight="@+id/login_pwd"
+        android:layout_alignEnd="@+id/login_pwd">
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/choice_box"
         android:layout_alignLeft="@+id/textView2"
         android:layout_alignStart="@+id/textView2"
         android:layout_alignRight="@+id/login_pwd"

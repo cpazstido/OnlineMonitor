@@ -26,4 +26,6 @@ public interface UserDataStore {
   Observable<String> upDataUser(int choiceType);
 
   Observable<UserEntity> getUserInfor();
+
+  Observable<String> setCurrentPorject(String curProject);
 }

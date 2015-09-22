@@ -10,8 +10,17 @@ public class DomainMap {
     private int dvrID;
     private String dvrType;
     private String poleName;
+    private int equipmentSn;
 
     public DomainMap() {
+    }
+
+    public int getEquipmentSn() {
+        return equipmentSn;
+    }
+
+    public void setEquipmentSn(int equipmentSn) {
+        this.equipmentSn = equipmentSn;
     }
 
     public double getLongitude() {

@@ -22,6 +22,7 @@ public class MapDataMapper {
         map.setDvrID(domainMap.getDvrID());
         map.setDvrType(domainMap.getDvrType());
         map.setPoleName(domainMap.getPoleName());
+        map.setEquipmentSn(domainMap.getEquipmentSn());
         return map;
     }
 

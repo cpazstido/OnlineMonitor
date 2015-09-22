@@ -34,6 +34,14 @@ public interface RestApi {
     Observable<UserEntity> userEntity(String loginAccount, String loginPwd);
 
     /**
+     * 设置选择的类型
+     *
+     * @param curProject 当前的项目
+     * @return 返回字符串
+     */
+    Observable<String> setCurrentPorject(String curProject);
+
+    /**
      * 取得设备列表
      *
      * @param userName   唯一标示某一个用户

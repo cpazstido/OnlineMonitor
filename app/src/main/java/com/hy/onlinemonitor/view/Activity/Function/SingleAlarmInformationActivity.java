@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.baoyz.widget.PullRefreshLayout;
@@ -20,6 +21,7 @@ import com.hy.onlinemonitor.utile.GetLoading;
 import com.hy.onlinemonitor.view.Adapter.AlarmRecyclerAdapter;
 import com.hy.onlinemonitor.view.AlarmListView;
 import com.hy.onlinemonitor.view.InitView;
+import com.rey.material.widget.Button;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -34,8 +36,13 @@ public class SingleAlarmInformationActivity extends AppCompatActivity implements
     RecyclerView rvRecyclerviewData;
     @Bind(R.id.swipeRefreshLayout)
     PullRefreshLayout swipeRefreshLayout;
-    @Bind(R.id.show_no_data)
-    TextView showNoData;
+    @Bind(R.id.error_message_tv)
+    TextView errorMessageTv;
+    @Bind(R.id.refresh_button)
+    Button refreshButton;
+    @Bind(R.id.error_message_ll)
+    RelativeLayout errorMessageLl;
+
     private AlarmRecyclerAdapter mAdapter;
     private int showType;
     private AlarmPresenter alarmPresenter;
@@ -44,7 +51,7 @@ public class SingleAlarmInformationActivity extends AppCompatActivity implements
     private AlarmPage alarmPage;
     private String equipmentName;
     private String queryAlarmType;
-
+    private int userId;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_equipmentlist);
@@ -53,7 +60,7 @@ public class SingleAlarmInformationActivity extends AppCompatActivity implements
 
         queryAlarmType = intent.getStringExtra("queryAlarmType");
         equipmentName = intent.getStringExtra("equipmentName");
-        int userId = intent.getIntExtra("userId", -1);
+        userId = intent.getIntExtra("userId", -1);
         status = intent.getIntExtra("status", -1);
         showType = intent.getIntExtra("showType", -1);
         toolbar.setTitle(intent.getStringExtra("title"));
@@ -63,7 +70,7 @@ public class SingleAlarmInformationActivity extends AppCompatActivity implements
 
         setupUI();
         initialize();
-        loadAlarmList(userId, equipmentName, queryAlarmType, status, 1);
+
     }
 
     @Override
@@ -78,6 +85,7 @@ public class SingleAlarmInformationActivity extends AppCompatActivity implements
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        alarmPresenter.destroy();
         ButterKnife.unbind(this);
     }
 
@@ -111,23 +119,31 @@ public class SingleAlarmInformationActivity extends AppCompatActivity implements
 
         mAdapter = new AlarmRecyclerAdapter(alarmPage, SingleAlarmInformationActivity.this, showType, queryAlarmType, status);
         rvRecyclerviewData.setAdapter(mAdapter);
-    }
-
-    @Override
-    public void initialize() {
         alarmPresenter = new AlarmPresenter(SingleAlarmInformationActivity.this);
         this.alarmPresenter.setView(this);
     }
 
     @Override
-    public void renderAlarmList(AlarmPage alarmPage,String queryAlarmType) {
+    public void initialize() {
+        loadAlarmList(userId, equipmentName, queryAlarmType, status, 1);
+    }
+
+    @Override
+    public void renderAlarmList(AlarmPage alarmPage, String queryAlarmType) {
         if (alarmPage != null) {
-            if(alarmPage.getList().size() != 0 ) {
-                showNoData.setVisibility(View.GONE);
+            if (alarmPage.getList().size() != 0) {
+                errorMessageLl.setVisibility(View.GONE);
                 this.alarmPage = alarmPage;
                 this.mAdapter.setAlarmCollection(alarmPage.getList());
-            }else{
-                showNoData.setVisibility(View.VISIBLE);
+            } else {
+                errorMessageLl.setVisibility(View.VISIBLE);
+                errorMessageTv.setText(R.string.not_data);
+                refreshButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        initialize();
+                    }
+                });
             }
         }
     }

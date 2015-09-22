@@ -278,7 +278,8 @@ public class VideoActivity extends AppCompatActivity implements InitView, LoadDa
     @Override
     protected void onStop() {
         super.onStop();
-        timer.cancel();
+        if(timer!=null)
+            timer.cancel();
     }
 
     @Override
@@ -289,6 +290,7 @@ public class VideoActivity extends AppCompatActivity implements InitView, LoadDa
     }
 
     public void EquipmentStatus(String controlStatus) {
+        videoEquipmentStatusTv.setText(controlStatus);
         switch (controlStatus) {
             case "\"摄像机电源打开\"":
                 if (!videoUrl.isEmpty()) { //已经在播放

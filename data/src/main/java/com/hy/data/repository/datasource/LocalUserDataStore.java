@@ -39,5 +39,10 @@ public class LocalUserDataStore implements UserDataStore{
         return userCache.getUserInfor();
     }
 
+    @Override
+    public Observable<String> setCurrentPorject(String curProject) {
+        return null;
+    }
+
 
 }

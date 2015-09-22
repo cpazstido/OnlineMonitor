@@ -154,47 +154,77 @@ public class RestApiImpl implements RestApi {
     @Override
     public Observable<UserEntity> userEntity(String loginAccount, String loginPwd) {
         return Observable.create(new Observable.OnSubscribe<UserEntity>() {
-             @Override
-             public void call(Subscriber<? super UserEntity> subscriber) {
-                 if (isThereInternetConnection()) {
-                     try {
-                         RequestParams params = new RequestParams();
-                         params.put("uername", loginAccount);
-                         params.put("uerpwd", loginPwd);
-                         SystemRestClient.get("/login", params, new AsyncHttpResponseHandler() {
-                             @Override
-                             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                                 Log.i("msg", "登陆成功");
-                                 try {
-                                     String responseUserEntities = new String(responseBody, "UTF-8");
-                                     Log.e("result", responseUserEntities);
-                                     if (responseUserEntities.equals("false")) {
-                                         subscriber.onError(new NetworkConnectionException("用户名或密码错误"));
-                                     } else {
-                                         subscriber.onNext(userEntityJsonMapper.transformUserEntity(
-                                                 responseUserEntities));
-                                         subscriber.onCompleted();
-                                     }
-                                 } catch (UnsupportedEncodingException e) {
-                                     e.printStackTrace();
-                                 }
-                             }
+                                     @Override
+                                     public void call(Subscriber<? super UserEntity> subscriber) {
+                                         if (isThereInternetConnection()) {
+                                             try {
+                                                 RequestParams params = new RequestParams();
+                                                 params.put("uername", loginAccount);
+                                                 params.put("uerpwd", loginPwd);
+                                                 SystemRestClient.get("/login", params, new AsyncHttpResponseHandler() {
+                                                     @Override
+                                                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                                                         Log.i("msg", "登陆成功");
+                                                         try {
+                                                             String responseUserEntities = new String(responseBody, "UTF-8");
+                                                             Log.e("result", responseUserEntities);
+                                                             if (responseUserEntities.equals("false")) {
+                                                                 subscriber.onError(new NetworkConnectionException("用户名或密码错误"));
+                                                             } else {
+                                                                 subscriber.onNext(userEntityJsonMapper.transformUserEntity(
+                                                                         responseUserEntities));
+                                                                 subscriber.onCompleted();
+                                                             }
+                                                         } catch (UnsupportedEncodingException e) {
+                                                             e.printStackTrace();
+                                                         }
+                                                     }
 
-                             @Override
-                             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                                 Log.e("getUserEntitiesFromApi", "onFailure");
-                                 subscriber.onError(new NetworkConnectionException("链接失败"));
-                             }
-                         });
-                     } catch (Exception e) {
-                         subscriber.onError(new NetworkConnectionException(e.getCause()));
-                     }
-                 } else {
-                     subscriber.onError(new NetworkConnectionException());
-                 }
-             }
-         }
+                                                     @Override
+                                                     public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                                                         Log.e("getUserEntitiesFromApi", "onFailure");
+                                                         subscriber.onError(new NetworkConnectionException("链接失败"));
+                                                     }
+                                                 });
+                                             } catch (Exception e) {
+                                                 subscriber.onError(new NetworkConnectionException(e.getCause()));
+                                             }
+                                         } else {
+                                             subscriber.onError(new NetworkConnectionException());
+                                         }
+                                     }
+                                 }
         );
+    }
+
+    @Override
+    public Observable<String> setCurrentPorject(String curProject) {
+        return Observable.create(new Observable.OnSubscribe<String>() {
+            @Override
+            public void call(Subscriber<? super String> subscriber) {
+                RequestParams params = new RequestParams();
+                params.put("curProject", curProject);
+                SystemRestClient.post("/setCurrentPorject", params, new AsyncHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                        try {
+                            String response = new String(responseBody, "UTF-8");
+                            Log.e("setCurrentPorject", response);
+                            subscriber.onNext(stringJsonMapper.transformString(response));
+                            subscriber.onCompleted();
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                        Log.e("getUserEntitiesFromApi", "onFailure");
+                        subscriber.onError(new NetworkConnectionException("链接失败"));
+                    }
+                });
+            }
+        });
     }
 
     /**
@@ -435,12 +465,12 @@ public class RestApiImpl implements RestApi {
     }
 
     @Override
-    public Observable<String> videoControl(String type,int dvrID,int channelID,String dvrType) {
+    public Observable<String> videoControl(String type, int dvrID, int channelID, String dvrType) {
         return Observable.create(new Observable.OnSubscribe<String>() {
             @Override
             public void call(Subscriber<? super String> subscriber) {
                 try {
-                    SystemRestClient.XmlControlPost(context, "/continuous", dvrID,channelID,dvrType,VideoPlayUtils.getVideoControlXml(type), "text/xml; charset=UTF-8", new AsyncHttpResponseHandler() {
+                    SystemRestClient.XmlControlPost(context, "/continuous", dvrID, channelID, dvrType, VideoPlayUtils.getVideoControlXml(type), "text/xml; charset=UTF-8", new AsyncHttpResponseHandler() {
                         @Override
                         public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                             try {
@@ -1760,7 +1790,7 @@ public class RestApiImpl implements RestApi {
             public void call(Subscriber<? super String> subscriber) {
                 RequestParams params = new RequestParams();
                 params.put("sn", equipmentSn);
-                Log.e("getEquipmentStatus","equipmentSn->"+equipmentSn);
+                Log.e("getEquipmentStatus", "equipmentSn->" + equipmentSn);
                 SystemRestClient.post("/getEquipmentState", params, new AsyncHttpResponseHandler() {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
@@ -1785,11 +1815,11 @@ public class RestApiImpl implements RestApi {
     }
 
     @Override
-    public Observable<String> openPower(int equipmentSn,int operationType) {
+    public Observable<String> openPower(int equipmentSn, int operationType) {
         return Observable.create(new Observable.OnSubscribe<String>() {
             @Override
             public void call(Subscriber<? super String> subscriber) {
-                SystemRestClient.openPower("/operationDvrSystem.do", equipmentSn,operationType, new AsyncHttpResponseHandler() {
+                SystemRestClient.openPower("/operationDvrSystem.do", equipmentSn, operationType, new AsyncHttpResponseHandler() {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                         try {

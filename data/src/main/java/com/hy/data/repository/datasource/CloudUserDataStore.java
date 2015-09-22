@@ -57,4 +57,9 @@ public class CloudUserDataStore implements UserDataStore {
     return null;
   }
 
+  @Override
+  public Observable<String> setCurrentPorject(String curProject) {
+    return this.restApi.setCurrentPorject(curProject);
+  }
+
 }

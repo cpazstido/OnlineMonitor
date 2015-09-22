@@ -1,6 +1,7 @@
 package com.hy.onlinemonitor.view.Activity.SystemManagement;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.text.InputType;
 import android.util.Log;
 import android.view.View;
@@ -114,7 +115,14 @@ public class JurisdictionManageActivity extends SMBaseActivity {
 
     @Override
     public void showError(String message) {
-
+        errorMessageLl.setVisibility(View.VISIBLE);
+        errorMessageTv.setText(message);
+        refreshButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                smJurisdictionPresenter.loadRole(getUser().getUserId());
+            }
+        });
     }
 
     @Override
@@ -123,10 +131,12 @@ public class JurisdictionManageActivity extends SMBaseActivity {
     }
 
     public void renderRolePage(RolePage rolePage) {
-        if (rolePage != null) {
+        if (rolePage != null &&rolePage.getList().size() != 0) {
             this.rolePage = rolePage;
             mAdapter.setRolePage(rolePage.getList());
             mAdapter.setPresenter(smJurisdictionPresenter);
+        }else {
+            showError(Resources.getSystem().getString(R.string.not_data));
         }
     }
 
@@ -210,5 +220,11 @@ public class JurisdictionManageActivity extends SMBaseActivity {
 
     public void setOwnPrivileges(List<Privilege> privileges) {
         this.ownPrivileges = privileges;
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        smJurisdictionPresenter.destroy();
     }
 }

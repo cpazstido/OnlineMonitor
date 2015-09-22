@@ -1,6 +1,7 @@
 package com.hy.onlinemonitor.view.Activity.SystemManagement;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
@@ -147,7 +148,14 @@ public class LineManageActivity extends SMBaseActivity {//系统管理-线路管
 
     @Override
     public void showError(String message) {//显示错误信息
-
+        errorMessageLl.setVisibility(View.VISIBLE);
+        errorMessageTv.setText(message);
+        refreshButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                smLinePresenter.loadCompany(getUser().getUserId());//加载公司列表
+            }
+        });
     }
 
     @Override
@@ -196,14 +204,22 @@ public class LineManageActivity extends SMBaseActivity {//系统管理-线路管
     }
 
     public void renderLinePage(LinePage linePage) { //通知数据改变
-        if (linePage != null) {
+        if (linePage != null && linePage.getList().size() !=0) {
             this.linePage = linePage;
             mAdapter.setLinePage(linePage.getList());
             mAdapter.setPresenter(smLinePresenter);
+        }else {
+            showError(Resources.getSystem().getString(R.string.not_data));
         }
     }
 
     public void setLoading() { //设置加载状态
         isLoadingMore = false;
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        smLinePresenter.destroy();
     }
 }

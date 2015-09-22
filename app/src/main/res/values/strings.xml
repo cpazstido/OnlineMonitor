@@ -143,7 +143,7 @@
 
     <string name="refresh">刷新</string>
     <string name="default_url">http://171.221.207.58:8080/eMonitorApp/api</string>
-
+    <string name="not_data">暂无数据,点击按钮刷新重试</string>
 
 
     <!-- 图片的资源文件-->

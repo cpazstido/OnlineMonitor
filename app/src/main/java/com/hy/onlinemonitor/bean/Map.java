@@ -8,9 +8,18 @@ public class Map implements Serializable{
     private String EquipmentName;
     private String dvrType;
     private int dvrID;
+    private int equipmentSn;
     private String poleName;
 
     public Map() {
+    }
+
+    public int getEquipmentSn() {
+        return equipmentSn;
+    }
+
+    public void setEquipmentSn(int equipmentSn) {
+        this.equipmentSn = equipmentSn;
     }
 
     public double getLongitude() {

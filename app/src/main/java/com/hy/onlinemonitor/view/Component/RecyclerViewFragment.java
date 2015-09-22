@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.github.florent37.materialviewpager.MaterialViewPagerHelper;
@@ -19,6 +20,7 @@ import com.hy.onlinemonitor.bean.AlarmPage;
 import com.hy.onlinemonitor.presenter.AlarmPresenter;
 import com.hy.onlinemonitor.view.Adapter.AlarmRecyclerAdapter;
 import com.hy.onlinemonitor.view.AlarmListView;
+import com.rey.material.widget.Button;
 
 import java.util.List;
 
@@ -29,8 +31,13 @@ public class RecyclerViewFragment extends Fragment implements AlarmListView {
 
     @Bind(R.id.recyclerView)
     RecyclerView recyclerView;
-    @Bind(R.id.show_no_data)
-    TextView showNoData;
+    @Bind(R.id.error_message_tv)
+    TextView errorMessageTv;
+    @Bind(R.id.refresh_button)
+    Button refreshButton;
+    @Bind(R.id.error_message_ll)
+    RelativeLayout errorMessageLl;
+
     private boolean isNoInit = true;
     private AlarmRecyclerAdapter mAdapter;
     private RecyclerView.Adapter RcAdapter;
@@ -110,15 +117,20 @@ public class RecyclerViewFragment extends Fragment implements AlarmListView {
     }
 
     @Override
-    public void renderAlarmList(AlarmPage alarmPage,String queryAlarmType) {
+    public void renderAlarmList(AlarmPage alarmPage, final String queryAlarmType) {
+        mAdapter.setQueryAlarmType(queryAlarmType);
         if (alarmPage.getRowCount() == 0) {
-            mAdapter.setQueryAlarmType(queryAlarmType);
-            recyclerView.setVisibility(View.GONE);
-            showNoData.setVisibility(View.VISIBLE);
+            errorMessageLl.setVisibility(View.VISIBLE);
+            errorMessageTv.setText(R.string.not_data);
+            refreshButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    RecyclerViewFragment.this.loadAlarmList(userId, queryAlarmType, status, 1);
+                }
+            });
         } else {
-            mAdapter.setQueryAlarmType(queryAlarmType);
             recyclerView.setVisibility(View.VISIBLE);
-            showNoData.setVisibility(View.GONE);
+            errorMessageLl.setVisibility(View.GONE);
             this.mAdapter.setAlarmCollection(alarmPage.getList());
             RcAdapter.notifyDataSetChanged();
         }

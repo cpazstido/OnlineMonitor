@@ -7,7 +7,16 @@ public class MapEntity {
     private int dvrID;
     private String dvrType;
     private String poleName;
+    private int equipmentSn;
     public MapEntity() {
+    }
+
+    public int getEquipmentSn() {
+        return equipmentSn;
+    }
+
+    public void setEquipmentSn(int equipmentSn) {
+        this.equipmentSn = equipmentSn;
     }
 
     public double getLng() {

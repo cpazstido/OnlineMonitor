@@ -12,35 +12,36 @@ import rx.Scheduler;
 public class UserInformationUseCase extends UseCase {
     private final UserRepository userRepository;
     private int choiceType = -1;
-    private String getUser = "";
-    public UserInformationUseCase(PostExecutionThread postExecutionThread, Scheduler subExecutionThread, UserRepository userRepository, int choiceType) {
+    private int type;
+    public UserInformationUseCase(PostExecutionThread postExecutionThread, Scheduler subExecutionThread, UserRepository userRepository, int type) {
         super(postExecutionThread,subExecutionThread);
         this.userRepository = userRepository;
+        this.type = type;
+    }
+
+    public UserInformationUseCase(PostExecutionThread postExecutionThread,Scheduler subExecutionThread, UserRepository userRepository,int choiceType,int type) {
+        super(postExecutionThread,subExecutionThread);
+        this.userRepository = userRepository;
+        this.type = type;
         this.choiceType = choiceType;
-    }
-
-    public UserInformationUseCase(PostExecutionThread postExecutionThread,Scheduler subExecutionThread, UserRepository userRepository) {
-        super(postExecutionThread,subExecutionThread);
-        this.userRepository = userRepository;
-    }
-
-    public UserInformationUseCase(PostExecutionThread postExecutionThread,Scheduler subExecutionThread, UserRepository userRepository, String getUser) {
-        super(postExecutionThread,subExecutionThread);
-        this.userRepository = userRepository;
-        this.getUser = getUser;
     }
 
     @Override
     protected Observable buildUseCaseObservable() {
         Observable observable =null;
-        if(choiceType != -1 && getUser =="") {
-            observable = this.userRepository.upDataUser(choiceType);
-        }
-        if (choiceType == -1 && getUser !=""){
-            observable = this.userRepository.getUserInfor();
-        }
-        if(choiceType == -1 && getUser == ""){
-            observable =  this.userRepository.equipmentList();
+        switch (type){
+            case 0:
+                observable = this.userRepository.getUserInfor();
+                break;
+            case 1:
+                observable = this.userRepository.upDataUser(choiceType);
+                break;
+            case 2:
+                observable =  this.userRepository.equipmentList();
+                break;
+            case 3:
+                observable =  this.userRepository.setCurrentPorject();
+                break;
         }
         return observable;
 

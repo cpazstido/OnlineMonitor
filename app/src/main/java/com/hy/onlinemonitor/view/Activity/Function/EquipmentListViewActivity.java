@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.baoyz.widget.PullRefreshLayout;
@@ -18,6 +19,7 @@ import com.hy.onlinemonitor.utile.ShowUtile;
 import com.hy.onlinemonitor.view.Activity.BaseActivity;
 import com.hy.onlinemonitor.view.Adapter.EquipmentRecyclerAdapter;
 import com.hy.onlinemonitor.view.LoadDataView;
+import com.rey.material.widget.Button;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -30,8 +32,13 @@ public class EquipmentListViewActivity extends BaseActivity implements LoadDataV
     RecyclerView rvRecyclerviewData;
     @Bind(R.id.swipeRefreshLayout)
     PullRefreshLayout swipeRefreshLayout;
-    @Bind(R.id.show_no_data)
-    TextView showNoData;
+    @Bind(R.id.error_message_tv)
+    TextView errorMessageTv;
+    @Bind(R.id.refresh_button)
+    Button refreshButton;
+    @Bind(R.id.error_message_ll)
+    RelativeLayout errorMessageLl;
+
     private EquipmentRecyclerAdapter mAdapter;
     private EquipmentInforPage equipmentInforPage;
     private int selectedType;
@@ -60,13 +67,21 @@ public class EquipmentListViewActivity extends BaseActivity implements LoadDataV
     }
 
     public void renderEquipmentList(EquipmentInforPage equipmentInforPage) {
+        isLoadingMore = false;
         if (equipmentInforPage != null) {
-            if(equipmentInforPage.getList().size() !=0) {
-                showNoData.setVisibility(View.GONE);
+            if (equipmentInforPage.getList().size() != 0) {
+                errorMessageLl.setVisibility(View.GONE);
                 this.equipmentInforPage = equipmentInforPage;
                 this.mAdapter.setEquipmentCollection(equipmentInforPage.getList());
-            }else{
-                showNoData.setVisibility(View.VISIBLE);
+            } else {
+                errorMessageLl.setVisibility(View.VISIBLE);
+                errorMessageTv.setText(R.string.not_data);
+                refreshButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        initialize();
+                    }
+                });
             }
         }
     }
@@ -133,7 +148,7 @@ public class EquipmentListViewActivity extends BaseActivity implements LoadDataV
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 lastVisibleItem = linearLayoutManager.findLastVisibleItemPosition();
                 int totalItemCount = mAdapter.getItemCount();
-//                Log.e("show","lastVisibleItem"+lastVisibleItem+"--totalItemCount"+totalItemCount);
+                Log.e("show","lastVisibleItem"+lastVisibleItem+"--totalItemCount"+totalItemCount);
                 if (lastVisibleItem == totalItemCount - 1 && dy > 0 && equipmentInforPage.getRowCount() > totalItemCount) {
                     if (!isLoadingMore) {
                         isLoadingMore = true;
@@ -157,5 +172,11 @@ public class EquipmentListViewActivity extends BaseActivity implements LoadDataV
     public void initialize() {
         this.pageNumber = 1;
         this.loadEquipmentList(1);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        equipmentListPresenter.destroy();
     }
 }

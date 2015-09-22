@@ -43,7 +43,7 @@ public class SMCompanyPresenter implements Presenter{
 
     @Override
     public void destroy() {
-
+        companyUseCase.unsubscribe();
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.hy.onlinemonitor.view.Activity.SystemManagement;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
@@ -199,7 +200,14 @@ public class PoleManageActivity extends SMBaseActivity {
 
     @Override
     public void showError(String message) {
-
+        errorMessageLl.setVisibility(View.VISIBLE);
+        errorMessageTv.setText(message);
+        refreshButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                smPolePresenter.loadAllLine(getUser().getUserId());
+            }
+        });
     }
 
     @Override
@@ -218,13 +226,21 @@ public class PoleManageActivity extends SMBaseActivity {
     }
 
     public void renderPoleList(PolePage polePage) {
-        if (polePage != null) {
+        if (polePage != null &&polePage.getList().size() !=0) {
             this.polePage = polePage;
             this.mAdapter.setPoleCollection(polePage.getList());
+        }else {
+            showError(Resources.getSystem().getString(R.string.not_data));
         }
     }
 
     public void firstLoadAll() {
         PoleManageActivity.this.smPolePresenter.loadAllPole(getUser().getUserId(), pageNumber);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        smPolePresenter.destroy();
     }
 }

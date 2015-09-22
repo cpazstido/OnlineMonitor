@@ -3,7 +3,7 @@ package com.hy.onlinemonitor.bean;
 import java.io.Serializable;
 
 public class User implements Serializable {
-    private int selectionType;  //代表选择的类型
+    private int selectionType;  //代表选择的类型 0:fire 1:break 2:video 3:auv
     private String companyName; //公司名
     private int userId;//唯一标示一个用户的属性
     private int id; //使用xUtile必须拥有的参数

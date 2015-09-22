@@ -22,6 +22,7 @@ public class MapEntityDataMapper {
             domainMap.setLongitude(mapEntity.getLng());
             domainMap.setDvrID(mapEntity.getDvrID());
             domainMap.setPoleName(mapEntity.getPoleName());
+            domainMap.setEquipmentSn(mapEntity.getEquipmentSn());
         }
 
         return domainMap;

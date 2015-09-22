@@ -52,6 +52,7 @@ public class SensorManageActivity extends AppCompatActivity implements LoadDataV
     private Equipment equipment;
     private int userId;
     public AlertDialog alertDialog;
+    private boolean isUploading =false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,19 +62,22 @@ public class SensorManageActivity extends AppCompatActivity implements LoadDataV
         alertDialog = GetLoading.getDialog(SensorManageActivity.this, "加载数据中....");
         initDatas();
         initAdapter();
+
         buttonBtFloatWave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(buttonBtFloatWave.getLineMorphingState() ==0){
-                Gson gson = new Gson();
-                String sensorJson = gson.toJson(mAdapter.getSensors());
-                    Log.e("sensorJson","sensorJson->"+sensorJson);
-                smSensorPresenter.changeSensor(equipment.getSn(), sensorJson);
+                if(!isUploading) {
+                    isUploading = true;
+                    Gson gson = new Gson();
+                    String sensorJson = gson.toJson(mAdapter.getSensors());
+                    Log.e("sensorJson", "sensorJson->" + sensorJson);
+                    smSensorPresenter.changeSensor(equipment.getSn(), sensorJson);
                 }else{
-                    buttonBtFloatWave.setLineMorphingState((buttonBtFloatWave.getLineMorphingState() + 1) % 2, true);
+                    Toast.makeText(SensorManageActivity.this,"正在上传修改中.请稍后",Toast.LENGTH_SHORT).show();
                 }
             }
         });
+
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(R.string.equipment_manage);
         getSupportActionBar().setSubtitle(R.string.sensor_manage_2);
@@ -197,7 +201,8 @@ public class SensorManageActivity extends AppCompatActivity implements LoadDataV
 
     public void isChange(String result) {
         if(result.equals("true")){
-            buttonBtFloatWave.setLineMorphingState((buttonBtFloatWave.getLineMorphingState() + 1) % 2, true);
+            isUploading=false;
+//            ShowUtile.toastShow(SensorManageActivity.this,"修改成功");
             Toast.makeText(SensorManageActivity.this,"修改成功",Toast.LENGTH_SHORT).show();
         }
     }
@@ -207,5 +212,11 @@ public class SensorManageActivity extends AppCompatActivity implements LoadDataV
         setResult(888);
         System.out.println("按下了back键 onBackPressed()");
         finish();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        smSensorPresenter.destroy();
     }
 }

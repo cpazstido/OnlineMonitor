@@ -92,8 +92,8 @@ public class DetailedAlarmActivity extends AppCompatActivity {
                         break;
                 }
 
-                Picasso.with(this).load(SystemRestClient.BASE_PICTURE_URL + alarmInformation.getVisibleLightImage()).into(detailedVisiblePicture);
-                Picasso.with(this).load(SystemRestClient.BASE_PICTURE_URL + alarmInformation.getInfraredImage()).into(detailedInfraredPicture);
+                Picasso.with(this).load(SystemRestClient.BASE_PICTURE_URL + alarmInformation.getVisibleLightImage()).placeholder(R.drawable.picture_loading).error(R.drawable.loading_error).into(detailedVisiblePicture);
+                Picasso.with(this).load(SystemRestClient.BASE_PICTURE_URL + alarmInformation.getInfraredImage()).placeholder(R.drawable.picture_loading).error(R.drawable.loading_error).into(detailedInfraredPicture);
                 break;
             case "break":
                 detailedVisiblePicture.setVisibility(View.GONE);

@@ -24,4 +24,6 @@ public interface UserRepository {
 
   Observable<DomainUser> getUserInfor();
 
+  Observable<String> setCurrentPorject();
+
 }

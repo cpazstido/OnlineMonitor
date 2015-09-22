@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.hy.data.cache.UserCache;
 import com.hy.data.cache.UserCacheImp;
+import com.hy.data.entity.mapper.StringJsonMapper;
 import com.hy.data.entity.mapper.UserEntityJsonMapper;
 import com.hy.data.net.RestApiImpl;
 import com.hy.data.net.RestApi;
@@ -27,7 +28,6 @@ public class UserDataStoreFactory {
     this.context = context;
   }
 
-
   /**
    * Create {@link UserDataStore} to retrieve data from the Cloud.
    */
@@ -35,6 +35,12 @@ public class UserDataStoreFactory {
     UserEntityJsonMapper userEntityJsonMapper = new UserEntityJsonMapper();
     RestApi restApi = new RestApiImpl(this.context, userEntityJsonMapper);
 
+    return new CloudUserDataStore(restApi,this.userCache);
+  }
+
+  public UserDataStore createCloudDataStore(String curProject) {
+    StringJsonMapper stringJsonMapper = new StringJsonMapper();
+    RestApi restApi = new RestApiImpl(this.context, stringJsonMapper);
     return new CloudUserDataStore(restApi,this.userCache);
   }
 

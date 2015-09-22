@@ -229,7 +229,7 @@ public class EquipmentManageActivity extends SMBaseActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         Log.e("onActivityResult", "requestCode" + requestCode + "resultCode" + resultCode);
-        switch (resultCode) { //resultCode为回传的标记，我在B中回传的是RESULT_OK
+        switch (resultCode) { //resultCode为回传的标记，我在B中回传的是888
             case 888:
                 Log.e("onActivityResult", "onActivityResult");
                 smEquipmentPresenter.getEquipmentPage(poleSn);
@@ -245,5 +245,11 @@ public class EquipmentManageActivity extends SMBaseActivity {
         } else {
             Toast.makeText(EquipmentManageActivity.this, "复位失败，请重试", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        smEquipmentPresenter.destroy();
     }
 }
