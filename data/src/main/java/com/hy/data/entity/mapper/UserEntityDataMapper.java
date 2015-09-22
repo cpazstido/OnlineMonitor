@@ -43,6 +43,7 @@ public class UserEntityDataMapper {
       domainUser.setUserId(userEntity.getUserId());
       domainUser.setOwnedEquipment(userEntity.getOwnedEquipment());
       domainUser.setSelectionType(userEntity.getSelectionType());
+      domainUser.setRoleSn(userEntity.getRoleSn());
     }
 
     return domainUser;

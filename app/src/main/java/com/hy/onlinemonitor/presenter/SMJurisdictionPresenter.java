@@ -26,12 +26,13 @@ import rx.android.schedulers.AndroidSchedulers;
  */
 public class SMJurisdictionPresenter implements Presenter {
 
-    private final Context mContext;
+    private Context mContext;
     private PageDataMapper pageDataMapper;
     private JurisdictionUseCase jurisdictionUseCase;
     private JurisdictionManageActivity jurisdictionManageActivity;
     private PrivilegeDataMapper privilegeDataMapper;
     private int userId;
+    private LoginPresenter loginPresenter;
 
     public void setJurisdictionManageActivity(JurisdictionManageActivity jurisdictionManageActivity) {
         this.jurisdictionManageActivity = jurisdictionManageActivity;

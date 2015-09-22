@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.example.bean.DomainPrivilege;
 import com.example.bean.DomainUser;
 import com.example.interactor.DefaultSubscriber;
 import com.example.interactor.LoginUseCase;
@@ -15,7 +16,11 @@ import com.hy.data.entity.mapper.UserEntityDataMapper;
 import com.hy.data.repository.UserDataRepository;
 import com.hy.data.repository.datasource.UserDataStoreFactory;
 import com.hy.onlinemonitor.UIThread;
+import com.hy.onlinemonitor.bean.OwnJurisdiction;
 import com.hy.onlinemonitor.view.JumpView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import rx.android.schedulers.AndroidSchedulers;
 
@@ -78,11 +83,16 @@ public class LoginPresenter extends DefaultSubscriber implements Presenter{
         this.loginUseCase.execute(new UserSubscriber());
     }
 
+    public void setOwnPrivileges(List<Integer> integerList) {
+        OwnJurisdiction.setJurisdictionList(integerList);
+    }
+
     private final class UserSubscriber extends DefaultSubscriber<DomainUser>{
         @Override
         public void onCompleted() {
-            Log.e("error","onCompleted");
+            Log.e("error", "onCompleted");
             LoginPresenter.this.hideViewLoading();
+            LoginPresenter.this.GotoView();//这里应该调用函数进行跳转
         }
 
         @Override
@@ -94,8 +104,42 @@ public class LoginPresenter extends DefaultSubscriber implements Presenter{
 
         @Override
         public void onNext(DomainUser domainUser) {
-            //这里应该调用函数进行跳转
-            LoginPresenter.this.GotoView();
+            LoginPresenter.this.getJurisdiction(domainUser);//获取当前自身的权限
+        }
+    }
+
+    private void getJurisdiction(DomainUser domainUser){
+        SMJurisdictionPresenter smJurisdictionPresenter = new SMJurisdictionPresenter(mContext);
+//        smJurisdictionPresenter.getOwnJurisdiction(this,mContext,domainUser.getUserId(),domainUser.getRoleSn());
+    }
+
+    public void getOwnJurisdiction(LoginPresenter loginPresenter,Context mContext,int  userId,int roleSn) {
+        this.mContext =mContext;
+//        this.loginPresenter = loginPresenter;
+//        SMJurisdictionRepository smJurisdictionRepository = new JurisdictionDataRepository(mContext, userId, roleSn);
+//        this.jurisdictionUseCase = new JurisdictionUseCase(new UIThread(), AndroidSchedulers.mainThread(), smJurisdictionRepository, 7);
+//        this.jurisdictionUseCase.execute(new LoginOwnPrivilegeSubscriber());
+    }
+
+    private class LoginOwnPrivilegeSubscriber extends DefaultSubscriber<List<DomainPrivilege>> {
+
+        @Override
+        public void onCompleted() {
+        }
+
+        @Override
+        public void onError(Throwable e) {
+            Toast.makeText(mContext, "AllPrivilegeSubscriber+出现错误", Toast.LENGTH_SHORT).show();
+            super.onError(e);
+        }
+
+        @Override
+        public void onNext(List<DomainPrivilege> domainPrivileges) {
+            List<Integer> integerList = new ArrayList<>();
+            for(DomainPrivilege domainPrivilege :domainPrivileges){
+                integerList.add(domainPrivilege.getSn());
+            }
+//            loginPresenter.setOwnPrivileges(integerList);
         }
     }
 }

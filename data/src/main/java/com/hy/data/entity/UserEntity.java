@@ -14,6 +14,8 @@ public class UserEntity {
   private int userId;
   private int selectionType;
   private int id;
+  private int roleSn; //角色sn,用于权限
+
   public void setOwnedEquipment(String ownedEquipment) {
     this.ownedEquipment = ownedEquipment;
   }
@@ -52,5 +54,13 @@ public class UserEntity {
 
   public void setSelectionType(int selectionType) {
     this.selectionType = selectionType;
+  }
+
+  public int getRoleSn() {
+    return roleSn;
+  }
+
+  public void setRoleSn(int roleSn) {
+    this.roleSn = roleSn;
   }
 }

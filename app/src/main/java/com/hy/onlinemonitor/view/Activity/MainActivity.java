@@ -36,6 +36,24 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
     @Override
     public void setupUI() {
         selectedType = this.getUser().getSelectionType();    //得到选择到的是哪一个类型的监控设备
+
+        String subtitle =null;
+        switch (selectedType){
+            case 0:
+                subtitle="山火";
+                break;
+            case 1:
+                subtitle="外破";
+                break;
+            case 2:
+                subtitle="普通视频";
+                break;
+            case 3:
+                subtitle="无人机";
+                break;
+        }
+        toolbar.setSubtitle(subtitle);
+
         Log.e("selectedType",""+selectedType);
         if (selectedType == 3) {//若是无人机,则隐藏状态监测这一项
             findViewById(R.id.main_ll_monitor).setVisibility(View.GONE);

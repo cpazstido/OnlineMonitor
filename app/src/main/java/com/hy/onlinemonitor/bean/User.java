@@ -7,9 +7,19 @@ public class User implements Serializable {
     private String companyName; //公司名
     private int userId;//唯一标示一个用户的属性
     private int id; //使用xUtile必须拥有的参数
+    private int roleSn; //角色sn,用于权限
     private String OwnedEquipment;  //原本应该是一个String[]或者List<String>,但是不能保存在数据库中,所以选用"fire&uav&video&break"这种方式,在代码中进行分离
                                     //fire-->山火 uav-->无人机 video-->普通视频 break-->外破
+
     public User() {//使用xUtile必须的构造函数
+    }
+
+    public int getRoleSn() {
+        return roleSn;
+    }
+
+    public void setRoleSn(int roleSn) {
+        this.roleSn = roleSn;
     }
 
     public User(String companyName, String ownedEquipment) {

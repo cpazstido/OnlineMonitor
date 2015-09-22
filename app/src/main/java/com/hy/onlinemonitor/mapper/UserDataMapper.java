@@ -44,6 +44,7 @@ public class UserDataMapper {
     user.setCompanyName(domainUser.getCompanyName());
     user.setOwnedEquipment(domainUser.getOwnedEquipment());
     user.setSelectionType(domainUser.getSelectionType());
+    user.setRoleSn(domainUser.getRoleSn());
     return user;
   }
 

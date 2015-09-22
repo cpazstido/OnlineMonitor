@@ -10,8 +10,18 @@ public class DomainUser {
     private String OwnedEquipment;
     private int selectionType;
     private int id;
+    private int roleSn; //角色sn,用于权限
+
     public DomainUser() {
         //empty
+    }
+
+    public int getRoleSn() {
+        return roleSn;
+    }
+
+    public void setRoleSn(int roleSn) {
+        this.roleSn = roleSn;
     }
 
     public int getId() {
