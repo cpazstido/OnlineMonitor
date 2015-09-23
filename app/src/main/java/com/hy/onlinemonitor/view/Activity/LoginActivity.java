@@ -53,7 +53,7 @@ public class LoginActivity extends AppCompatActivity implements JumpView {
             public void onClick(View v) {
                 loginAccount.setText("");
                 loginPwd.setText("");
-                TestActivity.StartTestView(LoginActivity.this);
+//                TestActivity.StartTestView(LoginActivity.this);
             }
         });
     }

@@ -17,6 +17,7 @@ import com.hy.data.repository.UserDataRepository;
 import com.hy.data.repository.datasource.UserDataStoreFactory;
 import com.hy.onlinemonitor.UIThread;
 import com.hy.onlinemonitor.bean.OwnJurisdiction;
+import com.hy.onlinemonitor.utile.ShowUtile;
 import com.hy.onlinemonitor.view.JumpView;
 
 import java.util.ArrayList;
@@ -119,7 +120,8 @@ public class LoginPresenter extends DefaultSubscriber implements Presenter {
 
         @Override
         public void onError(Throwable e) {
-            Toast.makeText(mContext, "AllPrivilegeSubscriber+出现错误", Toast.LENGTH_SHORT).show();
+            LoginPresenter.this.hideViewLoading();
+            ShowUtile.toastShow(mContext,"登录失败,请稍后重试");
             super.onError(e);
         }
 
