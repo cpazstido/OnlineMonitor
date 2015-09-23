@@ -14,4 +14,11 @@ public class OwnJurisdiction {
         jurisdictionList = ownJurisdictionList;
     }
 
+    public static boolean haveJurisdiction(int sn){
+        if(jurisdictionList.contains(sn)){
+            return true;
+        }else{
+            return false;
+        }
+    }
 }

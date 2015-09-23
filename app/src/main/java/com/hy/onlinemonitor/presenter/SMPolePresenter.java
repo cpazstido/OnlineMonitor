@@ -1,7 +1,6 @@
 package com.hy.onlinemonitor.presenter;
 
 import android.content.Context;
-import android.widget.Toast;
 
 import com.example.bean.DomainCompany;
 import com.example.bean.DomainPolePage;
@@ -81,7 +80,7 @@ public class SMPolePresenter implements Presenter{
         @Override
         public void onError(Throwable e) {
             SMPolePresenter.this.hideViewLoading();
-            Toast.makeText(mContext, "AdminLineListOnlySubscriber出现错误", Toast.LENGTH_SHORT).show();
+            poleManageActivity.showError(e.getMessage());
             super.onError(e);
         }
 
@@ -143,7 +142,7 @@ public class SMPolePresenter implements Presenter{
         @Override
         public void onError(Throwable e) {
             SMPolePresenter.this.hideViewLoading();
-            Toast.makeText(mContext, "AdminLineListOnlySubscriber出现错误", Toast.LENGTH_SHORT).show();
+            poleManageActivity.showError(e.getMessage());
             super.onError(e);
         }
 

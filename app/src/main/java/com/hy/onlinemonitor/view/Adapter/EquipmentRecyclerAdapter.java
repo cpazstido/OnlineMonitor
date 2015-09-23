@@ -8,8 +8,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.hy.onlinemonitor.R;
-import com.hy.onlinemonitor.bean.EquipmentInformation;
 import com.hy.onlinemonitor.bean.EquipmentInforPage;
+import com.hy.onlinemonitor.bean.EquipmentInformation;
+import com.hy.onlinemonitor.bean.OwnJurisdiction;
+import com.hy.onlinemonitor.utile.ShowUtile;
 import com.hy.onlinemonitor.view.Activity.Function.SingleAlarmInformationActivity;
 import com.hy.onlinemonitor.view.Activity.Function.VideoActivity;
 import com.hy.onlinemonitor.view.ViewHolder.EquipmentListViewHolder;
@@ -50,27 +52,25 @@ public class EquipmentRecyclerAdapter extends RecyclerView.Adapter<EquipmentList
         holder.equipmentName.setText(equipmentInformation.getEquipmnetName());
         if ((equipmentInformation.getNewBreakAlarm() != 0 && 1 == selectionType) || (equipmentInformation.getNewFireAlarm() != 0 && 0 == selectionType) || equipmentInformation.getNewSensorAlarm() != 0) {
             holder.newAlarmImageView.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             holder.newAlarmImageView.setVisibility(View.GONE);
         }
 
         if (equipmentInformation.getNewSensorAlarm() == 0) {
-            //newSensorAlarm,newFireAlarm,newBreakAlarm
-            //equipmentAlarmNull
             holder.newSensorAlarm.setVisibility(View.GONE);
-        }else{
+        } else {
             holder.newSensorAlarm.setVisibility(View.VISIBLE);
         }
 
         if (equipmentInformation.getNewFireAlarm() == 0) {
             holder.newFireAlarm.setVisibility(View.GONE);
-        }else{
+        } else {
             holder.newFireAlarm.setVisibility(View.VISIBLE);
         }
 
         if (equipmentInformation.getNewBreakAlarm() == 0) {
             holder.newBreakAlarm.setVisibility(View.GONE);
-        }else{
+        } else {
             holder.newBreakAlarm.setVisibility(View.VISIBLE);
         }
 
@@ -79,7 +79,7 @@ public class EquipmentRecyclerAdapter extends RecyclerView.Adapter<EquipmentList
             holder.newFireAlarm.setVisibility(View.GONE);
             holder.newBreakAlarm.setVisibility(View.GONE);
             holder.equipmentAlarmNull.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             holder.equipmentAlarmNull.setVisibility(View.GONE);
         }
 
@@ -111,85 +111,109 @@ public class EquipmentRecyclerAdapter extends RecyclerView.Adapter<EquipmentList
         holder.historyBreakAlarm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(holder.itemView.getContext(), SingleAlarmInformationActivity.class);
-                intent.putExtra("queryAlarmType", "break");
-                intent.putExtra("status", 1);
-                intent.putExtra("title", "外破历史报警");
-                intent.putExtra("equipmentName", equipmentInformation.getEquipmnetName());
-                intent.putExtra("userId", userId);
-                intent.putExtra("showType", 1);
-                holder.itemView.getContext().startActivity(intent);
+                if (OwnJurisdiction.haveJurisdiction(3)) {
+                    Intent intent = new Intent(holder.itemView.getContext(), SingleAlarmInformationActivity.class);
+                    intent.putExtra("queryAlarmType", "break");
+                    intent.putExtra("status", 1);
+                    intent.putExtra("title", "外破历史报警");
+                    intent.putExtra("equipmentName", equipmentInformation.getEquipmnetName());
+                    intent.putExtra("userId", userId);
+                    intent.putExtra("showType", 1);
+                    holder.itemView.getContext().startActivity(intent);
+                } else {
+                    ShowUtile.noJurisdictionToast(mContext);
+                }
             }
         });
 
         holder.historyFireAlarm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(holder.itemView.getContext(), SingleAlarmInformationActivity.class);
-                intent.putExtra("queryAlarmType", "fire");
-                intent.putExtra("status", 1);//1是历史 0是新报警
-                intent.putExtra("title", "山火历史报警");
-                intent.putExtra("equipmentName", equipmentInformation.getEquipmnetName());
-                intent.putExtra("userId", userId);
-                intent.putExtra("showType", 1);
-                holder.itemView.getContext().startActivity(intent);
+                if (OwnJurisdiction.haveJurisdiction(3)) {
+                    Intent intent = new Intent(holder.itemView.getContext(), SingleAlarmInformationActivity.class);
+                    intent.putExtra("queryAlarmType", "fire");
+                    intent.putExtra("status", 1);//1是历史 0是新报警
+                    intent.putExtra("title", "山火历史报警");
+                    intent.putExtra("equipmentName", equipmentInformation.getEquipmnetName());
+                    intent.putExtra("userId", userId);
+                    intent.putExtra("showType", 1);
+                    holder.itemView.getContext().startActivity(intent);
+                } else {
+                    ShowUtile.noJurisdictionToast(mContext);
+                }
             }
         });
 
         holder.historySensorAlarm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(holder.itemView.getContext(), SingleAlarmInformationActivity.class);
-                intent.putExtra("titleName", "外破历史");
-                intent.putExtra("queryAlarmType", "sensor");
-                intent.putExtra("status", 1);//1是历史 0是新报警
-                intent.putExtra("title", "传感器历史报警");
-                intent.putExtra("equipmentName", equipmentInformation.getEquipmnetName());
-                intent.putExtra("userId", userId);
-                intent.putExtra("showType", 0);
-                holder.itemView.getContext().startActivity(intent);
+                if (OwnJurisdiction.haveJurisdiction(3)) {
+                    Intent intent = new Intent(holder.itemView.getContext(), SingleAlarmInformationActivity.class);
+                    intent.putExtra("titleName", "外破历史");
+                    intent.putExtra("queryAlarmType", "sensor");
+                    intent.putExtra("status", 1);//1是历史 0是新报警
+                    intent.putExtra("title", "传感器历史报警");
+                    intent.putExtra("equipmentName", equipmentInformation.getEquipmnetName());
+                    intent.putExtra("userId", userId);
+                    intent.putExtra("showType", 0);
+                    holder.itemView.getContext().startActivity(intent);
+                } else {
+                    ShowUtile.noJurisdictionToast(mContext);
+                }
             }
         });
 
         holder.newBreakAlarm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(holder.itemView.getContext(), SingleAlarmInformationActivity.class);
-                intent.putExtra("queryAlarmType", "break");
-                intent.putExtra("status", 0);//1是历史 0是新报警
-                intent.putExtra("title", "外破新报警");
-                intent.putExtra("equipmentName", equipmentInformation.getEquipmnetName());
-                intent.putExtra("userId", userId);
-                intent.putExtra("showType", 1);
-                holder.itemView.getContext().startActivity(intent);
+                if (OwnJurisdiction.haveJurisdiction(3)) {
+                    Intent intent = new Intent(holder.itemView.getContext(), SingleAlarmInformationActivity.class);
+                    intent.putExtra("queryAlarmType", "break");
+                    intent.putExtra("status", 0);//1是历史 0是新报警
+                    intent.putExtra("title", "外破新报警");
+                    intent.putExtra("equipmentName", equipmentInformation.getEquipmnetName());
+                    intent.putExtra("userId", userId);
+                    intent.putExtra("showType", 1);
+                    holder.itemView.getContext().startActivity(intent);
+                } else {
+                    ShowUtile.noJurisdictionToast(mContext);
+                }
             }
         });
 
         holder.newFireAlarm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(holder.itemView.getContext(), SingleAlarmInformationActivity.class);
-                intent.putExtra("queryAlarmType", "fire");
-                intent.putExtra("title", "山火新报警");
-                intent.putExtra("status", 0);//1是历史 0是新报警
-                intent.putExtra("equipmentName", equipmentInformation.getEquipmnetName());
-                intent.putExtra("userId", userId);
-                intent.putExtra("showType", 1);
-                holder.itemView.getContext().startActivity(intent);
+                if (OwnJurisdiction.haveJurisdiction(3)) {
+                    Intent intent = new Intent(holder.itemView.getContext(), SingleAlarmInformationActivity.class);
+                    intent.putExtra("queryAlarmType", "fire");
+                    intent.putExtra("title", "山火新报警");
+                    intent.putExtra("status", 0);//1是历史 0是新报警
+                    intent.putExtra("equipmentName", equipmentInformation.getEquipmnetName());
+                    intent.putExtra("userId", userId);
+                    intent.putExtra("showType", 1);
+                    holder.itemView.getContext().startActivity(intent);
+                } else {
+                    ShowUtile.noJurisdictionToast(mContext);
+                }
             }
         });
 
         holder.newSensorAlarm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(holder.itemView.getContext(), SingleAlarmInformationActivity.class);
-                intent.putExtra("queryAlarmType", "sensor");
-                intent.putExtra("title", "传感器新报警");
-                intent.putExtra("status", 1);//1是历史 0是新报警
-                intent.putExtra("equipmentName", equipmentInformation.getEquipmnetName());
-                intent.putExtra("userId", userId);
-                intent.putExtra("showType", 0);
-                holder.itemView.getContext().startActivity(intent);
+                if (OwnJurisdiction.haveJurisdiction(3)) {
+                    Intent intent = new Intent(holder.itemView.getContext(), SingleAlarmInformationActivity.class);
+                    intent.putExtra("queryAlarmType", "sensor");
+                    intent.putExtra("title", "传感器新报警");
+                    intent.putExtra("status", 1);//1是历史 0是新报警
+                    intent.putExtra("equipmentName", equipmentInformation.getEquipmnetName());
+                    intent.putExtra("userId", userId);
+                    intent.putExtra("showType", 0);
+                    holder.itemView.getContext().startActivity(intent);
+                } else {
+                    ShowUtile.noJurisdictionToast(mContext);
+                }
             }
         });
     }

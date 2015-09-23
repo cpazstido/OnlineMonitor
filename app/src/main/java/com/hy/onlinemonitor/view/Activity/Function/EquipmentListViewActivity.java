@@ -98,7 +98,15 @@ public class EquipmentListViewActivity extends BaseActivity implements LoadDataV
 
     @Override
     public void showError(String message) {
-
+        errorMessageLl.setVisibility(View.VISIBLE);
+        errorMessageTv.setText(message);
+        refreshButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                errorMessageLl.setVisibility(View.GONE);
+                initialize();
+            }
+        });
     }
 
     @Override

@@ -65,6 +65,15 @@ public interface RestApi {
                                             int status, int pageNumber);
 
     /**
+     * 处理报警
+     *
+     * @param AlarmSn 报警sn
+     * @param queryAlarmType 处理的哪种报警
+     * @return 成功或失败的String
+     */
+    Observable<String> handleAlarm(int AlarmSn,String queryAlarmType);
+
+    /**
      * 查看特定 equipmentName的报警信息
      *
      * @param userId         唯一标示用户
@@ -528,6 +537,6 @@ public interface RestApi {
      * @param equipmentSn 设备sn
      * @return 返回指令是否成功
      */
-    Observable<String> openPower(int equipmentSn,int operationType);
+    Observable<String> openPower(int equipmentSn, int operationType);
 
 }

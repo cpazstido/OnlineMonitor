@@ -15,8 +15,10 @@ import com.daimajia.swipe.SimpleSwipeListener;
 import com.daimajia.swipe.SwipeLayout;
 import com.daimajia.swipe.adapters.RecyclerSwipeAdapter;
 import com.hy.onlinemonitor.R;
+import com.hy.onlinemonitor.bean.OwnJurisdiction;
 import com.hy.onlinemonitor.bean.Role;
 import com.hy.onlinemonitor.presenter.SMJurisdictionPresenter;
+import com.hy.onlinemonitor.utile.ShowUtile;
 import com.hy.onlinemonitor.view.ViewHolder.JurisdictionViewHolder;
 
 import java.util.Collection;
@@ -33,7 +35,7 @@ public class SMJurisdictionRecyclerAdapter extends RecyclerSwipeAdapter<Jurisdic
         this.changeJurisdictionClickListener = changeJurisdictionClickListener;
     }
 
-    public interface changeJurisdictionClickListener{
+    public interface changeJurisdictionClickListener {
         void onChangeJurisdictionClick(Role role);
     }
 
@@ -49,7 +51,7 @@ public class SMJurisdictionRecyclerAdapter extends RecyclerSwipeAdapter<Jurisdic
     }
 
     @Override
-    public void onBindViewHolder(final JurisdictionViewHolder jurisdictionViewHolder,final int i) {
+    public void onBindViewHolder(final JurisdictionViewHolder jurisdictionViewHolder, final int i) {
         jurisdictionViewHolder.swipeLayout.setShowMode(SwipeLayout.ShowMode.LayDown);
         jurisdictionViewHolder.swipeLayout.addSwipeListener(new SimpleSwipeListener() {
             @Override
@@ -63,48 +65,52 @@ public class SMJurisdictionRecyclerAdapter extends RecyclerSwipeAdapter<Jurisdic
         jurisdictionViewHolder.administratorName.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                new MaterialDialog.Builder(mContext)
-                        .title(R.string.role_name_change)
-                        .inputType(InputType.TYPE_CLASS_TEXT |
-                                InputType.TYPE_TEXT_VARIATION_PERSON_NAME |
-                                InputType.TYPE_TEXT_FLAG_CAP_WORDS)
-                        .content(roleList.get(i).getRoleName())
-                        .positiveText(R.string.submit)
-                        .negativeText(R.string.cancel)
-                        .alwaysCallInputCallback() // this forces the callback to be invoked with every input change
-                        .input(R.string.role_add_hint, 0, false, new MaterialDialog.InputCallback() {
-                            @Override
-                            public void onInput(MaterialDialog dialog, CharSequence input) {
-                                if (input.toString().equalsIgnoreCase("")) {
-                                    dialog.getActionButton(DialogAction.POSITIVE).setEnabled(false);
-                                } else {
-                                    dialog.getActionButton(DialogAction.POSITIVE).setEnabled(true);
+                if (OwnJurisdiction.haveJurisdiction(45)) {//拥有的权限
+                    new MaterialDialog.Builder(mContext)
+                            .title(R.string.role_name_change)
+                            .inputType(InputType.TYPE_CLASS_TEXT |
+                                    InputType.TYPE_TEXT_VARIATION_PERSON_NAME |
+                                    InputType.TYPE_TEXT_FLAG_CAP_WORDS)
+                            .content(roleList.get(i).getRoleName())
+                            .positiveText(R.string.submit)
+                            .negativeText(R.string.cancel)
+                            .alwaysCallInputCallback() // this forces the callback to be invoked with every input change
+                            .input(R.string.role_add_hint, 0, false, new MaterialDialog.InputCallback() {
+                                @Override
+                                public void onInput(MaterialDialog dialog, CharSequence input) {
+                                    if (input.toString().equalsIgnoreCase("")) {
+                                        dialog.getActionButton(DialogAction.POSITIVE).setEnabled(false);
+                                    } else {
+                                        dialog.getActionButton(DialogAction.POSITIVE).setEnabled(true);
+                                    }
                                 }
-                            }
-                        })
-                        .callback(new MaterialDialog.ButtonCallback() {
-                            @Override
-                            public void onAny(MaterialDialog dialog) {
-                                super.onAny(dialog);
-                            }
+                            })
+                            .callback(new MaterialDialog.ButtonCallback() {
+                                @Override
+                                public void onAny(MaterialDialog dialog) {
+                                    super.onAny(dialog);
+                                }
 
-                            @Override
-                            public void onPositive(MaterialDialog dialog) {
-                                smJurisdictionPresenter.changeRole(roleList.get(i).getSn(),dialog.getInputEditText().getText().toString());
-                                super.onPositive(dialog);
-                            }
+                                @Override
+                                public void onPositive(MaterialDialog dialog) {
+                                    smJurisdictionPresenter.changeRole(roleList.get(i).getSn(), dialog.getInputEditText().getText().toString());
+                                    super.onPositive(dialog);
+                                }
 
-                            @Override
-                            public void onNegative(MaterialDialog dialog) {
-                                super.onNegative(dialog);
-                            }
+                                @Override
+                                public void onNegative(MaterialDialog dialog) {
+                                    super.onNegative(dialog);
+                                }
 
-                            @Override
-                            public void onNeutral(MaterialDialog dialog) {
-                                super.onNeutral(dialog);
-                            }
-                        })
-                        .show();
+                                @Override
+                                public void onNeutral(MaterialDialog dialog) {
+                                    super.onNeutral(dialog);
+                                }
+                            })
+                            .show();
+                } else {
+                    ShowUtile.noJurisdictionToast(mContext);
+                }
                 return true;
             }
         });
@@ -112,8 +118,12 @@ public class SMJurisdictionRecyclerAdapter extends RecyclerSwipeAdapter<Jurisdic
         jurisdictionViewHolder.ActionConfig.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (SMJurisdictionRecyclerAdapter.this.changeJurisdictionClickListener != null) {
-                    SMJurisdictionRecyclerAdapter.this.changeJurisdictionClickListener.onChangeJurisdictionClick(roleList.get(i));
+                if (OwnJurisdiction.haveJurisdiction(42)) {//拥有的权限
+                    if (SMJurisdictionRecyclerAdapter.this.changeJurisdictionClickListener != null) {
+                        SMJurisdictionRecyclerAdapter.this.changeJurisdictionClickListener.onChangeJurisdictionClick(roleList.get(i));
+                    }
+                } else {
+                    ShowUtile.noJurisdictionToast(mContext);
                 }
             }
         });
@@ -121,24 +131,28 @@ public class SMJurisdictionRecyclerAdapter extends RecyclerSwipeAdapter<Jurisdic
         jurisdictionViewHolder.ActionDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new MaterialDialog.Builder(mContext)
-                        .content(R.string.delete_information)
-                        .positiveText(R.string.yes)
-                        .negativeText(R.string.no)
-                        .callback(new MaterialDialog.ButtonCallback() {
-                            @Override
-                            public void onPositive(MaterialDialog dialog) {
-                                //这里进行网络操作
-                                mItemManger.removeShownLayouts(jurisdictionViewHolder.swipeLayout);
-                                smJurisdictionPresenter.deleteRole(roleList.get(i).getSn());
-                                roleList.remove(i);
-                                notifyItemRemoved(i);
-                                notifyItemRangeChanged(i, roleList.size());
-                                mItemManger.closeAllItems();
-                                super.onPositive(dialog);
-                            }
-                        })
-                        .show();
+                if (OwnJurisdiction.haveJurisdiction(46)) {//拥有的权限
+                    new MaterialDialog.Builder(mContext)
+                            .content(R.string.delete_information)
+                            .positiveText(R.string.yes)
+                            .negativeText(R.string.no)
+                            .callback(new MaterialDialog.ButtonCallback() {
+                                @Override
+                                public void onPositive(MaterialDialog dialog) {
+                                    //这里进行网络操作
+                                    mItemManger.removeShownLayouts(jurisdictionViewHolder.swipeLayout);
+                                    smJurisdictionPresenter.deleteRole(roleList.get(i).getSn());
+                                    roleList.remove(i);
+                                    notifyItemRemoved(i);
+                                    notifyItemRangeChanged(i, roleList.size());
+                                    mItemManger.closeAllItems();
+                                    super.onPositive(dialog);
+                                }
+                            })
+                            .show();
+                } else {
+                    ShowUtile.noJurisdictionToast(mContext);
+                }
             }
         });
 

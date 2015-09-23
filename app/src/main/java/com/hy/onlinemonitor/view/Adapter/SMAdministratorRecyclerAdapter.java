@@ -17,8 +17,10 @@ import com.daimajia.swipe.adapters.RecyclerSwipeAdapter;
 import com.hy.onlinemonitor.R;
 import com.hy.onlinemonitor.bean.AdministratorInformation;
 import com.hy.onlinemonitor.bean.Company;
+import com.hy.onlinemonitor.bean.OwnJurisdiction;
 import com.hy.onlinemonitor.bean.Role;
 import com.hy.onlinemonitor.presenter.SMAdministratorPresenter;
+import com.hy.onlinemonitor.utile.ShowUtile;
 import com.hy.onlinemonitor.view.ViewHolder.AdministratorViewHolder;
 
 import java.util.Collection;
@@ -33,6 +35,7 @@ public class SMAdministratorRecyclerAdapter extends RecyclerSwipeAdapter<Adminis
     public interface onTowerManageClickListener {
         void onTowerManageClicked(AdministratorInformation administratorInformation);
     }
+
     private SMAdministratorRecyclerAdapter.onTowerManageClickListener onTowerManageClickListener;
     private Context mContext;
     private List<AdministratorInformation> mDatas;
@@ -100,84 +103,93 @@ public class SMAdministratorRecyclerAdapter extends RecyclerSwipeAdapter<Adminis
         administratorViewHolder.ActionConfig.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MaterialDialog dialog = new MaterialDialog.Builder(mContext)
-                        .title(R.string.administrator_config)
-                        .customView(R.layout.dialog_administrator_change, true)
-                        .positiveText(R.string.submit)
-                        .negativeText(R.string.cancel)
-                        .callback(new MaterialDialog.ButtonCallback() {
-                            @Override
-                            public void onPositive(MaterialDialog dialog) {
-                                String loginName = ((EditText) dialog.getCustomView().findViewById(R.id.dialog_administrator_loginName)).getText().toString();
-                                String realName = ((EditText) dialog.getCustomView().findViewById(R.id.dialog_administrator_realName)).getText().toString();
-                                String password = ((EditText) dialog.getCustomView().findViewById(R.id.dialog_administrator_password)).getText().toString();
-                                String phoneNumber = ((EditText) dialog.getCustomView().findViewById(R.id.dialog_administrator_number)).getText().toString();
-                                String isMessage = ((Spinner) dialog.getCustomView().findViewById(R.id.dialog_administrator_message)).getSelectedItem().toString();
-                                int companySn = companies.get(((Spinner) dialog.getCustomView().findViewById(R.id.dialog_administrator_company)).getSelectedItemPosition()).getSn();
-                                int roleSn = roleList.get(((Spinner) dialog.getCustomView().findViewById(R.id.dialog_administrator_role)).getSelectedItemPosition()).getSn();
-                                int sn = mDatas.get(position).getSn();
-                                smAdministratorPresenter.changeAdministrator(sn, roleSn, companySn, loginName, realName, password, phoneNumber, isMessage);
+                if (OwnJurisdiction.haveJurisdiction(40)) {//拥有的权限
+                    MaterialDialog dialog = new MaterialDialog.Builder(mContext)
+                            .title(R.string.administrator_config)
+                            .customView(R.layout.dialog_administrator_change, true)
+                            .positiveText(R.string.submit)
+                            .negativeText(R.string.cancel)
+                            .callback(new MaterialDialog.ButtonCallback() {
+                                @Override
+                                public void onPositive(MaterialDialog dialog) {
+                                    String loginName = ((EditText) dialog.getCustomView().findViewById(R.id.dialog_administrator_loginName)).getText().toString();
+                                    String realName = ((EditText) dialog.getCustomView().findViewById(R.id.dialog_administrator_realName)).getText().toString();
+                                    String password = ((EditText) dialog.getCustomView().findViewById(R.id.dialog_administrator_password)).getText().toString();
+                                    String phoneNumber = ((EditText) dialog.getCustomView().findViewById(R.id.dialog_administrator_number)).getText().toString();
+                                    String isMessage = ((Spinner) dialog.getCustomView().findViewById(R.id.dialog_administrator_message)).getSelectedItem().toString();
+                                    int companySn = companies.get(((Spinner) dialog.getCustomView().findViewById(R.id.dialog_administrator_company)).getSelectedItemPosition()).getSn();
+                                    int roleSn = roleList.get(((Spinner) dialog.getCustomView().findViewById(R.id.dialog_administrator_role)).getSelectedItemPosition()).getSn();
+                                    int sn = mDatas.get(position).getSn();
+                                    smAdministratorPresenter.changeAdministrator(sn, roleSn, companySn, loginName, realName, password, phoneNumber, isMessage);
 
-                                super.onPositive(dialog);
-                            }
+                                    super.onPositive(dialog);
+                                }
 
-                            @Override
-                            public void onNegative(MaterialDialog dialog) {
-                                super.onNegative(dialog);
-                            }
-                        })
-                        .build();
-                EditText loginName = (EditText) dialog.getCustomView().findViewById(R.id.dialog_administrator_loginName);
-                EditText realName = ((EditText) dialog.getCustomView().findViewById(R.id.dialog_administrator_realName));
-                EditText password = ((EditText) dialog.getCustomView().findViewById(R.id.dialog_administrator_password));
-                EditText number = ((EditText) dialog.getCustomView().findViewById(R.id.dialog_administrator_number));
+                                @Override
+                                public void onNegative(MaterialDialog dialog) {
+                                    super.onNegative(dialog);
+                                }
+                            })
+                            .build();
+                    EditText loginName = (EditText) dialog.getCustomView().findViewById(R.id.dialog_administrator_loginName);
+                    EditText realName = ((EditText) dialog.getCustomView().findViewById(R.id.dialog_administrator_realName));
+                    EditText password = ((EditText) dialog.getCustomView().findViewById(R.id.dialog_administrator_password));
+                    EditText number = ((EditText) dialog.getCustomView().findViewById(R.id.dialog_administrator_number));
 
-                loginName.setText(administratorViewHolder.loginName.getText());
-                realName.setText(administratorViewHolder.realName.getText());
-                password.setText(mDatas.get(position).getPassword());
-                number.setText(administratorViewHolder.phoneNumber.getText());
-                Spinner companySpinner = (Spinner) dialog.getCustomView().findViewById(R.id.dialog_administrator_company);
-                companySpinner.setAdapter(new ArrayAdapter<>(dialog.getContext(), android.R.layout.simple_list_item_1, companyNameList));
-                Spinner roleSpinner = (Spinner) dialog.getCustomView().findViewById(R.id.dialog_administrator_role);
-                roleSpinner.setAdapter(new ArrayAdapter<>(dialog.getContext(), android.R.layout.simple_list_item_1, roleNameList));
+                    loginName.setText(administratorViewHolder.loginName.getText());
+                    realName.setText(administratorViewHolder.realName.getText());
+                    password.setText(mDatas.get(position).getPassword());
+                    number.setText(administratorViewHolder.phoneNumber.getText());
+                    Spinner companySpinner = (Spinner) dialog.getCustomView().findViewById(R.id.dialog_administrator_company);
+                    companySpinner.setAdapter(new ArrayAdapter<>(dialog.getContext(), android.R.layout.simple_list_item_1, companyNameList));
+                    Spinner roleSpinner = (Spinner) dialog.getCustomView().findViewById(R.id.dialog_administrator_role);
+                    roleSpinner.setAdapter(new ArrayAdapter<>(dialog.getContext(), android.R.layout.simple_list_item_1, roleNameList));
 
-                companySpinner.setSelection(companyNameList.lastIndexOf(mDatas.get(position).getRole().getRoleName()), true);
-                roleSpinner.setSelection(roleNameList.lastIndexOf(mDatas.get(position).getRole().getRoleName()), true);
+                    companySpinner.setSelection(companyNameList.lastIndexOf(mDatas.get(position).getRole().getRoleName()), true);
+                    roleSpinner.setSelection(roleNameList.lastIndexOf(mDatas.get(position).getRole().getRoleName()), true);
 
-                Spinner messageSpinner = (Spinner) dialog.getCustomView().findViewById(R.id.dialog_administrator_message);
-                messageSpinner.setAdapter(new ArrayAdapter<>(dialog.getContext(), android.R.layout.simple_list_item_1, new String[]{"是", "否"}));
+                    Spinner messageSpinner = (Spinner) dialog.getCustomView().findViewById(R.id.dialog_administrator_message);
+                    messageSpinner.setAdapter(new ArrayAdapter<>(dialog.getContext(), android.R.layout.simple_list_item_1, new String[]{"是", "否"}));
 
-                if ("是".equals(mDatas.get(position).getIsReceiveMessages())) {
-                    messageSpinner.setSelection(0, true);
+                    if ("是".equals(mDatas.get(position).getIsReceiveMessages())) {
+                        messageSpinner.setSelection(0, true);
+                    } else {
+                        messageSpinner.setSelection(1, true);
+                    }
+
+                    dialog.show();
+
                 } else {
-                    messageSpinner.setSelection(1, true);
+                    ShowUtile.noJurisdictionToast(mContext);
                 }
-
-                dialog.show();
             }
         });
 
         administratorViewHolder.ActionDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new MaterialDialog.Builder(mContext)
-                        .content(R.string.delete_information)
-                        .positiveText(R.string.yes)
-                        .negativeText(R.string.no)
-                        .callback(new MaterialDialog.ButtonCallback() {
-                            @Override
-                            public void onPositive(MaterialDialog dialog) {
-                                //这里进行网络操作
-                                mItemManger.removeShownLayouts(administratorViewHolder.swipeLayout);
-                                smAdministratorPresenter.deleteAdministrator(mDatas.get(position).getSn());
-                                mDatas.remove(position);
-                                notifyItemRemoved(position);
-                                notifyItemRangeChanged(position, mDatas.size());
-                                mItemManger.closeAllItems();
-                                super.onPositive(dialog);
-                            }
-                        })
-                        .show();
+                if (OwnJurisdiction.haveJurisdiction(39)) {//拥有的权限
+                    new MaterialDialog.Builder(mContext)
+                            .content(R.string.delete_information)
+                            .positiveText(R.string.yes)
+                            .negativeText(R.string.no)
+                            .callback(new MaterialDialog.ButtonCallback() {
+                                @Override
+                                public void onPositive(MaterialDialog dialog) {
+                                    //这里进行网络操作
+                                    mItemManger.removeShownLayouts(administratorViewHolder.swipeLayout);
+                                    smAdministratorPresenter.deleteAdministrator(mDatas.get(position).getSn());
+                                    mDatas.remove(position);
+                                    notifyItemRemoved(position);
+                                    notifyItemRangeChanged(position, mDatas.size());
+                                    mItemManger.closeAllItems();
+                                    super.onPositive(dialog);
+                                }
+                            })
+                            .show();
+                } else {
+                    ShowUtile.noJurisdictionToast(mContext);
+                }
             }
         });
         //.neutralText(R.string.more_info)
@@ -186,8 +198,12 @@ public class SMAdministratorRecyclerAdapter extends RecyclerSwipeAdapter<Adminis
         administratorViewHolder.towerManagement.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (SMAdministratorRecyclerAdapter.this.onTowerManageClickListener != null) {
+                if (OwnJurisdiction.haveJurisdiction(18)) {//拥有的权限
+                    if (SMAdministratorRecyclerAdapter.this.onTowerManageClickListener != null) {
                     SMAdministratorRecyclerAdapter.this.onTowerManageClickListener.onTowerManageClicked(administratorInformation);
+                }
+                } else {
+                    ShowUtile.noJurisdictionToast(mContext);
                 }
             }
         });

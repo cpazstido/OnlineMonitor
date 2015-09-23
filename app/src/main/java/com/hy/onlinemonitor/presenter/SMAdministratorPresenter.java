@@ -1,7 +1,6 @@
 package com.hy.onlinemonitor.presenter;
 
 import android.content.Context;
-import android.widget.Toast;
 
 import com.example.bean.DomainAdministratorPage;
 import com.example.bean.DomainCompany;
@@ -128,7 +127,7 @@ public class SMAdministratorPresenter implements Presenter {
         @Override
         public void onError(Throwable e) {
             SMAdministratorPresenter.this.hideViewLoading();
-            Toast.makeText(mContext, "AdminLineListOnlySubscriber出现错误", Toast.LENGTH_SHORT).show();
+            administratorManageActivity.showError(e.getMessage());
             super.onError(e);
         }
 
@@ -149,7 +148,7 @@ public class SMAdministratorPresenter implements Presenter {
         @Override
         public void onError(Throwable e) {
             SMAdministratorPresenter.this.hideViewLoading();
-            Toast.makeText(mContext, "AdminLineListSubscriber出现错误", Toast.LENGTH_SHORT).show();
+            administratorManageActivity.showError(e.getMessage());
             super.onError(e);
         }
 
@@ -171,7 +170,8 @@ public class SMAdministratorPresenter implements Presenter {
         @Override
         public void onError(Throwable e) {
             SMAdministratorPresenter.this.hideViewLoading();
-            Toast.makeText(mContext, "出现错误", Toast.LENGTH_SHORT).show();
+            administratorManageActivity.showError(e.getMessage());
+
             super.onError(e);
         }
 
@@ -192,7 +192,8 @@ public class SMAdministratorPresenter implements Presenter {
         @Override
         public void onError(Throwable e) {
             SMAdministratorPresenter.this.hideViewLoading();
-            Toast.makeText(mContext, "出现错误", Toast.LENGTH_SHORT).show();
+            administratorManageActivity.showError(e.getMessage());
+
             super.onError(e);
         }
 
@@ -214,7 +215,8 @@ public class SMAdministratorPresenter implements Presenter {
         @Override
         public void onError(Throwable e) {
             SMAdministratorPresenter.this.hideViewLoading();
-            Toast.makeText(mContext, "出现错误", Toast.LENGTH_SHORT).show();
+            administratorManageActivity.showError(e.getMessage());
+
             super.onError(e);
         }
 
@@ -246,7 +248,8 @@ public class SMAdministratorPresenter implements Presenter {
         @Override
         public void onError(Throwable e) {
             SMAdministratorPresenter.this.hideViewLoading();
-            Toast.makeText(mContext, "出现错误", Toast.LENGTH_SHORT).show();
+            administratorManageActivity.showError(e.getMessage());
+
             super.onError(e);
         }
 
@@ -274,7 +277,8 @@ public class SMAdministratorPresenter implements Presenter {
         @Override
         public void onError(Throwable e) {
             SMAdministratorPresenter.this.hideViewLoading();
-            Toast.makeText(mContext, "出现错误", Toast.LENGTH_SHORT).show();
+            administratorManageActivity.showError(e.getMessage());
+
             super.onError(e);
         }
 

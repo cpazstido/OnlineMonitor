@@ -103,7 +103,17 @@ public class ShowUtile {
     static Toast toast = null;
 
     public static void toastShow(Context mContext,String showText){
+        if (null == toast) {
+            toast = Toast.makeText(mContext, showText, Toast.LENGTH_SHORT);
+        } else {
+            toast.cancel();
+            toast = Toast.makeText(mContext, showText, Toast.LENGTH_SHORT);
+        }
+        toast.show();
+    }
 
+    public static void noJurisdictionToast(Context mContext){
+        String showText = "无权限访问,请联系管理员修改权限.";
         if (null == toast) {
             toast = Toast.makeText(mContext, showText, Toast.LENGTH_SHORT);
         } else {

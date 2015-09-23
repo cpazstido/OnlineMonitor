@@ -17,12 +17,12 @@ import com.hy.onlinemonitor.view.Activity.Function.EquipmentListViewActivity;
 
 import rx.android.schedulers.AndroidSchedulers;
 
-public class EquipmentListPresenter implements Presenter
-{
+public class EquipmentListPresenter implements Presenter {
     private UseCase getEquipmentListUseCase;
     private EquipmentListViewActivity equipmentListActivity;
     private PageDataMapper pageDataMapper;
     private Context mContext;
+
     public EquipmentListPresenter(Context mContext) {
         this.mContext = mContext;
         this.pageDataMapper = new PageDataMapper();
@@ -40,26 +40,28 @@ public class EquipmentListPresenter implements Presenter
     public void destroy() {
         this.getEquipmentListUseCase.unsubscribe();
     }
+
     @Override
     public void showViewLoading() {
         this.equipmentListActivity.showLoading();
     }
+
     @Override
     public void hideViewLoading() {
         this.equipmentListActivity.hideLoading();
     }
 
-    public void initialize(int userId,int selectedType,int pageNumber) {
-        this.loadEquipmentList(userId , selectedType ,pageNumber);
+    public void initialize(int userId, int selectedType, int pageNumber) {
+        this.loadEquipmentList(userId, selectedType, pageNumber);
     }
 
-    private void loadEquipmentList(int userId,int selectedType,int pageNumber) {
+    private void loadEquipmentList(int userId, int selectedType, int pageNumber) {
         this.showViewLoading();
         this.getEquipmentList(userId, selectedType, pageNumber);
     }
 
-    private void getEquipmentList(int userId,int selectedType,int pageNumber) {
-        EquipmentInforRepository equipmentDataRepository = new EquipmentDataInforRepository(mContext,userId,selectedType,pageNumber);
+    private void getEquipmentList(int userId, int selectedType, int pageNumber) {
+        EquipmentInforRepository equipmentDataRepository = new EquipmentDataInforRepository(mContext, userId, selectedType, pageNumber);
         this.getEquipmentListUseCase = new EquipmentInforUseCase(new UIThread(), AndroidSchedulers.mainThread(), equipmentDataRepository);
         this.getEquipmentListUseCase.execute(new EquipmentListSubscriber());
     }
@@ -72,8 +74,9 @@ public class EquipmentListPresenter implements Presenter
 
         @Override
         public void onError(Throwable e) {
-            Log.e("aaa","error");
+            Log.e("aaa", "error");
             EquipmentListPresenter.this.hideViewLoading();
+            equipmentListActivity.showError(e.getMessage());
             super.onError(e);
         }
 

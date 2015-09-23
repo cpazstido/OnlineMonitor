@@ -8,6 +8,8 @@ import android.view.View;
 import android.widget.AdapterView;
 
 import com.hy.onlinemonitor.R;
+import com.hy.onlinemonitor.bean.OwnJurisdiction;
+import com.hy.onlinemonitor.utile.ShowUtile;
 import com.hy.onlinemonitor.view.Activity.Function.AlarmInformationActivity;
 import com.hy.onlinemonitor.view.Activity.Function.EquipmentListViewActivity;
 import com.hy.onlinemonitor.view.Activity.Function.MapActivity;
@@ -37,24 +39,24 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
     public void setupUI() {
         selectedType = this.getUser().getSelectionType();    //得到选择到的是哪一个类型的监控设备
 
-        String subtitle =null;
-        switch (selectedType){
+        String subtitle = null;
+        switch (selectedType) {
             case 0:
-                subtitle="山火";
+                subtitle = "山火";
                 break;
             case 1:
-                subtitle="外破";
+                subtitle = "外破";
                 break;
             case 2:
-                subtitle="普通视频";
+                subtitle = "普通视频";
                 break;
             case 3:
-                subtitle="无人机";
+                subtitle = "无人机";
                 break;
         }
         toolbar.setSubtitle(subtitle);
 
-        Log.e("selectedType",""+selectedType);
+        Log.e("selectedType", "" + selectedType);
         if (selectedType == 3) {//若是无人机,则隐藏状态监测这一项
             findViewById(R.id.main_ll_monitor).setVisibility(View.GONE);
         }
@@ -106,34 +108,50 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
                 switch (position) {
                     case 0: //设备列表
                         Intent gridEquipmentListIntent = new Intent(MainActivity.this, EquipmentListViewActivity.class);
-                        Log.e("lok","设备列表");
+                        Log.e("lok", "设备列表");
                         startActivity(gridEquipmentListIntent);
                         break;
                     case 1: //报警信息
-                        Intent gridAlarmIntent = new Intent(MainActivity.this, AlarmInformationActivity.class);
-                        Log.e("lok","报警信息");
-                        startActivity(gridAlarmIntent);
+                        if (OwnJurisdiction.haveJurisdiction(3)) {//拥有查看的权限
+                            Intent gridAlarmIntent = new Intent(MainActivity.this, AlarmInformationActivity.class);
+                            Log.e("lok", "报警信息");
+                            startActivity(gridAlarmIntent);
+                        } else {
+                            ShowUtile.noJurisdictionToast(MainActivity.this);
+                        }
                         break;
                     case 2: //地图
-                        Intent gridMapIntent = new Intent(MainActivity.this,MapActivity.class);
-                        Log.e("lok","地图");
-                        startActivity(gridMapIntent);
+                        if (OwnJurisdiction.haveJurisdiction(65)) {//拥有查看的权限
+                            Intent gridMapIntent = new Intent(MainActivity.this, MapActivity.class);
+                            Log.e("lok", "地图");
+                            startActivity(gridMapIntent);
+                        } else {
+                            ShowUtile.noJurisdictionToast(MainActivity.this);
+                        }
                         break;
                 }
                 break;
             case R.id.main_gv_manage:    //系统管理gridView
-                switch(position) {
+                switch (position) {
                     case 0://公司
-                        Intent gridCompanyIntent = new Intent(MainActivity.this, CompanyManageActivity.class);
-                        startActivity(gridCompanyIntent);
+                        if (OwnJurisdiction.haveJurisdiction(17)) {//拥有查看的权限
+                            Intent gridCompanyIntent = new Intent(MainActivity.this, CompanyManageActivity.class);
+                            startActivity(gridCompanyIntent);
+                        } else {
+                            ShowUtile.noJurisdictionToast(MainActivity.this);
+                        }
                         break;
                     case 1://管理员
                         Intent gridAdministratorIntent = new Intent(MainActivity.this, AdministratorManageActivity.class);
                         startActivity(gridAdministratorIntent);
                         break;
                     case 2://权限
-                        Intent gridAuthorityIntent = new Intent(MainActivity.this, JurisdictionManageActivity.class);
-                        startActivity(gridAuthorityIntent);
+                        if (OwnJurisdiction.haveJurisdiction(16)) {//拥有查看的权限
+                            Intent gridAuthorityIntent = new Intent(MainActivity.this, JurisdictionManageActivity.class);
+                            startActivity(gridAuthorityIntent);
+                        } else {
+                            ShowUtile.noJurisdictionToast(MainActivity.this);
+                        }
                         break;
                     case 3://线路
                         Intent gridLineIntent = new Intent(MainActivity.this, LineManageActivity.class);

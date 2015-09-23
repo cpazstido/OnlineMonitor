@@ -14,6 +14,7 @@ import com.daimajia.swipe.util.Attributes;
 import com.hy.onlinemonitor.R;
 import com.hy.onlinemonitor.bean.Company;
 import com.hy.onlinemonitor.bean.Line;
+import com.hy.onlinemonitor.bean.OwnJurisdiction;
 import com.hy.onlinemonitor.bean.Pole;
 import com.hy.onlinemonitor.bean.PolePage;
 import com.hy.onlinemonitor.presenter.SMPolePresenter;
@@ -151,41 +152,46 @@ public class PoleManageActivity extends SMBaseActivity {
 
     @Override
     protected void menuDataLoad() {
-        MaterialDialog dialog = new MaterialDialog.Builder(PoleManageActivity.this)
-                .title(R.string.tower_add)
-                .customView(R.layout.dialog_tower_change, true)
-                .positiveText(R.string.submit)
-                .negativeText(R.string.cancel)
-                .callback(new MaterialDialog.ButtonCallback() {
-                    @Override
-                    public void onPositive(MaterialDialog dialog) {
-                        String name = ((EditText) dialog.getCustomView().findViewById(R.id.dialog_tower_name)).getText().toString();
-                        String longitude = ((EditText) dialog.getCustomView().findViewById(R.id.dialog_longitude)).getText().toString();
-                        String latitude = ((EditText) dialog.getCustomView().findViewById(R.id.dialog_latitude)).getText().toString();
-                        String altitude = ((EditText) dialog.getCustomView().findViewById(R.id.dialog_altitude)).getText().toString();
-                        int lineSn = lineList.get(( (Spinner)dialog.getCustomView().findViewById(R.id.spinner_choice_line)).getSelectedItemPosition()).getLineSn();
-                        smPolePresenter.addPole(lineSn,name,longitude,latitude,altitude);
-                        super.onPositive(dialog);
-                    }
+        if (OwnJurisdiction.haveJurisdiction(32)) {//拥有的权限
 
-                    @Override
-                    public void onNegative(MaterialDialog dialog) {
-                        super.onNegative(dialog);
-                    }
-                })
-                .build();
+            MaterialDialog dialog = new MaterialDialog.Builder(PoleManageActivity.this)
+                    .title(R.string.tower_add)
+                    .customView(R.layout.dialog_tower_change, true)
+                    .positiveText(R.string.submit)
+                    .negativeText(R.string.cancel)
+                    .callback(new MaterialDialog.ButtonCallback() {
+                        @Override
+                        public void onPositive(MaterialDialog dialog) {
+                            String name = ((EditText) dialog.getCustomView().findViewById(R.id.dialog_tower_name)).getText().toString();
+                            String longitude = ((EditText) dialog.getCustomView().findViewById(R.id.dialog_longitude)).getText().toString();
+                            String latitude = ((EditText) dialog.getCustomView().findViewById(R.id.dialog_latitude)).getText().toString();
+                            String altitude = ((EditText) dialog.getCustomView().findViewById(R.id.dialog_altitude)).getText().toString();
+                            int lineSn = lineList.get(((Spinner) dialog.getCustomView().findViewById(R.id.spinner_choice_line)).getSelectedItemPosition()).getLineSn();
+                            smPolePresenter.addPole(lineSn, name, longitude, latitude, altitude);
+                            super.onPositive(dialog);
+                        }
 
-        Spinner spinnerChoiceLine = (Spinner) dialog.getCustomView().findViewById(R.id.spinner_choice_line);
-        spinnerChoiceLine.setVisibility(View.VISIBLE);
-        List<String> lineNameList = new ArrayList<>();
-        for(Line line :lineList){
-            lineNameList.add(line.getLineName());
+                        @Override
+                        public void onNegative(MaterialDialog dialog) {
+                            super.onNegative(dialog);
+                        }
+                    })
+                    .build();
+
+            Spinner spinnerChoiceLine = (Spinner) dialog.getCustomView().findViewById(R.id.spinner_choice_line);
+            spinnerChoiceLine.setVisibility(View.VISIBLE);
+            List<String> lineNameList = new ArrayList<>();
+            for (Line line : lineList) {
+                lineNameList.add(line.getLineName());
+            }
+            ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(PoleManageActivity.this, R.layout.row_spn, lineNameList);
+
+            arrayAdapter.setDropDownViewResource(R.layout.row_spn_dropdown);
+            spinnerChoiceLine.setAdapter(arrayAdapter);
+            dialog.show();
+        } else {
+            ShowUtile.noJurisdictionToast(PoleManageActivity.this);
         }
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(PoleManageActivity.this, R.layout.row_spn, lineNameList);
-
-        arrayAdapter.setDropDownViewResource(R.layout.row_spn_dropdown);
-        spinnerChoiceLine.setAdapter(arrayAdapter);
-        dialog.show();
     }
 
     @Override
@@ -205,6 +211,8 @@ public class PoleManageActivity extends SMBaseActivity {
         refreshButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                errorMessageLl.setVisibility(View.GONE);
+
                 smPolePresenter.loadAllLine(getUser().getUserId());
             }
         });
@@ -218,18 +226,18 @@ public class PoleManageActivity extends SMBaseActivity {
     public void setCompanyList(List<Company> companyList) {
         this.companyList = companyList;
         lineList.clear();
-        for(Company company :companyList){
-            for(Line line:company.getLineList()){
+        for (Company company : companyList) {
+            for (Line line : company.getLineList()) {
                 this.lineList.add(line);
             }
         }
     }
 
     public void renderPoleList(PolePage polePage) {
-        if (polePage != null &&polePage.getList().size() !=0) {
+        if (polePage != null && polePage.getList().size() != 0) {
             this.polePage = polePage;
             this.mAdapter.setPoleCollection(polePage.getList());
-        }else {
+        } else {
             showError(Resources.getSystem().getString(R.string.not_data));
         }
     }

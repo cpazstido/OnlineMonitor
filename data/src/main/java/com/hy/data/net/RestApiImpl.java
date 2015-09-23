@@ -153,47 +153,48 @@ public class RestApiImpl implements RestApi {
      */
     @Override
     public Observable<UserEntity> userEntity(String loginAccount, String loginPwd) {
-        return Observable.create(new Observable.OnSubscribe<UserEntity>() {
-                                     @Override
-                                     public void call(Subscriber<? super UserEntity> subscriber) {
-                                         if (isThereInternetConnection()) {
-                                             try {
-                                                 RequestParams params = new RequestParams();
-                                                 params.put("uername", loginAccount);
-                                                 params.put("uerpwd", loginPwd);
-                                                 SystemRestClient.get("/login", params, new AsyncHttpResponseHandler() {
-                                                     @Override
-                                                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                                                         Log.i("msg", "登陆成功");
-                                                         try {
-                                                             String responseUserEntities = new String(responseBody, "UTF-8");
-                                                             Log.e("result", responseUserEntities);
-                                                             if (responseUserEntities.equals("false")) {
-                                                                 subscriber.onError(new NetworkConnectionException("用户名或密码错误"));
-                                                             } else {
-                                                                 subscriber.onNext(userEntityJsonMapper.transformUserEntity(
-                                                                         responseUserEntities));
-                                                                 subscriber.onCompleted();
-                                                             }
-                                                         } catch (UnsupportedEncodingException e) {
-                                                             e.printStackTrace();
-                                                         }
-                                                     }
+        return Observable.create(
+                new Observable.OnSubscribe<UserEntity>() {
+                    @Override
+                    public void call(Subscriber<? super UserEntity> subscriber) {
+                        if (isThereInternetConnection()) {
+                            try {
+                                RequestParams params = new RequestParams();
+                                params.put("uername", loginAccount);
+                                params.put("uerpwd", loginPwd);
+                                SystemRestClient.get("/login", params, new AsyncHttpResponseHandler() {
+                                    @Override
+                                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                                        Log.i("msg", "登陆成功");
+                                        try {
+                                            String responseUserEntities = new String(responseBody, "UTF-8");
+                                            Log.e("result", responseUserEntities);
+                                            if (responseUserEntities.equals("\"false\"")) {
+                                                subscriber.onError(new NetworkConnectionException("用户名或密码错误"));
+                                            } else {
+                                                subscriber.onNext(userEntityJsonMapper.transformUserEntity(
+                                                        responseUserEntities));
+                                                subscriber.onCompleted();
+                                            }
+                                        } catch (UnsupportedEncodingException e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
 
-                                                     @Override
-                                                     public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                                                         Log.e("getUserEntitiesFromApi", "onFailure");
-                                                         subscriber.onError(new NetworkConnectionException("链接失败"));
-                                                     }
-                                                 });
-                                             } catch (Exception e) {
-                                                 subscriber.onError(new NetworkConnectionException(e.getCause()));
-                                             }
-                                         } else {
-                                             subscriber.onError(new NetworkConnectionException());
-                                         }
-                                     }
-                                 }
+                                    @Override
+                                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                                        Log.e("getUserEntitiesFromApi", "onFailure");
+                                        subscriber.onError(new NetworkConnectionException("链接失败"));
+                                    }
+                                });
+                            } catch (Exception e) {
+                                subscriber.onError(new NetworkConnectionException(e.getCause()));
+                            }
+                        } else {
+                            subscriber.onError(new NetworkConnectionException());
+                        }
+                    }
+                }
         );
     }
 
@@ -304,6 +305,37 @@ public class RestApiImpl implements RestApi {
                     @Override
                     public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                         Log.e("getUserEntitiesFromApi", "onFailure");
+                        subscriber.onError(new NetworkConnectionException("链接失败"));
+                    }
+                });
+            }
+        });
+    }
+
+    @Override
+    public Observable<String> handleAlarm(int alarmSn, String queryAlarmType) {
+        return Observable.create(new Observable.OnSubscribe<String>() {
+            @Override
+            public void call(Subscriber<? super String> subscriber) {
+                RequestParams params = new RequestParams();
+                params.put("alarmSn", alarmSn);
+                params.put("queryAlarmType", queryAlarmType);
+
+                SystemRestClient.post("/handlerAlarm", params, new AsyncHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                        try {
+                            String responseEntities = new String(responseBody, "UTF-8");
+                            Log.e("response", responseEntities);
+                            subscriber.onNext(responseEntities);
+                            subscriber.onCompleted();
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                         subscriber.onError(new NetworkConnectionException("链接失败"));
                     }
                 });

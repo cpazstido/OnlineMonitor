@@ -1,8 +1,10 @@
 package com.hy.onlinemonitor.view.Activity.Function;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -11,11 +13,15 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.hy.data.utile.SystemRestClient;
 import com.hy.onlinemonitor.R;
 import com.hy.onlinemonitor.bean.AlarmInformation;
+import com.hy.onlinemonitor.bean.OwnJurisdiction;
+import com.hy.onlinemonitor.presenter.HandlePresenter;
+import com.hy.onlinemonitor.utile.GetLoading;
+import com.hy.onlinemonitor.utile.ShowUtile;
+import com.hy.onlinemonitor.view.LoadDataView;
 import com.r0adkll.slidr.Slidr;
 import com.r0adkll.slidr.model.SlidrConfig;
 import com.r0adkll.slidr.model.SlidrPosition;
@@ -25,7 +31,7 @@ import com.squareup.picasso.Picasso;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class DetailedAlarmActivity extends AppCompatActivity {
+public class DetailedAlarmActivity extends AppCompatActivity implements LoadDataView{
     @Bind(R.id.detailed_toolbar)
     Toolbar detailedToolbar;
     @Bind(R.id.detailed_play_video)
@@ -46,12 +52,14 @@ public class DetailedAlarmActivity extends AppCompatActivity {
     private String queryAlarmType;
     private int status;
     private AlarmInformation alarmInformation;
+    private AlertDialog loadingDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detailedalarm);
         ButterKnife.bind(this);
+        loadingDialog = GetLoading.getDialog(DetailedAlarmActivity.this, "处理报警中");
         Intent itemIntent = getIntent();
         alarmInformation = (AlarmInformation) itemIntent.getSerializableExtra("detailedAlarm");
         queryAlarmType = itemIntent.getStringExtra("queryAlarmType");
@@ -102,24 +110,54 @@ public class DetailedAlarmActivity extends AppCompatActivity {
                 break;
         }
 
-
         detailedPlayVideo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(DetailedAlarmActivity.this, VideoActivity.class);
-                intent.putExtra("type", "history");
-                intent.putExtra("AlarmInformation", alarmInformation);
-                startActivity(intent);
+                if (OwnJurisdiction.haveJurisdiction(4)) {//拥有查看的权限
+                    Intent intent = new Intent(DetailedAlarmActivity.this, VideoActivity.class);
+                    intent.putExtra("type", "history");
+                    intent.putExtra("AlarmInformation", alarmInformation);
+                    startActivity(intent);
+                } else {
+                    ShowUtile.noJurisdictionToast(DetailedAlarmActivity.this);
+                }
             }
         });
 
         handleAlarm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(DetailedAlarmActivity.this, "处理报警", Toast.LENGTH_LONG).show();
+                if (OwnJurisdiction.haveJurisdiction(56)) {//拥有查看的权限
+                    //这里处理报警
+                    HandlePresenter handlePresenter = new HandlePresenter();
+                    handlePresenter.setView(DetailedAlarmActivity.this);
+                    handlePresenter.handlerAlarm(alarmInformation.getAlarmSn(),queryAlarmType);
+                } else {
+                    ShowUtile.noJurisdictionToast(DetailedAlarmActivity.this);
+                }
             }
         });
 
+    }
+
+    @Override
+    public void showLoading() {
+        loadingDialog.show();
+    }
+
+    @Override
+    public void hideLoading() {
+        loadingDialog.cancel();
+    }
+
+    @Override
+    public void showError(String message) {
+
+    }
+
+    @Override
+    public Context getContext() {
+        return null;
     }
 
     @Override

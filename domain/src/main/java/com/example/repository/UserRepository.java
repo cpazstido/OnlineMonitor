@@ -1,6 +1,7 @@
 package com.example.repository;
 
 
+import com.example.bean.DomainPrivilege;
 import com.example.bean.DomainUser;
 
 import java.util.List;
@@ -25,5 +26,7 @@ public interface UserRepository {
   Observable<DomainUser> getUserInfor();
 
   Observable<String> setCurrentPorject();
+
+  Observable<List<DomainPrivilege>> getJurisdiction(int userId,int roleSn);
 
 }

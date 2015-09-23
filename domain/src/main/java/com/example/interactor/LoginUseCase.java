@@ -12,17 +12,35 @@ import rx.Scheduler;
 public class LoginUseCase extends UseCase {
     final private UserRepository userRepository;
     private String loginAccount, loginPwd;
-
-    public LoginUseCase(PostExecutionThread postExecutionThread, Scheduler subExecutionThread, UserRepository userRepository, String loginAccount, String loginPwd) {
+    private int type,userId,roleSn;
+    public LoginUseCase(PostExecutionThread postExecutionThread, Scheduler subExecutionThread, UserRepository userRepository, String loginAccount, String loginPwd,int type) {
         super(postExecutionThread,subExecutionThread);
         this.userRepository = userRepository;
         this.loginAccount = loginAccount;
         this.loginPwd = loginPwd;
+        this.type = type;
+    }
+
+    public LoginUseCase(PostExecutionThread postExecutionThread, Scheduler subExecutionThread, UserRepository userRepository, int userId, int roleSn,int type) {
+        super(postExecutionThread,subExecutionThread);
+        this.userRepository = userRepository;
+        this.type = type;
+        this.userId = userId;
+        this.roleSn = roleSn;
     }
 
     @Override
     protected Observable buildUseCaseObservable() {
-        return this.userRepository.user(this.loginAccount, this.loginPwd);
+        Observable observable =null;
+        switch (type){
+            case 0:
+                observable = this.userRepository.user(this.loginAccount, this.loginPwd);
+                break;
+            case 1:
+                observable = this.userRepository.getJurisdiction(this.userId, this.roleSn);
+                break;
+        }
+        return observable;
     }
 
 }

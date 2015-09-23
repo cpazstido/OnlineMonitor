@@ -1,7 +1,9 @@
 package com.hy.data.repository;
 
+import com.example.bean.DomainPrivilege;
 import com.example.bean.DomainUser;
 import com.example.repository.UserRepository;
+import com.hy.data.entity.mapper.PrivilegeEntityDataMapper;
 import com.hy.data.entity.mapper.UserEntityDataMapper;
 import com.hy.data.repository.datasource.UserDataStore;
 import com.hy.data.repository.datasource.UserDataStoreFactory;
@@ -61,13 +63,20 @@ public class UserDataRepository implements UserRepository {
 
   @Override
   public Observable<DomainUser> getUserInfor() {
-    final UserDataStore userDataStore = this.userDataStoreFactory.createLocalDataStore();
+    final UserDataStore userDataStore = this.userDataStoreFactory.createLocalDataStore();//这里只是为了创建不同的CloudDataStore
     return userDataStore.getUserInfor().map(this.userEntityDataMapper::transform);
   }
 
   @Override
   public Observable<String> setCurrentPorject() {
-    final UserDataStore userDataStore = this.userDataStoreFactory.createCloudDataStore(curProject);
+    final UserDataStore userDataStore = this.userDataStoreFactory.createCloudDataStore(curProject);//这里只是为了创建不同的CloudDataStore
     return userDataStore.setCurrentPorject(curProject);
+  }
+
+  @Override
+  public Observable<List<DomainPrivilege>> getJurisdiction(int userId, int roleSn) {
+    final UserDataStore userDataStore = this.userDataStoreFactory.createCloudDataStore(userId,roleSn);//这里只是为了创建不同的CloudDataStore
+    PrivilegeEntityDataMapper privilegeEntityDataMapper = new PrivilegeEntityDataMapper();
+    return userDataStore.getJurisdiction(userId,roleSn).map(privilegeEntityDataMapper::transform);
   }
 }

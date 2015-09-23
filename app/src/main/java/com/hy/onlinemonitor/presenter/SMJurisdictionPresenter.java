@@ -1,7 +1,6 @@
 package com.hy.onlinemonitor.presenter;
 
 import android.content.Context;
-import android.widget.Toast;
 
 import com.example.bean.DomainPrivilege;
 import com.example.bean.DomainRolePage;
@@ -32,7 +31,6 @@ public class SMJurisdictionPresenter implements Presenter {
     private JurisdictionManageActivity jurisdictionManageActivity;
     private PrivilegeDataMapper privilegeDataMapper;
     private int userId;
-    private LoginPresenter loginPresenter;
 
     public void setJurisdictionManageActivity(JurisdictionManageActivity jurisdictionManageActivity) {
         this.jurisdictionManageActivity = jurisdictionManageActivity;
@@ -97,7 +95,7 @@ public class SMJurisdictionPresenter implements Presenter {
         @Override
         public void onError(Throwable e) {
             SMJurisdictionPresenter.this.hideViewLoading();
-            Toast.makeText(mContext, "RolePageSubscriber+出现错误", Toast.LENGTH_SHORT).show();
+            jurisdictionManageActivity.showError(e.getMessage());
             super.onError(e);
         }
 
@@ -111,13 +109,14 @@ public class SMJurisdictionPresenter implements Presenter {
 
         @Override
         public void onCompleted() {
+            ShowUtile.toastShow(mContext,"长按修改角色名");
             SMJurisdictionPresenter.this.hideViewLoading();
         }
 
         @Override
         public void onError(Throwable e) {
             SMJurisdictionPresenter.this.hideViewLoading();
-            Toast.makeText(mContext, "AllPrivilegeSubscriber+出现错误", Toast.LENGTH_SHORT).show();
+            jurisdictionManageActivity.showError(e.getMessage());
             super.onError(e);
         }
 
@@ -138,7 +137,7 @@ public class SMJurisdictionPresenter implements Presenter {
         @Override
         public void onError(Throwable e) {
             SMJurisdictionPresenter.this.hideViewLoading();
-            Toast.makeText(mContext, "AllPrivilegeSubscriber+出现错误", Toast.LENGTH_SHORT).show();
+            jurisdictionManageActivity.showError(e.getMessage());
             super.onError(e);
         }
 
@@ -182,7 +181,7 @@ public class SMJurisdictionPresenter implements Presenter {
         @Override
         public void onError(Throwable e) {
             SMJurisdictionPresenter.this.hideViewLoading();
-            Toast.makeText(mContext, "JurisdictionSubscriber+出现错误", Toast.LENGTH_SHORT).show();
+            jurisdictionManageActivity.showError(e.getMessage());
             super.onError(e);
         }
 

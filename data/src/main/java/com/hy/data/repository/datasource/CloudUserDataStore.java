@@ -2,6 +2,7 @@ package com.hy.data.repository.datasource;
 
 
 import com.hy.data.cache.UserCache;
+import com.hy.data.entity.PrivilegeEntity;
 import com.hy.data.entity.UserEntity;
 import com.hy.data.net.RestApi;
 
@@ -61,5 +62,11 @@ public class CloudUserDataStore implements UserDataStore {
   public Observable<String> setCurrentPorject(String curProject) {
     return this.restApi.setCurrentPorject(curProject);
   }
+
+  @Override
+  public Observable<List<PrivilegeEntity>> getJurisdiction(int userId, int roleSn) {
+    return this.restApi.getOwnPrivilege(userId,roleSn);
+  }
+
 
 }

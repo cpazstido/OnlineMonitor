@@ -17,7 +17,9 @@ import com.daimajia.swipe.SwipeLayout;
 import com.daimajia.swipe.adapters.RecyclerSwipeAdapter;
 import com.hy.onlinemonitor.R;
 import com.hy.onlinemonitor.bean.Equipment;
+import com.hy.onlinemonitor.bean.OwnJurisdiction;
 import com.hy.onlinemonitor.presenter.SMEquipmentPresenter;
+import com.hy.onlinemonitor.utile.ShowUtile;
 import com.hy.onlinemonitor.view.Activity.SystemManagement.EquipmentMoreInformationActivity;
 import com.hy.onlinemonitor.view.ViewHolder.EquipmentViewHolder;
 
@@ -80,140 +82,153 @@ public class SMEquipmentRecyclerAdapter extends RecyclerSwipeAdapter<EquipmentVi
                 mContext.startActivity(moreInformationIntent);
             }
         });
+
         equipmentViewHolder.equipmentRest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                smEquipmentPresenter.equipmentReset(equipment.getSn());
+                if (OwnJurisdiction.haveJurisdiction(19)) {//拥有的权限
+                    smEquipmentPresenter.equipmentReset(equipment.getSn());
+                } else {
+                    ShowUtile.noJurisdictionToast(mContext);
+                }
             }
         });
+
         equipmentViewHolder.ActionConfig.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                deviceTypeList = new ArrayList<>();
-                deviceTypeList.add("fire");
-                deviceTypeList.add("break");
-                deviceTypeList.add("video");
-                deviceTypeList.add("uav");
+                if (OwnJurisdiction.haveJurisdiction(25)) {//拥有的权限
+                    deviceTypeList = new ArrayList<>();
+                    deviceTypeList.add("fire");
+                    deviceTypeList.add("break");
+                    deviceTypeList.add("video");
+                    deviceTypeList.add("uav");
 
-                MaterialDialog dialog = new MaterialDialog.Builder(mContext)
-                        .title(R.string.equipment_change)
-                        .customView(R.layout.dialog_equipment_change, true)
-                        .positiveText(R.string.submit)
-                        .negativeText(R.string.cancel)
-                        .callback(new MaterialDialog.ButtonCallback() {
-                            @Override
-                            public void onAny(MaterialDialog dialog) {
-                                super.onAny(dialog);
-                            }
-
-                            @Override
-                            public void onPositive(MaterialDialog dialog) {
-                                String deviceType = deviceTypeList.get(((Spinner) dialog.getCustomView().findViewById(R.id.dialog_equipment_type)).getSelectedItemPosition());
-                                int isSendMessage = ((Spinner) dialog.getCustomView().findViewById(R.id.dialog_equipment_type)).getSelectedItemPosition();
-                                if (isSendMessage == 0) {
-                                    isSendMessage = 1;
-                                } else {
-                                    isSendMessage = 0;
+                    MaterialDialog dialog = new MaterialDialog.Builder(mContext)
+                            .title(R.string.equipment_change)
+                            .customView(R.layout.dialog_equipment_change, true)
+                            .positiveText(R.string.submit)
+                            .negativeText(R.string.cancel)
+                            .callback(new MaterialDialog.ButtonCallback() {
+                                @Override
+                                public void onAny(MaterialDialog dialog) {
+                                    super.onAny(dialog);
                                 }
-                                String deviceID = ((EditText) dialog.getCustomView().findViewById(R.id.dialog_equipment_identifier)).getText().toString();
-                                String dvrId = ((EditText) dialog.getCustomView().findViewById(R.id.dialog_equipment_dvrid)).getText().toString();
-                                String angleRelativeToNorthPole = ((EditText) dialog.getCustomView().findViewById(R.id.dialog_equipment_preset)).getText().toString();
-                                String cma_ID = ((EditText) dialog.getCustomView().findViewById(R.id.dialog_equipment_cmaid)).getText().toString();
-                                String sensor_ID = ((EditText) dialog.getCustomView().findViewById(R.id.dialog_equipment_sensorid)).getText().toString();
-                                String equipment_ID = ((EditText) dialog.getCustomView().findViewById(R.id.dialog_equipment_eqmenid)).getText().toString();
-                                smEquipmentPresenter.changeEquipment(deviceID,dvrId,angleRelativeToNorthPole,deviceType,isSendMessage,cma_ID,sensor_ID,equipment_ID,equipmentList.get(i).getSn());
 
-                                super.onPositive(dialog);
-                            }
+                                @Override
+                                public void onPositive(MaterialDialog dialog) {
+                                    String deviceType = deviceTypeList.get(((Spinner) dialog.getCustomView().findViewById(R.id.dialog_equipment_type)).getSelectedItemPosition());
+                                    int isSendMessage = ((Spinner) dialog.getCustomView().findViewById(R.id.dialog_equipment_type)).getSelectedItemPosition();
+                                    if (isSendMessage == 0) {
+                                        isSendMessage = 1;
+                                    } else {
+                                        isSendMessage = 0;
+                                    }
+                                    String deviceID = ((EditText) dialog.getCustomView().findViewById(R.id.dialog_equipment_identifier)).getText().toString();
+                                    String dvrId = ((EditText) dialog.getCustomView().findViewById(R.id.dialog_equipment_dvrid)).getText().toString();
+                                    String angleRelativeToNorthPole = ((EditText) dialog.getCustomView().findViewById(R.id.dialog_equipment_preset)).getText().toString();
+                                    String cma_ID = ((EditText) dialog.getCustomView().findViewById(R.id.dialog_equipment_cmaid)).getText().toString();
+                                    String sensor_ID = ((EditText) dialog.getCustomView().findViewById(R.id.dialog_equipment_sensorid)).getText().toString();
+                                    String equipment_ID = ((EditText) dialog.getCustomView().findViewById(R.id.dialog_equipment_eqmenid)).getText().toString();
+                                    smEquipmentPresenter.changeEquipment(deviceID, dvrId, angleRelativeToNorthPole, deviceType, isSendMessage, cma_ID, sensor_ID, equipment_ID, equipmentList.get(i).getSn());
 
-                            @Override
-                            public void onNegative(MaterialDialog dialog) {
-                                super.onNegative(dialog);
-                            }
+                                    super.onPositive(dialog);
+                                }
 
-                            @Override
-                            public void onNeutral(MaterialDialog dialog) {
-                                super.onNeutral(dialog);
-                            }
-                        })
-                        .build();
-                dialog.getCustomView().findViewById(R.id.dialog_tower_choice_tv).setVisibility(View.GONE);
-                dialog.getCustomView().findViewById(R.id.dialog_equipment_tower_choice).setVisibility(View.GONE);
+                                @Override
+                                public void onNegative(MaterialDialog dialog) {
+                                    super.onNegative(dialog);
+                                }
 
-                Spinner equipmentTypeSpinner = (Spinner) dialog.getCustomView().findViewById(R.id.dialog_equipment_type);
-                Spinner informationSendSpinner = (Spinner) dialog.getCustomView().findViewById(R.id.dialog_alarm_information_send);
+                                @Override
+                                public void onNeutral(MaterialDialog dialog) {
+                                    super.onNeutral(dialog);
+                                }
+                            })
+                            .build();
+                    dialog.getCustomView().findViewById(R.id.dialog_tower_choice_tv).setVisibility(View.GONE);
+                    dialog.getCustomView().findViewById(R.id.dialog_equipment_tower_choice).setVisibility(View.GONE);
 
-                EditText equipmentIdentifierET = (EditText) dialog.getCustomView().findViewById(R.id.dialog_equipment_identifier);
-                EditText equipmentDvridET = (EditText) dialog.getCustomView().findViewById(R.id.dialog_equipment_dvrid);
-                EditText equipmentPresetET = (EditText) dialog.getCustomView().findViewById(R.id.dialog_equipment_preset);
-                EditText equipmentCmaidET = (EditText) dialog.getCustomView().findViewById(R.id.dialog_equipment_cmaid);
-                EditText equipmentSensoridET = (EditText) dialog.getCustomView().findViewById(R.id.dialog_equipment_sensorid);
-                EditText equipmentEeqmenidET = (EditText) dialog.getCustomView().findViewById(R.id.dialog_equipment_eqmenid);
+                    Spinner equipmentTypeSpinner = (Spinner) dialog.getCustomView().findViewById(R.id.dialog_equipment_type);
+                    Spinner informationSendSpinner = (Spinner) dialog.getCustomView().findViewById(R.id.dialog_alarm_information_send);
+
+                    EditText equipmentIdentifierET = (EditText) dialog.getCustomView().findViewById(R.id.dialog_equipment_identifier);
+                    EditText equipmentDvridET = (EditText) dialog.getCustomView().findViewById(R.id.dialog_equipment_dvrid);
+                    EditText equipmentPresetET = (EditText) dialog.getCustomView().findViewById(R.id.dialog_equipment_preset);
+                    EditText equipmentCmaidET = (EditText) dialog.getCustomView().findViewById(R.id.dialog_equipment_cmaid);
+                    EditText equipmentSensoridET = (EditText) dialog.getCustomView().findViewById(R.id.dialog_equipment_sensorid);
+                    EditText equipmentEeqmenidET = (EditText) dialog.getCustomView().findViewById(R.id.dialog_equipment_eqmenid);
 
 
-                String[] deviceType = {"山火", "外破", "普通视频", "无人机"};
-                equipmentTypeSpinner.setAdapter(new ArrayAdapter<>(dialog.getContext(), android.R.layout.simple_list_item_1, deviceType));
-                String deviceTypes = equipmentList.get(i).getDeviceType();
-                String[] isSendMessage = {"是","否"};
-                informationSendSpinner.setAdapter(new ArrayAdapter<>(dialog.getContext(), android.R.layout.simple_list_item_1, isSendMessage));
-                int messageSend =-1;
-                if(equipmentList.get(i).getSendMmsState() ==0){
-                    messageSend=1;
-                }else{
-                    messageSend = 0;
+                    String[] deviceType = {"山火", "外破", "普通视频", "无人机"};
+                    equipmentTypeSpinner.setAdapter(new ArrayAdapter<>(dialog.getContext(), android.R.layout.simple_list_item_1, deviceType));
+                    String deviceTypes = equipmentList.get(i).getDeviceType();
+                    String[] isSendMessage = {"是", "否"};
+                    informationSendSpinner.setAdapter(new ArrayAdapter<>(dialog.getContext(), android.R.layout.simple_list_item_1, isSendMessage));
+                    int messageSend = -1;
+                    if (equipmentList.get(i).getSendMmsState() == 0) {
+                        messageSend = 1;
+                    } else {
+                        messageSend = 0;
+                    }
+
+                    informationSendSpinner.setSelection(messageSend, true);  //设置spinner的初始值.需要根据选中的来选择
+
+                    int typeSet = -1;
+                    switch (deviceTypes) {
+                        case "fire":
+                            typeSet = 0;
+                            break;
+                        case "break":
+                            typeSet = 1;
+                            break;
+                        case "video":
+                            typeSet = 2;
+                            break;
+                        case "uav":
+                            typeSet = 3;
+                            break;
+                    }
+                    equipmentTypeSpinner.setSelection(typeSet, true);  //设置spinner的初始值.需要根据选中的来选择
+
+                    equipmentIdentifierET.setText(equipmentList.get(i).getDeviceID());
+                    equipmentDvridET.setText(equipmentList.get(i).getDvrID());
+                    equipmentPresetET.setText("" + equipmentList.get(i).getAngleRelativeToNorthPole());
+                    equipmentCmaidET.setText(equipmentList.get(i).getCma_ID());
+                    equipmentSensoridET.setText(equipmentList.get(i).getSensor_ID());
+                    equipmentEeqmenidET.setText(equipmentList.get(i).getEquipment_ID());
+                    dialog.show();
+                } else {
+                    ShowUtile.noJurisdictionToast(mContext);
                 }
-
-                informationSendSpinner.setSelection(messageSend, true);  //设置spinner的初始值.需要根据选中的来选择
-
-                int typeSet = -1;
-                switch (deviceTypes) {
-                    case "fire":
-                        typeSet = 0;
-                        break;
-                    case "break":
-                        typeSet = 1;
-                        break;
-                    case "video":
-                        typeSet = 2;
-                        break;
-                    case "uav":
-                        typeSet = 3;
-                        break;
-                }
-                equipmentTypeSpinner.setSelection(typeSet, true);  //设置spinner的初始值.需要根据选中的来选择
-
-                equipmentIdentifierET.setText(equipmentList.get(i).getDeviceID());
-                equipmentDvridET.setText(equipmentList.get(i).getDvrID());
-                equipmentPresetET.setText(""+equipmentList.get(i).getAngleRelativeToNorthPole());
-                equipmentCmaidET.setText(equipmentList.get(i).getCma_ID());
-                equipmentSensoridET.setText(equipmentList.get(i).getSensor_ID());
-                equipmentEeqmenidET.setText(equipmentList.get(i).getEquipment_ID());
-
-                dialog.show();
             }
         });
 
         equipmentViewHolder.ActionDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new MaterialDialog.Builder(mContext)
-                        .content(R.string.delete_information)
-                        .positiveText(R.string.yes)
-                        .negativeText(R.string.no)
-                        .callback(new MaterialDialog.ButtonCallback() {
-                            @Override
-                            public void onPositive(MaterialDialog dialog) {
-                                //这里进行网络操作
-                                mItemManger.removeShownLayouts(equipmentViewHolder.swipeLayout);
-                                smEquipmentPresenter.deleteEquipment(equipmentList.get(i).getSn());
-                                equipmentList.remove(i);
-                                notifyItemRemoved(i);
-                                notifyItemRangeChanged(i, equipmentList.size());
-                                mItemManger.closeAllItems();
-                                super.onPositive(dialog);
-                            }
-                        })
-                        .show();
+                if (OwnJurisdiction.haveJurisdiction(36)) {//拥有的权限
+                    new MaterialDialog.Builder(mContext)
+                            .content(R.string.delete_information)
+                            .positiveText(R.string.yes)
+                            .negativeText(R.string.no)
+                            .callback(new MaterialDialog.ButtonCallback() {
+                                @Override
+                                public void onPositive(MaterialDialog dialog) {
+                                    //这里进行网络操作
+                                    mItemManger.removeShownLayouts(equipmentViewHolder.swipeLayout);
+                                    smEquipmentPresenter.deleteEquipment(equipmentList.get(i).getSn());
+                                    equipmentList.remove(i);
+                                    notifyItemRemoved(i);
+                                    notifyItemRangeChanged(i, equipmentList.size());
+                                    mItemManger.closeAllItems();
+                                    super.onPositive(dialog);
+                                }
+                            })
+                            .show();
+                } else {
+                    ShowUtile.noJurisdictionToast(mContext);
+                }
             }
         });
         equipmentViewHolder.sensorManage.setOnClickListener(new View.OnClickListener() {

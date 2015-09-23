@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.hy.onlinemonitor.R;
 import com.hy.onlinemonitor.bean.AlarmInformation;
 import com.hy.onlinemonitor.bean.EquipmentInformation;
+import com.hy.onlinemonitor.bean.OwnJurisdiction;
 import com.hy.onlinemonitor.presenter.VideoPresenter;
 import com.hy.onlinemonitor.utile.GetLoading;
 import com.hy.onlinemonitor.utile.ShowUtile;
@@ -74,7 +75,8 @@ public class VideoActivity extends AppCompatActivity implements InitView, LoadDa
     private String choiceType;
     private int channelID = -1; //6789,一般用7
     private int streamType = 7;
-    private String videoUrl = "";
+    private String videoUrl = new String();
+    private boolean haveControl = false;//是否拥有权限
 
     private static int CONTROL_LEFT = 2;
     private static int CONTROL_RIGHT = 3;
@@ -83,6 +85,7 @@ public class VideoActivity extends AppCompatActivity implements InitView, LoadDa
 
     private static int OPEN_POWER = 3;
     private static int OPEN_SYSTEM_POWER = 5;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -111,35 +114,44 @@ public class VideoActivity extends AppCompatActivity implements InitView, LoadDa
         type = intent.getStringExtra("type");
         switch (type) {
             case "real":
+                haveControl = OwnJurisdiction.haveJurisdiction(1);
                 choiceType = intent.getStringExtra("choiceType");
                 toolbar.setTitle(R.string.real_time_video);
                 equipmentInformation = (EquipmentInformation) intent.getSerializableExtra("EquipmentInformation");
                 toolbar.setSubtitle(equipmentInformation.getEquipmnetName());
                 videoEquipmentStatusTv.setText(equipmentInformation.getEquipmnetState());
                 videoPlayTv.setText("获取地址中...");
-
                 controlLeft.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (videoView.isPlaying()) {
-                            videoContrlStatusTv.setText("手动控制中");
-                            ShowUtile.toastShow(VideoActivity.this, "左转中...");
-                            videoPresenter.videoControl(CONTROL_LEFT);
+                        if (haveControl) {
+                            if (videoView.isPlaying()) {
+                                videoContrlStatusTv.setText("手动控制中");
+                                ShowUtile.toastShow(VideoActivity.this, "左转中...");
+                                videoPresenter.videoControl(CONTROL_LEFT);
+                            } else {
+                                ShowUtile.toastShow(VideoActivity.this, "没有在播放状态，请先播放！");
+                            }
                         } else {
-                            ShowUtile.toastShow(VideoActivity.this, "没有在播放状态，请先播放！");
+                            ShowUtile.noJurisdictionToast(VideoActivity.this);
                         }
+
                     }
                 });
 
                 controlUp.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (videoView.isPlaying()) {
-                            videoContrlStatusTv.setText("手动控制中");
-                            ShowUtile.toastShow(VideoActivity.this, "上转中...");
-                            videoPresenter.videoControl(CONTROL_UP);
+                        if (haveControl) {
+                            if (videoView.isPlaying()) {
+                                videoContrlStatusTv.setText("手动控制中");
+                                ShowUtile.toastShow(VideoActivity.this, "上转中...");
+                                videoPresenter.videoControl(CONTROL_UP);
+                            } else {
+                                ShowUtile.toastShow(VideoActivity.this, "没有在播放状态，请先播放！");
+                            }
                         } else {
-                            ShowUtile.toastShow(VideoActivity.this, "没有在播放状态，请先播放！");
+                            ShowUtile.noJurisdictionToast(VideoActivity.this);
                         }
                     }
                 });
@@ -147,12 +159,16 @@ public class VideoActivity extends AppCompatActivity implements InitView, LoadDa
                 controlDown.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (videoView.isPlaying()) {
-                            videoContrlStatusTv.setText("手动控制中");
-                            ShowUtile.toastShow(VideoActivity.this, "下转中...");
-                            videoPresenter.videoControl(CONTROL_DOWN);
+                        if (haveControl) {
+                            if (videoView.isPlaying()) {
+                                videoContrlStatusTv.setText("手动控制中");
+                                ShowUtile.toastShow(VideoActivity.this, "下转中...");
+                                videoPresenter.videoControl(CONTROL_DOWN);
+                            } else {
+                                ShowUtile.toastShow(VideoActivity.this, "没有在播放状态，请先播放！");
+                            }
                         } else {
-                            ShowUtile.toastShow(VideoActivity.this, "没有在播放状态，请先播放！");
+                            ShowUtile.noJurisdictionToast(VideoActivity.this);
                         }
                     }
                 });
@@ -160,16 +176,19 @@ public class VideoActivity extends AppCompatActivity implements InitView, LoadDa
                 controlRight.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (videoView.isPlaying()) {
-                            videoContrlStatusTv.setText("手动控制中");
-                            ShowUtile.toastShow(VideoActivity.this, "右转中...");
-                            videoPresenter.videoControl(CONTROL_RIGHT);
+                        if (haveControl) {
+                            if (videoView.isPlaying()) {
+                                videoContrlStatusTv.setText("手动控制中");
+                                ShowUtile.toastShow(VideoActivity.this, "右转中...");
+                                videoPresenter.videoControl(CONTROL_RIGHT);
+                            } else {
+                                ShowUtile.toastShow(VideoActivity.this, "没有在播放状态，请先播放！");
+                            }
                         } else {
-                            ShowUtile.toastShow(VideoActivity.this, "没有在播放状态，请先播放！");
+                            ShowUtile.noJurisdictionToast(VideoActivity.this);
                         }
                     }
                 });
-
                 historyVideoShow.setVisibility(View.GONE);
                 break;
             case "history":
@@ -253,9 +272,9 @@ public class VideoActivity extends AppCompatActivity implements InitView, LoadDa
 
     @Override
     public void showError(String message) {
-        if(timer !=null)
+        if (timer != null)
             timer.cancel();
-        ShowUtile.toastShow(VideoActivity.this,message);
+        ShowUtile.toastShow(VideoActivity.this, message);
     }
 
     @Override
@@ -278,7 +297,7 @@ public class VideoActivity extends AppCompatActivity implements InitView, LoadDa
     @Override
     protected void onStop() {
         super.onStop();
-        if(timer!=null)
+        if (timer != null)
             timer.cancel();
     }
 
@@ -305,10 +324,10 @@ public class VideoActivity extends AppCompatActivity implements InitView, LoadDa
                 videoPlayTv.setText("打开电源中");
                 switch (choiceType) {
                     case "video":
-                        this.videoPresenter.openCameraPower(equipmentInformation.getSn(),OPEN_SYSTEM_POWER);
+                        this.videoPresenter.openCameraPower(equipmentInformation.getSn(), OPEN_SYSTEM_POWER);
                         break;
                     default:
-                        this.videoPresenter.openCameraPower(equipmentInformation.getSn(),OPEN_POWER);
+                        this.videoPresenter.openCameraPower(equipmentInformation.getSn(), OPEN_POWER);
                         break;
                 }
                 break;
@@ -316,10 +335,10 @@ public class VideoActivity extends AppCompatActivity implements InitView, LoadDa
                 videoPlayTv.setText("打开电源中");
                 switch (choiceType) {
                     case "video":
-                        this.videoPresenter.openCameraPower(equipmentInformation.getSn(),OPEN_SYSTEM_POWER);
+                        this.videoPresenter.openCameraPower(equipmentInformation.getSn(), OPEN_SYSTEM_POWER);
                         break;
                     default:
-                        this.videoPresenter.openCameraPower(equipmentInformation.getSn(),OPEN_SYSTEM_POWER);
+                        this.videoPresenter.openCameraPower(equipmentInformation.getSn(), OPEN_SYSTEM_POWER);
                         break;
                 }
                 break;

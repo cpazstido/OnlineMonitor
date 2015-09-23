@@ -1,6 +1,7 @@
 package com.hy.data.repository.datasource;
 
 
+import com.hy.data.entity.PrivilegeEntity;
 import com.hy.data.entity.UserEntity;
 
 import java.util.List;
@@ -28,4 +29,6 @@ public interface UserDataStore {
   Observable<UserEntity> getUserInfor();
 
   Observable<String> setCurrentPorject(String curProject);
+
+  Observable<List<PrivilegeEntity>> getJurisdiction(int userId,int roleSn);
 }

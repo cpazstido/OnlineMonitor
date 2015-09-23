@@ -16,9 +16,10 @@ import com.daimajia.swipe.SwipeLayout;
 import com.daimajia.swipe.adapters.RecyclerSwipeAdapter;
 import com.hy.onlinemonitor.R;
 import com.hy.onlinemonitor.bean.Company;
+import com.hy.onlinemonitor.bean.OwnJurisdiction;
 import com.hy.onlinemonitor.presenter.SMCompanyPresenter;
+import com.hy.onlinemonitor.utile.ShowUtile;
 import com.hy.onlinemonitor.view.ViewHolder.CompanyViewHolder;
-
 
 import java.util.List;
 
@@ -64,58 +65,66 @@ public class SMCompanyRecyclerAdapter extends RecyclerSwipeAdapter<CompanyViewHo
         companyViewHolder.ActionConfig.setOnClickListener(new View.OnClickListener() {  //设置
             @Override
             public void onClick(View v) {
-                MaterialDialog dialog = new MaterialDialog.Builder(mContext)
-                        .title(R.string.company_config)
-                        .customView(R.layout.dialog_company_change, true)
-                        .positiveText(R.string.submit)
-                        .negativeText(R.string.cancel)
-                        .callback(new MaterialDialog.ButtonCallback() {
+                if (OwnJurisdiction.haveJurisdiction(28)) {//拥有的权限
+                    MaterialDialog dialog = new MaterialDialog.Builder(mContext)
+                            .title(R.string.company_config)
+                            .customView(R.layout.dialog_company_change, true)
+                            .positiveText(R.string.submit)
+                            .negativeText(R.string.cancel)
+                            .callback(new MaterialDialog.ButtonCallback() {
 
-                            @Override
-                            public void onPositive(MaterialDialog dialog) {
-                                String companyName = ((EditText) dialog.getCustomView().findViewById(R.id.dialog_company_name)).getText().toString();
-                                String address = ((EditText) dialog.getCustomView().findViewById(R.id.dialog_company_address)).getText().toString();
-                                int  sn=mDataset.get(position).getSn();
-                                smCompanyPresenter.modifCompany(companyName,address,sn);
-                                super.onPositive(dialog);
-                            }
+                                @Override
+                                public void onPositive(MaterialDialog dialog) {
+                                    String companyName = ((EditText) dialog.getCustomView().findViewById(R.id.dialog_company_name)).getText().toString();
+                                    String address = ((EditText) dialog.getCustomView().findViewById(R.id.dialog_company_address)).getText().toString();
+                                    int sn = mDataset.get(position).getSn();
+                                    smCompanyPresenter.modifCompany(companyName, address, sn);
+                                    super.onPositive(dialog);
+                                }
 
-                        })
-                        .build();
-                positiveAction = dialog.getActionButton(DialogAction.POSITIVE);
+                            })
+                            .build();
+                    positiveAction = dialog.getActionButton(DialogAction.POSITIVE);
 
-                newName = (EditText) dialog.getCustomView().findViewById(R.id.dialog_company_name);
-                newAddress = (EditText) dialog.getCustomView().findViewById(R.id.dialog_company_address);
-                Spinner companySpinner = (Spinner) dialog.getCustomView().findViewById(R.id.dialog_company_parent);
-                companySpinner.setVisibility(View.GONE);
-                newName.setText(companyViewHolder.companyName.getText());
-                newAddress.setText(companyViewHolder.companyAddress.getText());
+                    newName = (EditText) dialog.getCustomView().findViewById(R.id.dialog_company_name);
+                    newAddress = (EditText) dialog.getCustomView().findViewById(R.id.dialog_company_address);
+                    Spinner companySpinner = (Spinner) dialog.getCustomView().findViewById(R.id.dialog_company_parent);
+                    companySpinner.setVisibility(View.GONE);
+                    newName.setText(companyViewHolder.companyName.getText());
+                    newAddress.setText(companyViewHolder.companyAddress.getText());
 
-                dialog.show();
+                    dialog.show();
+                } else {
+                    ShowUtile.noJurisdictionToast(mContext);
+                }
             }
         });
         companyViewHolder.ActionDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new MaterialDialog.Builder(mContext)
-                        .content(R.string.delete_information)
-                        .positiveText(R.string.yes)
-                        .negativeText(R.string.no)
-                        .callback(new MaterialDialog.ButtonCallback() {
-                            @Override
-                            public void onPositive(MaterialDialog dialog) {
-                                //这里进行网络操作
-                                int  sn=mDataset.get(position).getSn();
-                                smCompanyPresenter.deleteCompany(sn);
-                                mItemManger.removeShownLayouts(companyViewHolder.swipeLayout);
-                                mDataset.remove(position);
-                                notifyItemRemoved(position);
-                                notifyItemRangeChanged(position, mDataset.size());
-                                mItemManger.closeAllItems();
-                                super.onPositive(dialog);
-                            }
-                        })
-                        .show();
+                if (OwnJurisdiction.haveJurisdiction(27)) {//拥有的权限
+                    new MaterialDialog.Builder(mContext)
+                            .content(R.string.delete_information)
+                            .positiveText(R.string.yes)
+                            .negativeText(R.string.no)
+                            .callback(new MaterialDialog.ButtonCallback() {
+                                @Override
+                                public void onPositive(MaterialDialog dialog) {
+                                    //这里进行网络操作
+                                    int sn = mDataset.get(position).getSn();
+                                    smCompanyPresenter.deleteCompany(sn);
+                                    mItemManger.removeShownLayouts(companyViewHolder.swipeLayout);
+                                    mDataset.remove(position);
+                                    notifyItemRemoved(position);
+                                    notifyItemRangeChanged(position, mDataset.size());
+                                    mItemManger.closeAllItems();
+                                    super.onPositive(dialog);
+                                }
+                            })
+                            .show();
+                } else {
+                    ShowUtile.noJurisdictionToast(mContext);
+                }
             }
         });
 
@@ -132,7 +141,7 @@ public class SMCompanyRecyclerAdapter extends RecyclerSwipeAdapter<CompanyViewHo
     }
 
     public void setCompanyList(List<Company> mList) {
-        mDataset = mList ;
+        mDataset = mList;
         this.notifyDataSetChanged();
     }
 }

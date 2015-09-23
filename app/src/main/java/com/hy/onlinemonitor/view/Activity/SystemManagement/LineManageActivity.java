@@ -14,6 +14,7 @@ import com.hy.onlinemonitor.R;
 import com.hy.onlinemonitor.bean.Company;
 import com.hy.onlinemonitor.bean.Line;
 import com.hy.onlinemonitor.bean.LinePage;
+import com.hy.onlinemonitor.bean.OwnJurisdiction;
 import com.hy.onlinemonitor.presenter.SMLinePresenter;
 import com.hy.onlinemonitor.utile.ShowUtile;
 import com.hy.onlinemonitor.view.Adapter.SMLineRecyclerAdapter;
@@ -101,39 +102,43 @@ public class LineManageActivity extends SMBaseActivity {//系统管理-线路管
 
     @Override
     protected void menuDataLoad() { //点击了右上角的添加按钮触发的函数
-        //创建一个对话框,进行线路的添加
-        MaterialDialog dialog = new MaterialDialog.Builder(LineManageActivity.this)
-                .title(R.string.line_add) //对话框标题
-                .customView(R.layout.dialog_line_change, true) //对话框使用的自定义界面
-                .positiveText(R.string.submit) //positive按钮文字
-                .negativeText(R.string.cancel)//negative按钮文字
-                .callback(new MaterialDialog.ButtonCallback() { //回调函数
-                    @Override
-                    public void onPositive(MaterialDialog dialog) {
-                        String newName = ((EditText) dialog.getCustomView().findViewById(R.id.dialog_line_name)).getText().toString(); //取得对话框上的线路名
-                        String newTrend = ((EditText) dialog.getCustomView().findViewById(R.id.dialog_line_trend)).getText().toString(); //取得对话框上的线路走向
-                        String newFinish = ((EditText) dialog.getCustomView().findViewById(R.id.dialog_line_finish)).getText().toString(); ////取得对话框上的重点
-                        String newStart = ((EditText) dialog.getCustomView().findViewById(R.id.dialog_line_start)).getText().toString();//取得对话框上的起点
-                        String newVoltageLevel = ((EditText) dialog.getCustomView().findViewById(R.id.dialog_line_voltage_level)).getText().toString(); //取得对话框上的电压等级
-                        int companySn = companyList.get(((android.widget.Spinner) dialog.getCustomView().findViewById(R.id.dialog_line_company)).getSelectedItemPosition()).getSn(); ////取得对话框上的spinner上的选择,并获取公司sn
-                        LineManageActivity.this.smLinePresenter.addLine(companySn, newName, newStart, newFinish, newTrend, newVoltageLevel);//添加线路
-                        spinnerChoiceCompany.setSelection(0);//设置spinner的selection
-                        super.onPositive(dialog);
-                    }
+        if (OwnJurisdiction.haveJurisdiction(29)) {//拥有的权限
+            //创建一个对话框,进行线路的添加
+            MaterialDialog dialog = new MaterialDialog.Builder(LineManageActivity.this)
+                    .title(R.string.line_add) //对话框标题
+                    .customView(R.layout.dialog_line_change, true) //对话框使用的自定义界面
+                    .positiveText(R.string.submit) //positive按钮文字
+                    .negativeText(R.string.cancel)//negative按钮文字
+                    .callback(new MaterialDialog.ButtonCallback() { //回调函数
+                        @Override
+                        public void onPositive(MaterialDialog dialog) {
+                            String newName = ((EditText) dialog.getCustomView().findViewById(R.id.dialog_line_name)).getText().toString(); //取得对话框上的线路名
+                            String newTrend = ((EditText) dialog.getCustomView().findViewById(R.id.dialog_line_trend)).getText().toString(); //取得对话框上的线路走向
+                            String newFinish = ((EditText) dialog.getCustomView().findViewById(R.id.dialog_line_finish)).getText().toString(); ////取得对话框上的重点
+                            String newStart = ((EditText) dialog.getCustomView().findViewById(R.id.dialog_line_start)).getText().toString();//取得对话框上的起点
+                            String newVoltageLevel = ((EditText) dialog.getCustomView().findViewById(R.id.dialog_line_voltage_level)).getText().toString(); //取得对话框上的电压等级
+                            int companySn = companyList.get(((android.widget.Spinner) dialog.getCustomView().findViewById(R.id.dialog_line_company)).getSelectedItemPosition()).getSn(); ////取得对话框上的spinner上的选择,并获取公司sn
+                            LineManageActivity.this.smLinePresenter.addLine(companySn, newName, newStart, newFinish, newTrend, newVoltageLevel);//添加线路
+                            spinnerChoiceCompany.setSelection(0);//设置spinner的selection
+                            super.onPositive(dialog);
+                        }
 
-                })
-                .build();
+                    })
+                    .build();
 
-        android.widget.Spinner companySpinner = (android.widget.Spinner) dialog.getCustomView().findViewById(R.id.dialog_line_company);
-        List<String> companyNameList = new ArrayList<>();
-        for (Company company : companyList) {
-            companyNameList.add(company.getCompanyName()); //取得所有的公司名
+            android.widget.Spinner companySpinner = (android.widget.Spinner) dialog.getCustomView().findViewById(R.id.dialog_line_company);
+            List<String> companyNameList = new ArrayList<>();
+            for (Company company : companyList) {
+                companyNameList.add(company.getCompanyName()); //取得所有的公司名
+            }
+            //为spinner设置适配器
+            companySpinner.setAdapter(new ArrayAdapter<>(dialog.getContext(), android.R.layout.simple_list_item_1, companyNameList));
+
+            //显示对话框
+            dialog.show();
+        } else {
+            ShowUtile.noJurisdictionToast(LineManageActivity.this);
         }
-        //为spinner设置适配器
-        companySpinner.setAdapter(new ArrayAdapter<>(dialog.getContext(), android.R.layout.simple_list_item_1, companyNameList));
-
-        //显示对话框
-        dialog.show();
     }
 
     @Override
@@ -153,6 +158,8 @@ public class LineManageActivity extends SMBaseActivity {//系统管理-线路管
         refreshButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                errorMessageLl.setVisibility(View.GONE);
+
                 smLinePresenter.loadCompany(getUser().getUserId());//加载公司列表
             }
         });
@@ -204,11 +211,11 @@ public class LineManageActivity extends SMBaseActivity {//系统管理-线路管
     }
 
     public void renderLinePage(LinePage linePage) { //通知数据改变
-        if (linePage != null && linePage.getList().size() !=0) {
+        if (linePage != null && linePage.getList().size() != 0) {
             this.linePage = linePage;
             mAdapter.setLinePage(linePage.getList());
             mAdapter.setPresenter(smLinePresenter);
-        }else {
+        } else {
             showError(Resources.getSystem().getString(R.string.not_data));
         }
     }

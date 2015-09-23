@@ -15,7 +15,7 @@
         android:id="@+id/login_account"
         android:textColor="@color/md_white_1000"
         android:hint="@string/input_account"
-        android:text="hbdl"
+        android:text="admin"
         android:layout_alignParentTop="true"
         android:layout_marginTop="210dp"
         android:layout_alignLeft="@+id/login_pwd"

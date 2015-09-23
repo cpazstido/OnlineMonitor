@@ -10,11 +10,13 @@ import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.daimajia.swipe.util.Attributes;
 import com.hy.onlinemonitor.R;
+import com.hy.onlinemonitor.bean.OwnJurisdiction;
 import com.hy.onlinemonitor.bean.Privilege;
 import com.hy.onlinemonitor.bean.Role;
 import com.hy.onlinemonitor.bean.RolePage;
 import com.hy.onlinemonitor.data.PrivilegeData;
 import com.hy.onlinemonitor.presenter.SMJurisdictionPresenter;
+import com.hy.onlinemonitor.utile.ShowUtile;
 import com.hy.onlinemonitor.utile.TransformationUtils;
 import com.hy.onlinemonitor.view.Adapter.SMJurisdictionRecyclerAdapter;
 
@@ -58,7 +60,8 @@ public class JurisdictionManageActivity extends SMBaseActivity {
 
     @Override
     protected void menuDataLoad() {
-        dialog = new MaterialDialog.Builder(this)
+        if (OwnJurisdiction.haveJurisdiction(44)) {//拥有的权限
+            dialog = new MaterialDialog.Builder(this)
                 .title(R.string.role_add)
                 .content(R.string.input_content_role_add)
                 .inputType(InputType.TYPE_CLASS_TEXT |
@@ -100,6 +103,9 @@ public class JurisdictionManageActivity extends SMBaseActivity {
                     }
                 })
                 .show();
+        } else {
+            ShowUtile.noJurisdictionToast(JurisdictionManageActivity.this);
+        }
     }
 
 
@@ -120,6 +126,7 @@ public class JurisdictionManageActivity extends SMBaseActivity {
         refreshButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                errorMessageLl.setVisibility(View.GONE);
                 smJurisdictionPresenter.loadRole(getUser().getUserId());
             }
         });

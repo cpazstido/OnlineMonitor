@@ -1,7 +1,6 @@
 package com.hy.onlinemonitor.presenter;
 
 import android.content.Context;
-import android.widget.Toast;
 
 import com.example.bean.DomainCompany;
 import com.example.bean.DomainLinePage;
@@ -81,7 +80,7 @@ public class SMLinePresenter implements Presenter {
         @Override
         public void onError(Throwable e) { //错误时,调用的函数
             SMLinePresenter.this.hideViewLoading();
-            Toast.makeText(mContext, "出现错误", Toast.LENGTH_SHORT).show();
+            lineManageActivity.showError(e.getMessage());
             super.onError(e);
         }
 
@@ -143,7 +142,7 @@ public class SMLinePresenter implements Presenter {
         @Override
         public void onError(Throwable e) {
             SMLinePresenter.this.hideViewLoading();
-            Toast.makeText(mContext, "LinePageSubscriber+出现错误", Toast.LENGTH_SHORT).show();
+            lineManageActivity.showError(e.getMessage());
             lineManageActivity.setLoading();
             super.onError(e);
         }

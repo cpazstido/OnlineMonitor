@@ -3,6 +3,7 @@ package com.hy.data.repository.datasource;
 import android.content.Context;
 
 import com.hy.data.cache.UserCache;
+import com.hy.data.entity.PrivilegeEntity;
 import com.hy.data.entity.UserEntity;
 
 import java.util.List;
@@ -44,5 +45,9 @@ public class LocalUserDataStore implements UserDataStore{
         return null;
     }
 
+    @Override
+    public Observable<List<PrivilegeEntity>> getJurisdiction(int userId, int roleSn) {
+        return null;
+    }
 
 }

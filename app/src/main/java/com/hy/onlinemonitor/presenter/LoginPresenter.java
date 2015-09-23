@@ -27,14 +27,12 @@ import rx.android.schedulers.AndroidSchedulers;
 /**
  * Created by wsw on 2015/8/10.
  */
-public class LoginPresenter extends DefaultSubscriber implements Presenter{
-
+public class LoginPresenter extends DefaultSubscriber implements Presenter {
     private JumpView LoginView;
     private Context mContext;
     private String loginAccount;
     private String loginPwd;
     private UseCase loginUseCase;
-
 
     @Override
     public void resume() {
@@ -49,12 +47,12 @@ public class LoginPresenter extends DefaultSubscriber implements Presenter{
         this.loginUseCase.unsubscribe();
     }
 
-    public void setView(@NonNull JumpView view){
+    public void setView(@NonNull JumpView view) {
         this.LoginView = view;
-        mContext= view.getContext();
+        mContext = view.getContext();
     }
 
-    public void initialize(String loginAccount,String loginPwd){
+    public void initialize(String loginAccount, String loginPwd) {
         this.loginAccount = loginAccount;
         this.loginPwd = loginPwd;
         this.loadUserInfromation();
@@ -79,7 +77,7 @@ public class LoginPresenter extends DefaultSubscriber implements Presenter{
 
     private void userLogin() {
         UserRepository userRepository = new UserDataRepository(new UserDataStoreFactory(mContext), new UserEntityDataMapper());
-        this.loginUseCase = new LoginUseCase(new UIThread(), AndroidSchedulers.mainThread(), userRepository,loginAccount,loginPwd);
+        this.loginUseCase = new LoginUseCase(new UIThread(), AndroidSchedulers.mainThread(), userRepository, loginAccount, loginPwd, 0);
         this.loginUseCase.execute(new UserSubscriber());
     }
 
@@ -87,17 +85,14 @@ public class LoginPresenter extends DefaultSubscriber implements Presenter{
         OwnJurisdiction.setJurisdictionList(integerList);
     }
 
-    private final class UserSubscriber extends DefaultSubscriber<DomainUser>{
+    private final class UserSubscriber extends DefaultSubscriber<DomainUser> {
         @Override
         public void onCompleted() {
-            Log.e("error", "onCompleted");
-            LoginPresenter.this.hideViewLoading();
-            LoginPresenter.this.GotoView();//这里应该调用函数进行跳转
         }
 
         @Override
         public void onError(Throwable e) {
-            Log.e("LoginPresenter","onError");
+            Log.e("LoginPresenter", "onError");
             Toast.makeText(mContext, "登录失败,请重试", Toast.LENGTH_SHORT).show();
             LoginPresenter.this.hideViewLoading();
         }
@@ -108,23 +103,18 @@ public class LoginPresenter extends DefaultSubscriber implements Presenter{
         }
     }
 
-    private void getJurisdiction(DomainUser domainUser){
-        SMJurisdictionPresenter smJurisdictionPresenter = new SMJurisdictionPresenter(mContext);
-//        smJurisdictionPresenter.getOwnJurisdiction(this,mContext,domainUser.getUserId(),domainUser.getRoleSn());
-    }
-
-    public void getOwnJurisdiction(LoginPresenter loginPresenter,Context mContext,int  userId,int roleSn) {
-        this.mContext =mContext;
-//        this.loginPresenter = loginPresenter;
-//        SMJurisdictionRepository smJurisdictionRepository = new JurisdictionDataRepository(mContext, userId, roleSn);
-//        this.jurisdictionUseCase = new JurisdictionUseCase(new UIThread(), AndroidSchedulers.mainThread(), smJurisdictionRepository, 7);
-//        this.jurisdictionUseCase.execute(new LoginOwnPrivilegeSubscriber());
+    private void getJurisdiction(DomainUser domainUser) {
+        UserRepository userRepository = new UserDataRepository(new UserDataStoreFactory(mContext));
+        this.loginUseCase = new LoginUseCase(new UIThread(), AndroidSchedulers.mainThread(), userRepository, domainUser.getUserId(), domainUser.getRoleSn(), 1);
+        this.loginUseCase.execute(new LoginOwnPrivilegeSubscriber());
     }
 
     private class LoginOwnPrivilegeSubscriber extends DefaultSubscriber<List<DomainPrivilege>> {
-
         @Override
         public void onCompleted() {
+            Log.e("error", "onCompleted");
+            LoginPresenter.this.hideViewLoading();
+            LoginPresenter.this.GotoView();//这里应该调用函数进行跳转
         }
 
         @Override
@@ -136,10 +126,10 @@ public class LoginPresenter extends DefaultSubscriber implements Presenter{
         @Override
         public void onNext(List<DomainPrivilege> domainPrivileges) {
             List<Integer> integerList = new ArrayList<>();
-            for(DomainPrivilege domainPrivilege :domainPrivileges){
+            for (DomainPrivilege domainPrivilege : domainPrivileges) {
                 integerList.add(domainPrivilege.getSn());
             }
-//            loginPresenter.setOwnPrivileges(integerList);
+            setOwnPrivileges(integerList);
         }
     }
 }

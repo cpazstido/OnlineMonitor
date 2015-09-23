@@ -1,7 +1,6 @@
 package com.hy.onlinemonitor.presenter;
 
 import android.content.Context;
-import android.widget.Toast;
 
 import com.example.bean.DomainEquipmentPage;
 import com.example.bean.DomainLine;
@@ -81,7 +80,7 @@ public class SMEquipmentPresenter implements Presenter{
         @Override
         public void onError(Throwable e) {
             SMEquipmentPresenter.this.hideViewLoading();
-            Toast.makeText(mContext, "AdminLineListOnlySubscriber出现错误", Toast.LENGTH_SHORT).show();
+            equipmentManageActivity.showError(e.getMessage());
             super.onError(e);
         }
 
@@ -131,7 +130,7 @@ public class SMEquipmentPresenter implements Presenter{
         @Override
         public void onError(Throwable e) {
             SMEquipmentPresenter.this.hideViewLoading();
-            Toast.makeText(mContext, "AdminLineListOnlySubscriber出现错误", Toast.LENGTH_SHORT).show();
+            equipmentManageActivity.showError(e.getMessage());
             super.onError(e);
         }
 
@@ -158,7 +157,7 @@ public class SMEquipmentPresenter implements Presenter{
         @Override
         public void onError(Throwable e) {
             SMEquipmentPresenter.this.hideViewLoading();
-            Toast.makeText(mContext, "AdminLineListOnlySubscriber出现错误", Toast.LENGTH_SHORT).show();
+            equipmentManageActivity.showError(e.getMessage());
             super.onError(e);
         }
 

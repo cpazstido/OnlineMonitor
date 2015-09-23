@@ -102,6 +102,7 @@ public class AlarmPresenter implements Presenter {
         public void onError(Throwable e) {
             AlarmPresenter.this.hideViewLoading();
             Toast.makeText(mContext,"出现错误",Toast.LENGTH_SHORT).show();
+            alarmView.showError(e.getMessage());
             super.onError(e);
         }
 

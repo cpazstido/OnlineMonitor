@@ -1,7 +1,6 @@
 package com.hy.onlinemonitor.presenter;
 
 import android.content.Context;
-import android.widget.Toast;
 
 import com.example.bean.DomainCompany;
 import com.example.interactor.CompanyUseCase;
@@ -104,7 +103,7 @@ public class SMCompanyPresenter implements Presenter{
         @Override
         public void onError(Throwable e) {
             SMCompanyPresenter.this.hideViewLoading();
-            Toast.makeText(mContext, "出现错误", Toast.LENGTH_SHORT).show();
+            companyManageActivity.showError(e.getMessage());
             super.onError(e);
         }
 
@@ -125,7 +124,7 @@ public class SMCompanyPresenter implements Presenter{
         @Override
         public void onError(Throwable e) {
             SMCompanyPresenter.this.hideViewLoading();
-            Toast.makeText(mContext, "出现错误", Toast.LENGTH_SHORT).show();
+            companyManageActivity.showError(e.getMessage());
             super.onError(e);
         }
 

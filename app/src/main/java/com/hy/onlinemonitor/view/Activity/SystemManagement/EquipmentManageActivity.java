@@ -16,8 +16,10 @@ import com.hy.onlinemonitor.R;
 import com.hy.onlinemonitor.bean.Equipment;
 import com.hy.onlinemonitor.bean.EquipmentPage;
 import com.hy.onlinemonitor.bean.Line;
+import com.hy.onlinemonitor.bean.OwnJurisdiction;
 import com.hy.onlinemonitor.bean.Pole;
 import com.hy.onlinemonitor.presenter.SMEquipmentPresenter;
+import com.hy.onlinemonitor.utile.ShowUtile;
 import com.hy.onlinemonitor.view.Adapter.SMEquipmentRecyclerAdapter;
 import com.hy.onlinemonitor.view.ViewHolder.IconTreeItemHolder;
 import com.hy.onlinemonitor.view.ViewHolder.SelectableHeaderHolder;
@@ -93,7 +95,7 @@ public class EquipmentManageActivity extends SMBaseActivity {
                             });
                             lineTree.addChild(poleTree);
                         }
-                    }else{
+                    } else {
                         TreeNode poleTree = new TreeNode("无").setViewHolder(new SelectableItemHolder(EquipmentManageActivity.this));
                         lineTree.addChild(poleTree);
                     }
@@ -126,63 +128,67 @@ public class EquipmentManageActivity extends SMBaseActivity {
 
     @Override
     protected void menuDataLoad() {
-        MaterialDialog dialog = new MaterialDialog.Builder(EquipmentManageActivity.this)
-                .title(R.string.equipment_add)
-                .customView(R.layout.dialog_equipment_change, true)
-                .positiveText(R.string.submit)
-                .negativeText(R.string.cancel)
-                .callback(new MaterialDialog.ButtonCallback() {
-                    @Override
-                    public void onPositive(MaterialDialog dialog) {
-                        String deviceType = deviceTypeList.get(((Spinner) dialog.getCustomView().findViewById(R.id.dialog_equipment_type)).getSelectedItemPosition());
-                        int isSendMessage = ((Spinner) dialog.getCustomView().findViewById(R.id.dialog_equipment_type)).getSelectedItemPosition();
-                        int poleSn = poles.get(((Spinner) dialog.getCustomView().findViewById(R.id.dialog_equipment_type)).getSelectedItemPosition()).getPoleSn();
-                        if (isSendMessage == 0) {
-                            isSendMessage = 1;
-                        } else {
-                            isSendMessage = 0;
+        if (OwnJurisdiction.haveJurisdiction(35)) {//拥有的权限
+            MaterialDialog dialog = new MaterialDialog.Builder(EquipmentManageActivity.this)
+                    .title(R.string.equipment_add)
+                    .customView(R.layout.dialog_equipment_change, true)
+                    .positiveText(R.string.submit)
+                    .negativeText(R.string.cancel)
+                    .callback(new MaterialDialog.ButtonCallback() {
+                        @Override
+                        public void onPositive(MaterialDialog dialog) {
+                            String deviceType = deviceTypeList.get(((Spinner) dialog.getCustomView().findViewById(R.id.dialog_equipment_type)).getSelectedItemPosition());
+                            int isSendMessage = ((Spinner) dialog.getCustomView().findViewById(R.id.dialog_equipment_type)).getSelectedItemPosition();
+                            int poleSn = poles.get(((Spinner) dialog.getCustomView().findViewById(R.id.dialog_equipment_type)).getSelectedItemPosition()).getPoleSn();
+                            if (isSendMessage == 0) {
+                                isSendMessage = 1;
+                            } else {
+                                isSendMessage = 0;
+                            }
+                            String deviceID = ((EditText) dialog.getCustomView().findViewById(R.id.dialog_equipment_identifier)).getText().toString();
+                            String dvrid = ((EditText) dialog.getCustomView().findViewById(R.id.dialog_equipment_dvrid)).getText().toString();
+                            String angleRelativeToNorthPole = ((EditText) dialog.getCustomView().findViewById(R.id.dialog_equipment_preset)).getText().toString();
+                            String cma_ID = ((EditText) dialog.getCustomView().findViewById(R.id.dialog_equipment_cmaid)).getText().toString();
+                            String sensor_ID = ((EditText) dialog.getCustomView().findViewById(R.id.dialog_equipment_sensorid)).getText().toString();
+                            String equipment_ID = ((EditText) dialog.getCustomView().findViewById(R.id.dialog_equipment_eqmenid)).getText().toString();
+
+                            smEquipmentPresenter.addEquipment(poleSn, deviceID, dvrid, angleRelativeToNorthPole, deviceType, isSendMessage, cma_ID, sensor_ID, equipment_ID);
+                            super.onPositive(dialog);
                         }
-                        String deviceID = ((EditText) dialog.getCustomView().findViewById(R.id.dialog_equipment_identifier)).getText().toString();
-                        String dvrid = ((EditText) dialog.getCustomView().findViewById(R.id.dialog_equipment_dvrid)).getText().toString();
-                        String angleRelativeToNorthPole = ((EditText) dialog.getCustomView().findViewById(R.id.dialog_equipment_preset)).getText().toString();
-                        String cma_ID = ((EditText) dialog.getCustomView().findViewById(R.id.dialog_equipment_cmaid)).getText().toString();
-                        String sensor_ID = ((EditText) dialog.getCustomView().findViewById(R.id.dialog_equipment_sensorid)).getText().toString();
-                        String equipment_ID = ((EditText) dialog.getCustomView().findViewById(R.id.dialog_equipment_eqmenid)).getText().toString();
 
-                        smEquipmentPresenter.addEquipment(poleSn, deviceID, dvrid, angleRelativeToNorthPole, deviceType, isSendMessage, cma_ID, sensor_ID, equipment_ID);
-                        super.onPositive(dialog);
-                    }
+                        @Override
+                        public void onNegative(MaterialDialog dialog) {
+                            super.onNegative(dialog);
+                        }
 
-                    @Override
-                    public void onNegative(MaterialDialog dialog) {
-                        super.onNegative(dialog);
-                    }
+                    })
+                    .build();
 
-                })
-                .build();
+            Spinner equipmentTypeSpinner = (Spinner) dialog.getCustomView().findViewById(R.id.dialog_equipment_type);
+            Spinner informationSendSpinner = (Spinner) dialog.getCustomView().findViewById(R.id.dialog_alarm_information_send);
+            Spinner poleChoiceSpinner = (Spinner) dialog.getCustomView().findViewById(R.id.dialog_equipment_tower_choice);
 
-        Spinner equipmentTypeSpinner = (Spinner) dialog.getCustomView().findViewById(R.id.dialog_equipment_type);
-        Spinner informationSendSpinner = (Spinner) dialog.getCustomView().findViewById(R.id.dialog_alarm_information_send);
-        Spinner poleChoiceSpinner = (Spinner) dialog.getCustomView().findViewById(R.id.dialog_equipment_tower_choice);
+            String[] deviceType = {"山火", "外破", "普通视频", "无人机"};
+            deviceTypeList = new ArrayList<>();
+            deviceTypeList.add("fire");
+            deviceTypeList.add("break");
+            deviceTypeList.add("video");
+            deviceTypeList.add("uav");
+            equipmentTypeSpinner.setAdapter(new ArrayAdapter<>(dialog.getContext(), android.R.layout.simple_list_item_1, deviceType));
 
-        String[] deviceType = {"山火", "外破", "普通视频", "无人机"};
-        deviceTypeList = new ArrayList<>();
-        deviceTypeList.add("fire");
-        deviceTypeList.add("break");
-        deviceTypeList.add("video");
-        deviceTypeList.add("uav");
-        equipmentTypeSpinner.setAdapter(new ArrayAdapter<>(dialog.getContext(), android.R.layout.simple_list_item_1, deviceType));
+            String[] isSendMessage = {"是", "否"};
+            informationSendSpinner.setAdapter(new ArrayAdapter<>(dialog.getContext(), android.R.layout.simple_list_item_1, isSendMessage));
 
-        String[] isSendMessage = {"是", "否"};
-        informationSendSpinner.setAdapter(new ArrayAdapter<>(dialog.getContext(), android.R.layout.simple_list_item_1, isSendMessage));
+            List<String> poleName = new ArrayList<>();
+            for (Pole pole : poles) {
+                poleName.add(pole.getPoleName());
+            }
+            poleChoiceSpinner.setAdapter(new ArrayAdapter<>(dialog.getContext(), android.R.layout.simple_list_item_1, poleName));
 
-        List<String> poleName = new ArrayList<>();
-        for (Pole pole : poles) {
-            poleName.add(pole.getPoleName());
+            dialog.show();
+        } else {
+            ShowUtile.noJurisdictionToast(EquipmentManageActivity.this);
         }
-        poleChoiceSpinner.setAdapter(new ArrayAdapter<>(dialog.getContext(), android.R.layout.simple_list_item_1, poleName));
-
-        dialog.show();
     }
 
     @Override
@@ -197,6 +203,15 @@ public class EquipmentManageActivity extends SMBaseActivity {
 
     @Override
     public void showError(String message) {
+        errorMessageLl.setVisibility(View.VISIBLE);
+        errorMessageTv.setText(message);
+        refreshButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                errorMessageLl.setVisibility(View.GONE);
+                smEquipmentPresenter.loadAllPole(getUser().getUserId());
+            }
+        });
 
     }
 
