@@ -169,8 +169,10 @@ public class RestApiImpl implements RestApi {
                                         try {
                                             String responseUserEntities = new String(responseBody, "UTF-8");
                                             Log.e("result", responseUserEntities);
-                                            if (responseUserEntities.equals("\"false\"")) {
+                                            if ("\"false\"".equals(responseUserEntities)) {
                                                 subscriber.onError(new NetworkConnectionException("用户名或密码错误"));
+                                            } else if ("\"loginFail\"".equals(responseUserEntities)) {
+                                                subscriber.onError(new NetworkConnectionException("请重新登录"));
                                             } else {
                                                 subscriber.onNext(userEntityJsonMapper.transformUserEntity(
                                                         responseUserEntities));
@@ -210,9 +212,14 @@ public class RestApiImpl implements RestApi {
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                         try {
                             String response = new String(responseBody, "UTF-8");
-                            Log.e("setCurrentPorject", response);
-                            subscriber.onNext(stringJsonMapper.transformString(response));
-                            subscriber.onCompleted();
+                            if ("\"loginFail\"".equals(response)) {
+                                subscriber.onError(new NetworkConnectionException("请重新登录"));
+                            } else {
+                                Log.e("setCurrentPorject", response);
+                                subscriber.onNext(stringJsonMapper.transformString(response));
+                                subscriber.onCompleted();
+                            }
+
                         } catch (UnsupportedEncodingException e) {
                             e.printStackTrace();
                         }
@@ -250,10 +257,15 @@ public class RestApiImpl implements RestApi {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                         try {
+
                             String responseEquipmentEntities = new String(responseBody, "UTF-8");
-                            Log.e("getEquipment", responseEquipmentEntities);
-                            subscriber.onNext(pageEntityJsonMapper.transformEquipmentInforPageEntity(responseEquipmentEntities));
-                            subscriber.onCompleted();
+                            if ("\"loginFail\"".equals(responseEquipmentEntities)) {
+                                subscriber.onError(new NetworkConnectionException("请重新登录"));
+                            } else {
+                                Log.e("getEquipment", responseEquipmentEntities);
+                                subscriber.onNext(pageEntityJsonMapper.transformEquipmentInforPageEntity(responseEquipmentEntities));
+                                subscriber.onCompleted();
+                            }
                         } catch (UnsupportedEncodingException e) {
                             e.printStackTrace();
                         }
@@ -294,9 +306,13 @@ public class RestApiImpl implements RestApi {
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                         try {
                             String responseAlarmEntities = new String(responseBody, "UTF-8");
-                            Log.e("alarmPageEntity-getAll", responseAlarmEntities);
-                            subscriber.onNext(pageEntityJsonMapper.transformAlarmPageEntity(responseAlarmEntities));
-                            subscriber.onCompleted();
+                            if ("\"loginFail\"".equals(responseAlarmEntities)) {
+                                subscriber.onError(new NetworkConnectionException("请重新登录"));
+                            } else {
+                                Log.e("alarmPageEntity-getAll", responseAlarmEntities);
+                                subscriber.onNext(pageEntityJsonMapper.transformAlarmPageEntity(responseAlarmEntities));
+                                subscriber.onCompleted();
+                            }
                         } catch (UnsupportedEncodingException e) {
                             e.printStackTrace();
                         }
@@ -326,9 +342,13 @@ public class RestApiImpl implements RestApi {
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                         try {
                             String responseEntities = new String(responseBody, "UTF-8");
-                            Log.e("response", responseEntities);
-                            subscriber.onNext(responseEntities);
-                            subscriber.onCompleted();
+                            if ("\"loginFail\"".equals(responseEntities)) {
+                                subscriber.onError(new NetworkConnectionException("请重新登录"));
+                            } else {
+                                Log.e("response", responseEntities);
+                                subscriber.onNext(responseEntities);
+                                subscriber.onCompleted();
+                            }
                         } catch (UnsupportedEncodingException e) {
                             e.printStackTrace();
                         }
@@ -370,9 +390,13 @@ public class RestApiImpl implements RestApi {
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                         try {
                             String responseAlarmEntities = new String(responseBody, "UTF-8");
-                            Log.e("alarmPageEntity-getSome", responseAlarmEntities);
-                            subscriber.onNext(pageEntityJsonMapper.transformAlarmPageEntity(responseAlarmEntities));
-                            subscriber.onCompleted();
+                            if ("\"loginFail\"".equals(responseAlarmEntities)) {
+                                subscriber.onError(new NetworkConnectionException("请重新登录"));
+                            } else {
+                                Log.e("alarmPageEntity-getSome", responseAlarmEntities);
+                                subscriber.onNext(pageEntityJsonMapper.transformAlarmPageEntity(responseAlarmEntities));
+                                subscriber.onCompleted();
+                            }
                         } catch (UnsupportedEncodingException e) {
                             e.printStackTrace();
                         }
@@ -415,10 +439,15 @@ public class RestApiImpl implements RestApi {
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                         try {
                             String responseMapEntities = new String(responseBody, "UTF-8");
-                            Log.e("alarmPageEntity-getSome", responseMapEntities);
-                            subscriber.onNext(mapEntityJsonMapper.transformMapEntity(responseMapEntities));
-                            subscriber.onCompleted();
+                            if ("\"loginFail\"".equals(responseMapEntities)) {
+                                subscriber.onError(new NetworkConnectionException("请重新登录"));
+                            } else {
+                                Log.e("alarmPageEntity-getSome", responseMapEntities);
+                                subscriber.onNext(mapEntityJsonMapper.transformMapEntity(responseMapEntities));
+                                subscriber.onCompleted();
+                            }
                         } catch (UnsupportedEncodingException e) {
+                            subscriber.onError(e);
                             e.printStackTrace();
                         }
                     }
@@ -445,9 +474,13 @@ public class RestApiImpl implements RestApi {
                         public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                             try {
                                 String responseVideoUrl = new String(responseBody, "UTF-8");
-                                Log.e("videoUrl", "videoUrl->" + responseVideoUrl);
-                                subscriber.onNext(responseVideoUrl);
-                                subscriber.onCompleted();
+                                if ("\"loginFail\"".equals(responseVideoUrl)) {
+                                    subscriber.onError(new NetworkConnectionException("请重新登录"));
+                                } else {
+                                    Log.e("videoUrl", "videoUrl->" + responseVideoUrl);
+                                    subscriber.onNext(responseVideoUrl);
+                                    subscriber.onCompleted();
+                                }
                             } catch (UnsupportedEncodingException e) {
                                 e.printStackTrace();
                             }
@@ -477,9 +510,13 @@ public class RestApiImpl implements RestApi {
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                         try {
                             String responseVideoUrl = new String(responseBody, "UTF-8");
-                            Log.e("videoUrl", "url  ?>" + responseVideoUrl);
-                            subscriber.onNext(responseVideoUrl);
-                            subscriber.onCompleted();
+                            if ("\"loginFail\"".equals(responseVideoUrl)) {
+                                subscriber.onError(new NetworkConnectionException("请重新登录"));
+                            } else {
+                                Log.e("videoUrl", "url  ?>" + responseVideoUrl);
+                                subscriber.onNext(responseVideoUrl);
+                                subscriber.onCompleted();
+                            }
                         } catch (UnsupportedEncodingException e) {
                             e.printStackTrace();
                         }
@@ -507,9 +544,13 @@ public class RestApiImpl implements RestApi {
                         public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                             try {
                                 String responseVideoUrl = new String(responseBody, "UTF-8");
-                                Log.e("videoUrl", "url" + responseVideoUrl);
-                                subscriber.onNext(responseVideoUrl);
-                                subscriber.onCompleted();
+                                if ("\"loginFail\"".equals(responseVideoUrl)) {
+                                    subscriber.onError(new NetworkConnectionException("请重新登录"));
+                                } else {
+                                    Log.e("videoUrl", "videoControl" + responseVideoUrl);
+                                    subscriber.onNext(responseVideoUrl);
+                                    subscriber.onCompleted();
+                                }
                             } catch (UnsupportedEncodingException e) {
                                 e.printStackTrace();
                             }
@@ -541,10 +582,14 @@ public class RestApiImpl implements RestApi {
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) { //成功时调用
                         try {
                             String responseCompanyEntities = new String(responseBody, "UTF-8");
-                            Log.e("responseCompanyEntities", responseCompanyEntities);
-                            //通过jsonMapper转化得到的String
-                            subscriber.onNext(companyEntityJsonMapper.transformCompanyEntity(responseCompanyEntities));
-                            subscriber.onCompleted();
+                            if ("\"loginFail\"".equals(responseCompanyEntities)) {
+                                subscriber.onError(new NetworkConnectionException("请重新登录"));
+                            } else {
+                                Log.e("responseCompanyEntities", responseCompanyEntities);
+                                //通过jsonMapper转化得到的String
+                                subscriber.onNext(companyEntityJsonMapper.transformCompanyEntity(responseCompanyEntities));
+                                subscriber.onCompleted();
+                            }
                         } catch (UnsupportedEncodingException e) {
                             e.printStackTrace();
                         }
@@ -575,9 +620,13 @@ public class RestApiImpl implements RestApi {
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                         try {
                             String responseCompanyEntities = new String(responseBody, "UTF-8");
-                            Log.e("responseCompanyEntities", responseCompanyEntities);
-                            subscriber.onNext(companyEntityJsonMapper.transformCompanyEntity(responseCompanyEntities));
-                            subscriber.onCompleted();
+                            if ("\"loginFail\"".equals(responseCompanyEntities)) {
+                                subscriber.onError(new NetworkConnectionException("请重新登录"));
+                            } else {
+                                Log.e("responseCompanyEntities", responseCompanyEntities);
+                                subscriber.onNext(companyEntityJsonMapper.transformCompanyEntity(responseCompanyEntities));
+                                subscriber.onCompleted();
+                            }
                         } catch (UnsupportedEncodingException e) {
                             e.printStackTrace();
                         }
@@ -605,9 +654,13 @@ public class RestApiImpl implements RestApi {
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                         try {
                             String responseCompanyEntities = new String(responseBody, "UTF-8");
-                            Log.e("responseCompanyEntities", responseCompanyEntities);
-                            subscriber.onNext(companyEntityJsonMapper.transformCompanyEntity(responseCompanyEntities));
-                            subscriber.onCompleted();
+                            if ("\"loginFail\"".equals(responseCompanyEntities)) {
+                                subscriber.onError(new NetworkConnectionException("请重新登录"));
+                            } else {
+                                Log.e("responseCompanyEntities", responseCompanyEntities);
+                                subscriber.onNext(companyEntityJsonMapper.transformCompanyEntity(responseCompanyEntities));
+                                subscriber.onCompleted();
+                            }
                         } catch (UnsupportedEncodingException e) {
                             e.printStackTrace();
                         }
@@ -638,9 +691,13 @@ public class RestApiImpl implements RestApi {
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                         try {
                             String responseCompanyEntities = new String(responseBody, "UTF-8");
-                            Log.e("responseCompanyEntities", responseCompanyEntities);
-                            subscriber.onNext(companyEntityJsonMapper.transformCompanyEntity(responseCompanyEntities));
-                            subscriber.onCompleted();
+                            if ("\"loginFail\"".equals(responseCompanyEntities)) {
+                                subscriber.onError(new NetworkConnectionException("请重新登录"));
+                            } else {
+                                Log.e("responseCompanyEntities", responseCompanyEntities);
+                                subscriber.onNext(companyEntityJsonMapper.transformCompanyEntity(responseCompanyEntities));
+                                subscriber.onCompleted();
+                            }
                         } catch (UnsupportedEncodingException e) {
                             e.printStackTrace();
                         }
@@ -670,8 +727,12 @@ public class RestApiImpl implements RestApi {
                         try {
                             String responseCompanyEntities = new String(responseBody, "UTF-8");
                             Log.e("responseCompanyEntities", responseCompanyEntities);
-                            subscriber.onNext(companyEntityJsonMapper.transformCompanyEntity(responseCompanyEntities));
-                            subscriber.onCompleted();
+                            if ("\"loginFail\"".equals(responseCompanyEntities)) {
+                                subscriber.onError(new NetworkConnectionException("请重新登录"));
+                            } else {
+                                subscriber.onNext(companyEntityJsonMapper.transformCompanyEntity(responseCompanyEntities));
+                                subscriber.onCompleted();
+                            }
                         } catch (UnsupportedEncodingException e) {
                             e.printStackTrace();
                         }
@@ -699,9 +760,13 @@ public class RestApiImpl implements RestApi {
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                         try {
                             String responseRoleEntities = new String(responseBody, "UTF-8");
-                            Log.e("responseRoleEntities", responseRoleEntities);
-                            subscriber.onNext(pageEntityJsonMapper.transformRolePageEntity(responseRoleEntities).getList());
-                            subscriber.onCompleted();
+                            if ("\"loginFail\"".equals(responseRoleEntities)) {
+                                subscriber.onError(new NetworkConnectionException("请重新登录"));
+                            } else {
+                                Log.e("responseRoleEntities", responseRoleEntities);
+                                subscriber.onNext(pageEntityJsonMapper.transformRolePageEntity(responseRoleEntities).getList());
+                                subscriber.onCompleted();
+                            }
                         } catch (UnsupportedEncodingException e) {
                             e.printStackTrace();
                         }
@@ -731,9 +796,13 @@ public class RestApiImpl implements RestApi {
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                         try {
                             String responseAdministratorEntities = new String(responseBody, "UTF-8");
-                            Log.e("response", responseAdministratorEntities);
-                            subscriber.onNext(pageEntityJsonMapper.transformAdministratorPageEntity(responseAdministratorEntities));
-                            subscriber.onCompleted();
+                            if ("\"loginFail\"".equals(responseAdministratorEntities)) {
+                                subscriber.onError(new NetworkConnectionException("请重新登录"));
+                            } else {
+                                Log.e("response", responseAdministratorEntities);
+                                subscriber.onNext(pageEntityJsonMapper.transformAdministratorPageEntity(responseAdministratorEntities));
+                                subscriber.onCompleted();
+                            }
                         } catch (UnsupportedEncodingException e) {
                             e.printStackTrace();
                         }
@@ -768,9 +837,13 @@ public class RestApiImpl implements RestApi {
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                         try {
                             String responseAdministratorEntities = new String(responseBody, "UTF-8");
-                            Log.e("response", responseAdministratorEntities);
-                            subscriber.onNext(pageEntityJsonMapper.transformAdministratorPageEntity(responseAdministratorEntities));
-                            subscriber.onCompleted();
+                            if ("\"loginFail\"".equals(responseAdministratorEntities)) {
+                                subscriber.onError(new NetworkConnectionException("请重新登录"));
+                            } else {
+                                Log.e("response", responseAdministratorEntities);
+                                subscriber.onNext(pageEntityJsonMapper.transformAdministratorPageEntity(responseAdministratorEntities));
+                                subscriber.onCompleted();
+                            }
                         } catch (UnsupportedEncodingException e) {
                             e.printStackTrace();
                         }
@@ -813,9 +886,13 @@ public class RestApiImpl implements RestApi {
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                         try {
                             String responseAdministratorEntities = new String(responseBody, "UTF-8");
-                            Log.e("response", responseAdministratorEntities);
-                            subscriber.onNext(pageEntityJsonMapper.transformAdministratorPageEntity(responseAdministratorEntities));
-                            subscriber.onCompleted();
+                            if ("\"loginFail\"".equals(responseAdministratorEntities)) {
+                                subscriber.onError(new NetworkConnectionException("请重新登录"));
+                            } else {
+                                Log.e("response", responseAdministratorEntities);
+                                subscriber.onNext(pageEntityJsonMapper.transformAdministratorPageEntity(responseAdministratorEntities));
+                                subscriber.onCompleted();
+                            }
                         } catch (UnsupportedEncodingException e) {
                             e.printStackTrace();
                         }
@@ -850,9 +927,13 @@ public class RestApiImpl implements RestApi {
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                         try {
                             String responseAdministratorEntities = new String(responseBody, "UTF-8");
-                            Log.e("response", responseAdministratorEntities);
-                            subscriber.onNext(pageEntityJsonMapper.transformAdministratorPageEntity(responseAdministratorEntities));
-                            subscriber.onCompleted();
+                            if ("\"loginFail\"".equals(responseAdministratorEntities)) {
+                                subscriber.onError(new NetworkConnectionException("请重新登录"));
+                            } else {
+                                Log.e("response", responseAdministratorEntities);
+                                subscriber.onNext(pageEntityJsonMapper.transformAdministratorPageEntity(responseAdministratorEntities));
+                                subscriber.onCompleted();
+                            }
                         } catch (UnsupportedEncodingException e) {
                             e.printStackTrace();
                         }
@@ -892,9 +973,13 @@ public class RestApiImpl implements RestApi {
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                         try {
                             String responseAdminLineEntities = new String(responseBody, "UTF-8");
-                            Log.e("getAllTower", responseAdminLineEntities);
-                            subscriber.onNext(lineEntityJsonMapper.transformAdminLineEntity(responseAdminLineEntities));
-                            subscriber.onCompleted();
+                            if ("\"loginFail\"".equals(responseAdminLineEntities)) {
+                                subscriber.onError(new NetworkConnectionException("请重新登录"));
+                            } else {
+                                Log.e("getAllTower", responseAdminLineEntities);
+                                subscriber.onNext(lineEntityJsonMapper.transformAdminLineEntity(responseAdminLineEntities));
+                                subscriber.onCompleted();
+                            }
                         } catch (UnsupportedEncodingException e) {
                             e.printStackTrace();
                         }
@@ -925,8 +1010,12 @@ public class RestApiImpl implements RestApi {
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                         try {
                             String responseOwnTowerEntities = new String(responseBody, "UTF-8");
-                            subscriber.onNext(listOfIntegerJsonMapper.transformIntegerEntity(responseOwnTowerEntities));
-                            subscriber.onCompleted();
+                            if ("\"loginFail\"".equals(responseOwnTowerEntities)) {
+                                subscriber.onError(new NetworkConnectionException("请重新登录"));
+                            } else {
+                                subscriber.onNext(listOfIntegerJsonMapper.transformIntegerEntity(responseOwnTowerEntities));
+                                subscriber.onCompleted();
+                            }
                         } catch (UnsupportedEncodingException e) {
                             e.printStackTrace();
                         }
@@ -976,9 +1065,13 @@ public class RestApiImpl implements RestApi {
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                         try {
                             String responseString = new String(responseBody, "UTF-8");
-                            Log.e("changeManageTower", responseString);
-                            subscriber.onNext(stringJsonMapper.transformString(responseString));
-                            subscriber.onCompleted();
+                            if ("\"loginFail\"".equals(responseString)) {
+                                subscriber.onError(new NetworkConnectionException("请重新登录"));
+                            } else {
+                                Log.e("changeManageTower", responseString);
+                                subscriber.onNext(stringJsonMapper.transformString(responseString));
+                                subscriber.onCompleted();
+                            }
                         } catch (UnsupportedEncodingException e) {
                             e.printStackTrace();
                         }
@@ -1008,9 +1101,12 @@ public class RestApiImpl implements RestApi {
                         try {
                             String responseEntities = new String(responseBody, "UTF-8");
                             Log.e("getRolePage", responseEntities);
-
-                            subscriber.onNext(pageEntityJsonMapper.transformRolePageEntity(responseEntities));
-                            subscriber.onCompleted();
+                            if ("\"loginFail\"".equals(responseEntities)) {
+                                subscriber.onError(new NetworkConnectionException("请重新登录"));
+                            } else {
+                                subscriber.onNext(pageEntityJsonMapper.transformRolePageEntity(responseEntities));
+                                subscriber.onCompleted();
+                            }
                         } catch (UnsupportedEncodingException e) {
                             e.printStackTrace();
                         }
@@ -1039,9 +1135,13 @@ public class RestApiImpl implements RestApi {
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                         try {
                             String responseEntities = new String(responseBody, "UTF-8");
-                            Log.e("response", responseEntities);
-                            subscriber.onNext(pageEntityJsonMapper.transformRolePageEntity(responseEntities));
-                            subscriber.onCompleted();
+                            if ("\"loginFail\"".equals(responseEntities)) {
+                                subscriber.onError(new NetworkConnectionException("请重新登录"));
+                            } else {
+                                Log.e("response", responseEntities);
+                                subscriber.onNext(pageEntityJsonMapper.transformRolePageEntity(responseEntities));
+                                subscriber.onCompleted();
+                            }
                         } catch (UnsupportedEncodingException e) {
                             e.printStackTrace();
                         }
@@ -1070,8 +1170,12 @@ public class RestApiImpl implements RestApi {
                         try {
                             String responseEntities = new String(responseBody, "UTF-8");
                             Log.e("response", responseEntities);
-                            subscriber.onNext(pageEntityJsonMapper.transformRolePageEntity(responseEntities));
-                            subscriber.onCompleted();
+                            if ("\"loginFail\"".equals(responseEntities)) {
+                                subscriber.onError(new NetworkConnectionException("请重新登录"));
+                            } else {
+                                subscriber.onNext(pageEntityJsonMapper.transformRolePageEntity(responseEntities));
+                                subscriber.onCompleted();
+                            }
                         } catch (UnsupportedEncodingException e) {
                             e.printStackTrace();
                         }
@@ -1101,8 +1205,12 @@ public class RestApiImpl implements RestApi {
                         try {
                             String responseEntities = new String(responseBody, "UTF-8");
                             Log.e("response", responseEntities);
-                            subscriber.onNext(pageEntityJsonMapper.transformRolePageEntity(responseEntities));
-                            subscriber.onCompleted();
+                            if ("\"loginFail\"".equals(responseEntities)) {
+                                subscriber.onError(new NetworkConnectionException("请重新登录"));
+                            } else {
+                                subscriber.onNext(pageEntityJsonMapper.transformRolePageEntity(responseEntities));
+                                subscriber.onCompleted();
+                            }
                         } catch (UnsupportedEncodingException e) {
                             e.printStackTrace();
                         }
@@ -1132,8 +1240,12 @@ public class RestApiImpl implements RestApi {
                         try {
                             String responseEntities = new String(responseBody, "UTF-8");
                             Log.e("response", responseEntities);
-                            subscriber.onNext(privilegeEntityJsonMapper.transformPrivilegeEntity(responseEntities));
-                            subscriber.onCompleted();
+                            if ("\"loginFail\"".equals(responseEntities)) {
+                                subscriber.onError(new NetworkConnectionException("请重新登录"));
+                            } else {
+                                subscriber.onNext(privilegeEntityJsonMapper.transformPrivilegeEntity(responseEntities));
+                                subscriber.onCompleted();
+                            }
                         } catch (UnsupportedEncodingException e) {
                             e.printStackTrace();
                         }
@@ -1162,8 +1274,12 @@ public class RestApiImpl implements RestApi {
                         try {
                             String responseEntities = new String(responseBody, "UTF-8");
                             Log.e("response", responseEntities);
-                            subscriber.onNext(privilegeEntityJsonMapper.transformPrivilegeEntity(responseEntities));
-                            subscriber.onCompleted();
+                            if ("\"loginFail\"".equals(responseEntities)) {
+                                subscriber.onError(new NetworkConnectionException("请重新登录"));
+                            } else {
+                                subscriber.onNext(privilegeEntityJsonMapper.transformPrivilegeEntity(responseEntities));
+                                subscriber.onCompleted();
+                            }
                         } catch (UnsupportedEncodingException e) {
                             e.printStackTrace();
                         }
@@ -1205,8 +1321,12 @@ public class RestApiImpl implements RestApi {
                         try {
                             String responseEntities = new String(responseBody, "UTF-8");
                             Log.e("response", responseEntities);
-                            subscriber.onNext(responseEntities);
-                            subscriber.onCompleted();
+                            if ("\"loginFail\"".equals(responseEntities)) {
+                                subscriber.onError(new NetworkConnectionException("请重新登录"));
+                            } else {
+                                subscriber.onNext(responseEntities);
+                                subscriber.onCompleted();
+                            }
                         } catch (UnsupportedEncodingException e) {
                             e.printStackTrace();
                         }
@@ -1237,8 +1357,12 @@ public class RestApiImpl implements RestApi {
                         try {
                             String responseEntities = new String(responseBody, "UTF-8");
                             Log.e("response", responseEntities);
-                            subscriber.onNext(pageEntityJsonMapper.transformLinePageEntity(responseEntities));
-                            subscriber.onCompleted();
+                            if ("\"loginFail\"".equals(responseEntities)) {
+                                subscriber.onError(new NetworkConnectionException("请重新登录"));
+                            } else {
+                                subscriber.onNext(pageEntityJsonMapper.transformLinePageEntity(responseEntities));
+                                subscriber.onCompleted();
+                            }
                         } catch (UnsupportedEncodingException e) {
                             e.printStackTrace();
                         }
@@ -1268,8 +1392,12 @@ public class RestApiImpl implements RestApi {
                         try {
                             String responseEntities = new String(responseBody, "UTF-8");
                             Log.e("response", responseEntities);
-                            subscriber.onNext(pageEntityJsonMapper.transformLinePageEntity(responseEntities));
-                            subscriber.onCompleted();
+                            if ("\"loginFail\"".equals(responseEntities)) {
+                                subscriber.onError(new NetworkConnectionException("请重新登录"));
+                            } else {
+                                subscriber.onNext(pageEntityJsonMapper.transformLinePageEntity(responseEntities));
+                                subscriber.onCompleted();
+                            }
                         } catch (UnsupportedEncodingException e) {
                             e.printStackTrace();
                         }
@@ -1304,8 +1432,12 @@ public class RestApiImpl implements RestApi {
                         try {
                             String responseEntities = new String(responseBody, "UTF-8");
                             Log.e("response", responseEntities);
-                            subscriber.onNext(pageEntityJsonMapper.transformLinePageEntity(responseEntities));
-                            subscriber.onCompleted();
+                            if ("\"loginFail\"".equals(responseEntities)) {
+                                subscriber.onError(new NetworkConnectionException("请重新登录"));
+                            } else {
+                                subscriber.onNext(pageEntityJsonMapper.transformLinePageEntity(responseEntities));
+                                subscriber.onCompleted();
+                            }
                         } catch (UnsupportedEncodingException e) {
                             e.printStackTrace();
                         }
@@ -1335,8 +1467,12 @@ public class RestApiImpl implements RestApi {
                         try {
                             String responseEntities = new String(responseBody, "UTF-8");
                             Log.e("response", responseEntities);
-                            subscriber.onNext(pageEntityJsonMapper.transformLinePageEntity(responseEntities));
-                            subscriber.onCompleted();
+                            if ("\"loginFail\"".equals(responseEntities)) {
+                                subscriber.onError(new NetworkConnectionException("请重新登录"));
+                            } else {
+                                subscriber.onNext(pageEntityJsonMapper.transformLinePageEntity(responseEntities));
+                                subscriber.onCompleted();
+                            }
                         } catch (UnsupportedEncodingException e) {
                             e.printStackTrace();
                         }
@@ -1371,8 +1507,12 @@ public class RestApiImpl implements RestApi {
                         try {
                             String responseEntities = new String(responseBody, "UTF-8");
                             Log.e("response", responseEntities);
-                            subscriber.onNext(pageEntityJsonMapper.transformLinePageEntity(responseEntities));
-                            subscriber.onCompleted();
+                            if ("\"loginFail\"".equals(responseEntities)) {
+                                subscriber.onError(new NetworkConnectionException("请重新登录"));
+                            } else {
+                                subscriber.onNext(pageEntityJsonMapper.transformLinePageEntity(responseEntities));
+                                subscriber.onCompleted();
+                            }
                         } catch (UnsupportedEncodingException e) {
                             e.printStackTrace();
                         }
@@ -1403,8 +1543,12 @@ public class RestApiImpl implements RestApi {
                         try {
                             String responseEntities = new String(responseBody, "UTF-8");
                             Log.e("response", responseEntities);
-                            subscriber.onNext(pageEntityJsonMapper.transformPolePageEntity(responseEntities));
-                            subscriber.onCompleted();
+                            if ("\"loginFail\"".equals(responseEntities)) {
+                                subscriber.onError(new NetworkConnectionException("请重新登录"));
+                            } else {
+                                subscriber.onNext(pageEntityJsonMapper.transformPolePageEntity(responseEntities));
+                                subscriber.onCompleted();
+                            }
                         } catch (UnsupportedEncodingException e) {
                             e.printStackTrace();
                         }
@@ -1434,8 +1578,12 @@ public class RestApiImpl implements RestApi {
                         try {
                             String responseEntities = new String(responseBody, "UTF-8");
                             Log.e("response", responseEntities);
-                            subscriber.onNext(pageEntityJsonMapper.transformPolePageEntity(responseEntities));
-                            subscriber.onCompleted();
+                            if ("\"loginFail\"".equals(responseEntities)) {
+                                subscriber.onError(new NetworkConnectionException("请重新登录"));
+                            } else {
+                                subscriber.onNext(pageEntityJsonMapper.transformPolePageEntity(responseEntities));
+                                subscriber.onCompleted();
+                            }
                         } catch (UnsupportedEncodingException e) {
                             e.printStackTrace();
                         }
@@ -1469,8 +1617,12 @@ public class RestApiImpl implements RestApi {
                         try {
                             String responseEntities = new String(responseBody, "UTF-8");
                             Log.e("response", responseEntities);
-                            subscriber.onNext(pageEntityJsonMapper.transformPolePageEntity(responseEntities));
-                            subscriber.onCompleted();
+                            if ("\"loginFail\"".equals(responseEntities)) {
+                                subscriber.onError(new NetworkConnectionException("请重新登录"));
+                            } else {
+                                subscriber.onNext(pageEntityJsonMapper.transformPolePageEntity(responseEntities));
+                                subscriber.onCompleted();
+                            }
                         } catch (UnsupportedEncodingException e) {
                             e.printStackTrace();
                         }
@@ -1500,8 +1652,12 @@ public class RestApiImpl implements RestApi {
                         try {
                             String responseEntities = new String(responseBody, "UTF-8");
                             Log.e("response", responseEntities);
-                            subscriber.onNext(pageEntityJsonMapper.transformPolePageEntity(responseEntities));
-                            subscriber.onCompleted();
+                            if ("\"loginFail\"".equals(responseEntities)) {
+                                subscriber.onError(new NetworkConnectionException("请重新登录"));
+                            } else {
+                                subscriber.onNext(pageEntityJsonMapper.transformPolePageEntity(responseEntities));
+                                subscriber.onCompleted();
+                            }
                         } catch (UnsupportedEncodingException e) {
                             e.printStackTrace();
                         }
@@ -1535,8 +1691,12 @@ public class RestApiImpl implements RestApi {
                         try {
                             String responseEntities = new String(responseBody, "UTF-8");
                             Log.e("response", responseEntities);
-                            subscriber.onNext(pageEntityJsonMapper.transformPolePageEntity(responseEntities));
-                            subscriber.onCompleted();
+                            if ("\"loginFail\"".equals(responseEntities)) {
+                                subscriber.onError(new NetworkConnectionException("请重新登录"));
+                            } else {
+                                subscriber.onNext(pageEntityJsonMapper.transformPolePageEntity(responseEntities));
+                                subscriber.onCompleted();
+                            }
                         } catch (UnsupportedEncodingException e) {
                             e.printStackTrace();
                         }
@@ -1564,8 +1724,12 @@ public class RestApiImpl implements RestApi {
                         try {
                             String responseEntities = new String(responseBody, "UTF-8");
                             Log.e("response", responseEntities);
-                            subscriber.onNext(companyEntityJsonMapper.transformCompanyEntity(responseEntities));
-                            subscriber.onCompleted();
+                            if ("\"loginFail\"".equals(responseEntities)) {
+                                subscriber.onError(new NetworkConnectionException("请重新登录"));
+                            } else {
+                                subscriber.onNext(companyEntityJsonMapper.transformCompanyEntity(responseEntities));
+                                subscriber.onCompleted();
+                            }
                         } catch (UnsupportedEncodingException e) {
                             e.printStackTrace();
                         }
@@ -1594,9 +1758,13 @@ public class RestApiImpl implements RestApi {
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                         try {
                             String responseEntities = new String(responseBody, "UTF-8");
-                            Log.e("response", responseEntities);
-                            subscriber.onNext(pageEntityJsonMapper.transformEquipmentPageEntity(responseEntities));
-                            subscriber.onCompleted();
+                            if ("\"loginFail\"".equals(responseEntities)) {
+                                subscriber.onError(new NetworkConnectionException("请重新登录"));
+                            } else {
+                                Log.e("response", responseEntities);
+                                subscriber.onNext(pageEntityJsonMapper.transformEquipmentPageEntity(responseEntities));
+                                subscriber.onCompleted();
+                            }
                         } catch (UnsupportedEncodingException e) {
                             e.printStackTrace();
                         }
@@ -1634,8 +1802,12 @@ public class RestApiImpl implements RestApi {
                         try {
                             String responseEntities = new String(responseBody, "UTF-8");
                             Log.e("response", responseEntities);
-                            subscriber.onNext(pageEntityJsonMapper.transformEquipmentPageEntity(responseEntities));
-                            subscriber.onCompleted();
+                            if ("\"loginFail\"".equals(responseEntities)) {
+                                subscriber.onError(new NetworkConnectionException("请重新登录"));
+                            } else {
+                                subscriber.onNext(pageEntityJsonMapper.transformEquipmentPageEntity(responseEntities));
+                                subscriber.onCompleted();
+                            }
                         } catch (UnsupportedEncodingException e) {
                             e.printStackTrace();
                         }
@@ -1665,8 +1837,12 @@ public class RestApiImpl implements RestApi {
                         try {
                             String responseEntities = new String(responseBody, "UTF-8");
                             Log.e("response", responseEntities);
-                            subscriber.onNext(pageEntityJsonMapper.transformEquipmentPageEntity(responseEntities));
-                            subscriber.onCompleted();
+                            if ("\"loginFail\"".equals(responseEntities)) {
+                                subscriber.onError(new NetworkConnectionException("请重新登录"));
+                            } else {
+                                subscriber.onNext(pageEntityJsonMapper.transformEquipmentPageEntity(responseEntities));
+                                subscriber.onCompleted();
+                            }
                         } catch (UnsupportedEncodingException e) {
                             e.printStackTrace();
                         }
@@ -1704,8 +1880,12 @@ public class RestApiImpl implements RestApi {
                         try {
                             String responseEntities = new String(responseBody, "UTF-8");
                             Log.e("response", responseEntities);
-                            subscriber.onNext(pageEntityJsonMapper.transformEquipmentPageEntity(responseEntities));
-                            subscriber.onCompleted();
+                            if ("\"loginFail\"".equals(responseEntities)) {
+                                subscriber.onError(new NetworkConnectionException("请重新登录"));
+                            } else {
+                                subscriber.onNext(pageEntityJsonMapper.transformEquipmentPageEntity(responseEntities));
+                                subscriber.onCompleted();
+                            }
                         } catch (UnsupportedEncodingException e) {
                             e.printStackTrace();
                         }
@@ -1734,8 +1914,12 @@ public class RestApiImpl implements RestApi {
                         try {
                             String responseEntities = new String(responseBody, "UTF-8");
                             Log.e("response", responseEntities);
-                            subscriber.onNext(responseEntities);
-                            subscriber.onCompleted();
+                            if ("\"loginFail\"".equals(responseEntities)) {
+                                subscriber.onError(new NetworkConnectionException("请重新登录"));
+                            } else {
+                                subscriber.onNext(responseEntities);
+                                subscriber.onCompleted();
+                            }
                         } catch (UnsupportedEncodingException e) {
                             e.printStackTrace();
                         }
@@ -1765,8 +1949,12 @@ public class RestApiImpl implements RestApi {
                         try {
                             String responseEntities = new String(responseBody, "UTF-8");
                             Log.e("response", responseEntities);
-                            subscriber.onNext(sensorTypeEntityJsonMapper.transformSensorTypeEntity(responseEntities));
-                            subscriber.onCompleted();
+                            if ("\"loginFail\"".equals(responseEntities)) {
+                                subscriber.onError(new NetworkConnectionException("请重新登录"));
+                            } else {
+                                subscriber.onNext(sensorTypeEntityJsonMapper.transformSensorTypeEntity(responseEntities));
+                                subscriber.onCompleted();
+                            }
                         } catch (UnsupportedEncodingException e) {
                             e.printStackTrace();
                         }
@@ -1798,8 +1986,12 @@ public class RestApiImpl implements RestApi {
                         try {
                             String responseEntities = new String(responseBody, "UTF-8");
                             Log.e("response", responseEntities);
-                            subscriber.onNext(responseEntities);
-                            subscriber.onCompleted();
+                            if ("\"loginFail\"".equals(responseEntities)) {
+                                subscriber.onError(new NetworkConnectionException("请重新登录"));
+                            } else {
+                                subscriber.onNext(responseEntities);
+                                subscriber.onCompleted();
+                            }
                         } catch (UnsupportedEncodingException e) {
                             e.printStackTrace();
                         }
@@ -1829,8 +2021,12 @@ public class RestApiImpl implements RestApi {
                         try {
                             String responseEntities = new String(responseBody, "UTF-8");
                             Log.e("response", responseEntities);
-                            subscriber.onNext(responseEntities);
-                            subscriber.onCompleted();
+                            if ("\"loginFail\"".equals(responseEntities)) {
+                                subscriber.onError(new NetworkConnectionException("请重新登录"));
+                            } else {
+                                subscriber.onNext(responseEntities);
+                                subscriber.onCompleted();
+                            }
                         } catch (UnsupportedEncodingException e) {
                             e.printStackTrace();
                         }
@@ -1857,8 +2053,12 @@ public class RestApiImpl implements RestApi {
                         try {
                             String responseEntities = new String(responseBody, "UTF-8");
                             Log.e("response", responseEntities);
-                            subscriber.onNext(responseEntities);
-                            subscriber.onCompleted();
+                            if ("\"loginFail\"".equals(responseEntities)) {
+                                subscriber.onError(new NetworkConnectionException("请重新登录"));
+                            } else {
+                                subscriber.onNext(responseEntities);
+                                subscriber.onCompleted();
+                            }
                         } catch (UnsupportedEncodingException e) {
                             e.printStackTrace();
                         }

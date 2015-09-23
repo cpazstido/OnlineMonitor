@@ -138,7 +138,7 @@ public class EquipmentListViewActivity extends BaseActivity implements LoadDataV
                         EquipmentListViewActivity.this.loadEquipmentList(1);
                         swipeRefreshLayout.setRefreshing(false);
                     }
-                }, 4000);
+                }, 300);
             }
         });
 

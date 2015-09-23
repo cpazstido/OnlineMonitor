@@ -230,8 +230,13 @@ public class EquipmentRecyclerAdapter extends RecyclerView.Adapter<EquipmentList
             mList = (List<EquipmentInformation>) equipmentInformationCollection;
         } else {
             for (EquipmentInformation equipmentInformation : equipmentInformationCollection) {
-                if (!mList.contains(equipmentInformation)) {
-                    mList.add(equipmentInformation);
+                for (EquipmentInformation equipmentInformation1 :mList){
+                    if(equipmentInformation1.getSn() != equipmentInformation.getSn()){
+                        mList.add(equipmentInformation);
+                    }else{
+                        mList.remove(equipmentInformation1);
+                        mList.add(equipmentInformation);
+                    }
                 }
             }
         }

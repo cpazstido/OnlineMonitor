@@ -13,11 +13,16 @@ import org.apache.http.HttpEntity;
  * Created by wsw on 2015/7/17.
  */
 public class SystemRestClient {
-    private static final String BASE_URL = "http://172.16.8.129:8081/eMonitorApp/android";
+    private static final String BASE_URL = "http://171.221.207.57:8080//eMonitorApp/android";
 
-    public static final String BASE_PICTURE_URL = "http://172.16.8.129:8081/eMonitorApp/alarm/";
-    private static final String BASE_VIDEO_URL = "http://172.16.8.129:8081/eMonitorApp/accessServer";
-    private static final String BASE_POWER_URL = "http://172.16.8.129:8081/eMonitorApp/frontendconfig";
+    public static final String BASE_PICTURE_URL = "http://171.221.207.57:8080//eMonitorApp/alarm/";
+    private static final String BASE_VIDEO_URL = "http://171.221.207.57:8080//eMonitorApp/accessServer";
+    private static final String BASE_POWER_URL = "http://171.221.207.57:8080//eMonitorApp/frontendconfig";
+//    private static final String BASE_URL = "http://172.16.8.129:8081/eMonitorApp/android";
+//
+//    public static final String BASE_PICTURE_URL = "http://172.16.8.129:8081/eMonitorApp/alarm/";
+//    private static final String BASE_VIDEO_URL = "http://172.16.8.129:8081/eMonitorApp/accessServer";
+//    private static final String BASE_POWER_URL = "http://172.16.8.129:8081/eMonitorApp/frontendconfig";
     private static AsyncHttpClient client = new AsyncHttpClient();
 
     public static void get(String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {

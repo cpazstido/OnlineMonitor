@@ -74,7 +74,7 @@ public class HandlePresenter extends DefaultSubscriber implements Presenter {
 
         @Override
         public void onNext(String result) {
-            if ("true".equals(result))
+            if ("\"true\"".equals(result))
                 ShowUtile.toastShow(mContext, "处理成功");
             else
                 ShowUtile.toastShow(mContext, "处理失败");
