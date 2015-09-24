@@ -229,18 +229,19 @@ public class EquipmentRecyclerAdapter extends RecyclerView.Adapter<EquipmentList
         if (mList.size() == 0) {
             mList = (List<EquipmentInformation>) equipmentInformationCollection;
         } else {
+            List<EquipmentInformation> newArrayList = mList;
             for (EquipmentInformation equipmentInformation : equipmentInformationCollection) {
-                for (EquipmentInformation equipmentInformation1 :mList){
-                    if(equipmentInformation1.getSn() != equipmentInformation.getSn()){
-                        mList.add(equipmentInformation);
-                    }else{
-                        mList.remove(equipmentInformation1);
-                        mList.add(equipmentInformation);
+                for (EquipmentInformation equipmentInformation1 : mList) {
+                    if (equipmentInformation.getSn() == equipmentInformation1.getSn()) {
+                        newArrayList.remove(equipmentInformation1);
                     }
                 }
             }
+            for (EquipmentInformation equipmentInformation : equipmentInformationCollection) {
+                newArrayList.add(equipmentInformation);
+            }
+            mList = newArrayList;
         }
-
         this.notifyDataSetChanged();
     }
 

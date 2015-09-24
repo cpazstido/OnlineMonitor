@@ -122,6 +122,7 @@ public class JurisdictionManageActivity extends SMBaseActivity {
     @Override
     public void showError(String message) {
         errorMessageLl.setVisibility(View.VISIBLE);
+        smRecyclerView.setVisibility(View.GONE);
         errorMessageTv.setText(message);
         refreshButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -139,6 +140,8 @@ public class JurisdictionManageActivity extends SMBaseActivity {
 
     public void renderRolePage(RolePage rolePage) {
         if (rolePage != null &&rolePage.getList().size() != 0) {
+            errorMessageLl.setVisibility(View.GONE);
+            smRecyclerView.setVisibility(View.VISIBLE);
             this.rolePage = rolePage;
             mAdapter.setRolePage(rolePage.getList());
             mAdapter.setPresenter(smJurisdictionPresenter);

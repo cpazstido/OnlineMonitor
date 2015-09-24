@@ -185,11 +185,11 @@ public class AdministratorManageActivity extends SMBaseActivity {
     @Override
     public void showError(String message) {
         errorMessageLl.setVisibility(View.VISIBLE);
+        smRecyclerView.setVisibility(View.GONE);
         errorMessageTv.setText(message);
         refreshButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                errorMessageLl.setVisibility(View.GONE);
                 smAdministratorPresenter.loadAdminData(getUser().getUserId());
             }
         });
@@ -202,6 +202,8 @@ public class AdministratorManageActivity extends SMBaseActivity {
 
     public void renderEquipmentList(AdministratorPage administratorPage) {
         if (administratorPage != null &&administratorPage.getList().size() !=0) {
+            errorMessageLl.setVisibility(View.GONE);
+            smRecyclerView.setVisibility(View.VISIBLE);
             this.administratorPage = administratorPage;
             this.mAdapter.setAdministratorCollection(administratorPage.getList());
         }else{

@@ -257,7 +257,6 @@ public class RestApiImpl implements RestApi {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                         try {
-
                             String responseEquipmentEntities = new String(responseBody, "UTF-8");
                             if ("\"loginFail\"".equals(responseEquipmentEntities)) {
                                 subscriber.onError(new NetworkConnectionException("请重新登录"));

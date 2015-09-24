@@ -204,11 +204,11 @@ public class EquipmentManageActivity extends SMBaseActivity {
     @Override
     public void showError(String message) {
         errorMessageLl.setVisibility(View.VISIBLE);
+        smRecyclerView.setVisibility(View.GONE);
         errorMessageTv.setText(message);
         refreshButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                errorMessageLl.setVisibility(View.GONE);
                 smEquipmentPresenter.loadAllPole(getUser().getUserId());
             }
         });
@@ -222,10 +222,14 @@ public class EquipmentManageActivity extends SMBaseActivity {
 
     public void renderEquipmentList(EquipmentPage equipmentPage) {
         if (equipmentPage != null) {
+            errorMessageLl.setVisibility(View.GONE);
+            smRecyclerView.setVisibility(View.VISIBLE);
             this.equipmentPage = equipmentPage;
             mAdapter.setSensorManage(sensorManage);
             mAdapter.setEquipmentPage(equipmentPage.getList());
             mAdapter.setPresenter(smEquipmentPresenter);
+        }else{
+            showError(getResources().getString(R.string.not_data));
         }
     }
 

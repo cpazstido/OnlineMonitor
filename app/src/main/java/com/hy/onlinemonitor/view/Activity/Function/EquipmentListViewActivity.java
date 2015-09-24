@@ -68,20 +68,14 @@ public class EquipmentListViewActivity extends BaseActivity implements LoadDataV
 
     public void renderEquipmentList(EquipmentInforPage equipmentInforPage) {
         isLoadingMore = false;
+        swipeRefreshLayout.setVisibility(View.VISIBLE);
         if (equipmentInforPage != null) {
             if (equipmentInforPage.getList().size() != 0) {
                 errorMessageLl.setVisibility(View.GONE);
                 this.equipmentInforPage = equipmentInforPage;
                 this.mAdapter.setEquipmentCollection(equipmentInforPage.getList());
             } else {
-                errorMessageLl.setVisibility(View.VISIBLE);
-                errorMessageTv.setText(R.string.not_data);
-                refreshButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        initialize();
-                    }
-                });
+                showError(getResources().getString(R.string.not_data));
             }
         }
     }
@@ -99,11 +93,11 @@ public class EquipmentListViewActivity extends BaseActivity implements LoadDataV
     @Override
     public void showError(String message) {
         errorMessageLl.setVisibility(View.VISIBLE);
+        swipeRefreshLayout.setVisibility(View.GONE);
         errorMessageTv.setText(message);
         refreshButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                errorMessageLl.setVisibility(View.GONE);
                 initialize();
             }
         });

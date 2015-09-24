@@ -102,11 +102,11 @@ public class SingleAlarmInformationActivity extends AppCompatActivity implements
     @Override
     public void showError(String message) {
         errorMessageLl.setVisibility(View.VISIBLE);
+        swipeRefreshLayout.setVisibility(View.GONE);
         errorMessageTv.setText(message);
         refreshButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                errorMessageLl.setVisibility(View.GONE);
                 initialize();
             }
         });
@@ -140,18 +140,12 @@ public class SingleAlarmInformationActivity extends AppCompatActivity implements
     public void renderAlarmList(AlarmPage alarmPage, String queryAlarmType) {
         if (alarmPage != null) {
             if (alarmPage.getList().size() != 0) {
+                swipeRefreshLayout.setVisibility(View.VISIBLE);
                 errorMessageLl.setVisibility(View.GONE);
                 this.alarmPage = alarmPage;
                 this.mAdapter.setAlarmCollection(alarmPage.getList());
             } else {
-                errorMessageLl.setVisibility(View.VISIBLE);
-                errorMessageTv.setText(R.string.not_data);
-                refreshButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        initialize();
-                    }
-                });
+                showError(getResources().getString(R.string.not_data));
             }
         }
     }

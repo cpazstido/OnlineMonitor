@@ -108,7 +108,14 @@ public class RecyclerViewFragment extends Fragment implements AlarmListView {
 
     @Override
     public void showError(String message) {
-
+        errorMessageLl.setVisibility(View.VISIBLE);
+        errorMessageTv.setText(message);
+        refreshButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                RecyclerViewFragment.this.loadAlarmList(userId, queryAlarmType, status, 1);
+            }
+        });
     }
 
     @Override

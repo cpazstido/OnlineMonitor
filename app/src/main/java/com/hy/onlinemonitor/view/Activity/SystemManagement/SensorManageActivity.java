@@ -210,7 +210,6 @@ public class SensorManageActivity extends AppCompatActivity implements LoadDataV
     @Override
     public void onBackPressed() {
         setResult(888);
-        System.out.println("按下了back键 onBackPressed()");
         finish();
     }
 

@@ -154,12 +154,11 @@ public class LineManageActivity extends SMBaseActivity {//系统管理-线路管
     @Override
     public void showError(String message) {//显示错误信息
         errorMessageLl.setVisibility(View.VISIBLE);
+        smRecyclerView.setVisibility(View.GONE);
         errorMessageTv.setText(message);
         refreshButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                errorMessageLl.setVisibility(View.GONE);
-
                 smLinePresenter.loadCompany(getUser().getUserId());//加载公司列表
             }
         });
@@ -212,6 +211,8 @@ public class LineManageActivity extends SMBaseActivity {//系统管理-线路管
 
     public void renderLinePage(LinePage linePage) { //通知数据改变
         if (linePage != null && linePage.getList().size() != 0) {
+            errorMessageLl.setVisibility(View.GONE);
+            smRecyclerView.setVisibility(View.VISIBLE);
             this.linePage = linePage;
             mAdapter.setLinePage(linePage.getList());
             mAdapter.setPresenter(smLinePresenter);

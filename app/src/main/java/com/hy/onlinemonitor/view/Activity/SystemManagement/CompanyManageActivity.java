@@ -104,11 +104,11 @@ public class CompanyManageActivity extends SMBaseActivity {
     @Override
     public void showError(String message) {
         errorMessageLl.setVisibility(View.VISIBLE);
+        smRecyclerView.setVisibility(View.GONE);
         errorMessageTv.setText(message);
         refreshButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                errorMessageLl.setVisibility(View.GONE);
                 smCompanyPresenter.loadParentCompany(getUser().getUserId());
             }
         });
@@ -121,6 +121,8 @@ public class CompanyManageActivity extends SMBaseActivity {
 
     public void setCompanyList(List<Company> mList) {
         if (mList != null && mList.size() != 0) {
+            errorMessageLl.setVisibility(View.GONE);
+            smRecyclerView.setVisibility(View.VISIBLE);
             mAdapter.setCompanyList(mList);
             mAdapter.setPresenter(smCompanyPresenter);
         } else {
