@@ -13,13 +13,13 @@
     app:cardElevation="4dp">
 
     <LinearLayout
-        android:paddingLeft="10dp"
-        android:paddingTop="10dp"
-        android:paddingRight="10dp"
-        android:paddingBottom="10dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingBottom="10dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingTop="10dp">
 
         <RelativeLayout
 
@@ -30,8 +30,9 @@
                 android:id="@+id/equipment_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/mSubhead"
-                android:text="侯阳一线--84号塔" />
+                android:text="侯阳一线--84号塔"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
+                android:textSize="@dimen/mSubhead" />
 
             <ImageView
                 android:id="@+id/equipment_title_new_alarm"
@@ -51,59 +52,65 @@
 
             <TextView
                 android:id="@+id/equipment_alarm_new_tv"
-                android:layout_alignParentLeft="true"
                 android:layout_width="wrap_content"
-                android:layout_centerVertical="true"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/mSubhead"
-                android:text="@string/new_alarm" />
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:text="@string/new_alarm"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
+                android:textSize="@dimen/mSubhead" />
+
             <TextView
                 android:id="@+id/new_alarm_null_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_gravity="center"
                 android:layout_marginRight="50dp"
-                android:text="@string/no_alarm"
+                android:text="@string/have_no"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
                 android:textSize="@dimen/mBody2"
-                android:visibility="gone"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:visibility="gone" />
 
             <LinearLayout
                 android:id="@+id/equipment_alarm_new_ll"
-                android:layout_alignParentRight="true"
-                android:layout_toRightOf="@id/equipment_alarm_new_tv"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_toRightOf="@id/equipment_alarm_new_tv">
+
                 <com.rey.material.widget.Button
-                    style="@style/FlatColorButtonRippleStyle"
                     android:id="@+id/new_sensor_alarm"
+                    style="@style/FlatColorButtonRippleStyle"
                     android:layout_width="0dp"
                     android:layout_height="@dimen/bt_height"
                     android:layout_weight="1"
-                    android:textColor="#FF2196F3"
-                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Button"
                     android:text="@string/the_sensor"
-                    app:rd_delayClick="afterRelease"/>
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Button"
+                    android:textColor="#FF2196F3"
+                    app:rd_delayClick="afterRelease" />
+
                 <com.rey.material.widget.Button
-                    style="@style/FlatColorButtonRippleStyle"
                     android:id="@+id/new_fire_alarm"
-                    android:layout_width="0dp"
-                    android:layout_height="@dimen/bt_height"
-                    android:layout_weight="1"
-                    android:textColor="#FF2196F3"
-                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Button"
-                    android:text="@string/the_fire"
-                    app:rd_delayClick="afterRelease"/>
-                <com.rey.material.widget.Button
                     style="@style/FlatColorButtonRippleStyle"
-                    android:id="@+id/new_break_alarm"
                     android:layout_width="0dp"
                     android:layout_height="@dimen/bt_height"
                     android:layout_weight="1"
-                    android:textColor="#FF2196F3"
+                    android:text="@string/the_fire"
                     android:textAppearance="@style/Base.TextAppearance.AppCompat.Button"
+                    android:textColor="#FF2196F3"
+                    app:rd_delayClick="afterRelease" />
+
+                <com.rey.material.widget.Button
+                    android:id="@+id/new_break_alarm"
+                    style="@style/FlatColorButtonRippleStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/bt_height"
+                    android:layout_weight="1"
                     android:text="@string/the_break"
-                    app:rd_delayClick="afterRelease"/>
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Button"
+                    android:textColor="#FF2196F3"
+                    app:rd_delayClick="afterRelease" />
             </LinearLayout>
 
         </RelativeLayout>
@@ -116,53 +123,54 @@
 
             <TextView
                 android:id="@+id/equipment_alarm_old_tv"
-                android:layout_alignParentLeft="true"
-                android:layout_centerVertical="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/mSubhead"
-                android:text="@string/history_alarm" />
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:text="@string/history_alarm"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
+                android:textSize="@dimen/mSubhead" />
 
 
             <LinearLayout
                 android:id="@+id/equipment_alarm_old_ll"
-                android:layout_alignParentRight="true"
-                android:layout_toRightOf="@id/equipment_alarm_old_tv"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_toRightOf="@id/equipment_alarm_old_tv">
 
                 <com.rey.material.widget.Button
-                    style="@style/FlatColorButtonRippleStyle"
                     android:id="@+id/history_sensor_alarm"
+                    style="@style/FlatColorButtonRippleStyle"
                     android:layout_width="0dp"
                     android:layout_height="@dimen/bt_height"
                     android:layout_weight="1"
-                    android:textColor="#FF2196F3"
-                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Button"
                     android:text="@string/the_sensor"
-                    app:rd_delayClick="afterRelease"/>
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Button"
+                    android:textColor="#FF2196F3"
+                    app:rd_delayClick="afterRelease" />
 
                 <com.rey.material.widget.Button
-                    style="@style/FlatColorButtonRippleStyle"
                     android:id="@+id/history_fire_alarm"
+                    style="@style/FlatColorButtonRippleStyle"
                     android:layout_width="0dp"
                     android:layout_height="@dimen/bt_height"
                     android:layout_weight="1"
-                    android:textColor="#FF2196F3"
-                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Button"
                     android:text="@string/the_fire"
-                    app:rd_delayClick="afterRelease"/>
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Button"
+                    android:textColor="#FF2196F3"
+                    app:rd_delayClick="afterRelease" />
 
                 <com.rey.material.widget.Button
-                    style="@style/FlatColorButtonRippleStyle"
                     android:id="@+id/history_break_alarm"
+                    style="@style/FlatColorButtonRippleStyle"
                     android:layout_width="0dp"
                     android:layout_height="@dimen/bt_height"
                     android:layout_weight="1"
-                    android:textColor="#FF2196F3"
-                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Button"
                     android:text="@string/the_break"
-                    app:rd_delayClick="afterRelease"/>
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Button"
+                    android:textColor="#FF2196F3"
+                    app:rd_delayClick="afterRelease" />
             </LinearLayout>
         </RelativeLayout>
 
@@ -174,36 +182,41 @@
 
             <TextView
                 android:id="@+id/equipment_state_tv"
-                android:layout_alignParentLeft="true"
-                android:layout_centerVertical="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/mSubhead"
-                android:text="@string/equipment_state" />
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:text="@string/equipment_state"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
+                android:textSize="@dimen/mSubhead" />
+
             <LinearLayout
-                android:layout_alignParentRight="true"
                 android:id="@+id/real_time_ll"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true">
+
                 <com.rey.material.widget.Button
-                    style="@style/FlatColorButtonRippleStyle"
                     android:id="@+id/real_time_video"
+                    style="@style/FlatColorButtonRippleStyle"
                     android:layout_width="0dp"
                     android:layout_height="@dimen/bt_height"
                     android:layout_weight="1"
-                    android:textColor="#FF2196F3"
-                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Button"
                     android:text="@string/real_time_video"
-                    app:rd_delayClick="afterRelease"/>
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Button"
+                    android:textColor="#FF2196F3"
+                    app:rd_delayClick="afterRelease" />
             </LinearLayout>
+
             <TextView
                 android:id="@+id/equipment_state_show"
-                android:layout_toLeftOf="@id/real_time_ll"
-                android:layout_centerVertical="true"
-                android:layout_toRightOf="@id/equipment_state_tv"
-                android:layout_marginLeft="20dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="20dp"
+                android:layout_toLeftOf="@id/real_time_ll"
+                android:layout_toRightOf="@id/equipment_state_tv"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Title" />
 
         </RelativeLayout>
     </LinearLayout>

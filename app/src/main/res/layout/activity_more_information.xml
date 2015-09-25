@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -12,10 +13,12 @@
         android:background="@color/primary"
         android:theme="@style/ActionBarThemeOverlay"
         app:popupTheme="@style/ActionBarPopupThemeOverlay" />
+
     <LinearLayout
         android:layout_width="match_parent"
-        android:orientation="vertical"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -26,6 +29,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/equipment_identifier"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
                 android:textSize="@dimen/mSubhead" />
 
             <TextView
@@ -33,8 +37,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
                 android:textSize="@dimen/mBody2" />
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -45,6 +51,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/equipment_type"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
                 android:textSize="@dimen/mSubhead" />
 
             <TextView
@@ -52,8 +59,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
                 android:textSize="@dimen/mBody2" />
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -64,6 +73,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/alarm_information_send"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
                 android:textSize="@dimen/mSubhead" />
 
             <TextView
@@ -71,8 +81,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
                 android:textSize="@dimen/mBody2" />
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -83,6 +95,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/equipment_dvrid"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
                 android:textSize="@dimen/mSubhead" />
 
             <TextView
@@ -90,8 +103,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
                 android:textSize="@dimen/mBody2" />
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -102,6 +117,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/equipment_cmaid"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
                 android:textSize="@dimen/mSubhead" />
 
             <TextView
@@ -109,8 +125,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
                 android:textSize="@dimen/mBody2" />
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -121,6 +139,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/equipment_eqmenid"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
                 android:textSize="@dimen/mSubhead" />
 
             <TextView
@@ -128,8 +147,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
                 android:textSize="@dimen/mBody2" />
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -140,6 +161,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/equipment_sensorid"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
                 android:textSize="@dimen/mSubhead" />
 
             <TextView
@@ -147,8 +169,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
                 android:textSize="@dimen/mBody2" />
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -159,6 +183,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/equipment_preset"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
                 android:textSize="@dimen/mSubhead" />
 
             <TextView
@@ -166,6 +191,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
                 android:textSize="@dimen/mBody2" />
         </LinearLayout>
 
@@ -173,16 +199,17 @@
 
 
     <TextView
-        android:padding="10dp"
         android:id="@+id/sensor_show_message"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:padding="10dp"
         android:text="@string/sensor_information"
-        android:textSize="@dimen/mTitle"/>
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
+        android:textSize="@dimen/mTitle" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/more_information_rv"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent" />
 
 </LinearLayout>

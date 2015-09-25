@@ -17,6 +17,7 @@ public class VideoDataRepository implements VideoRepository{
     private int streamType ;
     private int equipmentSn ;
     private int operationType;
+    private String deivceId;
 
     public VideoDataRepository(Context mContext, String fileName) {
         this.choiceType = 0;
@@ -40,15 +41,24 @@ public class VideoDataRepository implements VideoRepository{
         this.channelID = channelID;
     }
 
-    public VideoDataRepository(Context mContext, int sn,int operationType) {
+    public VideoDataRepository(Context mContext, String deviceId,int operationType) {
         this.mContext = mContext;
-        this.equipmentSn = sn;
+        this.deivceId = deviceId;
         this.operationType = operationType;
     }
 
     public VideoDataRepository(Context mContext, int sn) {
         this.mContext = mContext;
         this.equipmentSn = sn;
+    }
+
+    public VideoDataRepository(Context mContext, String equipmnetName, String dvrType, int operationType, int dvrId, int channelID) {
+        this.mContext = mContext;
+        this.deivceId = equipmnetName;
+        this.dvrType = dvrType;
+        this.operationType = operationType;
+        this.dvrId = dvrId;
+        this.channelID = channelID;
     }
 
     @Override
@@ -102,6 +112,18 @@ public class VideoDataRepository implements VideoRepository{
     @Override
     public Observable<String> openPower() {
         RestApiImpl restApi = new RestApiImpl(mContext);
-        return restApi.openPower(equipmentSn,operationType);
+        return restApi.openPower(deivceId,operationType);
+    }
+
+    @Override
+    public Observable<String> openFirePower() {
+        RestApiImpl restApi = new RestApiImpl(mContext);
+        return restApi.openFirePower(dvrId, channelID, dvrType);
+    }
+
+    @Override
+    public Observable<String> changePtz(boolean isAuto) { //true 自动切手动 false 手动切自动
+        RestApiImpl restApi = new RestApiImpl(mContext);
+        return restApi.changePtz(dvrId, channelID, dvrType,isAuto);
     }
 }

@@ -46,11 +46,14 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
+
                 android:text="@string/tower_name"
                 android:textSize="@dimen/mSubhead" />
 
             <TextView
                 android:id="@+id/tower_name"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
                 android:layout_marginLeft="15dp"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
@@ -72,6 +75,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
                         android:text="@string/longitude"
                         android:textSize="@dimen/mSubhead" />
 
@@ -79,6 +83,7 @@
                         android:id="@+id/longitude"
                         android:layout_marginLeft="10dp"
                         android:layout_height="wrap_content"
+                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
                         android:layout_width="wrap_content"
                         android:textSize="@dimen/mBody2" />
                 </LinearLayout>
@@ -92,12 +97,14 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
                         android:text="@string/latitude"
                         android:textSize="@dimen/mSubhead" />
 
                     <TextView
                         android:id="@+id/latitude"
                         android:layout_marginLeft="10dp"
+                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
                         android:layout_height="wrap_content"
                         android:layout_width="wrap_content"
                         android:textSize="@dimen/mBody2" />
@@ -114,11 +121,13 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
                     android:text="@string/altitude"
                     android:textSize="@dimen/mSubhead" />
 
                 <TextView
                     android:id="@+id/altitude"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
                     android:layout_marginLeft="15dp"
                     android:layout_height="wrap_content"
                     android:layout_width="wrap_content"

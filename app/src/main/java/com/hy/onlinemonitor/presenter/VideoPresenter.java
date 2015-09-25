@@ -1,6 +1,7 @@
 package com.hy.onlinemonitor.presenter;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.example.interactor.DefaultSubscriber;
 import com.example.interactor.UseCase;
@@ -15,7 +16,7 @@ import rx.android.schedulers.AndroidSchedulers;
 /**
  * Created by 24363 on 2015/8/27.
  */
-public class VideoPresenter implements Presenter{
+public class VideoPresenter implements Presenter {
     private Context mContext;
     private VideoActivity videoActivity;
     private UseCase videoUseCase;
@@ -25,7 +26,8 @@ public class VideoPresenter implements Presenter{
     private int dvrId;
     private String dvrType;
     private VideoRepository videoRepository;
-
+    private String deviceId;
+    private int operationType;
 
     public VideoPresenter(Context mContext) {
         this.mContext = mContext;
@@ -47,6 +49,7 @@ public class VideoPresenter implements Presenter{
             this.videoUseCase.unsubscribe();
         }
     }
+
     @Override
     public void showViewLoading() {
         this.videoActivity.showLoading();
@@ -58,7 +61,7 @@ public class VideoPresenter implements Presenter{
 
     }
 
-    public void getUrlByFileName(String fileName){
+    public void getUrlByFileName(String fileName) {
         this.fileName = fileName;
         this.loadVideoUrl();
     }
@@ -69,12 +72,12 @@ public class VideoPresenter implements Presenter{
     }
 
     public void getVideoUrl() {
-        videoRepository = new VideoDataRepository(mContext,fileName);
-        this.videoUseCase = new VideoUseCase(new UIThread(), AndroidSchedulers.mainThread(),videoRepository, 1);
+        videoRepository = new VideoDataRepository(mContext, fileName);
+        this.videoUseCase = new VideoUseCase(new UIThread(), AndroidSchedulers.mainThread(), videoRepository, 1);
         this.videoUseCase.execute(new VideoUrlSubscriber());
     }
 
-    public void getUrlForRealPlay(int channleID,int streamType,int dvrId,String dvrType){
+    public void getUrlForRealPlay(int channleID, int streamType, int dvrId, String dvrType) {
         this.channelID = channleID;
         this.streamType = streamType;
         this.dvrId = dvrId;
@@ -89,8 +92,8 @@ public class VideoPresenter implements Presenter{
 
 
     public void getRealPlayUrl() {
-        videoRepository = new VideoDataRepository(mContext, channelID,streamType,dvrId,dvrType);
-        this.videoUseCase = new VideoUseCase(new UIThread(), AndroidSchedulers.mainThread(),videoRepository, 1);
+        videoRepository = new VideoDataRepository(mContext, channelID, streamType, dvrId, dvrType);
+        this.videoUseCase = new VideoUseCase(new UIThread(), AndroidSchedulers.mainThread(), videoRepository, 1);
         this.videoUseCase.execute(new VideoUrlSubscriber());
     }
 
@@ -114,7 +117,7 @@ public class VideoPresenter implements Presenter{
     }
 
     private void startVideoPlay(String videoUrl) {
-        if(this.videoActivity != null){
+        if (this.videoActivity != null) {
             this.videoActivity.startVideoPlay(videoUrl);
         }
     }
@@ -124,8 +127,8 @@ public class VideoPresenter implements Presenter{
     }
 
     public void videoControl(int type) {
-        videoRepository = new VideoDataRepository(mContext,channelID,dvrId,dvrType);
-        this.videoUseCase = new VideoUseCase(new UIThread(), AndroidSchedulers.mainThread(),videoRepository, type);
+        videoRepository = new VideoDataRepository(mContext, channelID, dvrId, dvrType);
+        this.videoUseCase = new VideoUseCase(new UIThread(), AndroidSchedulers.mainThread(), videoRepository, type);
         this.videoUseCase.execute(new ControlSubscriber());
     }
 
@@ -148,8 +151,8 @@ public class VideoPresenter implements Presenter{
     }
 
     public void getEquipmentStatus(int sn) {
-        videoRepository = new VideoDataRepository(mContext,sn);
-        this.videoUseCase = new VideoUseCase(new UIThread(), AndroidSchedulers.mainThread(),videoRepository, 6);
+        videoRepository = new VideoDataRepository(mContext, sn);
+        this.videoUseCase = new VideoUseCase(new UIThread(), AndroidSchedulers.mainThread(), videoRepository, 6);
         this.videoUseCase.execute(new StatusSubscriber());
     }
 
@@ -172,11 +175,38 @@ public class VideoPresenter implements Presenter{
         }
     }
 
-    public void openCameraPower(int sn,int operationType) {
-        videoRepository = new VideoDataRepository(mContext,sn,operationType);
-        this.videoUseCase = new VideoUseCase(new UIThread(), AndroidSchedulers.mainThread(),videoRepository, 7);
+    public void openFireCameraPower(String equipmentName, int operationType, int dvrId, int channelID, String dvrType) {
+        this.deviceId = equipmentName;
+        this.operationType = operationType;
+        videoRepository = new VideoDataRepository(mContext, equipmentName, dvrType, operationType, dvrId, channelID);
+        this.videoUseCase = new VideoUseCase(new UIThread(), AndroidSchedulers.mainThread(), videoRepository, 8);
+        this.videoUseCase.execute(new OpenFirePowerSubscriber());
+    }
+
+    private class OpenFirePowerSubscriber extends DefaultSubscriber<String> {
+        @Override
+        public void onCompleted() {
+        }
+
+        @Override
+        public void onError(Throwable e) {
+            VideoPresenter.this.hideViewLoading();
+            VideoPresenter.this.videoActivity.showError(e.getMessage());
+            super.onError(e);
+        }
+
+        @Override
+        public void onNext(String controlStatus) {
+            VideoPresenter.this.openCameraPower(deviceId, operationType);
+        }
+    }
+
+    public void openCameraPower(String deivceId, int operationType) {
+        videoRepository = new VideoDataRepository(mContext, deivceId, operationType);
+        this.videoUseCase = new VideoUseCase(new UIThread(), AndroidSchedulers.mainThread(), videoRepository, 7);
         this.videoUseCase.execute(new OpenPowerSubscriber());
     }
+
 
     private class OpenPowerSubscriber extends DefaultSubscriber<String> {
         @Override
@@ -193,7 +223,37 @@ public class VideoPresenter implements Presenter{
 
         @Override
         public void onNext(String controlStatus) {
+            Log.e("videoPresenter", "打开电源--->" + controlStatus);
             VideoPresenter.this.videoActivity.EquipmentStatus(controlStatus);
+        }
+    }
+
+    public void changeYun(int dvrId, int channelID, String dvrType, boolean b) {
+        videoRepository = new VideoDataRepository(mContext, channelID, dvrId, dvrType);
+        if (b) {
+            this.videoUseCase = new VideoUseCase(new UIThread(), AndroidSchedulers.mainThread(), videoRepository, 9);
+        } else {
+            this.videoUseCase = new VideoUseCase(new UIThread(), AndroidSchedulers.mainThread(), videoRepository, 10);
+        }
+        this.videoUseCase.execute(new YunChangeSubscriber());
+    }
+
+    private class YunChangeSubscriber extends DefaultSubscriber<String> {
+        @Override
+        public void onCompleted() {
+        }
+
+        @Override
+        public void onError(Throwable e) {
+            VideoPresenter.this.hideViewLoading();
+            VideoPresenter.this.videoActivity.showError(e.getMessage());
+            super.onError(e);
+        }
+
+        @Override
+        public void onNext(String controlStatus) {
+            Log.e("YunChangeSubscriber",controlStatus);
+            VideoPresenter.this.videoActivity.changeControlFlag();
         }
     }
 }

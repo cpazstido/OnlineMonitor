@@ -5,6 +5,7 @@
     android:background="?attr/colorPrimaryDark"
     android:orientation="vertical"
     android:padding="8dp"
+
     android:theme="@style/ThemeOverlay.AppCompat.Dark"
     >
 

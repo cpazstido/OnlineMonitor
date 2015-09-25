@@ -28,14 +28,15 @@
             android:weightSum="10">
 
             <TextView
-                android:gravity="center"
                 android:id="@+id/tower_management"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:textSize="@dimen/mSubhead"
                 android:background="@color/primary"
+                android:gravity="center"
+                android:text="@string/tower_management"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
                 android:textColor="@color/md_white_1000"
-                android:text="@string/tower_management" />
+                android:textSize="@dimen/mSubhead" />
 
             <include layout="@layout/item_buttons" />
 
@@ -63,13 +64,15 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/login_name"
+                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
                         android:textSize="@dimen/mSubhead" />
 
                     <TextView
                         android:id="@+id/login_name"
-                        android:layout_marginLeft="8dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
                         android:textSize="@dimen/mBody2" />
                 </LinearLayout>
 
@@ -82,13 +85,15 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/real_name"
+                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
                         android:textSize="@dimen/mSubhead" />
 
                     <TextView
-                        android:layout_marginLeft="8dp"
                         android:id="@+id/real_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
                         android:textSize="@dimen/mBody2" />
                 </LinearLayout>
 
@@ -100,19 +105,22 @@
                 android:layout_marginTop="5dp"
                 android:layout_weight="1">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/phone_number"
-                        android:textSize="@dimen/mSubhead" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/phone_number"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
+                    android:textSize="@dimen/mSubhead" />
 
-                    <TextView
-                        android:id="@+id/phone_number"
-                        android:layout_marginLeft="8dp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="@dimen/mBody2" />
-                </LinearLayout>
+                <TextView
+                    android:id="@+id/phone_number"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
+                    android:textSize="@dimen/mBody2" />
+            </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -122,13 +130,15 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/is_receive_messages"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
                     android:textSize="@dimen/mSubhead" />
 
                 <TextView
-                    android:layout_marginLeft="8dp"
                     android:id="@+id/is_receive_messages"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
                     android:textSize="@dimen/mBody2" />
             </LinearLayout>
 

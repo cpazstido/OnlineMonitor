@@ -10,6 +10,8 @@
         android:layout_height="wrap_content"
         android:textSize="@dimen/mSubhead"
         android:gravity="center"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
+
         android:id="@+id/map_pole_information"
         />
     <TextView
@@ -17,6 +19,8 @@
         android:layout_height="wrap_content"
         android:textSize="@dimen/mSubhead"
         android:gravity="center"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
+
         android:id="@+id/map_equipment_information"
         />
     <LinearLayout

@@ -45,6 +45,7 @@
         android:textColor="@color/md_white_1000"
         android:gravity="center"
         android:id="@+id/textView"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
         android:layout_alignTop="@id/login_account"
         android:layout_toLeftOf="@id/login_account"
         android:layout_alignBottom="@id/login_account" />
@@ -57,6 +58,7 @@
         android:textSize="@dimen/mSubhead"
         android:textColor="@color/md_white_1000"
         android:id="@+id/textView2"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
         android:layout_alignBottom="@+id/login_pwd"
         android:layout_toLeftOf="@+id/login_pwd"
         android:layout_alignTop="@+id/login_pwd" />

@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">在线监测</string>
 
+    <string name="auto">自动</string>
+    <string name="hand">手动</string>
     <string name="no_data">暂无数据</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
@@ -22,7 +24,7 @@
     <string name="recording_time">录制时间</string>
     <string name="play_state">播放状态</string>
     <string name="yun_state">云台状态</string>
-    <string name="yun_control">云台控制</string>
+    <string name="yun_control">云台控制:</string>
 
     <string name="up">上</string>
     <string name="down">下</string>
@@ -61,7 +63,7 @@
     <string name="change_equipment">切换设备</string>
 
     <string name="new_alarm">新报警</string>
-    <string name="no_alarm">无</string>
+    <string name="have_no">无</string>
     <string name="history_alarm">历史报警</string>
 
 

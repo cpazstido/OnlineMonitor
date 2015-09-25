@@ -194,6 +194,17 @@ public class PoleManageActivity extends SMBaseActivity {
         }
     }
 
+
+    @Override
+    protected void doRefresh() {
+        refreshButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                smPolePresenter.loadAllLine(getUser().getUserId());
+            }
+        });
+    }
+
     @Override
     public void showLoading() {
         alertDialog.show();
@@ -206,15 +217,7 @@ public class PoleManageActivity extends SMBaseActivity {
 
     @Override
     public void showError(String message) {
-        errorMessageLl.setVisibility(View.VISIBLE);
-        smRecyclerView.setVisibility(View.GONE);
-        errorMessageTv.setText(message);
-        refreshButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                smPolePresenter.loadAllLine(getUser().getUserId());
-            }
-        });
+        ErrorThing(message);
     }
 
     @Override

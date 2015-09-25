@@ -142,6 +142,16 @@ public class LineManageActivity extends SMBaseActivity {//系统管理-线路管
     }
 
     @Override
+    protected void doRefresh() {
+        refreshButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                smLinePresenter.loadCompany(getUser().getUserId());//加载公司列表
+            }
+        });
+    }
+
+    @Override
     public void showLoading() {//显示等待对话框
         alertDialog.show();
     }
@@ -153,15 +163,7 @@ public class LineManageActivity extends SMBaseActivity {//系统管理-线路管
 
     @Override
     public void showError(String message) {//显示错误信息
-        errorMessageLl.setVisibility(View.VISIBLE);
-        smRecyclerView.setVisibility(View.GONE);
-        errorMessageTv.setText(message);
-        refreshButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                smLinePresenter.loadCompany(getUser().getUserId());//加载公司列表
-            }
-        });
+        ErrorThing(message);
     }
 
     @Override

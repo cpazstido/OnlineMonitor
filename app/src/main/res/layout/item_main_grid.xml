@@ -2,17 +2,15 @@
     android:id="@+id/relaGrid"
     android:layout_width="80dp"
     android:layout_height="100dp"
-    android:padding="15dp"
-    android:gravity="center"  >
+    android:gravity="center"
+    android:padding="15dp">
 
     <ImageView
         android:id="@+id/img_chooseImage"
         android:layout_width="36dp"
         android:layout_height="36dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="3dp"
-        android:src="@drawable/gv_fire" >
-    </ImageView>
+        android:layout_marginBottom="3dp"/>
 
     <TextView
         android:id="@+id/tv_chooseText"
@@ -23,9 +21,8 @@
         android:gravity="center"
         android:marqueeRepeatLimit="marquee_forever"
         android:singleLine="true"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
         android:textColor="#696969"
-        android:textSize="@dimen/mCaption"
-        >
-    </TextView>
+        android:textSize="@dimen/mCaption"/>
 
 </RelativeLayout>

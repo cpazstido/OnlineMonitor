@@ -184,9 +184,11 @@ public class AdministratorManageActivity extends SMBaseActivity {
 
     @Override
     public void showError(String message) {
-        errorMessageLl.setVisibility(View.VISIBLE);
-        smRecyclerView.setVisibility(View.GONE);
-        errorMessageTv.setText(message);
+       ErrorThing(message);
+    }
+
+    @Override
+    protected void doRefresh() {
         refreshButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

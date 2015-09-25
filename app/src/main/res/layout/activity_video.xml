@@ -136,16 +136,29 @@
                     android:text="@string/yun_state"
                     android:textSize="@dimen/mSubhead" />
 
-                <TextView
-                    android:id="@+id/video_contrl_status_tv"
+                <com.rey.material.widget.RadioButton
+                    android:id="@+id/switches_auto"
+                    style="@style/RadioButtonDrawable"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:text="自动"
+                    android:checked="true"
+                    android:gravity="center_vertical"
+                    android:text="@string/auto"
+                    android:textSize="@dimen/mBody2" />
+
+                <com.rey.material.widget.RadioButton
+                    android:id="@+id/switches_manual"
+                    style="@style/RadioButtonDrawable"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="false"
+                    android:gravity="center_vertical"
+                    android:text="@string/hand"
                     android:textSize="@dimen/mBody2" />
             </LinearLayout>
 
             <TextView
+                android:id="@+id/yun_control_show"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/yun_control"
@@ -156,16 +169,6 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <com.rey.material.widget.Button
-                    android:id="@+id/control_left"
-                    style="@style/FlatColorButtonRippleStyle"
-                    android:layout_width="0dp"
-                    android:layout_height="@dimen/bt_height"
-                    android:layout_weight="1"
-                    android:text="@string/left"
-                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Button"
-                    android:textColor="#FF2196F3"
-                    app:rd_delayClick="afterRelease" />
 
                 <com.rey.material.widget.Button
                     android:id="@+id/control_up"
@@ -179,23 +182,34 @@
                     app:rd_delayClick="afterRelease" />
 
                 <com.rey.material.widget.Button
-                    android:id="@+id/control_right"
-                    style="@style/FlatColorButtonRippleStyle"
-                    android:layout_width="0dp"
-                    android:layout_height="@dimen/bt_height"
-                    android:layout_weight="1"
-                    android:text="@string/right"
-                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Button"
-                    android:textColor="#FF2196F3"
-                    app:rd_delayClick="afterRelease" />
-
-                <com.rey.material.widget.Button
                     android:id="@+id/control_down"
                     style="@style/FlatColorButtonRippleStyle"
                     android:layout_width="0dp"
                     android:layout_height="@dimen/bt_height"
                     android:layout_weight="1"
                     android:text="@string/down"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Button"
+                    android:textColor="#FF2196F3"
+                    app:rd_delayClick="afterRelease" />
+
+                <com.rey.material.widget.Button
+                    android:id="@+id/control_left"
+                    style="@style/FlatColorButtonRippleStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/bt_height"
+                    android:layout_weight="1"
+                    android:text="@string/left"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Button"
+                    android:textColor="#FF2196F3"
+                    app:rd_delayClick="afterRelease" />
+
+                <com.rey.material.widget.Button
+                    android:id="@+id/control_right"
+                    style="@style/FlatColorButtonRippleStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/bt_height"
+                    android:layout_weight="1"
+                    android:text="@string/right"
                     android:textAppearance="@style/Base.TextAppearance.AppCompat.Button"
                     android:textColor="#FF2196F3"
                     app:rd_delayClick="afterRelease" />

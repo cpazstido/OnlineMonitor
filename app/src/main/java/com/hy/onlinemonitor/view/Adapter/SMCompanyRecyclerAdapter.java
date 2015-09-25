@@ -60,7 +60,10 @@ public class SMCompanyRecyclerAdapter extends RecyclerSwipeAdapter<CompanyViewHo
         });
         companyViewHolder.companyName.setText(mDataset.get(position).getCompanyName());
         companyViewHolder.companyAddress.setText(mDataset.get(position).getCompanyAddress());
-        companyViewHolder.companySuperior.setText(mDataset.get(position).getCompanySuperior());
+        if (mDataset.get(position).getCompanySuperior() != null)
+            companyViewHolder.companySuperior.setText(mDataset.get(position).getCompanySuperior());
+        else
+            companyViewHolder.companySuperior.setText(mContext.getResources().getString(R.string.have_no));
 
         companyViewHolder.ActionConfig.setOnClickListener(new View.OnClickListener() {  //设置
             @Override

@@ -9,6 +9,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="18dp"
         android:text="@string/company_name"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
         android:textColor="#80000000"
         android:textSize="@dimen/customTitle" />
 
@@ -19,13 +20,16 @@
         android:layout_marginTop="4dp"
         android:textColor="#000000"
         android:textSize="@dimen/customEntry" />
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="18dp"
         android:text="@string/company_address"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
         android:textColor="#80000000"
         android:textSize="@dimen/customTitle" />
+
     <EditText
         android:id="@+id/dialog_company_address"
         android:layout_width="match_parent"
@@ -39,16 +43,17 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="18dp"
         android:text="@string/company_parent"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
         android:textColor="#80000000"
         android:textSize="@dimen/customTitle" />
 
     <Spinner
         android:id="@+id/dialog_company_parent"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
         android:textColor="#000000"
-        android:textSize="@dimen/customEntry"
-        android:layout_height="wrap_content"/>
+        android:textSize="@dimen/customEntry" />
 
 
 </LinearLayout>

@@ -7,12 +7,14 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.hy.onlinemonitor.R;
 import com.hy.onlinemonitor.utile.GetLoading;
 import com.hy.onlinemonitor.view.Activity.BaseActivity;
+import com.hy.onlinemonitor.view.Activity.LoginActivity;
 import com.hy.onlinemonitor.view.LoadDataView;
 import com.rey.material.widget.Button;
 import com.rey.material.widget.Spinner;
@@ -94,5 +96,25 @@ public abstract class SMBaseActivity extends BaseActivity implements LoadDataVie
     protected abstract void initRvData();//设置数据
 
     protected abstract void menuDataLoad();
+
+    protected abstract void doRefresh();
+
+    public void ErrorThing(String message) {
+        errorMessageLl.setVisibility(View.VISIBLE);
+        smRecyclerView.setVisibility(View.GONE);
+        errorMessageTv.setText(message);
+        refreshButton.setText("刷新");
+        if (message.equals("请重新登录")) {
+            refreshButton.setText("登录界面");
+            refreshButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    LoginActivity.goLoginView(SMBaseActivity.this);
+                }
+            });
+        }else{
+            doRefresh();
+        }
+    }
 
 }

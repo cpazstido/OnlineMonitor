@@ -50,6 +50,15 @@ public class VideoUseCase extends UseCase {
             case 7:
                 observable = videoRepository.openPower();
                 break;
+            case 8:
+                observable = videoRepository.openFirePower();
+                break;
+            case 9:
+                observable = videoRepository.changePtz(true);
+                break;
+            case 10:
+                observable = videoRepository.changePtz(false);
+                break;
         }
         return observable;
     }

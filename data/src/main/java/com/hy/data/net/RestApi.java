@@ -534,9 +534,27 @@ public interface RestApi {
     /**
      * 打开设备电源
      *
-     * @param equipmentSn 设备sn
+     * @param deivceId 设备sn
      * @return 返回指令是否成功
      */
-    Observable<String> openPower(int equipmentSn, int operationType);
+    Observable<String> openPower(String deivceId, int operationType);
 
+    /**
+     * 山火特有的打开电源
+     * @param dvrId  dvrId
+     * @param channelID channelID
+     * @param dvrType dvrType
+     * @return 字符串
+     */
+    Observable<String> openFirePower(int dvrId, int channelID, String dvrType);
+
+    /**
+     * 切换手自动
+     * @param dvrId dvrId
+     * @param channelID channelID
+     * @param dvrType dvrType
+     * @param type true:手动切换自动 false 自动切换手动
+     * @return 字符串
+     */
+    Observable<String> changePtz(int dvrId, int channelID, String dvrType,Boolean type);
 }

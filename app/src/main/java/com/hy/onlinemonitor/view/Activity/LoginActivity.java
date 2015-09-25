@@ -53,7 +53,7 @@ public class LoginActivity extends AppCompatActivity implements JumpView {
             public void onClick(View v) {
                 loginAccount.setText("");
                 loginPwd.setText("");
-//                TestActivity.StartTestView(LoginActivity.this);
+                TestActivity.StartTestView(LoginActivity.this);
             }
         });
     }
@@ -106,5 +106,13 @@ public class LoginActivity extends AppCompatActivity implements JumpView {
         this.loginPresenter.destroy();
         ButterKnife.unbind(this);
     }
+
+    public static void goLoginView(Context mContext){
+
+        Intent intent = new Intent(mContext,LoginActivity.class);
+        mContext.startActivity(intent);
+
+    }
+
 
 }

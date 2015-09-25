@@ -57,11 +57,13 @@
 
                     <TextView
                         android:layout_width="wrap_content"
+                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
                         android:layout_height="wrap_content"
                         android:text="@string/name"
                         android:textSize="@dimen/mSubhead" />
 
                     <TextView
+                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
                         android:id="@+id/sensor_name"
                         android:layout_marginLeft="10dp"
                         android:layout_height="wrap_content"
@@ -77,6 +79,7 @@
 
                     <TextView
                         android:layout_width="wrap_content"
+                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
                         android:layout_height="wrap_content"
                         android:text="@string/identifier"
                         android:textSize="@dimen/mSubhead" />
@@ -84,6 +87,7 @@
                     <TextView
                         android:id="@+id/sensor_identifier"
                         android:layout_marginLeft="10dp"
+                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
                         android:layout_height="wrap_content"
                         android:layout_width="wrap_content"
                         android:textSize="@dimen/mBody2" />

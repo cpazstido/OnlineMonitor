@@ -108,6 +108,16 @@ public class JurisdictionManageActivity extends SMBaseActivity {
         }
     }
 
+    @Override
+    protected void doRefresh() {
+        refreshButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                smJurisdictionPresenter.loadRole(getUser().getUserId());
+            }
+        });
+    }
+
 
     @Override
     public void showLoading() {
@@ -121,16 +131,7 @@ public class JurisdictionManageActivity extends SMBaseActivity {
 
     @Override
     public void showError(String message) {
-        errorMessageLl.setVisibility(View.VISIBLE);
-        smRecyclerView.setVisibility(View.GONE);
-        errorMessageTv.setText(message);
-        refreshButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                errorMessageLl.setVisibility(View.GONE);
-                smJurisdictionPresenter.loadRole(getUser().getUserId());
-            }
-        });
+        ErrorThing(message);
     }
 
     @Override

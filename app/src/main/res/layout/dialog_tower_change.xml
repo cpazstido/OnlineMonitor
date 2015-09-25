@@ -25,6 +25,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="18dp"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
         android:text="@string/tower_name"
         android:textColor="#80000000"
         android:textSize="@dimen/customTitle" />
@@ -38,6 +39,7 @@
         android:textSize="@dimen/customEntry" />
 
     <TextView
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="18dp"
@@ -54,6 +56,7 @@
         android:textSize="@dimen/customEntry" />
 
     <TextView
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="18dp"
@@ -70,6 +73,7 @@
         android:textSize="@dimen/customEntry" />
 
     <TextView
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="18dp"

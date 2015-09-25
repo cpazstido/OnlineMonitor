@@ -17,6 +17,7 @@ import com.hy.onlinemonitor.presenter.EquipmentListPresenter;
 import com.hy.onlinemonitor.utile.GetLoading;
 import com.hy.onlinemonitor.utile.ShowUtile;
 import com.hy.onlinemonitor.view.Activity.BaseActivity;
+import com.hy.onlinemonitor.view.Activity.LoginActivity;
 import com.hy.onlinemonitor.view.Adapter.EquipmentRecyclerAdapter;
 import com.hy.onlinemonitor.view.LoadDataView;
 import com.rey.material.widget.Button;
@@ -95,6 +96,15 @@ public class EquipmentListViewActivity extends BaseActivity implements LoadDataV
         errorMessageLl.setVisibility(View.VISIBLE);
         swipeRefreshLayout.setVisibility(View.GONE);
         errorMessageTv.setText(message);
+        if (message.equals("请重新登录")) {
+            refreshButton.setText("登录界面");
+            refreshButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    LoginActivity.goLoginView(EquipmentListViewActivity.this);
+                }
+            });
+        } else
         refreshButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

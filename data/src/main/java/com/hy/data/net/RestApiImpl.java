@@ -2042,16 +2042,16 @@ public class RestApiImpl implements RestApi {
     }
 
     @Override
-    public Observable<String> openPower(int equipmentSn, int operationType) {
+    public Observable<String> openPower(String deivceId, int operationType) {
         return Observable.create(new Observable.OnSubscribe<String>() {
             @Override
             public void call(Subscriber<? super String> subscriber) {
-                SystemRestClient.openPower("/operationDvrSystem.do", equipmentSn, operationType, new AsyncHttpResponseHandler() {
+                SystemRestClient.openPower("/operationDvrSystem.do", deivceId, operationType, new AsyncHttpResponseHandler() {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                         try {
                             String responseEntities = new String(responseBody, "UTF-8");
-                            Log.e("response", responseEntities);
+                            Log.e("openPower", "openPower----->"+responseEntities);
                             if ("\"loginFail\"".equals(responseEntities)) {
                                 subscriber.onError(new NetworkConnectionException("请重新登录"));
                             } else {
@@ -2069,6 +2069,74 @@ public class RestApiImpl implements RestApi {
                         subscriber.onError(new NetworkConnectionException("链接失败"));
                     }
                 });
+            }
+        });
+    }
+
+    @Override
+    public Observable<String> openFirePower(int dvrId, int channelID, String dvrType) {
+        return Observable.create(new Observable.OnSubscribe<String>() {
+            @Override
+            public void call(Subscriber<? super String> subscriber) {
+                SystemRestClient.openFirePower("/openCameraPower", dvrId, channelID, dvrType,new AsyncHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                        try {
+                            String responseEntities = new String(responseBody, "UTF-8");
+                            Log.e("openPower", "openPower----->" + responseEntities);
+                            if ("\"loginFail\"".equals(responseEntities)) {
+                                subscriber.onError(new NetworkConnectionException("请重新登录"));
+                            } else {
+                                subscriber.onNext(responseEntities);
+                                subscriber.onCompleted();
+                            }
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                        Log.e("response", "失败");
+                        subscriber.onError(new NetworkConnectionException("链接失败"));
+                    }
+                });
+            }
+        });
+    }
+
+    @Override
+    public Observable<String> changePtz(int dvrId, int channelID, String dvrType, Boolean type) {
+        return Observable.create(new Observable.OnSubscribe<String>() {
+            @Override
+            public void call(Subscriber<? super String> subscriber) {
+                try {
+                    SystemRestClient.XmlControlPost(context, "/ptzmode", dvrId, channelID, dvrType, VideoPlayUtils.getPTZControlXml(type), "text/xml; charset=UTF-8", new AsyncHttpResponseHandler() {
+                        @Override
+                        public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                            try {
+                                String responseVideoUrl = new String(responseBody, "UTF-8");
+                                if ("\"loginFail\"".equals(responseVideoUrl)) {
+                                    subscriber.onError(new NetworkConnectionException("请重新登录"));
+                                } else {
+                                    Log.e("changePtz", "changePtz" + responseVideoUrl);
+                                    subscriber.onNext(responseVideoUrl);
+                                    subscriber.onCompleted();
+                                }
+                            } catch (UnsupportedEncodingException e) {
+                                e.printStackTrace();
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                            Log.e("getUserEntitiesFromApi", "onFailure");
+                            subscriber.onError(new NetworkConnectionException("链接失败"));
+                        }
+                    });
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
             }
         });
     }

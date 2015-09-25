@@ -27,25 +27,26 @@
             android:weightSum="10">
 
             <TextView
-                android:gravity="center"
                 android:id="@+id/sensor_manage"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:textSize="@dimen/mSubhead"
                 android:background="@color/primary"
+                android:gravity="center"
+                android:text="@string/sensor_manage"
                 android:textColor="@color/md_white_1000"
-                android:text="@string/sensor_manage" />
+                android:textSize="@dimen/mSubhead" />
+
             <include layout="@layout/item_buttons" />
 
             <TextView
-                android:gravity="center"
                 android:id="@+id/equipment_rest"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:textSize="@dimen/mSubhead"
                 android:background="@color/accent_material_light"
+                android:gravity="center"
+                android:text="@string/restart"
                 android:textColor="@color/md_white_1000"
-                android:text="@string/restart" />
+                android:textSize="@dimen/mSubhead" />
         </LinearLayout>
 
         <LinearLayout
@@ -65,6 +66,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/equipment_identifier"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
                     android:textSize="@dimen/mSubhead" />
 
                 <TextView
@@ -72,15 +74,17 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="15dp"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
                     android:textSize="@dimen/mBody2" />
             </LinearLayout>
 
             <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:layout_weight="1"
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:orientation="horizontal">
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -91,13 +95,15 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/equipment_dvrid"
+                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
                         android:textSize="@dimen/mSubhead" />
 
                     <TextView
                         android:id="@+id/equipment_dvrid"
-                        android:layout_marginLeft="10dp"
-                        android:layout_height="wrap_content"
                         android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
                         android:textSize="@dimen/mBody2" />
                 </LinearLayout>
 
@@ -111,13 +117,15 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/alarm_information_send"
+                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
                         android:textSize="@dimen/mSubhead" />
 
                     <TextView
                         android:id="@+id/alarm_information_send"
-                        android:layout_marginLeft="10dp"
-                        android:layout_height="wrap_content"
                         android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
                         android:textSize="@dimen/mBody2" />
                 </LinearLayout>
 
@@ -130,30 +138,33 @@
                 android:layout_weight="1">
 
                 <TextView
-                    android:layout_weight="1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:text="@string/equipment_type"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
                     android:textSize="@dimen/mSubhead" />
 
                 <TextView
-                    android:layout_weight="1"
                     android:id="@+id/equipment_type"
-                    android:layout_marginLeft="15dp"
-                    android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
-                    android:textSize="@dimen/mBody2" />
-                <com.rey.material.widget.Button
-                    style="@style/FlatColorButtonRippleStyle"
-                    android:id="@+id/more_information"
-                    android:layout_width="0dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_height="@dimen/bt_height"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
                     android:layout_weight="1"
-                    android:textColor="#FF2196F3"
-                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Button"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
+                    android:textSize="@dimen/mBody2" />
+
+                <com.rey.material.widget.Button
+                    android:id="@+id/more_information"
+                    style="@style/FlatColorButtonRippleStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/bt_height"
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="1"
                     android:text="@string/more_information"
-                    app:rd_delayClick="afterRelease"/>
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Button"
+                    android:textColor="#FF2196F3"
+                    app:rd_delayClick="afterRelease" />
             </LinearLayout>
         </LinearLayout>
 

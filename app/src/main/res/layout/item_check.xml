@@ -17,6 +17,7 @@
         android:layout_centerVertical="true"
         android:textSize="@dimen/mSubhead"
         android:id="@+id/check_tv"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
         android:layout_marginLeft="10dp"
         android:layout_toRightOf="@+id/check_box"
         android:text="@string/check_all"

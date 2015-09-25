@@ -71,12 +71,14 @@
 
                 <TextView
                     android:textSize="@dimen/mSubhead"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
                     android:text="@string/is_blowing_equipment" />
 
                 <TextView
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
                     android:id="@+id/detailed_blowing_equipment"
                     android:layout_width="wrap_content"
                     android:textSize="@dimen/mBody2"
@@ -93,6 +95,7 @@
                 android:layout_weight="1">
 
                 <TextView
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
                     android:textSize="@dimen/mSubhead"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -100,6 +103,7 @@
                     android:text="@string/alarm_information" />
 
                 <TextView
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
                     android:id="@+id/detailed_alarm_information"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

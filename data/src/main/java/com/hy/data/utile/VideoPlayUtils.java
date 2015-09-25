@@ -25,7 +25,6 @@ public class VideoPlayUtils {
         return new StringEntity(sb.toString());
     }
 
-
     public static StringEntity getVideoControlXml(String type) throws UnsupportedEncodingException {
         //通过StringBuffer对象拼接
 
@@ -71,5 +70,26 @@ public class VideoPlayUtils {
         sb.append("</PTZSpeed>");
         sb.append("</PTZData>");
         return new StringEntity(sb.toString());
+    }
+
+    public static StringEntity getPTZControlXml(Boolean type) throws UnsupportedEncodingException {
+        //通过StringBuffer对象拼接
+        StringBuffer sb = new StringBuffer();
+        //添加xml声明
+        sb.append("<?xml version='1.0' encoding='UTF-8'?>");
+        //添加根节点
+        sb.append("<PTZMode>");
+        //添加子节点
+        sb.append("<mode>");
+        //添加内容节点
+        if(type){
+            sb.append("ptzmanu");
+        }else{
+            sb.append("ptzauto");
+        }
+        sb.append("</mode>");
+        sb.append("</PTZMode>");
+        return new StringEntity(sb.toString());
+
     }
 }

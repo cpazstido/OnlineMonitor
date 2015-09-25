@@ -192,6 +192,16 @@ public class EquipmentManageActivity extends SMBaseActivity {
     }
 
     @Override
+    protected void doRefresh() {
+        refreshButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                smEquipmentPresenter.loadAllPole(getUser().getUserId());
+            }
+        });
+    }
+
+    @Override
     public void showLoading() {
         alertDialog.show();
     }
@@ -203,16 +213,7 @@ public class EquipmentManageActivity extends SMBaseActivity {
 
     @Override
     public void showError(String message) {
-        errorMessageLl.setVisibility(View.VISIBLE);
-        smRecyclerView.setVisibility(View.GONE);
-        errorMessageTv.setText(message);
-        refreshButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                smEquipmentPresenter.loadAllPole(getUser().getUserId());
-            }
-        });
-
+        ErrorThing(message);
     }
 
     @Override

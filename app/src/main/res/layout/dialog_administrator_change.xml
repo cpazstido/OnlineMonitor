@@ -7,14 +7,16 @@
     android:scrollbars="none">
 
     <LinearLayout
-        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="18dp"
             android:text="@string/login_name"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
             android:textColor="#80000000"
             android:textSize="@dimen/customTitle" />
 
@@ -31,6 +33,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="18dp"
             android:text="@string/real_name"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
             android:textColor="#80000000"
             android:textSize="@dimen/customTitle" />
 
@@ -47,6 +50,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="18dp"
             android:text="@string/password"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
             android:textColor="#80000000"
             android:textSize="@dimen/customTitle" />
 
@@ -63,6 +67,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="18dp"
             android:text="@string/phone_number"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
             android:textColor="#80000000"
             android:textSize="@dimen/customTitle" />
 
@@ -80,47 +85,52 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="18dp"
             android:text="@string/own_company"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
             android:textColor="#80000000"
             android:textSize="@dimen/customTitle" />
+
         <Spinner
             android:id="@+id/dialog_administrator_company"
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:textColor="#000000"
-            android:textSize="@dimen/customEntry"
-            android:layout_height="wrap_content"/>
+            android:textSize="@dimen/customEntry" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="18dp"
             android:text="@string/receive_messages"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
             android:textColor="#80000000"
             android:textSize="@dimen/customTitle" />
 
         <Spinner
             android:id="@+id/dialog_administrator_message"
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:textColor="#000000"
-            android:textSize="@dimen/customEntry"
             android:entries="@array/message"
-            android:layout_height="wrap_content"/>
+            android:textColor="#000000"
+            android:textSize="@dimen/customEntry" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="18dp"
             android:text="@string/role"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
             android:textColor="#80000000"
             android:textSize="@dimen/customTitle" />
 
         <Spinner
             android:id="@+id/dialog_administrator_role"
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:textColor="#000000"
-            android:textSize="@dimen/customEntry"
-            android:layout_height="wrap_content"/>
+            android:textSize="@dimen/customEntry" />
     </LinearLayout>
 
 

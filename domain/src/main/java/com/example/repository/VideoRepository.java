@@ -17,4 +17,7 @@ public interface VideoRepository {
 
     Observable<String> openPower();
 
+    Observable<String> openFirePower();
+
+    Observable<String> changePtz(boolean isAuto);
 }

@@ -82,4 +82,7 @@
     <style name="FloatingActionButtonIcon.Light" parent="FloatingActionButtonIcon">
         <item name="lmd_strokeColor">#FF000000</item>
     </style>
+
+    <style name="RadioButtonDrawable" parent="Material.Drawable.RadioButton"/>
+
 </resources>

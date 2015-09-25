@@ -18,6 +18,7 @@ import com.hy.onlinemonitor.R;
 import com.hy.onlinemonitor.bean.AlarmPage;
 import com.hy.onlinemonitor.presenter.AlarmPresenter;
 import com.hy.onlinemonitor.utile.GetLoading;
+import com.hy.onlinemonitor.view.Activity.LoginActivity;
 import com.hy.onlinemonitor.view.Adapter.AlarmRecyclerAdapter;
 import com.hy.onlinemonitor.view.AlarmListView;
 import com.hy.onlinemonitor.view.InitView;
@@ -52,6 +53,7 @@ public class SingleAlarmInformationActivity extends AppCompatActivity implements
     private String equipmentName;
     private String queryAlarmType;
     private int userId;
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_equipmentlist);
@@ -104,12 +106,21 @@ public class SingleAlarmInformationActivity extends AppCompatActivity implements
         errorMessageLl.setVisibility(View.VISIBLE);
         swipeRefreshLayout.setVisibility(View.GONE);
         errorMessageTv.setText(message);
-        refreshButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                initialize();
-            }
-        });
+        if (message.equals("请重新登录")) {
+            refreshButton.setText("登录界面");
+            refreshButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    LoginActivity.goLoginView(SingleAlarmInformationActivity.this);
+                }
+            });
+        } else
+            refreshButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    initialize();
+                }
+            });
     }
 
     @Override
