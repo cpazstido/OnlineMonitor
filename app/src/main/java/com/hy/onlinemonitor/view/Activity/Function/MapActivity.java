@@ -197,7 +197,7 @@ public class MapActivity extends BaseActivity implements MapListView {
                 .fromResource(R.drawable.icon_gcoding);
         mBaiduMap = mMapView.getMap();
         //缩放级别
-        msu = MapStatusUpdateFactory.zoomTo(14.0f);
+        msu = MapStatusUpdateFactory.zoomTo(6.0f);
         mBaiduMap.setMapStatus(msu);
     }
 

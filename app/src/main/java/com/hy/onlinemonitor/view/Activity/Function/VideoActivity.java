@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
@@ -95,6 +96,7 @@ public class VideoActivity extends AppCompatActivity implements InitView, LoadDa
     private static int CONTROL_RIGHT = 3;
     private static int CONTROL_UP = 4;
     private static int CONTROL_DOWN = 5;
+    private static int CONTROL_STOP = 5;
 
     private static int OPEN_POWER = 3;
     private static int OPEN_SYSTEM_POWER = 5;
@@ -133,7 +135,7 @@ public class VideoActivity extends AppCompatActivity implements InitView, LoadDa
                         videoPresenter.changeYun(dvrId, channelID, dvrType, true);
                     } else if (!controlFlag && switchesAuto.isChecked()) {//切换为自动,当前为手动 controlFlag =false,并且自动选中
                         videoPresenter.changeYun(dvrId, channelID, dvrType, false);
-                        yunControlShow.setText(CONTROL_SHOW+"自动");
+                        yunControlShow.setText(CONTROL_SHOW + "自动");
                     }
                 }
             }
@@ -170,78 +172,141 @@ public class VideoActivity extends AppCompatActivity implements InitView, LoadDa
                 toolbar.setSubtitle(equipmentInformation.getEquipmnetName());
                 videoEquipmentStatusTv.setText(equipmentInformation.getEquipmnetState());
                 videoPlayTv.setText("获取地址中...");
-                controlLeft.setOnClickListener(new View.OnClickListener() {
+
+
+                controlLeft.setOnTouchListener(new View.OnTouchListener() {
                     @Override
-                    public void onClick(View v) {
+                    public boolean onTouch(View v, MotionEvent event) {
                         if (haveControl) {
-                            if (videoView.isPlaying()) {
-                                changeToManual();
-                                yunControlShow.setText(CONTROL_SHOW + "左转中,请稍等");
-                                ShowUtile.toastShow(VideoActivity.this, "左转中...");
-                                videoPresenter.videoControl(CONTROL_LEFT);
-                            } else {
-                                ShowUtile.toastShow(VideoActivity.this, "没有在播放状态，请先播放！");
+                            switch (event.getAction()) {
+                                case MotionEvent.ACTION_UP: //手放开时停止转动命令
+                                    if (videoView.isPlaying()) {
+                                        yunControlShow.setText(CONTROL_SHOW + "转动停止中.");
+                                        ShowUtile.toastShow(VideoActivity.this, "转动停止中.");
+                                        videoPresenter.videoControl(CONTROL_STOP);
+                                    } else {
+                                        ShowUtile.toastShow(VideoActivity.this, "没有在播放状态，请先播放！");
+                                    }
+
+                                    break;
+                                case MotionEvent.ACTION_DOWN: //按下时发送转动命令
+                                    if (videoView.isPlaying()) {
+                                        changeToManual();
+                                        yunControlShow.setText(CONTROL_SHOW + "左转中,请稍等");
+                                        ShowUtile.toastShow(VideoActivity.this, "左转中...");
+                                        videoPresenter.videoControl(CONTROL_LEFT);
+                                    } else {
+                                        ShowUtile.toastShow(VideoActivity.this, "没有在播放状态，请先播放！");
+                                    }
+                                    break;
                             }
                         } else {
                             ShowUtile.noJurisdictionToast(VideoActivity.this);
                         }
-
+                        return true;
                     }
                 });
 
-                controlUp.setOnClickListener(new View.OnClickListener() {
+
+                controlUp.setOnTouchListener(new View.OnTouchListener() {
                     @Override
-                    public void onClick(View v) {
+                    public boolean onTouch(View v, MotionEvent event) {
                         if (haveControl) {
-                            if (videoView.isPlaying()) {
-                                changeToManual();
-                                yunControlShow.setText(CONTROL_SHOW + "上转中,请稍等");
-                                ShowUtile.toastShow(VideoActivity.this, "上转中...");
-                                videoPresenter.videoControl(CONTROL_UP);
-                            } else {
-                                ShowUtile.toastShow(VideoActivity.this, "没有在播放状态，请先播放！");
+                            switch (event.getAction()) {
+                                case MotionEvent.ACTION_UP: //手放开时停止转动命令
+                                    if (videoView.isPlaying()) {
+                                        yunControlShow.setText(CONTROL_SHOW + "转动停止中.");
+                                        ShowUtile.toastShow(VideoActivity.this, "转动停止中.");
+                                        videoPresenter.videoControl(CONTROL_STOP);
+                                    } else {
+                                        ShowUtile.toastShow(VideoActivity.this, "没有在播放状态，请先播放！");
+                                    }
+
+                                    break;
+                                case MotionEvent.ACTION_DOWN: //按下时发送转动命令
+                                    if (videoView.isPlaying()) {
+                                        changeToManual();
+                                        yunControlShow.setText(CONTROL_SHOW + "上转中,请稍等");
+                                        ShowUtile.toastShow(VideoActivity.this, "上转中...");
+                                        videoPresenter.videoControl(CONTROL_UP);
+                                    } else {
+                                        ShowUtile.toastShow(VideoActivity.this, "没有在播放状态，请先播放！");
+                                    }
+                                    break;
                             }
                         } else {
                             ShowUtile.noJurisdictionToast(VideoActivity.this);
                         }
+                        return true;
                     }
                 });
 
-                controlDown.setOnClickListener(new View.OnClickListener() {
+                controlDown.setOnTouchListener(new View.OnTouchListener() {
                     @Override
-                    public void onClick(View v) {
+                    public boolean onTouch(View v, MotionEvent event) {
                         if (haveControl) {
-                            if (videoView.isPlaying()) {
-                                changeToManual();
-                                yunControlShow.setText(CONTROL_SHOW + "下转中,请稍等");
-                                ShowUtile.toastShow(VideoActivity.this, "下转中...");
-                                videoPresenter.videoControl(CONTROL_DOWN);
-                            } else {
-                                ShowUtile.toastShow(VideoActivity.this, "没有在播放状态，请先播放！");
+                            switch (event.getAction()) {
+                                case MotionEvent.ACTION_UP://手放开时停止转动命令
+                                    if (videoView.isPlaying()) {
+                                        yunControlShow.setText(CONTROL_SHOW + "转动停止中.");
+                                        ShowUtile.toastShow(VideoActivity.this, "转动停止中.");
+                                        videoPresenter.videoControl(CONTROL_STOP);
+                                    } else {
+                                        ShowUtile.toastShow(VideoActivity.this, "没有在播放状态，请先播放！");
+                                    }
+
+                                    break;
+                                case MotionEvent.ACTION_DOWN: //按下时发送转动命令
+                                    if (videoView.isPlaying()) {
+                                        changeToManual();
+                                        yunControlShow.setText(CONTROL_SHOW + "下转中,请稍等");
+                                        ShowUtile.toastShow(VideoActivity.this, "下转中...");
+                                        videoPresenter.videoControl(CONTROL_DOWN);
+                                    } else {
+                                        ShowUtile.toastShow(VideoActivity.this, "没有在播放状态，请先播放！");
+                                    }
+                                    break;
                             }
                         } else {
                             ShowUtile.noJurisdictionToast(VideoActivity.this);
                         }
+                        return true;
                     }
                 });
 
-                controlRight.setOnClickListener(new View.OnClickListener() {
+                controlRight.setOnTouchListener(new View.OnTouchListener() {
                     @Override
-                    public void onClick(View v) {
+                    public boolean onTouch(View v, MotionEvent event) {
                         if (haveControl) {
-                            if (videoView.isPlaying()) {
-                                changeToManual();
-                                yunControlShow.setText(CONTROL_SHOW + "右转中,请稍等");
-                                ShowUtile.toastShow(VideoActivity.this, "右转中...");
-                                videoPresenter.videoControl(CONTROL_RIGHT);
-                            } else {
-                                ShowUtile.toastShow(VideoActivity.this, "没有在播放状态，请先播放！");
+                            switch (event.getAction()) {
+                                case MotionEvent.ACTION_UP://手放开时停止转动命令
+                                    if (videoView.isPlaying()) {
+                                        yunControlShow.setText(CONTROL_SHOW + "转动停止中.");
+                                        ShowUtile.toastShow(VideoActivity.this, "转动停止中.");
+                                        videoPresenter.videoControl(CONTROL_STOP);
+                                    } else {
+                                        ShowUtile.toastShow(VideoActivity.this, "没有在播放状态，请先播放！");
+                                    }
+
+                                    break;
+                                case MotionEvent.ACTION_DOWN: //按下时发送转动命令
+                                    if (videoView.isPlaying()) {
+                                        changeToManual();
+                                        yunControlShow.setText(CONTROL_SHOW + "右转中,请稍等");
+                                        ShowUtile.toastShow(VideoActivity.this, "右转中...");
+                                        videoPresenter.videoControl(CONTROL_RIGHT);
+                                    } else {
+                                        ShowUtile.toastShow(VideoActivity.this, "没有在播放状态，请先播放！");
+                                    }
+                                    break;
                             }
                         } else {
                             ShowUtile.noJurisdictionToast(VideoActivity.this);
                         }
+                        return true;
                     }
                 });
+
                 historyVideoShow.setVisibility(View.GONE);
                 break;
             case "history":
@@ -328,11 +393,14 @@ public class VideoActivity extends AppCompatActivity implements InitView, LoadDa
 
     public void startVideoPlay(String videoUrls) {
         this.videoUrl = TransformationUtils.getRealVideoUrl(videoUrls);
+        videoPlayTv.setText("地址获取成功,请等待...");
+
         Log.e("startVideoPlay", videoUrl);
         if (!videoUrl.isEmpty()) {
             isHaveUrl = true;
             videoView.setVideoPath(videoUrl);
             videoView.start();
+
         } else {
             videoPlayTv.setText("播放地址获取失败");
             initialize();

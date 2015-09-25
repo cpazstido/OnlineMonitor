@@ -47,6 +47,9 @@ public class VideoPlayUtils {
             case "down":
                 sb.append(0);
                 break;
+            case "stop":
+                sb.append(0);
+                break;
         }
         sb.append("</pan>");
         sb.append("<tilt>");
@@ -62,6 +65,9 @@ public class VideoPlayUtils {
                 break;
             case "down":
                 sb.append(-ptzSpeedValue);
+                break;
+            case "stop":
+                sb.append(0);
                 break;
         }
         sb.append("</tilt>");

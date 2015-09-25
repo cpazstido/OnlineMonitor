@@ -9,31 +9,13 @@
         android:id="@+id/video_toolbar"
         layout="@layout/toolbar" />
 
-    <com.rey.material.widget.RadioButton
-        style="@style/RadioButtonDrawable"
-        android:id="@+id/switches_rb1"
+    <com.rey.material.widget.Button
+        android:id="@+id/choice_btn"
+        style="@style/RaiseColorButtonRippleStyle"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Radio Button 1"
-        android:textSize="14sp"
-        android:checked="true"
-        android:gravity="center_vertical"/>
-
-    <com.rey.material.widget.RadioButton
-        style="@style/RadioButtonDrawable"
-        android:id="@+id/switches_rb2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Radio Button 2"
-        android:textSize="14sp"
-        android:checked="false"
-        android:gravity="center_vertical"/>
-
-
-
-    <Button
-        android:id="@+id/test_btn"
-        android:text="切换测试"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="@dimen/bt_height"
+        android:text="大师大师"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Button"
+        android:textColor="#FFFFFFFF"
+        app:rd_delayClick="afterRelease" />
 </LinearLayout>

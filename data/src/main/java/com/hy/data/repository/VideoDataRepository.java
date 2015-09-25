@@ -126,4 +126,10 @@ public class VideoDataRepository implements VideoRepository{
         RestApiImpl restApi = new RestApiImpl(mContext);
         return restApi.changePtz(dvrId, channelID, dvrType,isAuto);
     }
+
+    @Override
+    public Observable<String> stopPtz() {
+        RestApiImpl restApi = new RestApiImpl(mContext);
+        return restApi.videoControl("stop", dvrId, channelID, dvrType);
+    }
 }

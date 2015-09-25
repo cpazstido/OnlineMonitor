@@ -59,6 +59,9 @@ public class VideoUseCase extends UseCase {
             case 10:
                 observable = videoRepository.changePtz(false);
                 break;
+            case 11:
+                observable = videoRepository.stopPtz();
+                break;
         }
         return observable;
     }
