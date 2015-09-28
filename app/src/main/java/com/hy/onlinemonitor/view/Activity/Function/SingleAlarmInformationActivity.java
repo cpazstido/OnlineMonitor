@@ -17,6 +17,7 @@ import com.baoyz.widget.PullRefreshLayout;
 import com.hy.onlinemonitor.R;
 import com.hy.onlinemonitor.bean.AlarmPage;
 import com.hy.onlinemonitor.presenter.AlarmPresenter;
+import com.hy.onlinemonitor.utile.ActivityCollector;
 import com.hy.onlinemonitor.utile.GetLoading;
 import com.hy.onlinemonitor.view.Activity.LoginActivity;
 import com.hy.onlinemonitor.view.Adapter.AlarmRecyclerAdapter;
@@ -53,8 +54,11 @@ public class SingleAlarmInformationActivity extends AppCompatActivity implements
     private String equipmentName;
     private String queryAlarmType;
     private int userId;
+    private int dvrType;
+    private int dvrId;
 
     protected void onCreate(Bundle savedInstanceState) {
+        ActivityCollector.addActivity(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_equipmentlist);
         ButterKnife.bind(this);
@@ -63,6 +67,8 @@ public class SingleAlarmInformationActivity extends AppCompatActivity implements
         queryAlarmType = intent.getStringExtra("queryAlarmType");
         equipmentName = intent.getStringExtra("equipmentName");
         userId = intent.getIntExtra("userId", -1);
+        dvrType = intent.getIntExtra("dvrType",-1);
+        dvrId = intent.getIntExtra("dvrId",-1);
         status = intent.getIntExtra("status", -1);
         showType = intent.getIntExtra("showType", -1);
         toolbar.setTitle(intent.getStringExtra("title"));
@@ -88,6 +94,7 @@ public class SingleAlarmInformationActivity extends AppCompatActivity implements
     protected void onDestroy() {
         super.onDestroy();
         alarmPresenter.destroy();
+        ActivityCollector.removeActivity(this);
         ButterKnife.unbind(this);
     }
 
@@ -137,6 +144,8 @@ public class SingleAlarmInformationActivity extends AppCompatActivity implements
         alarmPage = new AlarmPage();
 
         mAdapter = new AlarmRecyclerAdapter(alarmPage, SingleAlarmInformationActivity.this, showType, queryAlarmType, status);
+        mAdapter.setDvrType(dvrType);
+        mAdapter.setDvrId(dvrId);
         rvRecyclerviewData.setAdapter(mAdapter);
         alarmPresenter = new AlarmPresenter(SingleAlarmInformationActivity.this);
         this.alarmPresenter.setView(this);

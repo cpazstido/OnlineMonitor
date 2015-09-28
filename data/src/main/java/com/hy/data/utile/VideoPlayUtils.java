@@ -1,5 +1,7 @@
 package com.hy.data.utile;
 
+import android.util.Log;
+
 import org.apache.http.entity.StringEntity;
 
 import java.io.UnsupportedEncodingException;
@@ -22,6 +24,7 @@ public class VideoPlayUtils {
         sb.append(fileNames);
         sb.append("</FileName>");
         sb.append("</RecordPlay>");
+        Log.e("RecordPlayXml",sb.toString());
         return new StringEntity(sb.toString());
     }
 

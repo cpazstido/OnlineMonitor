@@ -74,7 +74,7 @@ public class SMEquipmentPresenter implements Presenter{
     private class TowerListSubscriber extends DefaultSubscriber<List<DomainLine>> {
         @Override
         public void onCompleted() {
-            hideViewLoading();
+            getEquipmentPage(-1);
         }
 
         @Override

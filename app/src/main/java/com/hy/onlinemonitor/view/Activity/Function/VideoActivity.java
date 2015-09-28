@@ -19,6 +19,7 @@ import com.hy.onlinemonitor.bean.AlarmInformation;
 import com.hy.onlinemonitor.bean.EquipmentInformation;
 import com.hy.onlinemonitor.bean.OwnJurisdiction;
 import com.hy.onlinemonitor.presenter.VideoPresenter;
+import com.hy.onlinemonitor.utile.ActivityCollector;
 import com.hy.onlinemonitor.utile.GetLoading;
 import com.hy.onlinemonitor.utile.ShowUtile;
 import com.hy.onlinemonitor.utile.TransformationUtils;
@@ -77,6 +78,7 @@ public class VideoActivity extends AppCompatActivity implements InitView, LoadDa
     private String type;
     private Timer timer;
 
+    private int dvrTypes;
     private AlarmInformation alarmInformation;
     private VideoPresenter videoPresenter;
     private EquipmentInformation equipmentInformation;
@@ -106,6 +108,7 @@ public class VideoActivity extends AppCompatActivity implements InitView, LoadDa
         super.onCreate(savedInstanceState);
         if (!LibsChecker.checkVitamioLibs(this))
             return;
+        ActivityCollector.addActivity(this);
         setContentView(R.layout.activity_video);
         ButterKnife.bind(this);
 
@@ -164,7 +167,6 @@ public class VideoActivity extends AppCompatActivity implements InitView, LoadDa
             case "real":
                 switchesAuto.setOnCheckedChangeListener(listener);
                 switchesManual.setOnCheckedChangeListener(listener);
-
                 haveControl = OwnJurisdiction.haveJurisdiction(1);
                 choiceType = intent.getStringExtra("choiceType");
                 toolbar.setTitle(R.string.real_time_video);
@@ -172,7 +174,6 @@ public class VideoActivity extends AppCompatActivity implements InitView, LoadDa
                 toolbar.setSubtitle(equipmentInformation.getEquipmnetName());
                 videoEquipmentStatusTv.setText(equipmentInformation.getEquipmnetState());
                 videoPlayTv.setText("获取地址中...");
-
 
                 controlLeft.setOnTouchListener(new View.OnTouchListener() {
                     @Override
@@ -311,6 +312,8 @@ public class VideoActivity extends AppCompatActivity implements InitView, LoadDa
                 break;
             case "history":
                 alarmInformation = (AlarmInformation) intent.getSerializableExtra("AlarmInformation");
+                dvrTypes = intent.getIntExtra("dvrType",-1);
+                dvrId = intent.getIntExtra("dvrId",-1);
                 realPlayShow.setVisibility(View.GONE);
                 toolbar.setTitle(R.string.play_alarm_video);
                 toolbar.setSubtitle(alarmInformation.getDeviceId());
@@ -364,7 +367,7 @@ public class VideoActivity extends AppCompatActivity implements InitView, LoadDa
                 break;
 
             case "history":
-                this.videoPresenter.getUrlByFileName(alarmInformation.getVideoFileName());
+                this.videoPresenter.getUrlByFileName(alarmInformation.getVideoFileName(),dvrTypes,dvrId);
                 break;
         }
     }
@@ -391,8 +394,15 @@ public class VideoActivity extends AppCompatActivity implements InitView, LoadDa
         return VideoActivity.this;
     }
 
-    public void startVideoPlay(String videoUrls) {
-        this.videoUrl = TransformationUtils.getRealVideoUrl(videoUrls);
+    public void startVideoPlay(String videoUrls,int urlType) {
+        switch (urlType){
+            case 1://录像
+                this.videoUrl = TransformationUtils.getRecordVideoUrl(videoUrls);
+                break;
+            case 2://实时视频
+                this.videoUrl = TransformationUtils.getRealVideoUrl(videoUrls);
+                break;
+        }
         videoPlayTv.setText("地址获取成功,请等待...");
 
         Log.e("startVideoPlay", videoUrl);
@@ -400,7 +410,6 @@ public class VideoActivity extends AppCompatActivity implements InitView, LoadDa
             isHaveUrl = true;
             videoView.setVideoPath(videoUrl);
             videoView.start();
-
         } else {
             videoPlayTv.setText("播放地址获取失败");
             initialize();
@@ -418,6 +427,7 @@ public class VideoActivity extends AppCompatActivity implements InitView, LoadDa
     @Override
     public void onDestroy() {
         super.onDestroy();
+        ActivityCollector.removeActivity(this);
         if (videoPresenter != null)
             this.videoPresenter.destroy();
         ButterKnife.unbind(this);

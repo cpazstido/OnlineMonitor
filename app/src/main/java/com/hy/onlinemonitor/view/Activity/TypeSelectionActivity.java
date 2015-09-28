@@ -13,8 +13,8 @@ import android.widget.TextView;
 
 import com.hy.onlinemonitor.R;
 import com.hy.onlinemonitor.presenter.UserPresenter;
+import com.hy.onlinemonitor.utile.ActivityCollector;
 import com.hy.onlinemonitor.view.InitView;
-import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -36,6 +36,7 @@ public class TypeSelectionActivity extends AppCompatActivity implements InitView
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        ActivityCollector.addActivity(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_type_selection);
         setupUI();
@@ -62,6 +63,7 @@ public class TypeSelectionActivity extends AppCompatActivity implements InitView
     @Override
     public void onDestroy() {
         super.onDestroy();
+        ActivityCollector.removeActivity(this);
         this.userPresenter.destroy();
     }
 
@@ -93,10 +95,16 @@ public class TypeSelectionActivity extends AppCompatActivity implements InitView
         break_tv.setText(R.string.the_break);
         auto_tv.setText(R.string.the_auto);
         normal_tv.setText(R.string.the_normal);
-        Picasso.with(this).load(R.drawable.fire).into(fire_iv);
-        Picasso.with(this).load(R.drawable.break_picture).into(break_iv);
-        Picasso.with(this).load(R.drawable.autoplane).into(auto_iv);
-        Picasso.with(this).load(R.drawable.normal).into(normal_iv);
+
+        fire_iv.setImageDrawable(getResources().getDrawable(R.drawable.fire));
+        break_iv.setImageDrawable(getResources().getDrawable(R.drawable.break_picture));
+        auto_iv.setImageDrawable(getResources().getDrawable(R.drawable.autoplane));
+        normal_iv.setImageDrawable(getResources().getDrawable(R.drawable.normal));
+
+//        Picasso.with(this).load(R.drawable.fire).into(fire_iv);
+//        Picasso.with(this).load(R.drawable.break_picture).into(break_iv);
+//        Picasso.with(this).load(R.drawable.autoplane).into(auto_iv);
+//        Picasso.with(this).load(R.drawable.normal).into(normal_iv);
         toolbar.setTitle(R.string.equipment_type);
         toolbar.setSubtitle(R.string.please_choice);
         setSupportActionBar(toolbar);
@@ -143,23 +151,22 @@ public class TypeSelectionActivity extends AppCompatActivity implements InitView
                     break;
             }
         }
-
-        if (ownedEquipmentList.size() == 1) {
-            String type = ownedEquipmentList.get(0);
-            switch (type) {
-                case "fire":
-                    userPresenter.setCurrentPorject(0, TypeSelectionActivity.this, type);
-                    break;
-                case "break":
-                    userPresenter.setCurrentPorject(1, TypeSelectionActivity.this, type);
-                    break;
-                case "video":
-                    userPresenter.setCurrentPorject(2, TypeSelectionActivity.this, type);
-                    break;
-                case "uav":
-                    userPresenter.setCurrentPorject(3, TypeSelectionActivity.this, type);
-                    break;
-            }
-        }
+//        if (ownedEquipmentList.size() == 1) {
+//            String type = ownedEquipmentList.get(0);
+//            switch (type) {
+//                case "fire":
+//                    userPresenter.setCurrentPorject(0, TypeSelectionActivity.this, type);
+//                    break;
+//                case "break":
+//                    userPresenter.setCurrentPorject(1, TypeSelectionActivity.this, type);
+//                    break;
+//                case "video":
+//                    userPresenter.setCurrentPorject(2, TypeSelectionActivity.this, type);
+//                    break;
+//                case "uav":
+//                    userPresenter.setCurrentPorject(3, TypeSelectionActivity.this, type);
+//                    break;
+//            }
+//        }
     }
 }

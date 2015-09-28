@@ -44,6 +44,7 @@ public class RecyclerViewFragment extends Fragment implements AlarmListView {
     private static List<String> alarmTitles;
     private static int userId;
     private int showType = 1;
+    private int dvrTypes;
     private Context mContext;
     private AlarmPage alarmPage;
     private AlarmPresenter alarmPresenter;
@@ -155,10 +156,12 @@ public class RecyclerViewFragment extends Fragment implements AlarmListView {
             switch (alarmTitles.get(postion)) {
                 case "山火新报警":
                     queryAlarmType = "fire";
+                    dvrTypes= 1;
                     status = 0;
                     break;
                 case "山火历史报警":
                     queryAlarmType = "fire";
+                    dvrTypes= 1;
                     status = 1;
                     break;
                 case "传感器新报警":
@@ -171,10 +174,12 @@ public class RecyclerViewFragment extends Fragment implements AlarmListView {
                     break;
                 case "外破新报警":
                     queryAlarmType = "break";
+                    dvrTypes= 2;
                     status = 0;
                     break;
                 case "外破历史报警":
                     queryAlarmType = "break";
+                    dvrTypes= 2;
                     status = 1;
                     break;
             }

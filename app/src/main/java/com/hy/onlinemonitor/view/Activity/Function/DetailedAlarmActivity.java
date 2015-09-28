@@ -19,6 +19,7 @@ import com.hy.onlinemonitor.R;
 import com.hy.onlinemonitor.bean.AlarmInformation;
 import com.hy.onlinemonitor.bean.OwnJurisdiction;
 import com.hy.onlinemonitor.presenter.HandlePresenter;
+import com.hy.onlinemonitor.utile.ActivityCollector;
 import com.hy.onlinemonitor.utile.GetLoading;
 import com.hy.onlinemonitor.utile.ShowUtile;
 import com.hy.onlinemonitor.view.LoadDataView;
@@ -40,8 +41,8 @@ public class DetailedAlarmActivity extends AppCompatActivity implements LoadData
     Button handleAlarm;
     @Bind(R.id.detailed_blowing_equipment)
     TextView detailedBlowingEquipment;
-    @Bind(R.id.show_isblowing)
-    RelativeLayout showIsblowing;
+    @Bind(R.id.show_is_blowing)
+    RelativeLayout showIsBlowing;
     @Bind(R.id.detailed_alarm_information)
     TextView detailedAlarmInformation;
     @Bind(R.id.detailed_infrared_picture)
@@ -53,9 +54,12 @@ public class DetailedAlarmActivity extends AppCompatActivity implements LoadData
     private int status;
     private AlarmInformation alarmInformation;
     private AlertDialog loadingDialog;
+    private int dvrType;
+    private int dvrId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        ActivityCollector.addActivity(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detailedalarm);
         ButterKnife.bind(this);
@@ -64,6 +68,9 @@ public class DetailedAlarmActivity extends AppCompatActivity implements LoadData
         alarmInformation = (AlarmInformation) itemIntent.getSerializableExtra("detailedAlarm");
         queryAlarmType = itemIntent.getStringExtra("queryAlarmType");
         status = itemIntent.getIntExtra("status", -1);
+
+        dvrId = itemIntent.getIntExtra("dvrId",-1);
+        dvrType = itemIntent.getIntExtra("dvrType", -1);
 
         SlidrConfig config = new SlidrConfig.Builder()
                 .position(SlidrPosition.HORIZONTAL)
@@ -92,10 +99,10 @@ public class DetailedAlarmActivity extends AppCompatActivity implements LoadData
         switch (queryAlarmType) {
             case "fire":
                 switch (alarmInformation.getIsBlowingEquipment()) {
-                    case "0":
+                    case "no":
                         detailedBlowingEquipment.setText("否");
                         break;
-                    case "1":
+                    case "yes":
                         detailedBlowingEquipment.setText("是");
                         break;
                 }
@@ -106,7 +113,7 @@ public class DetailedAlarmActivity extends AppCompatActivity implements LoadData
             case "break":
                 detailedVisiblePicture.setVisibility(View.GONE);
                 Picasso.with(this).load(SystemRestClient.BASE_PICTURE_URL + alarmInformation.getInfraredImage()).into(detailedInfraredPicture);
-                showIsblowing.setVisibility(View.GONE);
+                showIsBlowing.setVisibility(View.GONE);
                 break;
         }
 
@@ -117,6 +124,8 @@ public class DetailedAlarmActivity extends AppCompatActivity implements LoadData
                     Intent intent = new Intent(DetailedAlarmActivity.this, VideoActivity.class);
                     intent.putExtra("type", "history");
                     intent.putExtra("AlarmInformation", alarmInformation);
+                    intent.putExtra("dvrType",dvrType);
+                    intent.putExtra("dvrId",dvrId);
                     startActivity(intent);
                 } else {
                     ShowUtile.noJurisdictionToast(DetailedAlarmActivity.this);
@@ -171,4 +180,9 @@ public class DetailedAlarmActivity extends AppCompatActivity implements LoadData
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        ActivityCollector.removeActivity(this);
+    }
 }

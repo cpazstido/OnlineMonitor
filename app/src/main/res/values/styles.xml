@@ -85,4 +85,6 @@
 
     <style name="RadioButtonDrawable" parent="Material.Drawable.RadioButton"/>
 
+    <style name="CheckBoxDrawable" parent="Material.Drawable.CheckBox"/>
+
 </resources>

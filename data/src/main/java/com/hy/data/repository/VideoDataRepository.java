@@ -12,18 +12,13 @@ public class VideoDataRepository implements VideoRepository{
     private String fileName;
     private String dvrType;
     private int dvrId;
+    private int dvrTypes;
     private int choiceType =-1;
     private int channelID;
     private int streamType ;
     private int equipmentSn ;
     private int operationType;
     private String deivceId;
-
-    public VideoDataRepository(Context mContext, String fileName) {
-        this.choiceType = 0;
-        this.mContext = mContext;
-        this.fileName = fileName;
-    }
 
     public VideoDataRepository(Context mContext,int channelID, int streamType,int dvrId,String dvrType) {
         this.choiceType = 1;
@@ -61,6 +56,14 @@ public class VideoDataRepository implements VideoRepository{
         this.channelID = channelID;
     }
 
+    public VideoDataRepository(Context mContext, String fileName, int dvrType, int dvrId) {
+        this.choiceType = 0;
+        this.mContext = mContext;
+        this.fileName = fileName;
+        this.dvrTypes = dvrType;
+        this.dvrId = dvrId;
+    }
+
     @Override
     public Observable<String> getVideoUrl() {
         RestApiImpl restApi = new RestApiImpl(mContext);
@@ -68,7 +71,7 @@ public class VideoDataRepository implements VideoRepository{
 
         switch (choiceType){
             case 0:
-                observable = restApi.videoUrl(fileName);
+                observable = restApi.videoUrl(fileName,dvrId,dvrTypes);
                 break;
             case 1:
                 observable =  restApi.videoUrl(dvrType,dvrId,channelID,streamType);

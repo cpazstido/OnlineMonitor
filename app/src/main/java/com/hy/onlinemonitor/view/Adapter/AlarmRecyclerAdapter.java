@@ -24,9 +24,27 @@ public class AlarmRecyclerAdapter extends RecyclerView.Adapter<AlarmViewHolder> 
     private List<AlarmInformation> mList;
     private Context mContext;
     private int showType;
+    private int dvrType;
+    private int dvrId;
+
+    public void setDvrId(int dvrId) {
+        this.dvrId = dvrId;
+    }
+
+    public void setDvrType(int dvrType) {
+        this.dvrType = dvrType;
+    }
 
     public void setQueryAlarmType(String queryAlarmType) {
         this.queryAlarmType = queryAlarmType;
+        switch (queryAlarmType){
+            case "fire":
+                dvrType= 1;
+                break;
+            case "break":
+                dvrType =2;
+                break;
+        }
     }
 
     private String queryAlarmType;
@@ -90,6 +108,8 @@ public class AlarmRecyclerAdapter extends RecyclerView.Adapter<AlarmViewHolder> 
                     public void onClick(View v) {
                         Intent intent = new Intent(mContext, DetailedAlarmActivity.class);
                         intent.putExtra("queryAlarmType", queryAlarmType);
+                        intent.putExtra("dvrType",dvrType);
+                        intent.putExtra("dvrId",dvrId);
                         intent.putExtra("status", status);
                         intent.putExtra("detailedAlarm", alarmInformation);
                         mContext.startActivity(intent);
@@ -105,6 +125,8 @@ public class AlarmRecyclerAdapter extends RecyclerView.Adapter<AlarmViewHolder> 
                     public void onClick(View v) {
                         Intent intent = new Intent(mContext, DetailedAlarmActivity.class);
                         intent.putExtra("queryAlarmType", queryAlarmType);
+                        intent.putExtra("dvrType",dvrType);
+                        intent.putExtra("dvrId",dvrId);
                         intent.putExtra("status", status);
                         intent.putExtra("detailedAlarm", alarmInformation);
                         mContext.startActivity(intent);

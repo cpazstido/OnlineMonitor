@@ -26,6 +26,7 @@ import com.hy.onlinemonitor.bean.Equipment;
 import com.hy.onlinemonitor.bean.Sensor;
 import com.hy.onlinemonitor.bean.SensorType;
 import com.hy.onlinemonitor.presenter.SMSensorPresenter;
+import com.hy.onlinemonitor.utile.ActivityCollector;
 import com.hy.onlinemonitor.utile.GetLoading;
 import com.hy.onlinemonitor.view.Adapter.SMSensorRecyclerAdapter;
 import com.hy.onlinemonitor.view.LoadDataView;
@@ -56,6 +57,7 @@ public class SensorManageActivity extends AppCompatActivity implements LoadDataV
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        ActivityCollector.addActivity(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sensor);
         ButterKnife.bind(this);
@@ -216,6 +218,7 @@ public class SensorManageActivity extends AppCompatActivity implements LoadDataV
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        ActivityCollector.removeActivity(this);
         smSensorPresenter.destroy();
     }
 }

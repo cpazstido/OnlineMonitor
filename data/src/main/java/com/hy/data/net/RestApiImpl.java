@@ -462,19 +462,22 @@ public class RestApiImpl implements RestApi {
     }
 
     @Override
-    public Observable<String> videoUrl(String fileName) {
+    public Observable<String> videoUrl(String fileName,int dvrId,int dvrType) {
         return Observable.create(new Observable.OnSubscribe<String>() {
             @Override
             public void call(Subscriber<? super String> subscriber) {
                 Log.e("videoUrl", "inVideoUrl");
                 try {
-                    SystemRestClient.XmlPost(context, "/recordPlay", VideoPlayUtils.getRecordPlayXml(fileName), "text/xml; charset=UTF-8", new AsyncHttpResponseHandler() {
+                    SystemRestClient.XmlPost(context, "/recordPlay?DvrID="+dvrId+"&DvrType="+dvrType, VideoPlayUtils.getRecordPlayXml(fileName), "text/xml; charset=UTF-8", new AsyncHttpResponseHandler() {
                         @Override
                         public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                             try {
                                 String responseVideoUrl = new String(responseBody, "UTF-8");
                                 if ("\"loginFail\"".equals(responseVideoUrl)) {
                                     subscriber.onError(new NetworkConnectionException("请重新登录"));
+                                }else if(responseVideoUrl.isEmpty()){
+                                    Log.e("tag","responseVideoUrl-> is empty");
+                                    subscriber.onError(new NetworkConnectionException("无法获得地址"));
                                 } else {
                                     Log.e("videoUrl", "videoUrl->" + responseVideoUrl);
                                     subscriber.onNext(responseVideoUrl);
@@ -1750,7 +1753,8 @@ public class RestApiImpl implements RestApi {
             public void call(Subscriber<? super EquipmentPageEntity> subscriber) {
                 RequestParams params = new RequestParams();
                 params.put("userId", userId);
-                params.put("poleSn", poleSn);
+                if (poleSn != -1)
+                    params.put("poleSn", poleSn);
                 Log.e("params", "userId:" + userId + "polesn" + poleSn);
                 SystemRestClient.post("/getEquipmentList", params, new AsyncHttpResponseHandler() {
                     @Override
@@ -2051,7 +2055,7 @@ public class RestApiImpl implements RestApi {
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                         try {
                             String responseEntities = new String(responseBody, "UTF-8");
-                            Log.e("openPower", "openPower----->"+responseEntities);
+                            Log.e("openPower", "openPower----->" + responseEntities);
                             if ("\"loginFail\"".equals(responseEntities)) {
                                 subscriber.onError(new NetworkConnectionException("请重新登录"));
                             } else {
@@ -2078,7 +2082,7 @@ public class RestApiImpl implements RestApi {
         return Observable.create(new Observable.OnSubscribe<String>() {
             @Override
             public void call(Subscriber<? super String> subscriber) {
-                SystemRestClient.openFirePower("/openCameraPower", dvrId, channelID, dvrType,new AsyncHttpResponseHandler() {
+                SystemRestClient.openFirePower("/openCameraPower", dvrId, channelID, dvrType, new AsyncHttpResponseHandler() {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                         try {

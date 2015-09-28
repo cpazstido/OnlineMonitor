@@ -10,6 +10,7 @@ public class DomainAlarmInformation {
     private String lineName;
     private String deviceId;
     private String dvrID;
+    private String dvrType;
     private String alarmInformation;
     private String visibleLightImage;
     private String infraredImage;
@@ -19,6 +20,14 @@ public class DomainAlarmInformation {
     private String CollectionTime;
 
     public DomainAlarmInformation() {
+    }
+
+    public String getDvrType() {
+        return dvrType;
+    }
+
+    public void setDvrType(String dvrType) {
+        this.dvrType = dvrType;
     }
 
     public int getAlarmSn() {

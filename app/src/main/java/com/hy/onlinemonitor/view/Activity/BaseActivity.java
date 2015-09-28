@@ -11,13 +11,17 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.hy.onlinemonitor.R;
+import com.hy.onlinemonitor.bean.OwnJurisdiction;
 import com.hy.onlinemonitor.bean.User;
 import com.hy.onlinemonitor.presenter.UserPresenter;
+import com.hy.onlinemonitor.utile.ActivityCollector;
 import com.hy.onlinemonitor.view.Activity.Function.AlarmInformationActivity;
 import com.hy.onlinemonitor.view.Activity.Function.EquipmentListViewActivity;
 import com.hy.onlinemonitor.view.Activity.Function.MapActivity;
 import com.hy.onlinemonitor.view.Activity.SystemManagement.AdministratorManageActivity;
+import com.hy.onlinemonitor.view.Activity.SystemManagement.CompanyManageActivity;
 import com.hy.onlinemonitor.view.Activity.SystemManagement.EquipmentManageActivity;
 import com.hy.onlinemonitor.view.Activity.SystemManagement.JurisdictionManageActivity;
 import com.hy.onlinemonitor.view.Activity.SystemManagement.LineManageActivity;
@@ -50,6 +54,7 @@ public abstract class BaseActivity extends AppCompatActivity implements InitView
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        ActivityCollector.addActivity(this);
         Log.e("recy", "onCreate");
         super.onCreate(savedInstanceState);
         setOwnContentView();
@@ -89,7 +94,8 @@ public abstract class BaseActivity extends AppCompatActivity implements InitView
                                     Intent intent = null;
                                     switch (iDrawerItem.getIdentifier()) {
                                         case 1://切换设备
-                                            intent = new Intent(BaseActivity.this, TypeSelectionActivity.class);
+                                            if (OwnJurisdiction.haveJurisdiction(24)) //拥有查看的权限
+                                                intent = new Intent(BaseActivity.this, TypeSelectionActivity.class);
                                             break;
                                         case 2://主界面
                                             intent = new Intent(BaseActivity.this, MainActivity.class);
@@ -98,18 +104,22 @@ public abstract class BaseActivity extends AppCompatActivity implements InitView
                                             intent = new Intent(BaseActivity.this, EquipmentListViewActivity.class);
                                             break;
                                         case 4://报警信息
-                                            intent = new Intent(BaseActivity.this, AlarmInformationActivity.class);
+                                            if (OwnJurisdiction.haveJurisdiction(3)) //拥有查看的权限
+                                                intent = new Intent(BaseActivity.this, AlarmInformationActivity.class);
                                             break;
                                         case 5://电子地图
-                                            intent = new Intent(BaseActivity.this, MapActivity.class);
+                                            if (OwnJurisdiction.haveJurisdiction(65))//拥有查看的权限
+                                                intent = new Intent(BaseActivity.this, MapActivity.class);
                                             break;
                                         case 6://系统管理-公司
-//                                            intent = new Intent(BaseActivity.this,);
+                                            if (OwnJurisdiction.haveJurisdiction(17))
+                                            intent = new Intent(BaseActivity.this, CompanyManageActivity.class);
                                             break;
                                         case 7://系统管理-管理员
                                             intent = new Intent(BaseActivity.this, AdministratorManageActivity.class);
                                             break;
                                         case 8://系统管理-权限
+                                            if (OwnJurisdiction.haveJurisdiction(16))
                                             intent = new Intent(BaseActivity.this, JurisdictionManageActivity.class);
                                             break;
                                         case 9://系统管理-线路
@@ -128,7 +138,18 @@ public abstract class BaseActivity extends AppCompatActivity implements InitView
 //                                            intent = new Intent(BaseActivity.this,);
                                             break;
                                         case 14://退出
-//                                            intent = new Intent(BaseActivity.this,);
+                                            new MaterialDialog.Builder(BaseActivity.this)
+                                                    .content(R.string.exit_information)
+                                                    .positiveText(R.string.yes)
+                                                    .negativeText(R.string.no)
+                                                    .callback(new MaterialDialog.ButtonCallback() {
+                                                        @Override
+                                                        public void onPositive(MaterialDialog dialog) {
+                                                            ActivityCollector.finishAll();
+                                                            super.onPositive(dialog);
+                                                        }
+                                                    })
+                                                    .show();
                                             break;
 
                                     }
@@ -168,4 +189,9 @@ public abstract class BaseActivity extends AppCompatActivity implements InitView
         return user;
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        ActivityCollector.removeActivity(this);
+    }
 }

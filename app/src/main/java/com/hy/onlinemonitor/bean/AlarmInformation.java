@@ -9,6 +9,7 @@ public class AlarmInformation implements Serializable {
     private String lineName;
     private String deviceId;
     private String dvrID;
+    private String dvrType;
     private String alarmInformation;
     private String visibleLightImage;
     private String infraredImage;
@@ -19,6 +20,14 @@ public class AlarmInformation implements Serializable {
     private int status; //0是新报警,1是历史报警
 
     public AlarmInformation() {
+    }
+
+    public String getDvrType() {
+        return dvrType;
+    }
+
+    public void setDvrType(String dvrType) {
+        this.dvrType = dvrType;
     }
 
     public String getLineName() {

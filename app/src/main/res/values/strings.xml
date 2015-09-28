@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">在线监测</string>
+    <string name="login_title">在线监测管理系统</string>
 
     <string name="auto">自动</string>
     <string name="hand">手动</string>
@@ -131,9 +132,12 @@
     <string name="receive_messages">短信接收</string>
     <string name="tower_management">杆塔管理</string>
 
+
     <string name="own_company">所属公司</string>
     <string name="password">密码</string>
-
+    <string name="remember_passwords">记住密码</string>
+    <string name="auto_login">自动登录</string>
+    
     <string name="real_time_video">实时视频</string>
     <string name="play_alarm_video">视频播放</string>
     <string name="handle_alarm">处理报警</string>
@@ -147,7 +151,7 @@
     <string name="default_url">http://171.221.207.58:8080/eMonitorApp/api</string>
     <string name="not_data">暂无数据,点击按钮刷新重试</string>
 
-
+    <string name="exit_information">"确认要退出吗?"</string>
     <!-- 图片的资源文件-->
     <string name="ic_access_alarms">&#xe000;</string>
     <string name="ic_access_time">&#xe001;</string>

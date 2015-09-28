@@ -1,6 +1,7 @@
 package com.hy.onlinemonitor.utile;
 
 import com.google.gson.Gson;
+import com.hy.onlinemonitor.bean.RecordUrl;
 import com.hy.onlinemonitor.bean.VideoUrl;
 
 import java.util.ArrayList;
@@ -45,4 +46,9 @@ public class TransformationUtils {
         return videoUrl.getRtspURL();
     }
 
+    public static String getRecordVideoUrl(String url) {
+        Gson gson = new Gson();
+        RecordUrl recordUrl = gson.fromJson(url, RecordUrl.class);
+        return recordUrl.getRtsp();
+    }
 }

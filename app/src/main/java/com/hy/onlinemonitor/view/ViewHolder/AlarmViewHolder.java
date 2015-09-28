@@ -19,11 +19,11 @@ public class AlarmViewHolder extends RecyclerView.ViewHolder{
     public TextView alarmCardTitle,equipmentIdentifier,alarmInformation,collectionTime;
     public AlarmViewHolder(View itemView, int showType) {
         super(itemView);
-        if (showType == 1) {
+        if (showType == 1) {//山火,外破
             alarmCardView = (CardView) itemView.findViewById(R.id.alarm_card_view);
             alarmCardImage = (ImageView) itemView.findViewById(R.id.alarm_card_image);
             alarmCardTitle = (TextView) itemView.findViewById(R.id.alarm_card_title);
-        }else if(showType == 0){
+        }else if(showType == 0){//传感器
             itemView.setEnabled(false);
             equipmentIdentifier = (TextView) itemView.findViewById(R.id.equipment_identifier);
             alarmInformation = (TextView) itemView.findViewById(R.id.alarm_information);

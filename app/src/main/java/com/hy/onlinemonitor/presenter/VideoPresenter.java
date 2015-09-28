@@ -25,9 +25,11 @@ public class VideoPresenter implements Presenter {
     private int streamType;
     private int dvrId;
     private String dvrType;
+    private int dvrTypes;
     private VideoRepository videoRepository;
     private String deviceId;
     private int operationType;
+    private int urlType=-1;
 
     public VideoPresenter(Context mContext) {
         this.mContext = mContext;
@@ -61,8 +63,11 @@ public class VideoPresenter implements Presenter {
 
     }
 
-    public void getUrlByFileName(String fileName) {
+    public void getUrlByFileName(String fileName, int dvrType, int dvrID) {
+        this.urlType = 1;   //录像
         this.fileName = fileName;
+        this.dvrTypes = dvrType;
+        this.dvrId = dvrID;
         this.loadVideoUrl();
     }
 
@@ -72,12 +77,13 @@ public class VideoPresenter implements Presenter {
     }
 
     public void getVideoUrl() {
-        videoRepository = new VideoDataRepository(mContext, fileName);
+        videoRepository = new VideoDataRepository(mContext, fileName,dvrTypes,dvrId);
         this.videoUseCase = new VideoUseCase(new UIThread(), AndroidSchedulers.mainThread(), videoRepository, 1);
         this.videoUseCase.execute(new VideoUrlSubscriber());
     }
 
     public void getUrlForRealPlay(int channleID, int streamType, int dvrId, String dvrType) {
+        this.urlType = 2; //实时视频
         this.channelID = channleID;
         this.streamType = streamType;
         this.dvrId = dvrId;
@@ -92,6 +98,7 @@ public class VideoPresenter implements Presenter {
 
 
     public void getRealPlayUrl() {
+
         videoRepository = new VideoDataRepository(mContext, channelID, streamType, dvrId, dvrType);
         this.videoUseCase = new VideoUseCase(new UIThread(), AndroidSchedulers.mainThread(), videoRepository, 1);
         this.videoUseCase.execute(new VideoUrlSubscriber());
@@ -118,7 +125,7 @@ public class VideoPresenter implements Presenter {
 
     private void startVideoPlay(String videoUrl) {
         if (this.videoActivity != null) {
-            this.videoActivity.startVideoPlay(videoUrl);
+            this.videoActivity.startVideoPlay(videoUrl,urlType);
         }
     }
 

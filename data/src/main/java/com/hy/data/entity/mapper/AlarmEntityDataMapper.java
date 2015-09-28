@@ -21,6 +21,7 @@ public class AlarmEntityDataMapper {
             domainAlarmInformation.setPoleName(alarmEntity.getPoleName());
             domainAlarmInformation.setDeviceId(alarmEntity.getDeviceId());
             domainAlarmInformation.setDvrID(alarmEntity.getDvrID());
+            domainAlarmInformation.setDvrType(alarmEntity.getDvrType());
             domainAlarmInformation.setAlarmInformation(alarmEntity.getAlarmInformation());
             domainAlarmInformation.setVisibleLightImage(alarmEntity.getVisibleLightImage());
             domainAlarmInformation.setInfraredImage(alarmEntity.getInfraredImage());

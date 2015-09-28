@@ -9,6 +9,7 @@ public class AlarmEntity {
     private String poleName;
     private String deviceId;
     private String dvrID;
+    private String dvrType;
     private String alarmInformation;
     private String visibleLightImage;
     private String infraredImage;
@@ -19,6 +20,14 @@ public class AlarmEntity {
     private String circuitName;
 
     public AlarmEntity() {
+    }
+
+    public String getDvrType() {
+        return dvrType;
+    }
+
+    public void setDvrType(String dvrType) {
+        this.dvrType = dvrType;
     }
 
     public String getCircuitName() {

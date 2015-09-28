@@ -101,7 +101,7 @@ public interface RestApi {
      * @param fileName 根据文件名获得播放地址
      * @return 返回Url
      */
-    Observable<String> videoUrl(String fileName);
+    Observable<String> videoUrl(String fileName,int dvrId,int dvrType);
 
     /**
      * 取得实时视频播放地址

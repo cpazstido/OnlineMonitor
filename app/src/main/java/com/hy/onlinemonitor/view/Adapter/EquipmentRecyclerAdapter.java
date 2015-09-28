@@ -114,6 +114,8 @@ public class EquipmentRecyclerAdapter extends RecyclerView.Adapter<EquipmentList
                 if (OwnJurisdiction.haveJurisdiction(3)) {
                     Intent intent = new Intent(holder.itemView.getContext(), SingleAlarmInformationActivity.class);
                     intent.putExtra("queryAlarmType", "break");
+                    intent.putExtra("dvrType",2);//2代表外破
+                    intent.putExtra("dvrId",equipmentInformation.getDvrId());
                     intent.putExtra("status", 1);
                     intent.putExtra("title", "外破历史报警");
                     intent.putExtra("equipmentName", equipmentInformation.getEquipmnetName());
@@ -132,6 +134,8 @@ public class EquipmentRecyclerAdapter extends RecyclerView.Adapter<EquipmentList
                 if (OwnJurisdiction.haveJurisdiction(3)) {
                     Intent intent = new Intent(holder.itemView.getContext(), SingleAlarmInformationActivity.class);
                     intent.putExtra("queryAlarmType", "fire");
+                    intent.putExtra("dvrType",1);//1代表山火
+                    intent.putExtra("dvrId",equipmentInformation.getDvrId());
                     intent.putExtra("status", 1);//1是历史 0是新报警
                     intent.putExtra("title", "山火历史报警");
                     intent.putExtra("equipmentName", equipmentInformation.getEquipmnetName());
@@ -169,6 +173,8 @@ public class EquipmentRecyclerAdapter extends RecyclerView.Adapter<EquipmentList
                 if (OwnJurisdiction.haveJurisdiction(3)) {
                     Intent intent = new Intent(holder.itemView.getContext(), SingleAlarmInformationActivity.class);
                     intent.putExtra("queryAlarmType", "break");
+                    intent.putExtra("dvrType",2);//2代表外破
+                    intent.putExtra("dvrId",equipmentInformation.getDvrId());
                     intent.putExtra("status", 0);//1是历史 0是新报警
                     intent.putExtra("title", "外破新报警");
                     intent.putExtra("equipmentName", equipmentInformation.getEquipmnetName());
@@ -188,6 +194,8 @@ public class EquipmentRecyclerAdapter extends RecyclerView.Adapter<EquipmentList
                     Intent intent = new Intent(holder.itemView.getContext(), SingleAlarmInformationActivity.class);
                     intent.putExtra("queryAlarmType", "fire");
                     intent.putExtra("title", "山火新报警");
+                    intent.putExtra("dvrId",equipmentInformation.getDvrId());
+                    intent.putExtra("dvrType",1);//1代表山火
                     intent.putExtra("status", 0);//1是历史 0是新报警
                     intent.putExtra("equipmentName", equipmentInformation.getEquipmnetName());
                     intent.putExtra("userId", userId);

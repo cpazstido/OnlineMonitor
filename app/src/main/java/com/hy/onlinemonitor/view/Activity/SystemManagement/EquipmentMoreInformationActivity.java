@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.hy.onlinemonitor.R;
 import com.hy.onlinemonitor.bean.Equipment;
+import com.hy.onlinemonitor.utile.ActivityCollector;
 import com.hy.onlinemonitor.view.Adapter.MoreInformationSensorRecyclerAdapter;
 
 import butterknife.Bind;
@@ -49,6 +50,7 @@ public class EquipmentMoreInformationActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        ActivityCollector.addActivity(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_more_information);
         ButterKnife.bind(this);
@@ -59,7 +61,7 @@ public class EquipmentMoreInformationActivity extends AppCompatActivity {
         getSupportActionBar().setSubtitle(R.string.more_information);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        initdata();
+        initData();
 
         equipmentIdentifier.setText(equipment.getDeviceID());
         equipmentType.setText(equipment.getDeviceType());
@@ -83,7 +85,7 @@ public class EquipmentMoreInformationActivity extends AppCompatActivity {
         }
     }
 
-    private void initdata() {
+    private void initData() {
         Intent intent = getIntent();
         this.equipment = (Equipment) intent.getSerializableExtra("equipmentInformation");
     }
@@ -98,4 +100,9 @@ public class EquipmentMoreInformationActivity extends AppCompatActivity {
         return true;
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        ActivityCollector.removeActivity(this);
+    }
 }
