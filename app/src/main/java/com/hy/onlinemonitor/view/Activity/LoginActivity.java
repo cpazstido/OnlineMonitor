@@ -137,6 +137,7 @@ public class LoginActivity extends AppCompatActivity implements JumpView {
             loginAccount.setText(userName);
             loginPwd.setText(userPassword);
             rememberPasswordCheck.setChecked(true);
+            autoLoginCheck.setChecked(false);
         }
 
     }
