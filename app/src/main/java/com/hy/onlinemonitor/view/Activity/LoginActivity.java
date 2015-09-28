@@ -62,6 +62,17 @@ public class LoginActivity extends AppCompatActivity implements JumpView {
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(rememberPasswordCheck.isChecked() && !autoLoginCheck.isChecked()){
+                    editor.putString("rememberPassword","true");
+                    editor.putString("userName", loginAccount.getText().toString());
+                    editor.putString("userPassword", loginPwd.getText().toString());
+                }else if(autoLoginCheck.isChecked() && rememberPasswordCheck.isChecked()){
+                    editor.putString("rememberPassword","true");
+                    editor.putString("autoLogin", "true");
+                    editor.putString("userName", loginAccount.getText().toString());
+                    editor.putString("userPassword", loginPwd.getText().toString());
+                }
+                editor.apply();
                 loginPresenter.initialize(loginAccount.getText().toString(), loginPwd.getText().toString());
             }
         });
@@ -71,6 +82,8 @@ public class LoginActivity extends AppCompatActivity implements JumpView {
             public void onClick(View v) {
                 loginAccount.setText("");
                 loginPwd.setText("");
+                editor.clear();
+                editor.apply();
                 TestActivity.StartTestView(LoginActivity.this);
             }
         });
@@ -78,14 +91,26 @@ public class LoginActivity extends AppCompatActivity implements JumpView {
         rememberPasswordCheck.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
+                if(!isChecked){
+                    editor.putString("rememberPassword","false");
+                    editor.putString("userName","");
+                    editor.putString("userPassword","");
+                }
+                editor.apply();
             }
         });
 
         autoLoginCheck.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
+                if(isChecked){
+                    if(!rememberPasswordCheck.isChecked()){
+                        rememberPasswordCheck.setChecked(true);
+                    }
+                }else{
+                    editor.putString("autoLogin","false");
+                }
+                editor.apply();
             }
         });
 
@@ -98,12 +123,20 @@ public class LoginActivity extends AppCompatActivity implements JumpView {
         rememberPassword = sharedPreferences.getString("rememberPassword", "");
         autoLogin = sharedPreferences.getString("autoLogin","");
 
-        if(rememberPassword.equals("true")){
-
-        }
-
-        if(autoLogin.equals("true")){
-
+        if(autoLogin.equals("true") && rememberPassword.equals("true")){
+            userName = sharedPreferences.getString("userName","");
+            userPassword = sharedPreferences.getString("userPassword","");
+            loginAccount.setText(userName);
+            loginPwd.setText(userPassword);
+            loginPresenter.initialize(userName, userPassword);
+            autoLoginCheck.setChecked(true);
+            rememberPasswordCheck.setChecked(true);
+        }else if(rememberPassword.equals("true") && !autoLogin.equals("true")){
+            userName = sharedPreferences.getString("userName","");
+            userPassword = sharedPreferences.getString("userPassword","");
+            loginAccount.setText(userName);
+            loginPwd.setText(userPassword);
+            rememberPasswordCheck.setChecked(true);
         }
 
     }

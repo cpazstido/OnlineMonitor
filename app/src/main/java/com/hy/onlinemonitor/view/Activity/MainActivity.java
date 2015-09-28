@@ -22,9 +22,6 @@ import com.hy.onlinemonitor.view.Activity.SystemManagement.PoleManageActivity;
 import com.hy.onlinemonitor.view.Adapter.MainGridAdapter;
 import com.hy.onlinemonitor.view.Component.MyGridView;
 
-/**
- * Created by wsw on 2015/7/11.
- */
 public class MainActivity extends BaseActivity implements AdapterView.OnItemClickListener {
     private MyGridView gvFunction, gvConfig, gvManage, gvMonitor;
     private Toolbar toolbar;
