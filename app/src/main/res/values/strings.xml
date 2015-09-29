@@ -3,7 +3,7 @@
     <string name="login_title">在线监测管理系统</string>
 
     <string name="exit_app">结束程序</string>
-    <string name="exit_login">退出登录</string>
+    <string name="return_login">返回登录</string>
     <string name="auto">自动</string>
     <string name="hand">手动</string>
     <string name="no_data">暂无数据</string>

@@ -98,7 +98,7 @@ public class VideoActivity extends AppCompatActivity implements InitView, LoadDa
     private static int CONTROL_RIGHT = 3;
     private static int CONTROL_UP = 4;
     private static int CONTROL_DOWN = 5;
-    private static int CONTROL_STOP = 5;
+    private static int CONTROL_STOP = 11;
 
     private static int OPEN_POWER = 3;
     private static int OPEN_SYSTEM_POWER = 5;
@@ -485,12 +485,11 @@ public class VideoActivity extends AppCompatActivity implements InitView, LoadDa
                 videoPlayTv.setText("等待摄像机打开");
                 break;
             case "\"通信主机关闭\"":
-            case "\"前端监测设备通信中\"":
+            case "\"摄像机状态查询失败\"":
+            case "\"前端监测设备通信中。。。\"":   //
                 videoPlayTv.setText("播放失败");
                 //do nothing
                 videoUrl = "";
-                break;
-            case "\"命令执行成功，请等待10秒\"":
                 break;
             default:
                 break;

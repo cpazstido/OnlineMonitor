@@ -3,16 +3,144 @@
     xmlns:ripple="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/login_background"
+    android:background="@color/md_blue_grey_800"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin">
 
+    <android.support.v7.widget.CardView
+        android:id="@+id/password_card"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:alpha="200"
+        app:cardElevation="4dp"
+        android:layout_marginBottom="10dp"
+
+        ripple:cardBackgroundColor="@color/md_white_1000"
+        ripple:cardCornerRadius="4dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="密码"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
+                android:textColor="@color/md_black_1000"
+                android:textSize="@dimen/mSubhead" />
+
+            <EditText
+                android:id="@+id/login_pwd"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:gravity="center"
+                android:hint="@string/input_password"
+                android:inputType="textPassword" />
+        </LinearLayout>
+
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/account_card"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/password_card"
+        android:alpha="200"
+        app:cardElevation="4dp"
+        android:layout_marginBottom="10dp"
+        ripple:cardBackgroundColor="@color/md_white_1000"
+        ripple:cardCornerRadius="4dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="账号"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
+                android:textColor="@color/md_black_1000"
+                android:textSize="@dimen/mSubhead" />
+
+            <EditText
+                android:id="@+id/login_account"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="5dp"
+                android:layout_weight="3"
+                android:gravity="center"
+                android:hint="@string/input_account" />
+        </LinearLayout>
+
+    </android.support.v7.widget.CardView>
+
+    <LinearLayout
+        android:id="@+id/check_box"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/password_card"
+        android:orientation="horizontal">
+
+        <com.rey.material.widget.CheckBox
+            android:id="@+id/remember_password_check"
+            style="@style/CheckBoxDrawable"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:checked="false"
+            android:gravity="center_vertical"
+            android:text="@string/remember_passwords"
+            android:textColor="@color/md_white_1000"
+            android:textSize="14sp" />
+
+        <com.rey.material.widget.CheckBox
+            android:id="@+id/auto_login_check"
+            style="@style/CheckBoxDrawable"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:checked="false"
+            android:gravity="center_vertical"
+            android:text="@string/auto_login"
+            android:textColor="@color/md_white_1000"
+            android:textSize="14sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/check_box"
+        android:orientation="horizontal">
+
+        <com.rey.material.widget.Button
+            android:id="@+id/login_btn"
+            style="@style/RaiseColorButtonRippleStyle"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:text="@string/login"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Button"
+            android:textColor="#FFFFFFFF"
+            app:rd_delayClick="afterRelease" />
+    </LinearLayout>
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/login_card"
+        android:layout_above="@id/account_card"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_marginBottom="55dp"
@@ -20,133 +148,4 @@
         android:text="@string/login_title"
         android:textColor="@color/md_white_1000"
         android:textSize="@dimen/mLoginTitle" />
-
-    <android.support.v7.widget.CardView
-        android:id="@+id/login_card"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:alpha="200"
-        app:cardElevation="4dp"
-        ripple:cardBackgroundColor="@color/secondary_text"
-        ripple:cardCornerRadius="20dp">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/textView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="账号"
-                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
-                    android:textColor="@color/md_white_1000"
-                    android:textSize="@dimen/mSubhead" />
-
-                <EditText
-                    android:id="@+id/login_account"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="5dp"
-                    android:layout_weight="3"
-                    android:gravity="center"
-                    android:hint="@string/input_account"
-                    android:textColor="@color/md_white_1000" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="密码"
-                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
-                    android:textColor="@color/md_white_1000"
-                    android:textSize="@dimen/mSubhead" />
-
-                <EditText
-                    android:id="@+id/login_pwd"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="3"
-                    android:gravity="center"
-                    android:hint="@string/input_password"
-                    android:inputType="textPassword"
-                    android:textColor="@color/md_white_1000" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <com.rey.material.widget.CheckBox
-                    android:id="@+id/remember_password_check"
-                    style="@style/CheckBoxDrawable"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:checked="false"
-                    android:gravity="center_vertical"
-                    android:text="@string/remember_passwords"
-                    android:textColor="@color/md_white_1000"
-                    android:textSize="14sp" />
-
-                <com.rey.material.widget.CheckBox
-                    android:id="@+id/auto_login_check"
-                    style="@style/CheckBoxDrawable"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:checked="false"
-                    android:gravity="center_vertical"
-                    android:text="@string/auto_login"
-                    android:textColor="@color/md_white_1000"
-                    android:textSize="14sp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <com.rey.material.widget.Button
-                    android:id="@+id/login_btn"
-                    style="@style/FlatColorButtonRippleStyle"
-                    android:layout_width="0dp"
-                    android:layout_height="@dimen/bt_height"
-                    android:layout_weight="1"
-                    android:text="@string/login"
-                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Button"
-                    android:textColor="#FFFFFFFF"
-                    app:rd_delayClick="afterRelease" />
-
-                <com.rey.material.widget.Button
-                    android:id="@+id/rest_btn"
-                    style="@style/FlatColorButtonRippleStyle"
-                    android:layout_width="0dp"
-                    android:layout_height="@dimen/bt_height"
-                    android:layout_weight="1"
-                    android:text="@string/reset"
-                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Button"
-                    android:textColor="#FFFFFFFF"
-                    app:rd_delayClick="afterRelease" />
-            </LinearLayout>
-        </LinearLayout>
-    </android.support.v7.widget.CardView>
-
 </RelativeLayout>

@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 
+import com.hy.onlinemonitor.MyApplication;
 import com.hy.onlinemonitor.R;
 import com.hy.onlinemonitor.presenter.LoginPresenter;
 import com.hy.onlinemonitor.utile.ActivityCollector;
@@ -27,12 +28,8 @@ import butterknife.ButterKnife;
 public class LoginActivity extends AppCompatActivity implements JumpView {
 
     private static final String TAG = "LOGIN";
-    private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor editor;
-    private String userName;
-    private String userPassword;
-    private String rememberPassword;
-    private String autoLogin;
+    private MyApplication myApplication;
 
     @Bind(R.id.remember_password_check)
     CheckBox rememberPasswordCheck;
@@ -46,8 +43,6 @@ public class LoginActivity extends AppCompatActivity implements JumpView {
     EditText loginPwd;
     @Bind(R.id.login_btn)
     Button loginBtn;
-    @Bind(R.id.rest_btn)
-    Button restBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,9 +51,10 @@ public class LoginActivity extends AppCompatActivity implements JumpView {
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
         initPresenter();
-        LoginAlert = GetLoading.getDialog(LoginActivity.this, "登录中");
+        LoginAlert = GetLoading.getDialog(LoginActivity.this, "录中");
         initSP();
 
+        checkVersion();
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -74,17 +70,6 @@ public class LoginActivity extends AppCompatActivity implements JumpView {
                 }
                 editor.apply();
                 loginPresenter.initialize(loginAccount.getText().toString(), loginPwd.getText().toString());
-            }
-        });
-
-        restBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                loginAccount.setText("");
-                loginPwd.setText("");
-                editor.clear();
-                editor.apply();
-                TestActivity.StartTestView(LoginActivity.this);
             }
         });
 
@@ -116,24 +101,34 @@ public class LoginActivity extends AppCompatActivity implements JumpView {
 
     }
 
+    private void checkVersion() {
+        myApplication = (MyApplication) getApplication();
+        if (myApplication.localVersion < myApplication.serverVersion) {
+
+        }
+
+    }
+
     private void initSP() {
-        sharedPreferences = getSharedPreferences("user", MODE_PRIVATE);
+        SharedPreferences sharedPreferences = getSharedPreferences("user", MODE_PRIVATE);
         editor = sharedPreferences.edit();
 
-        rememberPassword = sharedPreferences.getString("rememberPassword", "");
-        autoLogin = sharedPreferences.getString("autoLogin","");
+        String rememberPassword = sharedPreferences.getString("rememberPassword", "");
+        String autoLogin = sharedPreferences.getString("autoLogin", "");
+        String userName;
+        String userPassword;
 
         if(autoLogin.equals("true") && rememberPassword.equals("true")){
-            userName = sharedPreferences.getString("userName","");
-            userPassword = sharedPreferences.getString("userPassword","");
+            userName = sharedPreferences.getString("userName", "");
+            userPassword = sharedPreferences.getString("userPassword", "");
             loginAccount.setText(userName);
             loginPwd.setText(userPassword);
             loginPresenter.initialize(userName, userPassword);
             autoLoginCheck.setChecked(true);
             rememberPasswordCheck.setChecked(true);
         }else if(rememberPassword.equals("true") && !autoLogin.equals("true")){
-            userName = sharedPreferences.getString("userName","");
-            userPassword = sharedPreferences.getString("userPassword","");
+            userName = sharedPreferences.getString("userName", "");
+            userPassword = sharedPreferences.getString("userPassword", "");
             loginAccount.setText(userName);
             loginPwd.setText(userPassword);
             rememberPasswordCheck.setChecked(true);

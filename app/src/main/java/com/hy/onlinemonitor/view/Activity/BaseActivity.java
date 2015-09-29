@@ -87,7 +87,7 @@ public abstract class BaseActivity extends AppCompatActivity implements InitView
                         new SecondaryDrawerItem().withName(R.string.tower).withIcon(towerDrawable).withIdentifier(10).withTag("Bullhorn"),
                         new SecondaryDrawerItem().withName(R.string.equipment).withIcon(GoogleMaterial.Icon.gmd_devices).withIdentifier(11).withTag("Bullhorn"),
                         new DividerDrawerItem(),
-                        new PrimaryDrawerItem().withName(R.string.exit_login).withIcon(GoogleMaterial.Icon.gmd_account_circle).withIdentifier(12).withCheckable(true),
+                        new PrimaryDrawerItem().withName(R.string.return_login).withIcon(GoogleMaterial.Icon.gmd_account_circle).withIdentifier(12).withCheckable(true),
                         new PrimaryDrawerItem().withName(R.string.about).withIcon(GoogleMaterial.Icon.gmd_info_outline).withIdentifier(13).withCheckable(true),
                         new PrimaryDrawerItem().withName(R.string.exit_app).withIcon(GoogleMaterial.Icon.gmd_exit_to_app).withIdentifier(14).withCheckable(true)
                 )
@@ -136,13 +136,8 @@ public abstract class BaseActivity extends AppCompatActivity implements InitView
                                         case 11://系统管理-设备
                                             intent = new Intent(BaseActivity.this, EquipmentManageActivity.class);
                                             break;
-                                        case 12://退出登录
-                                            editor.putString("autoLogin","false");
-                                            editor.putString("rememberPassword","false");
-                                            editor.apply();
-//                                            intent = new Intent(BaseActivity.this,LoginActivity.class);
-//                                            intent.putExtra("autoLogin","false");
-//                                            intent.putExtra("rememberPassword","false");
+                                        case 12://返回登录
+                                            intent = new Intent(BaseActivity.this,LoginActivity.class);
                                             break;
                                         case 13://关于
 //                                            intent = new Intent(BaseActivity.this,);

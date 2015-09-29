@@ -300,6 +300,12 @@ public class AdministratorManageActivity extends SMBaseActivity {
 
         checkAll = (CheckBox) relativeLayout.findViewById(R.id.check_box);
 
+        if(administratorInformation.getAllPoleSeleceted() ==1){
+            Log.e("tag","全选了");
+            checkAll.setChecked(true);
+//            checkAll.setChecked(true);
+        }
+
         checkAll.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -334,15 +340,16 @@ public class AdministratorManageActivity extends SMBaseActivity {
             }
             root.addChild(lineTree);
         }
-        if(administratorInformation.getAllPoleSeleceted() ==1){
-            Log.e("tag","全选了");
-        }
+
+
 
         tView = new AndroidTreeView(AdministratorManageActivity.this, root);
         tView.setDefaultAnimation(true);
         tView.setSelectionModeEnabled(true);
         containerView.addView(relativeLayout);
         containerView.addView(tView.getView());
+
+
         dialog.show();
     }
 

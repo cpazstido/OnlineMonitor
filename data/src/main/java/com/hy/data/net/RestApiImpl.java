@@ -541,6 +541,7 @@ public class RestApiImpl implements RestApi {
             @Override
             public void call(Subscriber<? super String> subscriber) {
                 try {
+                    Log.i("url!!!", String.valueOf(VideoPlayUtils.getVideoControlXml(type)));
                     SystemRestClient.XmlControlPost(context, "/continuous", dvrID, channelID, dvrType, VideoPlayUtils.getVideoControlXml(type), "text/xml; charset=UTF-8", new AsyncHttpResponseHandler() {
                         @Override
                         public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
