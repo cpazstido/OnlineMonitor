@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.hy.onlinemonitor.MyApplication;
 import com.hy.onlinemonitor.R;
 import com.hy.onlinemonitor.presenter.LoginPresenter;
@@ -58,12 +59,12 @@ public class LoginActivity extends AppCompatActivity implements JumpView {
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(rememberPasswordCheck.isChecked() && !autoLoginCheck.isChecked()){
-                    editor.putString("rememberPassword","true");
+                if (rememberPasswordCheck.isChecked() && !autoLoginCheck.isChecked()) {
+                    editor.putString("rememberPassword", "true");
                     editor.putString("userName", loginAccount.getText().toString());
                     editor.putString("userPassword", loginPwd.getText().toString());
-                }else if(autoLoginCheck.isChecked() && rememberPasswordCheck.isChecked()){
-                    editor.putString("rememberPassword","true");
+                } else if (autoLoginCheck.isChecked() && rememberPasswordCheck.isChecked()) {
+                    editor.putString("rememberPassword", "true");
                     editor.putString("autoLogin", "true");
                     editor.putString("userName", loginAccount.getText().toString());
                     editor.putString("userPassword", loginPwd.getText().toString());
@@ -76,10 +77,10 @@ public class LoginActivity extends AppCompatActivity implements JumpView {
         rememberPasswordCheck.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(!isChecked){
-                    editor.putString("rememberPassword","false");
-                    editor.putString("userName","");
-                    editor.putString("userPassword","");
+                if (!isChecked) {
+                    editor.putString("rememberPassword", "false");
+                    editor.putString("userName", "");
+                    editor.putString("userPassword", "");
                 }
                 editor.apply();
             }
@@ -88,12 +89,12 @@ public class LoginActivity extends AppCompatActivity implements JumpView {
         autoLoginCheck.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked){
-                    if(!rememberPasswordCheck.isChecked()){
+                if (isChecked) {
+                    if (!rememberPasswordCheck.isChecked()) {
                         rememberPasswordCheck.setChecked(true);
                     }
-                }else{
-                    editor.putString("autoLogin","false");
+                } else {
+                    editor.putString("autoLogin", "false");
                 }
                 editor.apply();
             }
@@ -102,9 +103,22 @@ public class LoginActivity extends AppCompatActivity implements JumpView {
     }
 
     private void checkVersion() {
-        myApplication = (MyApplication) getApplication();
-        if (myApplication.localVersion < myApplication.serverVersion) {
+        if (MyApplication.localVersion < MyApplication.serverVersion) {
+            String content = "发现新版本,建议在wifi环境下更新/n";
+            content += "安装包大小:"+MyApplication.appSize;
+            MaterialDialog dialog = new MaterialDialog.Builder(LoginActivity.this)
+                    .title(R.string.up_data) //对话框标题
+                    .content(content)
+                    .positiveText(R.string.downloads) //positive按钮文字
+                    .negativeText(R.string.cancels)//negative按钮文字
+                    .callback(new MaterialDialog.ButtonCallback() { //回调函数
+                        @Override
+                        public void onPositive(MaterialDialog dialog) {
+                            super.onPositive(dialog);//显示下载对话框
+                        }
 
+                    })
+                    .show();
         }
 
     }
@@ -118,7 +132,7 @@ public class LoginActivity extends AppCompatActivity implements JumpView {
         String userName;
         String userPassword;
 
-        if(autoLogin.equals("true") && rememberPassword.equals("true")){
+        if (autoLogin.equals("true") && rememberPassword.equals("true")) {
             userName = sharedPreferences.getString("userName", "");
             userPassword = sharedPreferences.getString("userPassword", "");
             loginAccount.setText(userName);
@@ -126,7 +140,7 @@ public class LoginActivity extends AppCompatActivity implements JumpView {
             loginPresenter.initialize(userName, userPassword);
             autoLoginCheck.setChecked(true);
             rememberPasswordCheck.setChecked(true);
-        }else if(rememberPassword.equals("true") && !autoLogin.equals("true")){
+        } else if (rememberPassword.equals("true") && !autoLogin.equals("true")) {
             userName = sharedPreferences.getString("userName", "");
             userPassword = sharedPreferences.getString("userPassword", "");
             loginAccount.setText(userName);
@@ -179,7 +193,8 @@ public class LoginActivity extends AppCompatActivity implements JumpView {
     @Override
     public void onPause() {
         super.onPause();
-        this.loginPresenter.pause();
+        if (loginPresenter != null)
+            this.loginPresenter.pause();
     }
 
     @Override

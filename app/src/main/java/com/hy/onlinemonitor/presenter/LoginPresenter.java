@@ -45,6 +45,7 @@ public class LoginPresenter extends DefaultSubscriber implements Presenter {
 
     @Override
     public void destroy() {
+        if(loginUseCase!=null)
         this.loginUseCase.unsubscribe();
     }
 

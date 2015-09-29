@@ -51,8 +51,11 @@ dependencies {
     compile('com.mikepenz:materialdrawer:3.1.2@aar') {
         transitive = true
     }
+    //显示下载的库
+    compile 'com.github.tibolte:elasticdownload:1.0.+'
+
     //网络请求的库
-    compile 'com.loopj.android:android-async-http:1.4.8'
+    compile 'com.loopj.android:android-async-http:1.4.9'
     //Gson
     compile 'com.google.code.gson:gson:2.3.1'
     //百度地图
