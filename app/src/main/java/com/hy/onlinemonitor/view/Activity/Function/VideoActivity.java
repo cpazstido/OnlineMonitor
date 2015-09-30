@@ -485,12 +485,11 @@ public class VideoActivity extends AppCompatActivity implements InitView, LoadDa
                 videoPlayTv.setText("等待摄像机打开");
                 break;
             case "\"通信主机关闭\"":
-            case "\"前端监测设备通信中\"":
+            case "\"摄像机状态查询失败\"":
+            case "\"前端监测设备通信中。。。\"":   //
                 videoPlayTv.setText("播放失败");
                 //do nothing
                 videoUrl = "";
-                break;
-            case "\"命令执行成功，请等待10秒\"":
                 break;
             default:
                 break;

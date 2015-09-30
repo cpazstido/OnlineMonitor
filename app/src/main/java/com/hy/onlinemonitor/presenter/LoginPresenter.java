@@ -45,6 +45,7 @@ public class LoginPresenter extends DefaultSubscriber implements Presenter {
 
     @Override
     public void destroy() {
+        if(loginUseCase!=null)
         this.loginUseCase.unsubscribe();
     }
 
@@ -89,6 +90,7 @@ public class LoginPresenter extends DefaultSubscriber implements Presenter {
     private final class UserSubscriber extends DefaultSubscriber<DomainUser> {
         @Override
         public void onCompleted() {
+            Log.e("onCompleted","onCompleted");
         }
 
         @Override

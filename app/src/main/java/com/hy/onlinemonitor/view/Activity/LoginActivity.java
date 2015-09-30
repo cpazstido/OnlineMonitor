@@ -49,7 +49,7 @@ public class LoginActivity extends AppCompatActivity implements JumpView {
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
         initPresenter();
-        LoginAlert = GetLoading.getDialog(LoginActivity.this, "登录中");
+        LoginAlert = GetLoading.getDialog(LoginActivity.this, "录中");
         initSP();
 
         checkVersion();

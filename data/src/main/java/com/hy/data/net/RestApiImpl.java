@@ -162,7 +162,7 @@ public class RestApiImpl implements RestApi {
                                 RequestParams params = new RequestParams();
                                 params.put("uername", loginAccount);
                                 params.put("uerpwd", loginPwd);
-                                SystemRestClient.get("/login", params, new AsyncHttpResponseHandler() {
+                                SystemRestClient.post("/login", params, new AsyncHttpResponseHandler() {
                                     @Override
                                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                                         Log.i("msg", "登陆成功");
@@ -541,6 +541,7 @@ public class RestApiImpl implements RestApi {
             @Override
             public void call(Subscriber<? super String> subscriber) {
                 try {
+                    Log.i("url!!!", String.valueOf(VideoPlayUtils.getVideoControlXml(type)));
                     SystemRestClient.XmlControlPost(context, "/continuous", dvrID, channelID, dvrType, VideoPlayUtils.getVideoControlXml(type), "text/xml; charset=UTF-8", new AsyncHttpResponseHandler() {
                         @Override
                         public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {

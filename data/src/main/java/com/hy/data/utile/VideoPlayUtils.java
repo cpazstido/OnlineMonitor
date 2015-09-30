@@ -78,6 +78,7 @@ public class VideoPlayUtils {
         sb.append(PTZSpeed);
         sb.append("</PTZSpeed>");
         sb.append("</PTZData>");
+        Log.e("StringEntity",sb.toString());
         return new StringEntity(sb.toString());
     }
 
