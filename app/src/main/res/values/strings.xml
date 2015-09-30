@@ -108,6 +108,10 @@
     <string name="line_add">线路新增</string>
     <string name="line_choice">线路选择</string>
     <string name="voltage_level">电压等级</string>
+    <string name="download_updata">下载更新</string>
+    <string name="downloading">下载中</string>
+    <string name="install">安装</string>
+
 
     <string name="up_data">更新</string>
     <string name="system_management">系统管理</string>

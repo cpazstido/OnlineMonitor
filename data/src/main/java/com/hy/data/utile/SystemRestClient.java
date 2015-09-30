@@ -17,17 +17,24 @@ public class SystemRestClient {
     public static final String BASE_PICTURE_URL = "http://171.221.207.57:8080/eMonitorApp/alarm/";
     private static final String BASE_VIDEO_URL = "http://171.221.207.57:8080/eMonitorApp/accessServer";
     private static final String BASE_POWER_URL = "http://171.221.207.57:8080/eMonitorApp/frontendconfig";
+    private static final String BASE_UPDATA_URL = "http://171.221.207.57:8080/eMonitorApp/appUpdate";
+
 //    private static final String BASE_URL = "http://172.16.8.129:8081/eMonitorApp/android";
 //    public static final String BASE_PICTURE_URL = "http://172.16.8.129:8081/eMonitorApp/alarm/";
 //    private static final String BASE_VIDEO_URL = "http://172.16.8.129:8081/eMonitorApp/accessServer";
 //    private static final String BASE_POWER_URL = "http://172.16.8.129:8081/eMonitorApp/frontendconfig";
+//    private static final String BASE_UPDATA_URL = "http://172.16.8.129:8081/eMonitorApp/appUpdate";
     private static AsyncHttpClient client = new AsyncHttpClient();
 
     public static void get(String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {
-        client.get(getAbsoluteUrl(url), params, responseHandler);
+        client.get(getUpDataAbsoluteUrl(url), params, responseHandler);
     }
     public static void get(String url, AsyncHttpResponseHandler responseHandler) {
-        client.get(getAbsoluteUrl(url),responseHandler);
+        client.get(getUpDataAbsoluteUrl(url),responseHandler);
+    }
+    private static String getUpDataAbsoluteUrl(String url) {
+        Log.e("getUpDataAbsoluteUrl",BASE_UPDATA_URL+url);
+        return BASE_UPDATA_URL+url;
     }
 
     public static void post(String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {
@@ -52,7 +59,7 @@ public class SystemRestClient {
     }
 
     private static String getXmlControlAbsoluteUrl(String url, int dvrID, int channelID, String dvrType) {
-        Log.i("XmlControlAbsoluteUrl", BASE_VIDEO_URL+url+"?DvrID="+dvrID+"&ChannelID="+channelID+"&DvrType="+dvrType);
+        Log.i("XmlControlAbsoluteUrl", BASE_VIDEO_URL + url + "?DvrID=" + dvrID + "&ChannelID=" + channelID + "&DvrType=" + dvrType);
         return BASE_VIDEO_URL+url+"?DvrID="+dvrID+"&ChannelID="+channelID+"&DvrType="+dvrType;
     }
 
@@ -76,12 +83,16 @@ public class SystemRestClient {
     }
 
     private static String getAbsoluteUrl(String url, int dvrId, int channelID, String dvrType) {
-        Log.e("openFirePower",BASE_VIDEO_URL+url+"?DvrID="+dvrId+"&ChannelID="+channelID+"&DvrType="+dvrType);
+        Log.e("openFirePower", BASE_VIDEO_URL + url + "?DvrID=" + dvrId + "&ChannelID=" + channelID + "&DvrType=" + dvrType);
         return BASE_VIDEO_URL+url+"?DvrID="+dvrId+"&ChannelID="+channelID+"&DvrType="+dvrType;
     }
 
     private static String getAbsoluteUrl(String relativeUrl,String deviceId,int operationType) {
         Log.e("openPower",BASE_POWER_URL + relativeUrl+"?deviceID="+deviceId+"&operationType="+operationType);
         return BASE_POWER_URL + relativeUrl+"?deviceID="+deviceId+"&operationType="+operationType;
+    }
+
+    public static AsyncHttpClient getClinent() {
+        return client;
     }
 }
