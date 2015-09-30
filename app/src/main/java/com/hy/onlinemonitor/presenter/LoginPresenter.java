@@ -90,6 +90,7 @@ public class LoginPresenter extends DefaultSubscriber implements Presenter {
     private final class UserSubscriber extends DefaultSubscriber<DomainUser> {
         @Override
         public void onCompleted() {
+            Log.e("onCompleted","onCompleted");
         }
 
         @Override

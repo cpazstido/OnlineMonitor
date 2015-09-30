@@ -18,7 +18,9 @@ import com.hy.onlinemonitor.view.ViewHolder.EquipmentListViewHolder;
 import com.lid.lib.LabelView;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by wsw on 2015/7/15.
@@ -237,18 +239,18 @@ public class EquipmentRecyclerAdapter extends RecyclerView.Adapter<EquipmentList
         if (mList.size() == 0) {
             mList = (List<EquipmentInformation>) equipmentInformationCollection;
         } else {
-            List<EquipmentInformation> newArrayList = mList;
-            for (EquipmentInformation equipmentInformation : equipmentInformationCollection) {
-                for (EquipmentInformation equipmentInformation1 : mList) {
-                    if (equipmentInformation.getSn() == equipmentInformation1.getSn()) {
-                        newArrayList.remove(equipmentInformation1);
-                    }
-                }
+            Map<String,EquipmentInformation> equipmentInformatics = new HashMap<>();
+            for(EquipmentInformation equipmentInformation :mList){
+                equipmentInformatics.put(equipmentInformation.getEquipmnetName(),equipmentInformation);
             }
-            for (EquipmentInformation equipmentInformation : equipmentInformationCollection) {
-                newArrayList.add(equipmentInformation);
+            for(EquipmentInformation equipmentInformation :equipmentInformationCollection){
+                equipmentInformatics.put(equipmentInformation.getEquipmnetName(), equipmentInformation);
             }
-            mList = newArrayList;
+            mList.clear();
+            for (Map.Entry<String, EquipmentInformation> info : equipmentInformatics.entrySet()) {
+                mList.add(info.getValue());
+            }
+
         }
         this.notifyDataSetChanged();
     }

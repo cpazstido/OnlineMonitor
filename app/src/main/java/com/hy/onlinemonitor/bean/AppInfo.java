@@ -6,7 +6,6 @@ import java.io.Serializable;
  * Created by 24363 on 2015/9/29.
  */
 public class AppInfo implements Serializable {
-
     private long size;
     private int serverVersion;
 

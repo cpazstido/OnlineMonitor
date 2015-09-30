@@ -162,7 +162,7 @@ public class RestApiImpl implements RestApi {
                                 RequestParams params = new RequestParams();
                                 params.put("uername", loginAccount);
                                 params.put("uerpwd", loginPwd);
-                                SystemRestClient.get("/login", params, new AsyncHttpResponseHandler() {
+                                SystemRestClient.post("/login", params, new AsyncHttpResponseHandler() {
                                     @Override
                                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                                         Log.i("msg", "登陆成功");
