@@ -3,7 +3,7 @@
     <string name="login_title">在线监测管理系统</string>
 
     <string name="exit_app">结束程序</string>
-    <string name="exit_login">退出登录</string>
+    <string name="return_login">返回登录</string>
     <string name="auto">自动</string>
     <string name="hand">手动</string>
     <string name="no_data">暂无数据</string>
@@ -28,6 +28,8 @@
     <string name="play_state">播放状态</string>
     <string name="yun_state">云台状态</string>
     <string name="yun_control">云台控制:</string>
+    <string name="downloads">下载</string>
+    <string name="cancels">取消</string>
 
     <string name="up">上</string>
     <string name="down">下</string>
@@ -107,6 +109,7 @@
     <string name="line_choice">线路选择</string>
     <string name="voltage_level">电压等级</string>
 
+    <string name="up_data">更新</string>
     <string name="system_management">系统管理</string>
     <string name="parameter_configuration">参数配置</string>
     <string name="condition_monitoring">状态监测</string>

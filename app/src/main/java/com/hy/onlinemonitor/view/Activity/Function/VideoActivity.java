@@ -98,7 +98,7 @@ public class VideoActivity extends AppCompatActivity implements InitView, LoadDa
     private static int CONTROL_RIGHT = 3;
     private static int CONTROL_UP = 4;
     private static int CONTROL_DOWN = 5;
-    private static int CONTROL_STOP = 5;
+    private static int CONTROL_STOP = 11;
 
     private static int OPEN_POWER = 3;
     private static int OPEN_SYSTEM_POWER = 5;
