@@ -35,9 +35,8 @@ public class MyApplication extends Application {
                 public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                     try {
                         String response = new String(responseBody, "UTF-8");
-                        Log.e("tag", response);
-                        Log.e("tag", response.contains("资源已经被移除或不存在") +"");
                         if (response.contains("资源已经被移除或不存在")) {
+                            Log.e("tag","访问升级服务失败");
                             serverVersion = 0;
                             appSize = 0;
                         } else {

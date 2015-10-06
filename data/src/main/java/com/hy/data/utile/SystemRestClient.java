@@ -32,6 +32,7 @@ public class SystemRestClient {
     public static void get(String url, AsyncHttpResponseHandler responseHandler) {
         client.get(getUpDataAbsoluteUrl(url),responseHandler);
     }
+
     private static String getUpDataAbsoluteUrl(String url) {
         Log.e("getUpDataAbsoluteUrl",BASE_UPDATA_URL+url);
         return BASE_UPDATA_URL+url;

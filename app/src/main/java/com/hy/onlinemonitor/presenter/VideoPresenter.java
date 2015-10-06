@@ -107,7 +107,7 @@ public class VideoPresenter implements Presenter {
     private class VideoUrlSubscriber extends DefaultSubscriber<String> {
         @Override
         public void onCompleted() {
-            VideoPresenter.this.hideViewLoading();
+            VideoPresenter.this.prepare();
         }
 
         @Override
@@ -119,8 +119,13 @@ public class VideoPresenter implements Presenter {
 
         @Override
         public void onNext(String videoUrl) {
+            VideoPresenter.this.hideViewLoading();
             VideoPresenter.this.startVideoPlay(videoUrl);
         }
+    }
+
+    private void prepare() {
+        this.videoActivity.prepare();
     }
 
     private void startVideoPlay(String videoUrl) {
