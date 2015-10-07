@@ -625,7 +625,8 @@ public class VideoActivity extends AppCompatActivity implements InitView, LoadDa
 
     @Override
     public boolean onError(MediaPlayer mediaPlayer, int i, int i1) {
-        Log.e("onError","onError调用了!!!");
+        Log.e("onError", "onError调用了!!!");
+        videoPlayTv.setText("播放出错,错误代码"+"("+i+", "+i1+")");
         ShowUtile.toastShow(VideoActivity.this,"视频暂无法播放,错误代码"+"("+i+", "+i1+")");
         doCleanUp();
         releaseMediaPlayer();

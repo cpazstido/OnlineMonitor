@@ -58,26 +58,26 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
             findViewById(R.id.main_ll_monitor).setVisibility(View.GONE);
         }
         //先隐藏未实现的功能界面
-        findViewById(R.id.main_ll_monitor).setVisibility(View.GONE);
         findViewById(R.id.main_ll_config).setVisibility(View.GONE);
+        findViewById(R.id.main_ll_monitor).setVisibility(View.GONE);
 
-        gvFunction = (MyGridView) findViewById(R.id.main_gv_function);
+        gvFunction = (MyGridView) findViewById(R.id.main_gv_function);//功能
         //gvConfig = (MyGridView) findViewById(R.id.main_gv_config);
-        gvManage = (MyGridView) findViewById(R.id.main_gv_manage);
-        //gvMonitor = (MyGridView) findViewById(R.id.main_gv_monitor);
+        gvManage = (MyGridView) findViewById(R.id.main_gv_manage);//系统管理
+        gvMonitor = (MyGridView) findViewById(R.id.main_gv_monitor);//状态监测
 
 
-        gvFunction.setAdapter(new MainGridAdapter(MainActivity.this, FIREGV, selectedType));
+        gvFunction.setAdapter(new MainGridAdapter(MainActivity.this, 0, selectedType));//0代表为功能
         gvFunction.setOnItemClickListener(this);
 
-//        gvConfig.setAdapter(new GridAdapter(MainActivity.this, BREAKGV, selectedType));
+//        gvConfig.setAdapter(new GridAdapter(MainActivity.this, 1, selectedType));
 //        gvConfig.setOnItemClickListener(this);
 
-        gvManage.setAdapter(new MainGridAdapter(MainActivity.this, NORMALGV, selectedType));
+        gvManage.setAdapter(new MainGridAdapter(MainActivity.this, 2, selectedType));//2代表为系统管理
         gvManage.setOnItemClickListener(this);
 
-//        gvMonitor.setAdapter(new GridAdapter(MainActivity.this, AUTOPLANEGV, selectedType));
-//        gvMonitor.setOnItemClickListener(this);
+        gvMonitor.setAdapter(new MainGridAdapter(MainActivity.this, 3, selectedType));//3代表为状态监测
+        gvMonitor.setOnItemClickListener(this);
     }
 
     @Override
@@ -101,7 +101,7 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Log.i("GridView点击了： ", "position" + position);
         switch (parent.getId()) {
-            case R.id.main_gv_function: //功能gridiewV
+            case R.id.main_gv_function: //功能gridView
                 switch (position) {
                     case 0: //设备列表
                         Intent gridEquipmentListIntent = new Intent(MainActivity.this, EquipmentListViewActivity.class);

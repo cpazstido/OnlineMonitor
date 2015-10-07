@@ -218,9 +218,8 @@ public class LoginActivity extends AppCompatActivity implements JumpView {
             } else {
                 targFile = new File(getFilesDir().getPath(), "OnlineMonitor.apk");
                 Log.e("noSd", targFile.getPath());
-
             }
-            client = SystemRestClient.getClinent();
+            client = SystemRestClient.getClient();
             SystemRestClient.get("/downLoadApp", new FileAsyncHttpResponseHandler(targFile) {
                 @Override
                 public void onFailure(int statusCode, Header[] headers, Throwable throwable, File file) {

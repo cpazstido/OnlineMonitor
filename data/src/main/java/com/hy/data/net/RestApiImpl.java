@@ -1245,7 +1245,9 @@ public class RestApiImpl implements RestApi {
                             Log.e("response", responseEntities);
                             if ("\"loginFail\"".equals(responseEntities)) {
                                 subscriber.onError(new NetworkConnectionException("请重新登录"));
-                            } else {
+                            } else if("\"查询失败\"".equals(responseEntities)){
+                                subscriber.onError(new NetworkConnectionException("查询失败"));
+                            }else {
                                 subscriber.onNext(privilegeEntityJsonMapper.transformPrivilegeEntity(responseEntities));
                                 subscriber.onCompleted();
                             }

@@ -13,11 +13,17 @@ import org.apache.http.HttpEntity;
  * Created by wsw on 2015/7/17.
  */
 public class SystemRestClient {
-    private static final String BASE_URL = "http://171.221.207.57:8080/eMonitorApp/android";
-    public static final String BASE_PICTURE_URL = "http://171.221.207.57:8080/eMonitorApp/alarm/";
-    private static final String BASE_VIDEO_URL = "http://171.221.207.57:8080/eMonitorApp/accessServer";
-    private static final String BASE_POWER_URL = "http://171.221.207.57:8080/eMonitorApp/frontendconfig";
-    private static final String BASE_UPDATA_URL = "http://171.221.207.57:8080/eMonitorApp/appUpdate";
+    private static final String BASE_URL = "http://118.123.114.8:8080/eMonitorApp/android";
+    public static final String BASE_PICTURE_URL = "http://118.123.114.8:8080/eMonitorApp/alarm/";
+    private static final String BASE_VIDEO_URL = "http://118.123.114.8:8080/eMonitorApp/accessServer";
+    private static final String BASE_POWER_URL = "http://118.123.114.8:8080/eMonitorApp/frontendconfig";
+    private static final String BASE_UPDATA_URL = "http://118.123.114.8:8080/eMonitorApp/appUpdate";
+
+//    private static final String BASE_URL = "http://171.221.207.57:8080/eMonitorApp/android";
+//    public static final String BASE_PICTURE_URL = "http://171.221.207.57:8080/eMonitorApp/alarm/";
+//    private static final String BASE_VIDEO_URL = "http://171.221.207.57:8080/eMonitorApp/accessServer";
+//    private static final String BASE_POWER_URL = "http://171.221.207.57:8080/eMonitorApp/frontendconfig";
+//    private static final String BASE_UPDATA_URL = "http://171.221.207.57:8080/eMonitorApp/appUpdate";
 
 //    private static final String BASE_URL = "http://172.16.8.129:8081/eMonitorApp/android";
 //    public static final String BASE_PICTURE_URL = "http://172.16.8.129:8081/eMonitorApp/alarm/";
@@ -93,7 +99,7 @@ public class SystemRestClient {
         return BASE_POWER_URL + relativeUrl+"?deviceID="+deviceId+"&operationType="+operationType;
     }
 
-    public static AsyncHttpClient getClinent() {
+    public static AsyncHttpClient getClient() {
         return client;
     }
 }
