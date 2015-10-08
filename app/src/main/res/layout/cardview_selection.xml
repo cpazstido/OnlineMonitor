@@ -32,8 +32,3 @@
         android:textSize="@dimen/mSubhead" />
 
     </android.support.v7.widget.CardView>
-
-
-
-
-

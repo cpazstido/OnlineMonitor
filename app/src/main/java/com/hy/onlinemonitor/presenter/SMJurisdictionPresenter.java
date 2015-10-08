@@ -109,7 +109,7 @@ public class SMJurisdictionPresenter implements Presenter {
 
         @Override
         public void onCompleted() {
-            ShowUtile.toastShow(mContext,"长按修改角色名");
+            ShowUtile.toastShow(mContext,"长按可修改角色名");
             SMJurisdictionPresenter.this.hideViewLoading();
         }
 

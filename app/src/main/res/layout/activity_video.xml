@@ -224,4 +224,16 @@
         android:layout_above="@id/video_show"
         android:layout_below="@id/video_toolbar" />
 
+    <com.rey.material.widget.Slider
+        android:id="@+id/slider_sl_continuous"
+        style="@style/Material.Widget.Slider"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/video_view"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:gravity="center"
+        android:padding="16dp"
+        app:sl_value="0" />
+
 </RelativeLayout>

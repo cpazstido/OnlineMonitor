@@ -88,7 +88,7 @@ public abstract class BaseActivity extends AppCompatActivity implements InitView
                         new SecondaryDrawerItem().withName(R.string.equipment).withIcon(GoogleMaterial.Icon.gmd_devices).withIdentifier(11).withTag("Bullhorn"),
                         new DividerDrawerItem(),
                         new PrimaryDrawerItem().withName(R.string.return_login).withIcon(GoogleMaterial.Icon.gmd_account_circle).withIdentifier(12).withCheckable(true),
-                        new PrimaryDrawerItem().withName(R.string.about).withIcon(GoogleMaterial.Icon.gmd_info_outline).withIdentifier(13).withCheckable(true),
+//                        new PrimaryDrawerItem().withName(R.string.about).withIcon(GoogleMaterial.Icon.gmd_info_outline).withIdentifier(13).withCheckable(true),
                         new PrimaryDrawerItem().withName(R.string.exit_app).withIcon(GoogleMaterial.Icon.gmd_exit_to_app).withIdentifier(14).withCheckable(true)
                 )
                 .withOnDrawerItemClickListener(

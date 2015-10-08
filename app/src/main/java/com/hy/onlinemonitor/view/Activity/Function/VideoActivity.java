@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.graphics.PixelFormat;
 import android.media.AudioManager;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -31,6 +33,7 @@ import com.hy.onlinemonitor.view.InitView;
 import com.hy.onlinemonitor.view.LoadDataView;
 import com.rey.material.widget.Button;
 import com.rey.material.widget.RadioButton;
+import com.rey.material.widget.Slider;
 
 import java.io.IOException;
 import java.util.Timer;
@@ -78,6 +81,9 @@ public class VideoActivity extends AppCompatActivity implements InitView, LoadDa
     RadioButton switchesManual;
     @Bind(R.id.yun_control_show)
     TextView yunControlShow;
+    @Bind(R.id.slider_sl_continuous)
+    Slider sliderSlContinuous;
+
     private static final String TAG = "VideoActivity";
 
     private MediaPlayer mediaPlayer;
@@ -90,6 +96,7 @@ public class VideoActivity extends AppCompatActivity implements InitView, LoadDa
     private AlertDialog loadingDialog;
     private String type;
     private Timer timer;
+    private Timer mTimer=new Timer();
 
     private int dvrTypes;
     private AlarmInformation alarmInformation;
@@ -131,7 +138,33 @@ public class VideoActivity extends AppCompatActivity implements InitView, LoadDa
         } catch (Exception e) {
             Log.e("aaaa", "aaaa");
         }
+        mTimer.schedule(mTimerTask, 0, 1000);
     }
+
+
+    TimerTask mTimerTask = new TimerTask() {
+        @Override
+        public void run() {
+            if(mediaPlayer==null)
+                return;
+            if (mediaPlayer.isPlaying() && !sliderSlContinuous.isPressed()) {
+                handleProgress.sendEmptyMessage(0);
+            }
+        }
+    };
+
+    Handler handleProgress = new Handler() {
+        public void handleMessage(Message msg) {
+
+            long position = mediaPlayer.getCurrentPosition();
+            long duration = mediaPlayer.getDuration();
+
+            if (duration > 0) {
+                long pos = sliderSlContinuous.getMaxValue() * position / duration;
+                sliderSlContinuous.setValue((float)pos,true);
+            }
+        };
+    };
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -170,6 +203,7 @@ public class VideoActivity extends AppCompatActivity implements InitView, LoadDa
 
         switch (type) {
             case "real":
+                sliderSlContinuous.setVisibility(View.GONE);
                 switchesAuto.setOnCheckedChangeListener(listener);
                 switchesManual.setOnCheckedChangeListener(listener);
                 haveControl = OwnJurisdiction.haveJurisdiction(1);
@@ -315,7 +349,9 @@ public class VideoActivity extends AppCompatActivity implements InitView, LoadDa
 
                 historyVideoShow.setVisibility(View.GONE);
                 break;
+
             case "history":
+                sliderSlContinuous.setVisibility(View.VISIBLE);
                 alarmInformation = (AlarmInformation) intent.getSerializableExtra("AlarmInformation");
                 dvrTypes = intent.getIntExtra("dvrType", -1);
                 dvrId = intent.getIntExtra("dvrId", -1);
@@ -583,6 +619,8 @@ public class VideoActivity extends AppCompatActivity implements InitView, LoadDa
 
     @Override
     public void onBufferingUpdate(MediaPlayer mediaPlayer, int percent) {
+        int currentProgress = (int) (sliderSlContinuous.getMaxValue() * mediaPlayer.getCurrentPosition() / mediaPlayer.getDuration());
+        Log.e(currentProgress + "% play", percent + "% buffer");
         Log.d(TAG, "onBufferingUpdate percent:" + percent);
     }
 
@@ -619,8 +657,8 @@ public class VideoActivity extends AppCompatActivity implements InitView, LoadDa
     @Override
     public boolean onError(MediaPlayer mediaPlayer, int i, int i1) {
         Log.e("onError", "onError调用了!!!");
-        videoPlayTv.setText("播放出错,错误代码"+"("+i+", "+i1+")");
-        ShowUtile.toastShow(VideoActivity.this,"视频暂无法播放,错误代码"+"("+i+", "+i1+")");
+        videoPlayTv.setText("播放出错,错误代码" + "(" + i + ", " + i1 + ")");
+        ShowUtile.toastShow(VideoActivity.this, "视频暂无法播放,错误代码" + "(" + i + ", " + i1 + ")");
         doCleanUp();
         releaseMediaPlayer();
         return true;
