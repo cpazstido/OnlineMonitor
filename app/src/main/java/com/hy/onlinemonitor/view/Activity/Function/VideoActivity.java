@@ -40,12 +40,10 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import io.vov.vitamio.LibsChecker;
 import io.vov.vitamio.MediaPlayer;
-import io.vov.vitamio.MediaPlayer.OnBufferingUpdateListener;
-import io.vov.vitamio.MediaPlayer.OnCompletionListener;
-import io.vov.vitamio.MediaPlayer.OnPreparedListener;
-import io.vov.vitamio.MediaPlayer.OnVideoSizeChangedListener;
+import io.vov.vitamio.Vitamio;
 
-public class VideoActivity extends AppCompatActivity implements InitView, LoadDataView, OnBufferingUpdateListener, OnCompletionListener, OnPreparedListener, OnVideoSizeChangedListener, SurfaceHolder.Callback, MediaPlayer.OnErrorListener {
+
+public class VideoActivity extends AppCompatActivity implements InitView, LoadDataView, MediaPlayer.OnBufferingUpdateListener, MediaPlayer.OnCompletionListener, MediaPlayer.OnPreparedListener, MediaPlayer.OnVideoSizeChangedListener, SurfaceHolder.Callback, MediaPlayer.OnErrorListener {
     @Bind(R.id.video_toolbar)
     Toolbar toolbar;
     @Bind(R.id.video_line_tv)
@@ -121,6 +119,7 @@ public class VideoActivity extends AppCompatActivity implements InitView, LoadDa
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Vitamio.initialize(VideoActivity.this);
         if (!LibsChecker.checkVitamioLibs(this))
             return;
         ActivityCollector.addActivity(this);
@@ -415,7 +414,7 @@ public class VideoActivity extends AppCompatActivity implements InitView, LoadDa
         if (!videoUrl.isEmpty()) {
             isHaveUrl = true;
             try {
-                mediaPlayer.setDataSource(videoUrls);
+                mediaPlayer.setDataSource(videoUrl);
 //                mediaPlayer.setDataSource("rtsp://218.204.223.237:554/live/1/66251FC11353191F/e7ooqwcfbqjoo80j.sdp");
                 mediaPlayer.setDisplay(holder);
                 mediaPlayer.setOnBufferingUpdateListener(this);
@@ -424,13 +423,6 @@ public class VideoActivity extends AppCompatActivity implements InitView, LoadDa
                 mediaPlayer.setOnVideoSizeChangedListener(this);
                 mediaPlayer.setOnErrorListener(this);
                 setVolumeControlStream(AudioManager.STREAM_MUSIC);
-
-                mediaPlayer.setOnHWRenderFailedListener(new MediaPlayer.OnHWRenderFailedListener() {
-                    @Override
-                    public void onFailed() {
-                        Log.e(TAG, "setOnHWRenderFailedListener");
-                    }
-                });
 
                 mediaPlayer.setOnInfoListener(new MediaPlayer.OnInfoListener() {
                     @Override
@@ -555,6 +547,7 @@ public class VideoActivity extends AppCompatActivity implements InitView, LoadDa
     public void surfaceCreated(SurfaceHolder holder) {
         Log.d(TAG, "surfaceCreated called");
         doCleanUp();
+//        mediaPlayer = new MediaPlayer(this);
         mediaPlayer = new MediaPlayer(this);
     }
 
@@ -636,6 +629,6 @@ public class VideoActivity extends AppCompatActivity implements InitView, LoadDa
     public void prepare() {
         Log.e(TAG, "prepare");
         mediaPlayer.prepareAsync();
-
     }
+
 }

@@ -27,10 +27,10 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
     private Toolbar toolbar;
 
     private int selectedType;
-    private static int FIREGV = 0;
-    private static int BREAKGV = 1;
-    private static int NORMALGV = 2;
-    private static int AUTOPLANEGV = 3;
+    private static int FUNCTION_GV = 0; //功能
+    private static int BREAKGV = 1;  //参数配置
+    private static int MANAGE_GV = 2;//系统管理
+    private static int MONITOR_GV = 3;//状态监测
 
     @Override
     public void setupUI() {
@@ -67,16 +67,16 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
         gvMonitor = (MyGridView) findViewById(R.id.main_gv_monitor);//状态监测
 
 
-        gvFunction.setAdapter(new MainGridAdapter(MainActivity.this, 0, selectedType));//0代表为功能
+        gvFunction.setAdapter(new MainGridAdapter(MainActivity.this, FUNCTION_GV, selectedType));//0代表为功能
         gvFunction.setOnItemClickListener(this);
 
-//        gvConfig.setAdapter(new GridAdapter(MainActivity.this, 1, selectedType));
+//        gvConfig.setAdapter(new GridAdapter(MainActivity.this, BREAKGV, selectedType));
 //        gvConfig.setOnItemClickListener(this);
 
-        gvManage.setAdapter(new MainGridAdapter(MainActivity.this, 2, selectedType));//2代表为系统管理
+        gvManage.setAdapter(new MainGridAdapter(MainActivity.this, MANAGE_GV, selectedType));//2代表为系统管理
         gvManage.setOnItemClickListener(this);
 
-        gvMonitor.setAdapter(new MainGridAdapter(MainActivity.this, 3, selectedType));//3代表为状态监测
+        gvMonitor.setAdapter(new MainGridAdapter(MainActivity.this, MONITOR_GV, selectedType));//3代表为状态监测
         gvMonitor.setOnItemClickListener(this);
     }
 
@@ -161,6 +161,22 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
                     case 5://设备
                         Intent gridEquipmentIntent = new Intent(MainActivity.this, EquipmentManageActivity.class);
                         startActivity(gridEquipmentIntent);
+                        break;
+                }
+                break;
+            case R.id.main_gv_monitor:
+                switch (position){
+                    case 0://"监测状态"
+
+                        break;
+                    case 1://"设备状态"
+
+                        break;
+                    case 2://"监测统计"
+
+                        break;
+                    case 3://"设备统计"
+
                         break;
                 }
                 break;

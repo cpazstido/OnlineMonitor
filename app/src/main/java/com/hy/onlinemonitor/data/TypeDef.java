@@ -109,16 +109,16 @@ public class TypeDef {
     public static final String[] typeAutoPlaneManage = {"公司", "管理员", "权限", "线路", "杆塔", "设备"};
     public static final int[] typeAutoPlaneManageImages = {R.drawable.ic_companys, R.drawable.ic_admin, R.drawable.ic_jurisdiction, R.drawable.ic_line, R.drawable.ic_pole, R.drawable.ic_equipment};
 
-    public static final String[] typeFireMonitor = { "监测状态", "设备状态","设备状态统计","监测状态统计"};
-    public static final int[] typeFireMonitorImages =  {R.drawable.gv_tower, R.drawable.gv_tower};
 
     //子分类--状态监测
-    public static final String[] typeBreakMonitor = { "状态统计", "状态"};
-    public static final int[] typeBreakMonitorImages =  {R.drawable.gv_tower, R.drawable.gv_tower};
+    public static final String[] typeFireMonitor = { "监测状态", "设备状态","监测统计","设备统计"};
+    public static final int[] typeFireMonitorImages =  {R.drawable.gv_tower, R.drawable.gv_tower, R.drawable.gv_tower, R.drawable.gv_tower};
 
-    public static final String[] typeNormalMonitor = { "状态统计", "状态"};
-    public static final int[] typeNormalMonitorImages =  {R.drawable.gv_tower, R.drawable.gv_tower};
+    public static final String[] typeBreakMonitor = { "监测状态", "设备状态","监测统计","设备统计"};
+    public static final int[] typeBreakMonitorImages =  {R.drawable.gv_tower, R.drawable.gv_tower, R.drawable.gv_tower, R.drawable.gv_tower};
 
+    public static final String[] typeNormalMonitor = { "监测状态", "设备状态","监测统计","设备统计"};
+    public static final int[] typeNormalMonitorImages =  {R.drawable.gv_tower, R.drawable.gv_tower, R.drawable.gv_tower, R.drawable.gv_tower};
 
     //子分类--参数配置
     public static final String[] typeFireConfig = { "设备参数", "阈值参数"};

@@ -35,11 +35,20 @@ public class MyApplication extends Application {
                 public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                     try {
                         String response = new String(responseBody, "UTF-8");
+                        Log.d("MyApplication", "response:" + response);
                         if (response.contains("资源已经被移除或不存在")) {
-                            Log.e("tag","访问升级服务失败");
+                            Log.e("tag", "访问升级服务失败");
                             serverVersion = 0;
                             appSize = 0;
-                        } else {
+                        } else if (response.isEmpty()) {
+                            Log.e("tag", "访问升级服务失败");
+                            serverVersion = 0;
+                            appSize = 0;
+                        } else if ("null".equals(response)) {
+                            Log.e("tag", "访问升级服务失败");
+                            serverVersion = 0;
+                            appSize = 0;
+                        }else {
                             Gson gson = new Gson();
                             AppInfo appInfo = gson.fromJson(response, AppInfo.class);
                             serverVersion = appInfo.getServerVersion();
