@@ -148,16 +148,16 @@ public class UserPresenter extends DefaultSubscriber implements Presenter {
         this.typeSelectionActivity = typeSelectionActivity;
     }
 
-    public void setCurrentPorject(int choiceType, Context mContext,String curProject){
+    public void setCurrentProject(int choiceType, Context mContext, String curProject){
         this.showViewLoading();
         this.mContext = mContext;
         this.choiceType =choiceType;
         userRepository = new UserDataRepository(new UserDataStoreFactory(mContext),curProject);
         this.UserInformationCase = new UserInformationUseCase(new UIThread(), new UIThread().getScheduler(), userRepository,3);
-        this.UserInformationCase.execute(new CurrentPorjectSubscriber());
+        this.UserInformationCase.execute(new CurrentProjectSubscriber());
     }
 
-    private final class CurrentPorjectSubscriber extends DefaultSubscriber<String> {
+    private final class CurrentProjectSubscriber extends DefaultSubscriber<String> {
         @Override
         public void onCompleted() {
             UserPresenter.this.upDataUser(choiceType,mContext);

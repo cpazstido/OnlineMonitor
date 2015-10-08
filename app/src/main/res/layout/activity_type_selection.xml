@@ -6,26 +6,8 @@
 
     <include layout="@layout/toolbar"/>
 
-    <LinearLayout
-    android:layout_width="match_parent"
-    android:orientation="vertical"
-    android:layout_height="match_parent">
-    <include
-        android:id="@+id/fire_alarm_cardview"
-        layout="@layout/cardview_selection" />
-
-    <include
-        android:id="@+id/break_alarm_cardview"
-        layout="@layout/cardview_selection" />
-
-    <include
-        android:id="@+id/normal_alarm_cardview"
-        layout="@layout/cardview_selection" />
-
-    <include
-        android:id="@+id/autoplane_alarm_cardview"
-        layout="@layout/cardview_selection" />
-</LinearLayout>
-
-
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/type_select"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 </LinearLayout>
