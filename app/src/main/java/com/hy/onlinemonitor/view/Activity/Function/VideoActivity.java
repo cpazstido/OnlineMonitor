@@ -534,6 +534,8 @@ public class VideoActivity extends AppCompatActivity implements InitView, LoadDa
         super.onStop();
         if (timer != null)
             timer.cancel();
+        releaseMediaPlayer();
+        doCleanUp();
     }
 
     @Override
@@ -546,10 +548,11 @@ public class VideoActivity extends AppCompatActivity implements InitView, LoadDa
     @Override
     public void onDestroy() {
         super.onDestroy();
-        timer.cancel();
         releaseMediaPlayer();
         doCleanUp();
         ActivityCollector.removeActivity(this);
+        if (timer != null)
+            timer.cancel();
         if (videoPresenter != null)
             this.videoPresenter.destroy();
         ButterKnife.unbind(this);
@@ -707,6 +710,8 @@ public class VideoActivity extends AppCompatActivity implements InitView, LoadDa
     @Override
     public boolean onError(MediaPlayer mediaPlayer, int i, int i1) {
         Log.e("onError", "onError调用了!!!");
+        isHaveUrl=false;
+        videoUrl = "";
         videoPlayTv.setText("播放出错,错误代码" + "(" + i + ", " + i1 + ")");
         ShowUtile.toastShow(VideoActivity.this, "视频暂无法播放,错误代码" + "(" + i + ", " + i1 + ")");
         doCleanUp();

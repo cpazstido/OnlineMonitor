@@ -29,6 +29,7 @@ import com.hy.onlinemonitor.bean.AppInfo;
 import com.hy.onlinemonitor.presenter.LoginPresenter;
 import com.hy.onlinemonitor.utile.ActivityCollector;
 import com.hy.onlinemonitor.utile.GetLoading;
+import com.hy.onlinemonitor.utile.ShowUtile;
 import com.hy.onlinemonitor.view.JumpView;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
@@ -140,7 +141,7 @@ public class LoginActivity extends AppCompatActivity implements JumpView {
     }
 
     private void checkVersion() {
-        upDataDialog = GetLoading.getDialog(LoginActivity.this, "检查版本更新中...");
+        upDataDialog = GetLoading.getDialog(LoginActivity.this, "检查版本更新中");
         upDataDialog.show();
         Log.e("true??", "aa" + MyApplication.localVersion + "aa" + MyApplication.serverVersion);
         SystemRestClient.get("/checkUpdate", null, new AsyncHttpResponseHandler() {
@@ -284,6 +285,8 @@ public class LoginActivity extends AppCompatActivity implements JumpView {
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                 Log.e("application", "error");
+                ShowUtile.toastShow(LoginActivity.this,"访问升级服务器失败");
+                upDataDialog.cancel();
                 serverVersion = 0;
                 appSize = 0;
             }

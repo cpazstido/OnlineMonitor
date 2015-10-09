@@ -18,14 +18,11 @@ public class MyApplication extends Application {
     public static void setAppSize(long appSize) {
         MyApplication.appSize = appSize;
     }
-
     public static int localVersion = 0;// 本地安装版本
     public static int serverVersion = 0;// 服务器版本
     public static long appSize = 0;
-
     @Override
     public void onCreate() {
-
         super.onCreate();
     }
 
