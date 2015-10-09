@@ -51,13 +51,13 @@ public class LoginActivity extends AppCompatActivity implements JumpView {
 
     private static final String TAG = "LOGIN";
     private SharedPreferences.Editor editor;
-    AsyncHttpClient client;
+    private AsyncHttpClient client;
     private Handler handler = null;
     private MaterialDialog downDialog = null;
-
-    MaterialDialog dialogPro;
+    private AlertDialog upDataDialog;
+    private MaterialDialog dialogPro;
     private File apk = null;
-    View positiveAction;
+    private View positiveAction;
     @Bind(R.id.remember_password_check)
     CheckBox rememberPasswordCheck;
     @Bind(R.id.auto_login_check)
@@ -76,6 +76,8 @@ public class LoginActivity extends AppCompatActivity implements JumpView {
 
     private boolean goActivity = false;
     private boolean autoLoginFlag = false;
+    private String userName;
+    private String userPassword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -138,7 +140,8 @@ public class LoginActivity extends AppCompatActivity implements JumpView {
     }
 
     private void checkVersion() {
-        showLoading();
+        upDataDialog = GetLoading.getDialog(LoginActivity.this, "检查版本更新中...");
+        upDataDialog.show();
         Log.e("true??", "aa" + MyApplication.localVersion + "aa" + MyApplication.serverVersion);
         SystemRestClient.get("/checkUpdate", null, new AsyncHttpResponseHandler() {
             @Override
@@ -148,17 +151,32 @@ public class LoginActivity extends AppCompatActivity implements JumpView {
                     Log.d("MyApplication", "response:" + response);
                     if (response.contains("资源已经被移除或不存在")) {
                         Log.e("tag", "访问升级服务失败");
+                        goActivity = true;
+                        upDataDialog.cancel();
                         serverVersion = 0;
                         appSize = 0;
+                        if (autoLoginFlag)
+                            loginPresenter.initialize(userName, userPassword);
                     } else if (response.isEmpty()) {
                         Log.e("tag", "访问升级服务失败");
+                        autoLoginFlag = true;
+                        goActivity = true;
+                        upDataDialog.cancel();
                         serverVersion = 0;
                         appSize = 0;
+                        if (autoLoginFlag)
+                            loginPresenter.initialize(userName, userPassword);
                     } else if ("null".equals(response)) {
                         Log.e("tag", "访问升级服务失败");
+                        autoLoginFlag = true;
+                        goActivity = true;
+                        upDataDialog.cancel();
                         serverVersion = 0;
                         appSize = 0;
+                        if (autoLoginFlag)
+                            loginPresenter.initialize(userName, userPassword);
                     } else {
+                        upDataDialog.cancel();
                         Gson gson = new Gson();
                         AppInfo appInfo = gson.fromJson(response, AppInfo.class);
                         String getServerVersion = appInfo.getServerVersion();
@@ -175,7 +193,7 @@ public class LoginActivity extends AppCompatActivity implements JumpView {
                         } catch (PackageManager.NameNotFoundException e) {
                             e.printStackTrace();
                         }
-                        hideLoading();
+
 
                         if (MyApplication.localVersion < MyApplication.serverVersion) {
                             String upDataInfo = "发现新版本,建议在wifi环境下更新\n";
@@ -253,6 +271,7 @@ public class LoginActivity extends AppCompatActivity implements JumpView {
                                     })
                                     .show();
                         } else {
+                            Log.d("LoginActivity", "都不满足");
                             autoLoginFlag = true;
                             goActivity = true;
                         }
@@ -331,10 +350,9 @@ public class LoginActivity extends AppCompatActivity implements JumpView {
 
         String rememberPassword = sharedPreferences.getString("rememberPassword", "");
         String autoLogin = sharedPreferences.getString("autoLogin", "");
-        String userName;
-        String userPassword;
 
         if (autoLogin.equals("true") && rememberPassword.equals("true")) {
+            autoLoginFlag = true;
             userName = sharedPreferences.getString("userName", "");
             userPassword = sharedPreferences.getString("userPassword", "");
             loginAccount.setText(userName);
@@ -342,8 +360,6 @@ public class LoginActivity extends AppCompatActivity implements JumpView {
             autoLoginCheck.setChecked(true);
             rememberPasswordCheck.setChecked(true);
             checkVersion();
-            if (autoLoginFlag)
-                loginPresenter.initialize(userName, userPassword);
         } else if (rememberPassword.equals("true") && !autoLogin.equals("true")) {
             userName = sharedPreferences.getString("userName", "");
             userPassword = sharedPreferences.getString("userPassword", "");

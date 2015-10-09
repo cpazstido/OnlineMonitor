@@ -230,7 +230,7 @@ public class VideoActivity extends AppCompatActivity implements InitView, LoadDa
                     }
                     if (isHaveUrl || mediaPlayer.isPlaying()) {
                         timer.cancel();
-                        mediaPlayer.release();
+                        mediaPlayer.reset();
                         isHaveUrl = false;
                         videoUrl = "";
                         Log.e(TAG, "取消播放!");
