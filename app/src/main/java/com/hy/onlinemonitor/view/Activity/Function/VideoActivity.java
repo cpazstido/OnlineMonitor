@@ -47,6 +47,7 @@ import io.vov.vitamio.Vitamio;
 
 
 public class VideoActivity extends AppCompatActivity implements InitView, LoadDataView, MediaPlayer.OnBufferingUpdateListener, MediaPlayer.OnCompletionListener, MediaPlayer.OnPreparedListener, MediaPlayer.OnVideoSizeChangedListener, SurfaceHolder.Callback, MediaPlayer.OnErrorListener {
+    private static final String TAG = "VideoActivity";
     @Bind(R.id.video_toolbar)
     Toolbar toolbar;
     @Bind(R.id.video_line_tv)
@@ -83,8 +84,16 @@ public class VideoActivity extends AppCompatActivity implements InitView, LoadDa
     TextView yunControlShow;
     @Bind(R.id.slider_sl_continuous)
     Slider sliderSlContinuous;
-
-    private static final String TAG = "VideoActivity";
+    @Bind(R.id.channel_1)
+    RadioButton channel1;
+    @Bind(R.id.channel_2)
+    RadioButton channel2;
+    @Bind(R.id.channel_3)
+    RadioButton channel3;
+    @Bind(R.id.channel_4)
+    RadioButton channel4;
+    @Bind(R.id.channel_choice_ll)
+    LinearLayout channelChoiceLl;
 
     private MediaPlayer mediaPlayer;
     private int mVideoWidth;
@@ -96,15 +105,15 @@ public class VideoActivity extends AppCompatActivity implements InitView, LoadDa
     private AlertDialog loadingDialog;
     private String type;
     private Timer timer;
-    private Timer mTimer=new Timer();
+    private Timer mTimer = new Timer();
 
     private int dvrTypes;
     private AlarmInformation alarmInformation;
     private VideoPresenter videoPresenter;
     private EquipmentInformation equipmentInformation;
     private String choiceType;
-    private int channelID = -1; //6789,一般用7
-    private int streamType = 7;
+    private int channelID = 1;
+    private int streamType = 7;//6789,一般用7
     private int dvrId;
     private String dvrType;
     private String videoUrl = "";
@@ -145,7 +154,7 @@ public class VideoActivity extends AppCompatActivity implements InitView, LoadDa
     TimerTask mTimerTask = new TimerTask() {
         @Override
         public void run() {
-            if(mediaPlayer==null)
+            if (mediaPlayer == null)
                 return;
             if (mediaPlayer.isPlaying() && !sliderSlContinuous.isPressed()) {
                 handleProgress.sendEmptyMessage(0);
@@ -161,9 +170,11 @@ public class VideoActivity extends AppCompatActivity implements InitView, LoadDa
 
             if (duration > 0) {
                 long pos = sliderSlContinuous.getMaxValue() * position / duration;
-                sliderSlContinuous.setValue((float)pos,true);
+                sliderSlContinuous.setValue((float) pos, true);
             }
-        };
+        }
+
+        ;
     };
 
     @Override
@@ -177,18 +188,55 @@ public class VideoActivity extends AppCompatActivity implements InitView, LoadDa
 
     @Override
     public void setupUI() {
-        CompoundButton.OnCheckedChangeListener listener = new CompoundButton.OnCheckedChangeListener() {
+        CompoundButton.OnCheckedChangeListener controlListener = new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
                     switchesAuto.setChecked(switchesAuto == buttonView);
                     switchesManual.setChecked(switchesManual == buttonView);
                     if (controlFlag && switchesManual.isChecked()) {//切换成手动,当前为自动 controlFlag=true,并且手动选中
-                        videoPresenter.changeYun(dvrId, channelID, dvrType, true);
+                        videoPresenter.changeYun(dvrId, channelID, dvrType, true);//true 自动切手动 false 手动切自动
                     } else if (!controlFlag && switchesAuto.isChecked()) {//切换为自动,当前为手动 controlFlag =false,并且自动选中
-                        videoPresenter.changeYun(dvrId, channelID, dvrType, false);
+                        videoPresenter.changeYun(dvrId, channelID, dvrType, false);//true 自动切手动 false 手动切自动
                         yunControlShow.setText(CONTROL_SHOW + "自动");
                     }
+                }
+            }
+        };
+
+
+        CompoundButton.OnCheckedChangeListener channelListener = new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                //取消定时器
+                if (isChecked) {
+                    channel1.setChecked(channel1 == buttonView);
+                    channel2.setChecked(channel2 == buttonView);
+                    channel3.setChecked(channel3 == buttonView);
+                    channel4.setChecked(channel4 == buttonView);
+                    int oldChannelId = channelID;
+                    if (channelID != 1 && channel1.isChecked()) {//当前通道号不为1,并且通道号1现在被选中了,则切换为通道号1
+                        Log.e(TAG, "切换到1!");
+                        VideoActivity.this.channelID = 1;
+                    } else if (channelID != 2 && channel2.isChecked()) {//当前通道号不为2,并且通道号2现在被选中了,则切换为通道号2
+                        Log.e(TAG, "切换到2!");
+                        VideoActivity.this.channelID = 2;
+                    } else if (channelID != 3 && channel3.isChecked()) {//当前通道号不为3,并且通道号3现在被选中了,则切换为通道号3
+                        Log.e(TAG, "切换到3!");
+                        VideoActivity.this.channelID = 3;
+                    } else if (channelID != 4 && channel4.isChecked()) {//当前通道号不为4,并且通道号4现在被选中了,则切换为通道号4
+                        Log.e(TAG, "切换到4!");
+                        VideoActivity.this.channelID = 4;
+                    }
+                    if (isHaveUrl || mediaPlayer.isPlaying()) {
+                        timer.cancel();
+                        mediaPlayer.release();
+                        isHaveUrl = false;
+                        videoUrl = "";
+                        Log.e(TAG, "取消播放!");
+                        videoPresenter.stopPlay(dvrId, streamType, oldChannelId, dvrType);    //先停止播放,再修改通道号
+                    }
+                    Log.e(TAG,"现在的channelID"+channelID);
                 }
             }
         };
@@ -204,8 +252,14 @@ public class VideoActivity extends AppCompatActivity implements InitView, LoadDa
         switch (type) {
             case "real":
                 sliderSlContinuous.setVisibility(View.GONE);
-                switchesAuto.setOnCheckedChangeListener(listener);
-                switchesManual.setOnCheckedChangeListener(listener);
+
+                channel1.setOnCheckedChangeListener(channelListener);
+                channel2.setOnCheckedChangeListener(channelListener);
+                channel3.setOnCheckedChangeListener(channelListener);
+                channel4.setOnCheckedChangeListener(channelListener);
+
+                switchesAuto.setOnCheckedChangeListener(controlListener);
+                switchesManual.setOnCheckedChangeListener(controlListener);
                 haveControl = OwnJurisdiction.haveJurisdiction(1);
                 choiceType = intent.getStringExtra("choiceType");
                 toolbar.setTitle(R.string.real_time_video);
@@ -387,15 +441,12 @@ public class VideoActivity extends AppCompatActivity implements InitView, LoadDa
     public void initialize() {
         switch (type) {
             case "real":
-                switch (choiceType) {
-                    case "break":
-                        /**
-                         * 这里取得用户选择的ChannelID;
-                         */
-                        channelID = 2;
+                switch (choiceType) {//fire break auv video
+                    case "video"://video auv 隐藏channelChoiceLl界面
+                    case "auv":
+                        channelChoiceLl.setVisibility(View.GONE);
                         break;
-                    default:
-                        channelID = 1;
+                    default://break fire 显示channelChoiceLl界面
                         break;
                 }
                 timer = new Timer();
@@ -495,6 +546,7 @@ public class VideoActivity extends AppCompatActivity implements InitView, LoadDa
     @Override
     public void onDestroy() {
         super.onDestroy();
+        timer.cancel();
         releaseMediaPlayer();
         doCleanUp();
         ActivityCollector.removeActivity(this);
@@ -620,8 +672,6 @@ public class VideoActivity extends AppCompatActivity implements InitView, LoadDa
     @Override
     public void onBufferingUpdate(MediaPlayer mediaPlayer, int percent) {
         int currentProgress = (int) (sliderSlContinuous.getMaxValue() * mediaPlayer.getCurrentPosition() / mediaPlayer.getDuration());
-        Log.e(currentProgress + "% play", percent + "% buffer");
-        Log.d(TAG, "onBufferingUpdate percent:" + percent);
     }
 
     @Override

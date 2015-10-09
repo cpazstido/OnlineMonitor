@@ -7,7 +7,7 @@ import java.io.Serializable;
  */
 public class AppInfo implements Serializable {
     private long size;
-    private int serverVersion;
+    private String serverVersion;
 
     public long getSize() {
         return size;
@@ -17,11 +17,11 @@ public class AppInfo implements Serializable {
         this.size = size;
     }
 
-    public int getServerVersion() {
+    public String getServerVersion() {
         return serverVersion;
     }
 
-    public void setServerVersion(int serverVersion) {
+    public void setServerVersion(String serverVersion) {
         this.serverVersion = serverVersion;
     }
 }

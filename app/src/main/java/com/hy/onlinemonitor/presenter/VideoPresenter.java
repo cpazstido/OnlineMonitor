@@ -9,6 +9,7 @@ import com.example.interactor.VideoUseCase;
 import com.example.repository.VideoRepository;
 import com.hy.data.repository.VideoDataRepository;
 import com.hy.onlinemonitor.UIThread;
+import com.hy.onlinemonitor.utile.ShowUtile;
 import com.hy.onlinemonitor.view.Activity.Function.VideoActivity;
 
 import rx.android.schedulers.AndroidSchedulers;
@@ -98,10 +99,35 @@ public class VideoPresenter implements Presenter {
 
 
     public void getRealPlayUrl() {
-
         videoRepository = new VideoDataRepository(mContext, channelID, streamType, dvrId, dvrType);
         this.videoUseCase = new VideoUseCase(new UIThread(), AndroidSchedulers.mainThread(), videoRepository, 1);
         this.videoUseCase.execute(new VideoUrlSubscriber());
+    }
+
+    public void stopPlay(int dvrId, int streamType, int channelID, String dvrType) {
+        videoRepository = new VideoDataRepository(mContext, channelID, streamType, dvrId, dvrType);
+        this.videoUseCase = new VideoUseCase(new UIThread(), AndroidSchedulers.mainThread(), videoRepository, 12);
+        this.videoUseCase.execute(new VideoStopSubscriber());
+    }
+
+    private class VideoStopSubscriber extends DefaultSubscriber<String> {
+        @Override
+        public void onCompleted() {
+            ShowUtile.toastShow(mContext,"切换成功,等待播放中..");
+        }
+
+        @Override
+        public void onError(Throwable e) {
+            VideoPresenter.this.hideViewLoading();
+            VideoPresenter.this.videoActivity.showError(e.getMessage());
+            super.onError(e);
+        }
+
+        @Override
+        public void onNext(String videoUrl) {
+            Log.e("VideoStopSubscriber-onNext","准备重新播放");
+            videoActivity.initialize();
+        }
     }
 
     private class VideoUrlSubscriber extends DefaultSubscriber<String> {

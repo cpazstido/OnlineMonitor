@@ -22,4 +22,6 @@ public interface VideoRepository {
     Observable<String> changePtz(boolean isAuto);
 
     Observable<String> stopPtz();
+
+    Observable<String> stopPlay();
 }

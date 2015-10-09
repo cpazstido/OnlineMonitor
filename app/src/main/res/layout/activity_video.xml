@@ -126,6 +126,63 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/channel_choice_ll"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/channel_choice"
+                    android:textSize="@dimen/mSubhead" />
+
+                <com.rey.material.widget.RadioButton
+                    android:id="@+id/channel_1"
+                    style="@style/RadioButtonDrawable"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:text="1"
+                    android:textSize="@dimen/mBody2" />
+
+                <com.rey.material.widget.RadioButton
+                    android:id="@+id/channel_2"
+                    android:layout_weight="1"
+                    style="@style/RadioButtonDrawable"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="false"
+                    android:gravity="center_vertical"
+                    android:text="2"
+                    android:textSize="@dimen/mBody2" />
+
+                <com.rey.material.widget.RadioButton
+                    android:id="@+id/channel_3"
+                    android:layout_weight="1"
+                    style="@style/RadioButtonDrawable"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="false"
+                    android:gravity="center_vertical"
+                    android:text="3"
+                    android:textSize="@dimen/mBody2" />
+
+                <com.rey.material.widget.RadioButton
+                    android:id="@+id/channel_4"
+                    android:layout_weight="1"
+                    style="@style/RadioButtonDrawable"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="false"
+                    android:gravity="center_vertical"
+                    android:text="4"
+                    android:textSize="@dimen/mBody2" />
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
@@ -138,6 +195,7 @@
 
                 <com.rey.material.widget.RadioButton
                     android:id="@+id/switches_auto"
+                    android:layout_weight="1"
                     style="@style/RadioButtonDrawable"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -152,6 +210,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:checked="false"
+                    android:layout_weight="1"
                     android:gravity="center_vertical"
                     android:text="@string/hand"
                     android:textSize="@dimen/mBody2" />

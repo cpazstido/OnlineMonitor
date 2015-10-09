@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -19,14 +21,17 @@ import android.widget.EditText;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.GravityEnum;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.google.gson.Gson;
 import com.hy.data.utile.SystemRestClient;
 import com.hy.onlinemonitor.MyApplication;
 import com.hy.onlinemonitor.R;
+import com.hy.onlinemonitor.bean.AppInfo;
 import com.hy.onlinemonitor.presenter.LoginPresenter;
 import com.hy.onlinemonitor.utile.ActivityCollector;
 import com.hy.onlinemonitor.utile.GetLoading;
 import com.hy.onlinemonitor.view.JumpView;
 import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.FileAsyncHttpResponseHandler;
 import com.rey.material.widget.Button;
 import com.rey.material.widget.CheckBox;
@@ -36,6 +41,7 @@ import org.apache.http.Header;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -45,12 +51,12 @@ public class LoginActivity extends AppCompatActivity implements JumpView {
 
     private static final String TAG = "LOGIN";
     private SharedPreferences.Editor editor;
-    AsyncHttpClient client ;
+    AsyncHttpClient client;
     private Handler handler = null;
     private MaterialDialog downDialog = null;
 
     MaterialDialog dialogPro;
-    private File apk=null;
+    private File apk = null;
     View positiveAction;
     @Bind(R.id.remember_password_check)
     CheckBox rememberPasswordCheck;
@@ -64,8 +70,13 @@ public class LoginActivity extends AppCompatActivity implements JumpView {
     EditText loginPwd;
     @Bind(R.id.login_btn)
     Button loginBtn;
+    private int serverVersion;
+    private int localVersion;
+    private long appSize;
 
-    private boolean goActivity =false;
+    private boolean goActivity = false;
+    private boolean autoLoginFlag = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         ActivityCollector.addActivity(this);
@@ -91,9 +102,9 @@ public class LoginActivity extends AppCompatActivity implements JumpView {
                     editor.putString("userPassword", loginPwd.getText().toString());
                 }
                 editor.apply();
-                if(goActivity) {
+                if (goActivity) {
                     loginPresenter.initialize(loginAccount.getText().toString(), loginPwd.getText().toString());
-                    goActivity=false;
+                    goActivity = false;
                 }
             }
         });
@@ -127,84 +138,137 @@ public class LoginActivity extends AppCompatActivity implements JumpView {
     }
 
     private void checkVersion() {
-        Log.e("true??","aa"+MyApplication.localVersion+"aa"+ MyApplication.serverVersion);
-        if (MyApplication.localVersion < MyApplication.serverVersion) {
-            String upDataInfo = "发现新版本,建议在wifi环境下更新\n";
-            upDataInfo += "安装包大小:" + MyApplication.appSize + "kb";
-
-            new MaterialDialog.Builder(LoginActivity.this)
-                    .content(upDataInfo)
-                    .positiveText(R.string.downloads)
-                    .negativeText(R.string.cancels)
-                    .callback(new MaterialDialog.ButtonCallback() {
-                        @Override
-                        public void onNegative(MaterialDialog dialog) {
-                            super.onNegative(dialog);
-                            goActivity =false;
-                            loginPresenter.initialize(loginAccount.getText().toString(), loginPwd.getText().toString());
+        showLoading();
+        Log.e("true??", "aa" + MyApplication.localVersion + "aa" + MyApplication.serverVersion);
+        SystemRestClient.get("/checkUpdate", null, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                try {
+                    String response = new String(responseBody, "UTF-8");
+                    Log.d("MyApplication", "response:" + response);
+                    if (response.contains("资源已经被移除或不存在")) {
+                        Log.e("tag", "访问升级服务失败");
+                        serverVersion = 0;
+                        appSize = 0;
+                    } else if (response.isEmpty()) {
+                        Log.e("tag", "访问升级服务失败");
+                        serverVersion = 0;
+                        appSize = 0;
+                    } else if ("null".equals(response)) {
+                        Log.e("tag", "访问升级服务失败");
+                        serverVersion = 0;
+                        appSize = 0;
+                    } else {
+                        Gson gson = new Gson();
+                        AppInfo appInfo = gson.fromJson(response, AppInfo.class);
+                        String getServerVersion = appInfo.getServerVersion();
+                        Log.e("getServerVersion", "---" + getServerVersion.replace(".apk", "").replace("OM_", "") + "---");
+                        serverVersion = Integer.parseInt(getServerVersion.replace(".apk", "").replace("OM_", ""));
+                        appSize = appInfo.getSize();
+                        MyApplication.setAppSize(appSize);
+                        MyApplication.setServerVersion(serverVersion);
+                        try {
+                            PackageInfo packageInfo = getApplicationContext()
+                                    .getPackageManager().getPackageInfo(getPackageName(), 0);
+                            localVersion = packageInfo.versionCode;
+                            MyApplication.setLocalVersion(localVersion);
+                        } catch (PackageManager.NameNotFoundException e) {
+                            e.printStackTrace();
                         }
-                        @Override
-                        public void onPositive(final MaterialDialog dialog) {
-                            super.onPositive(dialog);
-                            //新建一个下载对话框
-                            downApk();
-                            downDialog = new MaterialDialog.Builder(LoginActivity.this)
-                                    .title(R.string.download_updata)
-                                    .content(R.string.downloading)
-                                    .contentGravity(GravityEnum.CENTER)
-                                    .positiveText(R.string.install)
-                                    .negativeText(R.string.cancels)
-                                    .progress(false, 100, true)
-                                    .callback(new MaterialDialog.ButtonCallback() {
-                                        @Override
-                                        public void onPositive(MaterialDialog dialog) {
-                                            installApk(apk);
-                                        }
+                        hideLoading();
 
+                        if (MyApplication.localVersion < MyApplication.serverVersion) {
+                            String upDataInfo = "发现新版本,建议在wifi环境下更新\n";
+                            upDataInfo += "安装包大小:" + MyApplication.appSize + "kb\n";
+                            upDataInfo += "版本号:" + MyApplication.serverVersion;
+                            new MaterialDialog.Builder(LoginActivity.this)
+                                    .content(upDataInfo)
+                                    .positiveText(R.string.downloads)
+                                    .negativeText(R.string.cancels)
+                                    .callback(new MaterialDialog.ButtonCallback() {
                                         @Override
                                         public void onNegative(MaterialDialog dialog) {
                                             super.onNegative(dialog);
-                                            client.cancelRequests(LoginActivity.this, false);
-                                            downDialog.dismiss();
+                                            goActivity = false;
+                                            loginPresenter.initialize(loginAccount.getText().toString(), loginPwd.getText().toString());
                                         }
-                                    })
-                                    .cancelListener(new DialogInterface.OnCancelListener() {
+
                                         @Override
-                                        public void onCancel(DialogInterface dialog) {
-                                            if (client != null)
-                                                client.cancelRequests(LoginActivity.this, true);
-                                        }
-                                    })
-                                    .showListener(new DialogInterface.OnShowListener() {
-                                        @Override
-                                        public void onShow(DialogInterface dialogInterface) {
-                                            dialogPro = (MaterialDialog) dialogInterface;
-                                            handler = new Handler() {
-                                                @Override
-                                                public void handleMessage(Message msg) {
-                                                    super.handleMessage(msg);
-                                                    if (msg.what == 1) {
-                                                        float getDatas = msg.getData().getLong("progress");
-                                                        long totle = MyApplication.appSize;
-                                                        float count = ((getDatas / totle)) * 100;
-                                                        dialogPro.incrementProgress((int) (count - dialogPro.getCurrentProgress()));
-                                                        if (getDatas == totle) {
-                                                            downDialog.setContent("下载成功");
+                                        public void onPositive(final MaterialDialog dialog) {
+                                            super.onPositive(dialog);
+                                            //新建一个下载对话框
+                                            downApk();
+                                            downDialog = new MaterialDialog.Builder(LoginActivity.this)
+                                                    .title(R.string.download_updata)
+                                                    .content(R.string.downloading)
+                                                    .contentGravity(GravityEnum.CENTER)
+                                                    .positiveText(R.string.install)
+                                                    .negativeText(R.string.cancels)
+                                                    .progress(false, 100, true)
+                                                    .callback(new MaterialDialog.ButtonCallback() {
+                                                        @Override
+                                                        public void onPositive(MaterialDialog dialog) {
+                                                            installApk(apk);
                                                         }
-                                                    }
-                                                }
-                                            };
+
+                                                        @Override
+                                                        public void onNegative(MaterialDialog dialog) {
+                                                            super.onNegative(dialog);
+                                                            client.cancelRequests(LoginActivity.this, false);
+                                                            downDialog.dismiss();
+                                                        }
+                                                    })
+                                                    .cancelListener(new DialogInterface.OnCancelListener() {
+                                                        @Override
+                                                        public void onCancel(DialogInterface dialog) {
+                                                            if (client != null)
+                                                                client.cancelRequests(LoginActivity.this, true);
+                                                        }
+                                                    })
+                                                    .showListener(new DialogInterface.OnShowListener() {
+                                                        @Override
+                                                        public void onShow(DialogInterface dialogInterface) {
+                                                            dialogPro = (MaterialDialog) dialogInterface;
+                                                            handler = new Handler() {
+                                                                @Override
+                                                                public void handleMessage(Message msg) {
+                                                                    super.handleMessage(msg);
+                                                                    if (msg.what == 1) {
+                                                                        float getDatas = msg.getData().getLong("progress");
+                                                                        long totle = MyApplication.appSize;
+                                                                        float count = ((getDatas / totle)) * 100;
+                                                                        dialogPro.incrementProgress((int) (count - dialogPro.getCurrentProgress()));
+                                                                        if (getDatas == totle) {
+                                                                            downDialog.setContent("下载成功");
+                                                                        }
+                                                                    }
+                                                                }
+                                                            };
+                                                        }
+                                                    }).build();
+                                            positiveAction = downDialog.getActionButton(DialogAction.POSITIVE);
+                                            positiveAction.setEnabled(false);
+                                            downDialog.show();
                                         }
-                                    }).build();
-                            positiveAction = downDialog.getActionButton(DialogAction.POSITIVE);
-                            positiveAction.setEnabled(false);
-                            downDialog.show();
+                                    })
+                                    .show();
+                        } else {
+                            autoLoginFlag = true;
+                            goActivity = true;
                         }
-                    })
-                    .show();
-        }else{
-            goActivity =true;
-        }
+                    }
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                Log.e("application", "error");
+                serverVersion = 0;
+                appSize = 0;
+            }
+        });
 
     }
 
@@ -275,9 +339,11 @@ public class LoginActivity extends AppCompatActivity implements JumpView {
             userPassword = sharedPreferences.getString("userPassword", "");
             loginAccount.setText(userName);
             loginPwd.setText(userPassword);
-            loginPresenter.initialize(userName, userPassword);
             autoLoginCheck.setChecked(true);
             rememberPasswordCheck.setChecked(true);
+            checkVersion();
+            if (autoLoginFlag)
+                loginPresenter.initialize(userName, userPassword);
         } else if (rememberPassword.equals("true") && !autoLogin.equals("true")) {
             userName = sharedPreferences.getString("userName", "");
             userPassword = sharedPreferences.getString("userPassword", "");

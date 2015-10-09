@@ -135,4 +135,10 @@ public class VideoDataRepository implements VideoRepository{
         RestApiImpl restApi = new RestApiImpl(mContext);
         return restApi.videoControl("stop", dvrId, channelID, dvrType);
     }
+
+    @Override
+    public Observable<String> stopPlay() {
+        RestApiImpl restApi = new RestApiImpl(mContext);
+        return restApi.stopPlay(dvrId, channelID, dvrType,streamType);
+    }
 }

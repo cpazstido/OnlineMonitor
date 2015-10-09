@@ -30,6 +30,8 @@
     <string name="yun_control">云台控制:</string>
     <string name="downloads">下载</string>
     <string name="cancels">取消</string>
+    <string name="channel_choice">通道选择</string>
+
 
     <string name="up">上</string>
     <string name="down">下</string>

@@ -2148,6 +2148,40 @@ public class RestApiImpl implements RestApi {
         });
     }
 
+    @Override
+    public Observable<String> stopPlay(int dvrId, int channelID, String dvrType, int streamType) {
+        return Observable.create(new Observable.OnSubscribe<String>() {
+            @Override
+            public void call(Subscriber<? super String> subscriber) {
+                try {
+                    SystemRestClient.post("/stopRealPlay",dvrType,dvrId,channelID,streamType,null,new AsyncHttpResponseHandler() {
+                        @Override
+                        public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                            try {
+                                String responseVideoUrl = new String(responseBody, "UTF-8");
+                                if ("\"loginFail\"".equals(responseVideoUrl)) {
+                                    subscriber.onError(new NetworkConnectionException("请重新登录"));
+                                } else {
+                                    subscriber.onNext("success");
+                                    subscriber.onCompleted();
+                                }
+                            } catch (UnsupportedEncodingException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                        @Override
+                        public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                            Log.e("getUserEntitiesFromApi", "onFailure");
+                            subscriber.onError(new NetworkConnectionException("链接失败"));
+                        }
+                    });
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
     private boolean isThereInternetConnection() {
         boolean isConnected;
 

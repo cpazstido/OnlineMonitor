@@ -18,7 +18,7 @@ public class SystemRestClient {
     private static final String BASE_VIDEO_URL = "http://118.123.114.8:8080/eMonitorApp/accessServer";
     private static final String BASE_POWER_URL = "http://118.123.114.8:8080/eMonitorApp/frontendconfig";
     private static final String BASE_UPDATA_URL = "http://118.123.114.8:8080/eMonitorApp/appUpdate";
-//
+
 //    private static final String BASE_URL = "http://171.221.207.57:8080/eMonitorApp/android";
 //    public static final String BASE_PICTURE_URL = "http://171.221.207.57:8080/eMonitorApp/alarm/";
 //    private static final String BASE_VIDEO_URL = "http://171.221.207.57:8080/eMonitorApp/accessServer";
@@ -30,6 +30,7 @@ public class SystemRestClient {
 //    private static final String BASE_VIDEO_URL = "http://172.16.8.129:8081/eMonitorApp/accessServer";
 //    private static final String BASE_POWER_URL = "http://172.16.8.129:8081/eMonitorApp/frontendconfig";
 //    private static final String BASE_UPDATA_URL = "http://172.16.8.129:8081/eMonitorApp/appUpdate";
+
     private static AsyncHttpClient client = new AsyncHttpClient();
 
     public static void get(String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {
@@ -40,7 +41,7 @@ public class SystemRestClient {
     }
 
     private static String getUpDataAbsoluteUrl(String url) {
-        Log.e("getUpDataAbsoluteUrl",BASE_UPDATA_URL+url);
+        Log.e("getUpDataAbsoluteUrl", BASE_UPDATA_URL + url);
         return BASE_UPDATA_URL+url;
     }
 
@@ -71,14 +72,14 @@ public class SystemRestClient {
     }
 
     /**
-     * 用于实时播放的特殊请求post
+     * 用于实时播放,以及停止的特殊请求post
      */
     public static void post(String url,String dvrType,int dvrId,int channelID, int streamType, RequestParams params, AsyncHttpResponseHandler responseHandler) {
         client.post(getXmlAbsoluteUrl(url, dvrType, dvrId, channelID, streamType), params, responseHandler);
     }
 
     private static  String getXmlAbsoluteUrl(String relativeUrl, String dvrType, int dvrId, int channelID, int streamType){
-        Log.i("getAbsoluteUrl", BASE_VIDEO_URL + relativeUrl + "?DvrID=" + dvrId + "&StreamType=" + streamType + "&ChannelID=" + channelID + "&DvrType=" + dvrType);
+        Log.e("getAbsoluteUrl", BASE_VIDEO_URL + relativeUrl + "?DvrID=" + dvrId + "&StreamType=" + streamType + "&ChannelID=" + channelID + "&DvrType=" + dvrType);
         return BASE_VIDEO_URL+relativeUrl+"?DvrID="+dvrId+"&StreamType="+streamType+"&ChannelID="+channelID+"&DvrType="+dvrType;
     }
 

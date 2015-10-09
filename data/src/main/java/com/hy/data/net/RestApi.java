@@ -557,4 +557,14 @@ public interface RestApi {
      * @return 字符串
      */
     Observable<String> changePtz(int dvrId, int channelID, String dvrType,Boolean type);
+
+    /**
+     * 停止播放
+     * @param dvrId dvrId
+     * @param channelID channelID
+     * @param dvrType dvrType
+     * @param streamType streamType
+     * @return 是否
+     */
+    Observable<String> stopPlay(int dvrId, int channelID, String dvrType, int streamType);
 }
