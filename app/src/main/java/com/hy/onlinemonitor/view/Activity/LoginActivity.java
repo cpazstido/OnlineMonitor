@@ -17,6 +17,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.GravityEnum;
@@ -71,6 +72,9 @@ public class LoginActivity extends AppCompatActivity implements JumpView {
     EditText loginPwd;
     @Bind(R.id.login_btn)
     Button loginBtn;
+    @Bind(R.id.titles)
+    TextView titles;
+
     private int serverVersion;
     private int localVersion;
     private long appSize;
@@ -86,6 +90,14 @@ public class LoginActivity extends AppCompatActivity implements JumpView {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
+//
+//        titles.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                TestActivity.StartTestView(LoginActivity.this);
+//            }
+//        });
+
         initPresenter();
         LoginAlert = GetLoading.getDialog(LoginActivity.this, "登录中");
         initSP();
@@ -94,6 +106,7 @@ public class LoginActivity extends AppCompatActivity implements JumpView {
             @Override
             public void onClick(View v) {
                 checkVersion();
+                autoLoginFlag = false;
                 if (rememberPasswordCheck.isChecked() && !autoLoginCheck.isChecked()) {
                     editor.putString("rememberPassword", "true");
                     editor.putString("userName", loginAccount.getText().toString());
@@ -105,10 +118,7 @@ public class LoginActivity extends AppCompatActivity implements JumpView {
                     editor.putString("userPassword", loginPwd.getText().toString());
                 }
                 editor.apply();
-                if (goActivity) {
-                    loginPresenter.initialize(loginAccount.getText().toString(), loginPwd.getText().toString());
-                    goActivity = false;
-                }
+
             }
         });
 
@@ -140,10 +150,17 @@ public class LoginActivity extends AppCompatActivity implements JumpView {
 
     }
 
+    private void goTypeView(){
+        if (goActivity) {
+            Log.e("go", "go");
+            loginPresenter.initialize(loginAccount.getText().toString(), loginPwd.getText().toString());
+            goActivity = false;
+        }
+    }
     private void checkVersion() {
         upDataDialog = GetLoading.getDialog(LoginActivity.this, "检查版本更新中");
         upDataDialog.show();
-        Log.e("true??", "aa" + MyApplication.localVersion + "aa" + MyApplication.serverVersion);
+        Log.e("checkVersion", "localVersion:" + MyApplication.localVersion + "-serverVersion:" + MyApplication.serverVersion);
         SystemRestClient.get("/checkUpdate", null, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
@@ -151,31 +168,38 @@ public class LoginActivity extends AppCompatActivity implements JumpView {
                     String response = new String(responseBody, "UTF-8");
                     Log.d("MyApplication", "response:" + response);
                     if (response.contains("资源已经被移除或不存在")) {
-                        Log.e("tag", "访问升级服务失败");
+                        Log.e("contains", "访问升级服务失败");
                         goActivity = true;
                         upDataDialog.cancel();
                         serverVersion = 0;
                         appSize = 0;
                         if (autoLoginFlag)
-                            loginPresenter.initialize(userName, userPassword);
+                            loginPresenter.initialize(loginAccount.getText().toString(), loginPwd.getText().toString());
+                        else{
+                            LoginActivity.this.goTypeView();
+                        }
                     } else if (response.isEmpty()) {
-                        Log.e("tag", "访问升级服务失败");
-                        autoLoginFlag = true;
+                        Log.e("isEmpty", "访问升级服务失败");
                         goActivity = true;
                         upDataDialog.cancel();
                         serverVersion = 0;
                         appSize = 0;
                         if (autoLoginFlag)
-                            loginPresenter.initialize(userName, userPassword);
+                            loginPresenter.initialize(loginAccount.getText().toString(), loginPwd.getText().toString());
+                        else{
+                            LoginActivity.this.goTypeView();
+                        }
                     } else if ("null".equals(response)) {
-                        Log.e("tag", "访问升级服务失败");
-                        autoLoginFlag = true;
+                        Log.e("null", "访问升级服务失败");
                         goActivity = true;
                         upDataDialog.cancel();
                         serverVersion = 0;
                         appSize = 0;
                         if (autoLoginFlag)
-                            loginPresenter.initialize(userName, userPassword);
+                            loginPresenter.initialize(loginAccount.getText().toString(), loginPwd.getText().toString());
+                        else{
+                            LoginActivity.this.goTypeView();
+                        }
                     } else {
                         upDataDialog.cancel();
                         Gson gson = new Gson();
@@ -194,7 +218,6 @@ public class LoginActivity extends AppCompatActivity implements JumpView {
                         } catch (PackageManager.NameNotFoundException e) {
                             e.printStackTrace();
                         }
-
 
                         if (MyApplication.localVersion < MyApplication.serverVersion) {
                             String upDataInfo = "发现新版本,建议在wifi环境下更新\n";
@@ -428,7 +451,7 @@ public class LoginActivity extends AppCompatActivity implements JumpView {
     }
 
     public static void goLoginView(Context mContext) {
-
+        ActivityCollector.finishAll();
         Intent intent = new Intent(mContext, LoginActivity.class);
         mContext.startActivity(intent);
 

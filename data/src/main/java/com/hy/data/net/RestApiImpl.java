@@ -29,12 +29,16 @@ import com.hy.data.entity.mapper.SensorTypeEntityJsonMapper;
 import com.hy.data.entity.mapper.StringJsonMapper;
 import com.hy.data.entity.mapper.UserEntityJsonMapper;
 import com.hy.data.exception.NetworkConnectionException;
+import com.hy.data.utile.CookiesUtils;
 import com.hy.data.utile.SystemRestClient;
 import com.hy.data.utile.VideoPlayUtils;
+import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.PersistentCookieStore;
 import com.loopj.android.http.RequestParams;
 
 import org.apache.http.Header;
+import org.apache.http.cookie.Cookie;
 
 import java.io.UnsupportedEncodingException;
 import java.util.List;
@@ -159,9 +163,11 @@ public class RestApiImpl implements RestApi {
                     public void call(Subscriber<? super UserEntity> subscriber) {
                         if (isThereInternetConnection()) {
                             try {
+                                saveCookie(SystemRestClient.getClient());
                                 RequestParams params = new RequestParams();
                                 params.put("uername", loginAccount);
                                 params.put("uerpwd", loginPwd);
+
                                 SystemRestClient.post("/login", params, new AsyncHttpResponseHandler() {
                                     @Override
                                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
@@ -174,6 +180,7 @@ public class RestApiImpl implements RestApi {
                                             } else if ("\"loginFail\"".equals(responseUserEntities)) {
                                                 subscriber.onError(new NetworkConnectionException("请重新登录"));
                                             } else {
+                                                CookiesUtils.setCookies(getCookie());
                                                 subscriber.onNext(userEntityJsonMapper.transformUserEntity(
                                                         responseUserEntities));
                                                 subscriber.onCompleted();
@@ -198,6 +205,15 @@ public class RestApiImpl implements RestApi {
                     }
                 }
         );
+    }
+    PersistentCookieStore cookieStore;
+    protected void saveCookie(AsyncHttpClient client) {
+        cookieStore = new PersistentCookieStore(context);
+        client.setCookieStore(cookieStore);
+    }
+
+    protected List<Cookie> getCookie(){
+        return cookieStore.getCookies();
     }
 
     @Override

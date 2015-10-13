@@ -7,6 +7,7 @@ import android.media.AudioManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.os.PersistableBundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -35,6 +36,7 @@ import com.rey.material.widget.Button;
 import com.rey.material.widget.RadioButton;
 import com.rey.material.widget.Slider;
 
+
 import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -43,7 +45,6 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import io.vov.vitamio.LibsChecker;
 import io.vov.vitamio.MediaPlayer;
-import io.vov.vitamio.Vitamio;
 
 
 public class VideoActivity extends AppCompatActivity implements InitView, LoadDataView, MediaPlayer.OnBufferingUpdateListener, MediaPlayer.OnCompletionListener, MediaPlayer.OnPreparedListener, MediaPlayer.OnVideoSizeChangedListener, SurfaceHolder.Callback, MediaPlayer.OnErrorListener {
@@ -101,6 +102,7 @@ public class VideoActivity extends AppCompatActivity implements InitView, LoadDa
     private SurfaceHolder holder;
     private boolean mIsVideoSizeKnown = false;
     private boolean mIsVideoReadyToBePlayed = false;
+    private boolean isOnCreate = false;
 
     private AlertDialog loadingDialog;
     private String type;
@@ -135,9 +137,14 @@ public class VideoActivity extends AppCompatActivity implements InitView, LoadDa
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Vitamio.initialize(VideoActivity.this);
+        Log.e(TAG, "onCreate");
+        isOnCreate = true;
+//        Vitamio.initialize(VideoActivity.this);
         if (!LibsChecker.checkVitamioLibs(this))
             return;
+        if (savedInstanceState != null) {
+            Log.e(TAG, "onCreate savedInstanceState");
+        }
         ActivityCollector.addActivity(this);
         setContentView(R.layout.activity_video);
         ButterKnife.bind(this);
@@ -164,7 +171,6 @@ public class VideoActivity extends AppCompatActivity implements InitView, LoadDa
 
     Handler handleProgress = new Handler() {
         public void handleMessage(Message msg) {
-
             long position = mediaPlayer.getCurrentPosition();
             long duration = mediaPlayer.getDuration();
 
@@ -173,8 +179,6 @@ public class VideoActivity extends AppCompatActivity implements InitView, LoadDa
                 sliderSlContinuous.setValue((float) pos, true);
             }
         }
-
-        ;
     };
 
     @Override
@@ -236,7 +240,7 @@ public class VideoActivity extends AppCompatActivity implements InitView, LoadDa
                         Log.e(TAG, "取消播放!");
                         videoPresenter.stopPlay(dvrId, streamType, oldChannelId, dvrType);    //先停止播放,再修改通道号
                     }
-                    Log.e(TAG,"现在的channelID"+channelID);
+                    Log.e(TAG, "现在的channelID" + channelID);
                 }
             }
         };
@@ -513,9 +517,22 @@ public class VideoActivity extends AppCompatActivity implements InitView, LoadDa
 
                 mediaPlayer.setOnInfoListener(new MediaPlayer.OnInfoListener() {
                     @Override
-                    public boolean onInfo(MediaPlayer mediaPlayer, int i, int i1) {
-                        Log.e(TAG, "onInfo");
-                        return false;
+                    public boolean onInfo(MediaPlayer mediaPlayer, int arg1, int arg2) {
+                        switch (arg1) {
+                            case MediaPlayer.MEDIA_INFO_BUFFERING_START:
+                                //开始缓存，暂停播放
+                                Log.e(TAG,"开始缓存" + "暂停播放");
+                                break;
+                            case MediaPlayer.MEDIA_INFO_BUFFERING_END:
+                                //缓存完成，继续播放
+                                Log.e(TAG,"缓存完成" + "继续播放");
+                                break;
+                            case MediaPlayer.MEDIA_INFO_DOWNLOAD_RATE_CHANGED:
+                                //显示 下载速度
+                                Log.e(TAG,"download rate:" + arg2);
+                                break;
+                        }
+                        return true;
                     }
                 });
 
@@ -530,7 +547,13 @@ public class VideoActivity extends AppCompatActivity implements InitView, LoadDa
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+    }
+
+    @Override
     protected void onStop() {
+        Log.e(TAG, "onStop");
         super.onStop();
         if (timer != null)
             timer.cancel();
@@ -540,19 +563,37 @@ public class VideoActivity extends AppCompatActivity implements InitView, LoadDa
 
     @Override
     protected void onPause() {
+        Log.e(TAG, "onPause");
         super.onPause();
+        if (timer != null)
+            timer.cancel();
         releaseMediaPlayer();
         doCleanUp();
+
     }
 
     @Override
+    protected void onResume() {
+        Log.e(TAG, "onResume");
+        super.onResume();
+        if (!isOnCreate)
+            initialize();
+        if (mediaPlayer == null)
+            mediaPlayer = new MediaPlayer(this);
+    }
+
+
+    @Override
     public void onDestroy() {
+        Log.e(TAG, "onDestroy");
         super.onDestroy();
         releaseMediaPlayer();
         doCleanUp();
         ActivityCollector.removeActivity(this);
         if (timer != null)
             timer.cancel();
+        if (mTimer != null)
+            mTimer.cancel();
         if (videoPresenter != null)
             this.videoPresenter.destroy();
         ButterKnife.unbind(this);
@@ -577,20 +618,23 @@ public class VideoActivity extends AppCompatActivity implements InitView, LoadDa
                 }
                 break;
             case "\"前端监测设备电源关闭\"":
-                videoPlayTv.setText("打开电源中");
-                switch (choiceType) {
-                    case "video":
-                        this.videoPresenter.openCameraPower(equipmentInformation.getEquipmnetName(), OPEN_SYSTEM_POWER);
-                        break;
-                    default:
-                        this.videoPresenter.openCameraPower(equipmentInformation.getEquipmnetName(), OPEN_POWER);
-                        break;
+                if (!isOpenPower) {
+                    isOpenPower = true;
+                    videoPlayTv.setText("等待播放中");
+                    switch (choiceType) {
+                        case "video":
+                            this.videoPresenter.openCameraPower(equipmentInformation.getEquipmnetName(), OPEN_SYSTEM_POWER);
+                            break;
+                        default:
+                            this.videoPresenter.openCameraPower(equipmentInformation.getEquipmnetName(), OPEN_POWER);
+                            break;
+                    }
                 }
                 break;
             case "\"摄像机电源已关闭\"":
                 if (!isOpenPower) {
                     isOpenPower = true;
-                    videoPlayTv.setText("打开电源中");
+                    videoPlayTv.setText("等待播放中");
                     switch (choiceType) {
                         case "video":
                             this.videoPresenter.openCameraPower(equipmentInformation.getEquipmnetName(), OPEN_SYSTEM_POWER);
@@ -607,7 +651,7 @@ public class VideoActivity extends AppCompatActivity implements InitView, LoadDa
                 }
                 break;
             case "\"正在打开摄像机\"":
-                videoPlayTv.setText("等待摄像机打开");
+                videoPlayTv.setText("等待播放中");
                 break;
             case "\"前端监测设备通信中。。。\"":   //
                 videoPlayTv.setText("发送指令中");
@@ -674,7 +718,6 @@ public class VideoActivity extends AppCompatActivity implements InitView, LoadDa
 
     @Override
     public void onBufferingUpdate(MediaPlayer mediaPlayer, int percent) {
-        int currentProgress = (int) (sliderSlContinuous.getMaxValue() * mediaPlayer.getCurrentPosition() / mediaPlayer.getDuration());
     }
 
     @Override
@@ -710,7 +753,7 @@ public class VideoActivity extends AppCompatActivity implements InitView, LoadDa
     @Override
     public boolean onError(MediaPlayer mediaPlayer, int i, int i1) {
         Log.e("onError", "onError调用了!!!");
-        isHaveUrl=false;
+        isHaveUrl = false;
         videoUrl = "";
         videoPlayTv.setText("播放出错,错误代码" + "(" + i + ", " + i1 + ")");
         ShowUtile.toastShow(VideoActivity.this, "视频暂无法播放,错误代码" + "(" + i + ", " + i1 + ")");
@@ -724,4 +767,26 @@ public class VideoActivity extends AppCompatActivity implements InitView, LoadDa
         mediaPlayer.prepareAsync();
     }
 
+    @Override
+    public void onRestoreInstanceState(Bundle savedInstanceState, PersistableBundle persistentState) {
+        Log.e(TAG, "onRestoreInstanceState");
+        super.onRestoreInstanceState(savedInstanceState, persistentState);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        Log.e(TAG, "onSaveInstanceState");
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onRestart() {
+        Log.e(TAG, "onRestart");
+        super.onRestart();
+        videoUrl = "";
+        isHaveUrl = false;
+        if (mediaPlayer == null)
+            mediaPlayer = new MediaPlayer(this);
+        initialize();
+    }
 }

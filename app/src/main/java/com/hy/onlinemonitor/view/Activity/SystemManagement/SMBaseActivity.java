@@ -109,6 +109,7 @@ public abstract class SMBaseActivity extends BaseActivity implements LoadDataVie
             refreshButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+
                     LoginActivity.goLoginView(SMBaseActivity.this);
                 }
             });

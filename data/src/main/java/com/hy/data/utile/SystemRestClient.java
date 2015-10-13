@@ -8,6 +8,9 @@ import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
 import org.apache.http.HttpEntity;
+import org.apache.http.client.CookieStore;
+import org.apache.http.client.protocol.ClientContext;
+import org.apache.http.cookie.Cookie;
 
 /**
  * Created by wsw on 2015/7/17.
@@ -30,8 +33,9 @@ public class SystemRestClient {
 //    private static final String BASE_VIDEO_URL = "http://172.16.8.129:8081/eMonitorApp/accessServer";
 //    private static final String BASE_POWER_URL = "http://172.16.8.129:8081/eMonitorApp/frontendconfig";
 //    private static final String BASE_UPDATA_URL = "http://172.16.8.129:8081/eMonitorApp/appUpdate";
-
-    private static AsyncHttpClient client = new AsyncHttpClient();
+    private static FinalAsyncHttpClient finalAsyncHttpClient = new FinalAsyncHttpClient();
+    private static AsyncHttpClient client = finalAsyncHttpClient.getAsyncHttpClient();
+    public static Cookie s;
 
     public static void get(String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {
         client.get(getUpDataAbsoluteUrl(url), params, responseHandler);
@@ -46,7 +50,18 @@ public class SystemRestClient {
     }
 
     public static void post(String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {
+        CookieStore cookies = (CookieStore) client.getHttpContext().getAttribute(ClientContext.COOKIE_STORE);
+        if(cookies!=null){
+            for(Cookie c:cookies.getCookies()){
+                s=c;
+                Log.e("cookies!!!!!!!!" + c.getName(), c.getValue());
+            }
+        }else{
+            Log.e("cookies!!!!!!!!" ,"else");
+        }
+
         client.post(getAbsoluteUrl(url), params, responseHandler);
+
     }
     private static String getAbsoluteUrl(String relativeUrl) {
         Log.i("getAbsoluteUrl", BASE_URL + relativeUrl);

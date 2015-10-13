@@ -125,7 +125,7 @@ public class VideoPresenter implements Presenter {
 
         @Override
         public void onNext(String videoUrl) {
-            Log.e("VideoStopSubscriber-onNext","准备重新播放");
+            Log.e("VideoStopSubscr","准备重新播放");
             videoActivity.initialize();
         }
     }
