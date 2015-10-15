@@ -8,6 +8,7 @@ import android.util.Log;
 import com.hy.data.entity.AdministratorPageEntity;
 import com.hy.data.entity.AlarmPageEntity;
 import com.hy.data.entity.CompanyEntity;
+import com.hy.data.entity.EquipmentEntity;
 import com.hy.data.entity.EquipmentInforPageEntity;
 import com.hy.data.entity.EquipmentPageEntity;
 import com.hy.data.entity.LineEntity;
@@ -31,6 +32,7 @@ import com.hy.data.entity.mapper.UserEntityJsonMapper;
 import com.hy.data.exception.NetworkConnectionException;
 import com.hy.data.utile.CookiesUtils;
 import com.hy.data.utile.SystemRestClient;
+import com.hy.data.utile.TransformationUtils;
 import com.hy.data.utile.VideoPlayUtils;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
@@ -42,6 +44,7 @@ import org.apache.http.cookie.Cookie;
 
 import java.io.UnsupportedEncodingException;
 import java.util.List;
+import java.util.TreeMap;
 
 import rx.Observable;
 import rx.Subscriber;
@@ -206,13 +209,15 @@ public class RestApiImpl implements RestApi {
                 }
         );
     }
+
     PersistentCookieStore cookieStore;
+
     protected void saveCookie(AsyncHttpClient client) {
         cookieStore = new PersistentCookieStore(context);
         client.setCookieStore(cookieStore);
     }
 
-    protected List<Cookie> getCookie(){
+    protected List<Cookie> getCookie() {
         return cookieStore.getCookies();
     }
 
@@ -478,21 +483,21 @@ public class RestApiImpl implements RestApi {
     }
 
     @Override
-    public Observable<String> videoUrl(String fileName,int dvrId,int dvrType) {
+    public Observable<String> videoUrl(String fileName, int dvrId, int dvrType) {
         return Observable.create(new Observable.OnSubscribe<String>() {
             @Override
             public void call(Subscriber<? super String> subscriber) {
                 Log.e("videoUrl", "inVideoUrl");
                 try {
-                    SystemRestClient.XmlPost(context, "/recordPlay?DvrID="+dvrId+"&DvrType="+dvrType, VideoPlayUtils.getRecordPlayXml(fileName), "text/xml; charset=UTF-8", new AsyncHttpResponseHandler() {
+                    SystemRestClient.XmlPost(context, "/recordPlay?DvrID=" + dvrId + "&DvrType=" + dvrType, VideoPlayUtils.getRecordPlayXml(fileName), "text/xml; charset=UTF-8", new AsyncHttpResponseHandler() {
                         @Override
                         public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                             try {
                                 String responseVideoUrl = new String(responseBody, "UTF-8");
                                 if ("\"loginFail\"".equals(responseVideoUrl)) {
                                     subscriber.onError(new NetworkConnectionException("请重新登录"));
-                                }else if(responseVideoUrl.isEmpty()){
-                                    Log.e("tag","responseVideoUrl-> is empty");
+                                } else if (responseVideoUrl.isEmpty()) {
+                                    Log.e("tag", "responseVideoUrl-> is empty");
                                     subscriber.onError(new NetworkConnectionException("无法获得地址"));
                                 } else {
                                     Log.e("videoUrl", "videoUrl->" + responseVideoUrl);
@@ -530,8 +535,10 @@ public class RestApiImpl implements RestApi {
                             String responseVideoUrl = new String(responseBody, "UTF-8");
                             if ("\"loginFail\"".equals(responseVideoUrl)) {
                                 subscriber.onError(new NetworkConnectionException("请重新登录"));
-                            } else {
-                                Log.e("videoUrl", "url  ?>" + responseVideoUrl);
+                            } else if("".equals(responseVideoUrl)){
+                                subscriber.onError(new NetworkConnectionException("Url获取失败"));
+                            }else {
+                                Log.e("videoUrl", "url为:" + responseVideoUrl);
                                 subscriber.onNext(responseVideoUrl);
                                 subscriber.onCompleted();
                             }
@@ -1261,9 +1268,9 @@ public class RestApiImpl implements RestApi {
                             Log.e("response", responseEntities);
                             if ("\"loginFail\"".equals(responseEntities)) {
                                 subscriber.onError(new NetworkConnectionException("请重新登录"));
-                            } else if("\"查询失败\"".equals(responseEntities)){
+                            } else if ("\"查询失败\"".equals(responseEntities)) {
                                 subscriber.onError(new NetworkConnectionException("查询失败"));
-                            }else {
+                            } else {
                                 subscriber.onNext(privilegeEntityJsonMapper.transformPrivilegeEntity(responseEntities));
                                 subscriber.onCompleted();
                             }
@@ -2065,11 +2072,11 @@ public class RestApiImpl implements RestApi {
     }
 
     @Override
-    public Observable<String> openPower(String deivceId, int operationType) {
+    public Observable<String> openPower(String deviceId, int operationType) {
         return Observable.create(new Observable.OnSubscribe<String>() {
             @Override
             public void call(Subscriber<? super String> subscriber) {
-                SystemRestClient.openPower("/operationDvrSystem.do", deivceId, operationType, new AsyncHttpResponseHandler() {
+                SystemRestClient.openPower("/operationDvrSystem.do", deviceId, operationType, new AsyncHttpResponseHandler() {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                         try {
@@ -2170,7 +2177,7 @@ public class RestApiImpl implements RestApi {
             @Override
             public void call(Subscriber<? super String> subscriber) {
                 try {
-                    SystemRestClient.post("/stopRealPlay",dvrType,dvrId,channelID,streamType,null,new AsyncHttpResponseHandler() {
+                    SystemRestClient.post("/stopRealPlay", dvrType, dvrId, channelID, streamType, null, new AsyncHttpResponseHandler() {
                         @Override
                         public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                             try {
@@ -2185,9 +2192,85 @@ public class RestApiImpl implements RestApi {
                                 e.printStackTrace();
                             }
                         }
+
                         @Override
                         public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                             Log.e("getUserEntitiesFromApi", "onFailure");
+                            subscriber.onError(new NetworkConnectionException("链接失败"));
+                        }
+                    });
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    @Override
+    public Observable<List<EquipmentEntity>> getEquipmentList(int userId) {
+        return Observable.create(new Observable.OnSubscribe<List<EquipmentEntity>>() {
+            @Override
+            public void call(Subscriber<? super List<EquipmentEntity>> subscriber) {
+                RequestParams params = new RequestParams();
+                params.put("userId", userId);
+                SystemRestClient.post("/getEquipmentList", params, new AsyncHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                        try {
+                            String responseEntities = new String(responseBody, "UTF-8");
+                            if ("\"loginFail\"".equals(responseEntities)) {
+                                subscriber.onError(new NetworkConnectionException("请重新登录"));
+                            } else {
+                                Log.e("response", responseEntities);
+                                subscriber.onNext(pageEntityJsonMapper.transformEquipmentPageEntity(responseEntities).getList());
+                                subscriber.onCompleted();
+                            }
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                        subscriber.onError(new NetworkConnectionException("链接失败"));
+                    }
+                });
+            }
+        });
+    }
+
+    @Override
+    public Observable<TreeMap<String, Float>> queryConditionMonitorData(int userId, String fieldName, String startTime, String endTime, String deviceSn, String statisticByTime, String deviceID) {
+        return Observable.create(new Observable.OnSubscribe<TreeMap<String, Float>>() {
+            @Override
+            public void call(Subscriber<? super TreeMap<String, Float>> subscriber) {
+                RequestParams params = new RequestParams();
+                params.put("fieldName", fieldName);
+                params.put("startTime", startTime);
+                params.put("endTime", endTime);
+                params.put("deviceSn", deviceSn);
+                params.put("statisticByTime", statisticByTime);
+                params.put("deviceID", deviceID);
+                try {
+                    SystemRestClient.getClient().get(SystemRestClient.BASE_MONITOR_URL+"/sensorStatistics/getDeviceStatusStatisticsChart.do", params, new AsyncHttpResponseHandler() {
+                        @Override
+                        public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                            try {
+                                String responseVideoUrl = new String(responseBody, "UTF-8");
+                                if ("\"loginFail\"".equals(responseVideoUrl)) {
+                                    subscriber.onError(new NetworkConnectionException("请重新登录"));
+                                } else {
+                                    subscriber.onNext(TransformationUtils.getTreeMapFromJsonString(responseVideoUrl,statisticByTime));
+                                    subscriber.onCompleted();
+                                }
+                            } catch (UnsupportedEncodingException e) {
+                                e.printStackTrace();
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                            Log.e("ConditionMonitorData", "onFailure");
                             subscriber.onError(new NetworkConnectionException("链接失败"));
                         }
                     });

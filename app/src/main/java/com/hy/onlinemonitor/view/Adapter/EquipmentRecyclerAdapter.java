@@ -17,10 +17,12 @@ import com.hy.onlinemonitor.view.Activity.Function.VideoActivity;
 import com.hy.onlinemonitor.view.ViewHolder.EquipmentListViewHolder;
 import com.lid.lib.LabelView;
 
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * Created by wsw on 2015/7/15.
@@ -31,6 +33,12 @@ public class EquipmentRecyclerAdapter extends RecyclerView.Adapter<EquipmentList
     private List<EquipmentInformation> mList;
     private LabelView label;
     private int userId;
+
+    TreeMap<String,EquipmentInformation> equipmentInformatics = new TreeMap<>();
+
+    public TreeMap<String, EquipmentInformation> getEquipmentInformatics() {
+        return equipmentInformatics;
+    }
 
     public EquipmentRecyclerAdapter(int selectionType, Context context, EquipmentInforPage equipmentInforPage, int userId) {
         this.selectionType = selectionType;
@@ -236,21 +244,34 @@ public class EquipmentRecyclerAdapter extends RecyclerView.Adapter<EquipmentList
     public void setEquipmentCollection(Collection<EquipmentInformation> equipmentInformationCollection) {
         this.validateEquipmentCollection(equipmentInformationCollection);
 
-        if (mList.size() == 0) {
-            mList = (List<EquipmentInformation>) equipmentInformationCollection;
-        } else {
-            Map<String,EquipmentInformation> equipmentInformatics = new HashMap<>();
-            for(EquipmentInformation equipmentInformation :mList){
+        for(EquipmentInformation equipmentInformation :equipmentInformationCollection){
                 equipmentInformatics.put(equipmentInformation.getEquipmnetName(),equipmentInformation);
             }
-            for(EquipmentInformation equipmentInformation :equipmentInformationCollection){
-                equipmentInformatics.put(equipmentInformation.getEquipmnetName(), equipmentInformation);
-            }
-            mList.clear();
-            for (Map.Entry<String, EquipmentInformation> info : equipmentInformatics.entrySet()) {
-                mList.add(info.getValue());
-            }
+
+        Iterator titer=equipmentInformatics.entrySet().iterator();
+        List<EquipmentInformation> list1 = new ArrayList<>();
+        while(titer.hasNext()){
+            Map.Entry ent=(Map.Entry )titer.next();
+            list1.add((EquipmentInformation) ent.getValue());
         }
+        mList = list1;
+//        if (mList.size() == 0) {
+//            for(EquipmentInformation equipmentInformation :equipmentInformationCollection){
+//                equipmentInformatics.put(equipmentInformation.getEquipmnetName(),equipmentInformation);
+//            }
+//            mList = (List<EquipmentInformation>) equipmentInformationCollection;
+//        } else {
+//            for(EquipmentInformation equipmentInformation :mList){
+//                equipmentInformatics.put(equipmentInformation.getEquipmnetName(),equipmentInformation);
+//            }
+//            for(EquipmentInformation equipmentInformation :equipmentInformationCollection){
+//                equipmentInformatics.put(equipmentInformation.getEquipmnetName(), equipmentInformation);
+//            }
+//            mList.clear();
+//            for (Map.Entry<String, EquipmentInformation> info : equipmentInformatics.entrySet()) {
+//                mList.add(info.getValue());
+//            }
+//        }
         this.notifyDataSetChanged();
     }
 

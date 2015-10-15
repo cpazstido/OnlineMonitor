@@ -1,228 +1,226 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/toolbar" />
+
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-
-        <include layout="@layout/toolbar" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="5dp">
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="horizontal"
-                android:padding="2dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="开始时间"
-                    android:textColor="#000" />
-
-                <com.rey.material.widget.Button
-                    android:id="@+id/start_time_btn"
-                    style="@style/FlatColorButtonRippleStyle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="36dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_weight="1"
-                    android:text="2015-10-9"
-                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Button"
-                    android:textColor="#FF2196F3"
-                    app:rd_delayClick="afterRelease" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="horizontal"
-                android:padding="2dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="结束时间"
-                    android:textColor="#000" />
-
-                <com.rey.material.widget.Button
-                    android:id="@+id/end_time_btn"
-                    style="@style/FlatColorButtonRippleStyle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="36dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_weight="1"
-                    android:text="2015-10-9"
-                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Button"
-                    android:textColor="#FF2196F3"
-                    app:rd_delayClick="afterRelease" />
-
-            </LinearLayout>
-        </LinearLayout>
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="5dp">
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:orientation="horizontal"
-            android:padding="5dp">
+            android:padding="2dp">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="统计方式"
-                android:textColor="#000" />
-
-            <com.rey.material.widget.RadioButton
-                android:id="@+id/real_time_statistics"
-                style="@style/RadioButtonDrawable"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:checked="true"
-                android:gravity="center_vertical"
-                android:text="实时统计"
-                android:textSize="14sp" />
-
-            <com.rey.material.widget.RadioButton
-                android:id="@+id/daily_statistics"
-                style="@style/RadioButtonDrawable"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:checked="false"
-                android:gravity="center_vertical"
-                android:text="按日统计"
-                android:textSize="14sp" />
-
-            <com.rey.material.widget.RadioButton
-                android:id="@+id/month_statistics"
-                style="@style/RadioButtonDrawable"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:checked="false"
-                android:gravity="center_vertical"
-                android:text="按月统计"
-                android:textSize="14sp" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="5dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="设备选择"
+                android:text="开始时间"
                 android:textColor="#000" />
 
             <com.rey.material.widget.Button
-                android:id="@+id/choice_equipment"
+                android:id="@+id/start_time_btn"
                 style="@style/FlatColorButtonRippleStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="36dp"
                 android:layout_marginLeft="10dp"
                 android:layout_weight="1"
-                android:text="选择设备"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Button"
                 android:textColor="#FF2196F3"
                 app:rd_delayClick="afterRelease" />
+
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/select_statistics_ll"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
+
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:orientation="horizontal"
-            android:padding="5dp">
+            android:padding="2dp">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="选择统计"
+                android:text="结束时间"
                 android:textColor="#000" />
 
-            <Spinner
-                android:id="@+id/select_statistics"
+            <com.rey.material.widget.Button
+                android:id="@+id/end_time_btn"
+                style="@style/FlatColorButtonRippleStyle"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="#000000"
-                android:textSize="18sp" />
+                android:layout_height="36dp"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="1"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Button"
+                android:textColor="#FF2196F3"
+                app:rd_delayClick="afterRelease" />
+
         </LinearLayout>
-        <LinearLayout
-            android:id="@+id/statistical_parameters_ll"
-            android:layout_width="match_parent"
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="5dp">
+
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="5dp">
+            android:text="统计方式"
+            android:textColor="#000" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="统计参数"
-                android:textColor="#000" />
-
-            <Spinner
-                android:id="@+id/statistical_parameters"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="#000000"
-                android:textSize="18sp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/specific_parameters_ll"
-            android:layout_width="match_parent"
+        <com.rey.material.widget.RadioButton
+            android:id="@+id/real_time_statistics"
+            style="@style/RadioButtonDrawable"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="5dp">
+            android:layout_weight="1"
+            android:checked="true"
+            android:gravity="center_vertical"
+            android:text="实时统计"
+            android:textSize="14sp" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="具体参数"
-                android:textColor="#000" />
+        <com.rey.material.widget.RadioButton
+            android:id="@+id/daily_statistics"
+            style="@style/RadioButtonDrawable"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:checked="false"
+            android:gravity="center_vertical"
+            android:text="按日统计"
+            android:textSize="14sp" />
 
-            <Spinner
-                android:id="@+id/specific_parameters"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="#000000"
-                android:textSize="18sp" />
-        </LinearLayout>
+        <com.rey.material.widget.RadioButton
+            android:id="@+id/month_statistics"
+            style="@style/RadioButtonDrawable"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:checked="false"
+            android:gravity="center_vertical"
+            android:text="按月统计"
+            android:textSize="14sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="5dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="设备选择"
+            android:textColor="#000" />
+
         <com.rey.material.widget.Button
-            android:layout_margin="15dp"
-            android:id="@+id/select_btn"
+            android:id="@+id/choice_equipment"
             style="@style/FlatColorButtonRippleStyle"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="36dp"
-            android:text="查询"
+            android:layout_marginLeft="10dp"
+            android:layout_weight="1"
+            android:text="选择设备"
             android:textAppearance="@style/Base.TextAppearance.AppCompat.Button"
             android:textColor="#FF2196F3"
             app:rd_delayClick="afterRelease" />
-        <FrameLayout
-            android:id="@+id/container"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            />
     </LinearLayout>
-</ScrollView>
+
+    <LinearLayout
+        android:id="@+id/select_statistics_ll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="5dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="选择统计"
+            android:textColor="#000" />
+
+        <Spinner
+            android:id="@+id/select_statistics"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#000000"
+            android:textSize="18sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/statistical_parameters_ll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="5dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="统计参数"
+            android:textColor="#000" />
+
+        <Spinner
+            android:id="@+id/statistical_parameters"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#000000"
+            android:textSize="18sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/specific_parameters_ll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        android:padding="5dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="具体参数"
+            android:textColor="#000" />
+
+        <Spinner
+            android:id="@+id/specific_parameters"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#000000"
+            android:textSize="18sp" />
+    </LinearLayout>
+
+    <com.rey.material.widget.Button
+        android:id="@+id/select_btn"
+        style="@style/FlatColorButtonRippleStyle"
+        android:layout_width="match_parent"
+        android:layout_height="36dp"
+        android:layout_margin="15dp"
+        android:text="查询"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Button"
+        android:textColor="#FF2196F3"
+        app:rd_delayClick="afterRelease" />
+
+    <FrameLayout
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+</LinearLayout>
+

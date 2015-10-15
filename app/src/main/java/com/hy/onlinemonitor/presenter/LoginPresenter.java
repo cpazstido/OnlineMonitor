@@ -73,8 +73,8 @@ public class LoginPresenter extends DefaultSubscriber implements Presenter {
         LoginView.hideLoading();
     }
 
-    private void GotoView() {
-        LoginView.GoToView();
+    private void gotoView() {
+        LoginView.goToView();
     }
 
     private void userLogin() {
@@ -117,7 +117,7 @@ public class LoginPresenter extends DefaultSubscriber implements Presenter {
         public void onCompleted() {
             Log.e("error", "onCompleted");
             LoginPresenter.this.hideViewLoading();
-            LoginPresenter.this.GotoView();//这里应该调用函数进行跳转
+            LoginPresenter.this.gotoView();//这里应该调用函数进行跳转
         }
 
         @Override

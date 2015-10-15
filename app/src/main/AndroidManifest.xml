@@ -98,6 +98,8 @@
         <activity android:name=".view.Activity.SystemManagement.EquipmentMoreInformationActivity"
             android:launchMode="singleTask"/>
 
+        <activity android:name=".view.Activity.ConditionMonitor.EquipmentConditionMonitorActivity"
+            android:launchMode="singleTask"/>
         <activity android:name=".view.Activity.SystemManagement.SensorManageActivity" />
 
         <activity android:name=".view.Activity.SystemManagement.CompanyManageActivity" />

@@ -4,6 +4,7 @@ package com.hy.data.net;
 import com.hy.data.entity.AdministratorPageEntity;
 import com.hy.data.entity.AlarmPageEntity;
 import com.hy.data.entity.CompanyEntity;
+import com.hy.data.entity.EquipmentEntity;
 import com.hy.data.entity.EquipmentInforPageEntity;
 import com.hy.data.entity.EquipmentPageEntity;
 import com.hy.data.entity.LineEntity;
@@ -17,6 +18,7 @@ import com.hy.data.entity.SensorTypeEntity;
 import com.hy.data.entity.UserEntity;
 
 import java.util.List;
+import java.util.TreeMap;
 
 import rx.Observable;
 
@@ -67,11 +69,11 @@ public interface RestApi {
     /**
      * 处理报警
      *
-     * @param AlarmSn 报警sn
+     * @param AlarmSn        报警sn
      * @param queryAlarmType 处理的哪种报警
      * @return 成功或失败的String
      */
-    Observable<String> handleAlarm(int AlarmSn,String queryAlarmType);
+    Observable<String> handleAlarm(int AlarmSn, String queryAlarmType);
 
     /**
      * 查看特定 equipmentName的报警信息
@@ -83,7 +85,8 @@ public interface RestApi {
      * @param pageNumber     第几页的数据
      */
     Observable<AlarmPageEntity> alarmEntity(int userId, String equipmentName,
-                                            String queryAlarmType, int status, int pageNumber);
+                                            String queryAlarmType, int status,
+                                            int pageNumber);
 
     /**
      * 取得地图列表
@@ -101,7 +104,7 @@ public interface RestApi {
      * @param fileName 根据文件名获得播放地址
      * @return 返回Url
      */
-    Observable<String> videoUrl(String fileName,int dvrId,int dvrType);
+    Observable<String> videoUrl(String fileName, int dvrId, int dvrType);
 
     /**
      * 取得实时视频播放地址
@@ -136,7 +139,8 @@ public interface RestApi {
      * @param userId 用户唯一标示
      * @return 公司列表
      */
-    Observable<List<CompanyEntity>> addCompany(int userId, int sn, String companyName, String companyAddress);
+    Observable<List<CompanyEntity>> addCompany(int userId, int sn, String companyName,
+                                               String companyAddress);
 
     /**
      * 查询添加公司时可以选择的父公司
@@ -155,7 +159,8 @@ public interface RestApi {
      * @param companyAddress 公司地址
      * @return 返回公司列表
      */
-    Observable<List<CompanyEntity>> changeCompany(int userId, int sn, String companyName, String companyAddress);
+    Observable<List<CompanyEntity>> changeCompany(int userId, int sn, String companyName,
+                                                  String companyAddress);
 
     /**
      * 删除公司
@@ -463,7 +468,8 @@ public interface RestApi {
      * @param equipment_ID             equipment_ID
      * @return 设备page
      */
-    Observable<EquipmentPageEntity> addEquipment(int userId, int poleSn, String deviceID, String dvrID,
+    Observable<EquipmentPageEntity> addEquipment(int userId, int poleSn, String deviceID,
+                                                 String dvrID,
                                                  Double angleRelativeToNorthPole,
                                                  String deviceType, int sendMmsState,
                                                  String cma_ID, String sensor_ID,
@@ -493,7 +499,8 @@ public interface RestApi {
      * @param equipment_ID             equipment_ID
      * @return 设备page
      */
-    Observable<EquipmentPageEntity> changeEquipment(int userId, int equipmentSn, String deviceID, String dvrID,
+    Observable<EquipmentPageEntity> changeEquipment(int userId, int equipmentSn, String deviceID,
+                                                    String dvrID,
                                                     Double angleRelativeToNorthPole,
                                                     String deviceType, int sendMmsState,
                                                     String cma_ID, String sensor_ID,
@@ -534,37 +541,65 @@ public interface RestApi {
     /**
      * 打开设备电源
      *
-     * @param deivceId 设备sn
+     * @param deviceId 设备sn
      * @return 返回指令是否成功
      */
-    Observable<String> openPower(String deivceId, int operationType);
+    Observable<String> openPower(String deviceId, int operationType);
 
     /**
      * 山火特有的打开电源
-     * @param dvrId  dvrId
+     *
+     * @param dvrId     dvrId
      * @param channelID channelID
-     * @param dvrType dvrType
+     * @param dvrType   dvrType
      * @return 字符串
      */
     Observable<String> openFirePower(int dvrId, int channelID, String dvrType);
 
     /**
      * 切换手自动
-     * @param dvrId dvrId
+     *
+     * @param dvrId     dvrId
      * @param channelID channelID
-     * @param dvrType dvrType
-     * @param type true:手动切换自动 false 自动切换手动
+     * @param dvrType   dvrType
+     * @param type      true:手动切换自动 false 自动切换手动
      * @return 字符串
      */
-    Observable<String> changePtz(int dvrId, int channelID, String dvrType,Boolean type);
+    Observable<String> changePtz(int dvrId, int channelID, String dvrType, Boolean type);
 
     /**
      * 停止播放
-     * @param dvrId dvrId
-     * @param channelID channelID
-     * @param dvrType dvrType
+     *
+     * @param dvrId      dvrId
+     * @param channelID  channelID
+     * @param dvrType    dvrType
      * @param streamType streamType
      * @return 是否
      */
     Observable<String> stopPlay(int dvrId, int channelID, String dvrType, int streamType);
+
+    /**
+     * 获取所有的设备列表
+     *
+     * @param userId 唯一标示
+     * @return 返回设备列表
+     */
+    Observable<List<EquipmentEntity>> getEquipmentList(int userId);
+
+    /**
+     * 获取设备状态监测数据
+     *
+     * @param userId          唯一标示
+     * @param fieldName       选择统计类型
+     * @param startTime       开始时间
+     * @param endTime         结束时间
+     * @param deviceSn        设备sn
+     * @param statisticByTime 统计方式
+     * @param deviceID        设备编号
+     * @return 返回一个Map 横坐标(时间),纵坐标(值)
+     */
+    Observable<TreeMap<String, Float>> queryConditionMonitorData(int userId, String fieldName,
+                                                                String startTime, String endTime,
+                                                                String deviceSn, String statisticByTime,
+                                                                String deviceID);
 }

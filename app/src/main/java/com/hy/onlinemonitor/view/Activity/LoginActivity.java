@@ -90,13 +90,13 @@ public class LoginActivity extends AppCompatActivity implements JumpView {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
-//
-//        titles.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                TestActivity.StartTestView(LoginActivity.this);
-//            }
-//        });
+
+        titles.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TestActivity.StartTestView(LoginActivity.this);
+            }
+        });
 
         initPresenter();
         LoginAlert = GetLoading.getDialog(LoginActivity.this, "登录中");
@@ -294,10 +294,10 @@ public class LoginActivity extends AppCompatActivity implements JumpView {
                                         }
                                     })
                                     .show();
-                        } else {
-                            Log.d("LoginActivity", "都不满足");
+                        } else {//版本符合要求
                             autoLoginFlag = true;
                             goActivity = true;
+                            goTypeView();
                         }
                     }
                 } catch (UnsupportedEncodingException e) {
@@ -425,7 +425,7 @@ public class LoginActivity extends AppCompatActivity implements JumpView {
     }
 
     @Override
-    public void GoToView() {
+    public void goToView() {
         Intent intent = new Intent(LoginActivity.this, TypeSelectionActivity.class);
         startActivity(intent);
     }

@@ -16,6 +16,7 @@ import org.apache.http.cookie.Cookie;
  * Created by wsw on 2015/7/17.
  */
 public class SystemRestClient {
+    public static final String BASE_MONITOR_URL = "http://118.123.114.8:8080/eMonitorApp";
     private static final String BASE_URL = "http://118.123.114.8:8080/eMonitorApp/android";
     public static final String BASE_PICTURE_URL = "http://118.123.114.8:8080/eMonitorApp/alarm/";
     private static final String BASE_VIDEO_URL = "http://118.123.114.8:8080/eMonitorApp/accessServer";

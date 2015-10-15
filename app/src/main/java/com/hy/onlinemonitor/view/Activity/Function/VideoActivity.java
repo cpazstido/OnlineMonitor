@@ -232,15 +232,19 @@ public class VideoActivity extends AppCompatActivity implements InitView, LoadDa
                         Log.e(TAG, "切换到4!");
                         VideoActivity.this.channelID = 4;
                     }
-                    if (isHaveUrl || mediaPlayer.isPlaying()) {
-                        timer.cancel();
-                        mediaPlayer.reset();
-                        isHaveUrl = false;
-                        videoUrl = "";
-                        Log.e(TAG, "取消播放!");
-                        videoPresenter.stopPlay(dvrId, streamType, oldChannelId, dvrType);    //先停止播放,再修改通道号
+                    if (mediaPlayer != null) {
+                        if (isHaveUrl || mediaPlayer.isPlaying()) {
+                            timer.cancel();
+                            mediaPlayer.reset();
+                            isHaveUrl = false;
+                            videoUrl = "";
+                            Log.e(TAG, "取消播放!");
+                            videoPresenter.stopPlay(dvrId, streamType, oldChannelId, dvrType);    //先停止播放,再修改通道号
+                        }
+                        Log.e(TAG, "现在的channelID" + channelID);
+                    } else {
+                        initialize();
                     }
-                    Log.e(TAG, "现在的channelID" + channelID);
                 }
             }
         };
@@ -480,9 +484,17 @@ public class VideoActivity extends AppCompatActivity implements InitView, LoadDa
 
     @Override
     public void showError(String message) {
-        if (timer != null)
-            timer.cancel();
+        if (message.equals("Url获取失败")) {
+            if (mediaPlayer == null)
+                mediaPlayer = new MediaPlayer(this);
+            videoUrl = "";
+            isHaveUrl = false;
+        } else {
+            if (timer != null)
+                timer.cancel();
+        }
         ShowUtile.toastShow(VideoActivity.this, message);
+
     }
 
     @Override
@@ -521,15 +533,15 @@ public class VideoActivity extends AppCompatActivity implements InitView, LoadDa
                         switch (arg1) {
                             case MediaPlayer.MEDIA_INFO_BUFFERING_START:
                                 //开始缓存，暂停播放
-                                Log.e(TAG,"开始缓存" + "暂停播放");
+                                Log.e(TAG, "开始缓存" + "暂停播放");
                                 break;
                             case MediaPlayer.MEDIA_INFO_BUFFERING_END:
                                 //缓存完成，继续播放
-                                Log.e(TAG,"缓存完成" + "继续播放");
+                                Log.e(TAG, "缓存完成" + "继续播放");
                                 break;
                             case MediaPlayer.MEDIA_INFO_DOWNLOAD_RATE_CHANGED:
                                 //显示 下载速度
-                                Log.e(TAG,"download rate:" + arg2);
+                                Log.e(TAG, "download rate:" + arg2);
                                 break;
                         }
                         return true;
@@ -603,7 +615,11 @@ public class VideoActivity extends AppCompatActivity implements InitView, LoadDa
         videoEquipmentStatusTv.setText(controlStatus);
         switch (controlStatus) {
             case "\"摄像机电源已打开\"":
+                isOpenPower= false;//防止突然摄像机关电后,不能再次开电的问题.这里在打开电源后设置为可开电
+                if(mediaPlayer ==null)
+                    mediaPlayer = new MediaPlayer(this);
                 if (mediaPlayer.isPlaying()) {
+
                     videoPlayTv.setText("正在播放中");
                 } else {
                     if (isHaveUrl && !videoUrl.isEmpty()) {
@@ -755,6 +771,7 @@ public class VideoActivity extends AppCompatActivity implements InitView, LoadDa
         Log.e("onError", "onError调用了!!!");
         isHaveUrl = false;
         videoUrl = "";
+        isOpenPower=false;
         videoPlayTv.setText("播放出错,错误代码" + "(" + i + ", " + i1 + ")");
         ShowUtile.toastShow(VideoActivity.this, "视频暂无法播放,错误代码" + "(" + i + ", " + i1 + ")");
         doCleanUp();

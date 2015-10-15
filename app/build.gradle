@@ -20,6 +20,7 @@ android {
 }
 
 repositories {
+    maven { url "https://jitpack.io" }
     mavenCentral()
     flatDir{
         dirs 'libs'
@@ -83,4 +84,6 @@ dependencies {
     compile 'com.github.lecho:hellocharts-library:1.5.8@aar'
 
     compile files('src/main/libs/baidumapapi_v3_5_0_1.jar')
+
+    compile 'com.github.PhilJay:MPAndroidChart:v2.1.5'
 }

@@ -115,7 +115,7 @@ public class EquipmentManageActivity extends SMBaseActivity {
     @Override
     protected void initRvAdapter() {
         mAdapter = new SMEquipmentRecyclerAdapter(EquipmentManageActivity.this, new ArrayList<Equipment>());
-        ((SMEquipmentRecyclerAdapter) mAdapter).setMode(Attributes.Mode.Single);
+        mAdapter.setMode(Attributes.Mode.Single);
         smRecyclerView.setAdapter(mAdapter);
     }
 

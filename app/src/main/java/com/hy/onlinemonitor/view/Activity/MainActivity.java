@@ -10,6 +10,7 @@ import android.widget.AdapterView;
 import com.hy.onlinemonitor.R;
 import com.hy.onlinemonitor.bean.OwnJurisdiction;
 import com.hy.onlinemonitor.utile.ShowUtile;
+import com.hy.onlinemonitor.view.Activity.ConditionMonitor.EquipmentConditionMonitorActivity;
 import com.hy.onlinemonitor.view.Activity.Function.AlarmInformationActivity;
 import com.hy.onlinemonitor.view.Activity.Function.EquipmentListViewActivity;
 import com.hy.onlinemonitor.view.Activity.Function.MapActivity;
@@ -59,7 +60,7 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
         }
         //先隐藏未实现的功能界面
         findViewById(R.id.main_ll_config).setVisibility(View.GONE);
-        findViewById(R.id.main_ll_monitor).setVisibility(View.GONE);
+//        findViewById(R.id.main_ll_monitor).setVisibility(View.GONE);
 
         gvFunction = (MyGridView) findViewById(R.id.main_gv_function);//功能
         //gvConfig = (MyGridView) findViewById(R.id.main_gv_config);
@@ -172,11 +173,15 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
                     case 1://"设备状态"
 
                         break;
-                    case 2://"监测统计"
-
+                    case 2://"监测状态统计"
+                        Intent gridMonitoringStatStatisticsIntent = new Intent(MainActivity.this, EquipmentConditionMonitorActivity.class);
+                        gridMonitoringStatStatisticsIntent.putExtra("projectFlag",false);
+                        startActivity(gridMonitoringStatStatisticsIntent);
                         break;
-                    case 3://"设备统计"
-
+                    case 3://"设备状态统计"
+                        Intent gridEquipmentStatisticsIntent = new Intent(MainActivity.this, EquipmentConditionMonitorActivity.class);
+                        gridEquipmentStatisticsIntent.putExtra("projectFlag",true);
+                        startActivity(gridEquipmentStatisticsIntent);
                         break;
                 }
                 break;

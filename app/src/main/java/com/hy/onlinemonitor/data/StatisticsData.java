@@ -39,10 +39,10 @@ public class StatisticsData {
         selectStatisticsValue.put("未上传气象数据", "Failed_send_weather_num");
         selectStatisticsValue.put("未上传杆塔数据", "Failed_send_tower_slop_num");
         selectStatisticsValue.put("未上传风偏数据", "Failed_send_angle_num");
-        selectStatisticsValue.put("电池电压", "bat_Voltage");
-        selectStatisticsValue.put("电池充电电流", "charge_Currrent");
-        selectStatisticsValue.put("电源剩余电量", "bat_RemainCapacity");
-        selectStatisticsValue.put("电源输出电流", "bat_OutputCurrent");
+        selectStatisticsValue.put("电池电压", "Bat1_Voltage");
+        selectStatisticsValue.put("电池充电电流", "Charge_Currrent_1");
+        selectStatisticsValue.put("电源剩余电量", "Bat1_RemainCapacity");
+        selectStatisticsValue.put("电源输出电流", "Bat1_OutputCurrent");
 
         statisticalParametersValue.put("微气象", "meteorology");
         statisticalParametersValue.put("微风振动", "aeolianVibration");

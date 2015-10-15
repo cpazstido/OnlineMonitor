@@ -139,6 +139,8 @@ public class EquipmentListViewActivity extends BaseActivity implements LoadDataV
                 swipeRefreshLayout.postDelayed(new Runnable() {
                     @Override
                     public void run() {
+                        mAdapter.getEquipmentInformatics().clear();
+                        pageNumber=1;
                         EquipmentListViewActivity.this.loadEquipmentList(1);
                         swipeRefreshLayout.setRefreshing(false);
                     }
@@ -160,7 +162,7 @@ public class EquipmentListViewActivity extends BaseActivity implements LoadDataV
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 lastVisibleItem = linearLayoutManager.findLastVisibleItemPosition();
                 int totalItemCount = mAdapter.getItemCount();
-                Log.e("show","lastVisibleItem"+lastVisibleItem+"--totalItemCount"+totalItemCount);
+//                Log.e("show","lastVisibleItem"+lastVisibleItem+"--totalItemCount"+totalItemCount);
                 if (lastVisibleItem == totalItemCount - 1 && dy > 0 && equipmentInforPage.getRowCount() > totalItemCount) {
                     if (!isLoadingMore) {
                         isLoadingMore = true;
