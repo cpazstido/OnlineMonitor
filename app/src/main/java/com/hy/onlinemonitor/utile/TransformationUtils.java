@@ -36,7 +36,6 @@ public class TransformationUtils {
         }
         list.clear();
         list.addAll(newList);
-        System.out.println(" remove duplicate " + list);
     }
 
 

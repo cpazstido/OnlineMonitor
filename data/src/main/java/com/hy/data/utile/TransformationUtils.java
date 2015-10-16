@@ -1,7 +1,5 @@
 package com.hy.data.utile;
 
-import android.util.Log;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 
@@ -18,17 +16,8 @@ public class TransformationUtils {
         return Arrays.asList(str.split(splitToWhat));
     }
 
-    public static Integer[] getIntegerFromInt(int[] nums) {
-        Integer[] in = new Integer[nums.length];
-        for (int i = 0; i < nums.length; i++) {
-            in[i] = nums[i];
-        }
-        return in;
-    }
-
     public static TreeMap<String, Float> getTreeMapFromJsonString(String str, String Type) {
         if (str != null && str != "" && str != "[]") {
-            Log.e("TransformationUtils", str);
             List<String> abscissaList = new ArrayList<>(); //时间,横坐标
             List<Float> ordinateList = new ArrayList<>(); //  值,纵坐标
             try {

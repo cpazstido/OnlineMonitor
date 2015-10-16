@@ -1,15 +1,14 @@
 package com.example.repository;
 
-import com.example.bean.DomainEquipment;
+import com.example.bean.DomainEquipmentInforPage;
 
-import java.util.List;
 import java.util.TreeMap;
 
 import rx.Observable;
 
 public interface EquipmentConditionMonitorRepository {
 
-    Observable<List<DomainEquipment>> getEquipmentList();
+    Observable<DomainEquipmentInforPage> getEquipmentList();
 
     Observable<TreeMap<String,Float>> queryConditionMonitorData();
 

@@ -30,7 +30,7 @@ import com.github.mikephil.charting.listener.ChartTouchListener;
 import com.github.mikephil.charting.listener.OnChartGestureListener;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.hy.onlinemonitor.R;
-import com.hy.onlinemonitor.bean.Equipment;
+import com.hy.onlinemonitor.bean.EquipmentInformation;
 import com.hy.onlinemonitor.data.StatisticsData;
 import com.hy.onlinemonitor.presenter.EquipmentConditionMonitorPresenter;
 import com.hy.onlinemonitor.utile.GetLoading;
@@ -46,6 +46,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -87,10 +88,11 @@ public class EquipmentConditionMonitorActivity extends BaseActivity implements D
     Button selectBtn;
     @Bind(R.id.container)
     FrameLayout container;
+    private int selectedType = -9;//设置初始值为负,代表为不选择任何项目
     private static LineChart mChart = null;
     private boolean timeFlag; //判断是开始按钮还是结束按钮
     private EquipmentConditionMonitorPresenter equipmentConditionMonitorPresenter;
-    private List<Equipment> equipmentList;
+    private List<EquipmentInformation> equipmentList = new ArrayList<>();
     private List<String> equipmentNameList = new ArrayList<>();
     private AlertDialog loadingDialog;
     private String statisticByTime = "allTime"; //allTime 实时统计
@@ -101,10 +103,12 @@ public class EquipmentConditionMonitorActivity extends BaseActivity implements D
 
     private boolean projectFlag;//判断是哪一个界面 true为设备状态统计 false为监测状态统计
 
-    public void setEquipmentList(List<Equipment> equipmentList) {
-        this.equipmentList = equipmentList;
-        for (Equipment equipment : equipmentList) {
-            equipmentNameList.add(equipment.getDeviceID());
+    public void setEquipmentList(Collection equipmentLists) {
+        Iterator<EquipmentInformation> it = equipmentLists.iterator();
+        while (it.hasNext()) {
+            EquipmentInformation equipmentInformation = it.next();
+            this.equipmentList.add(equipmentInformation);
+            this.equipmentNameList.add(equipmentInformation.getEquipmnetName());
         }
     }
 
@@ -122,6 +126,7 @@ public class EquipmentConditionMonitorActivity extends BaseActivity implements D
 
     @Override
     public void setupUI() {
+        selectedType = getUser().getSelectionType();
         loadingDialog = GetLoading.getDialog(EquipmentConditionMonitorActivity.this, "加载数据中");
         projectFlag = getIntent().getBooleanExtra("projectFlag", false);
 
@@ -182,7 +187,8 @@ public class EquipmentConditionMonitorActivity extends BaseActivity implements D
             }
         });
 
-        equipmentConditionMonitorPresenter.getEquipmentList(getUser().getUserId());
+        //首先先加载第一页
+        equipmentConditionMonitorPresenter.getEquipmentList(getUser().getUserId(), selectedType, 1);
 
     }
 
@@ -204,9 +210,9 @@ public class EquipmentConditionMonitorActivity extends BaseActivity implements D
                     String endTime = endTimeBtn.getText().toString(); //结束时间2015-10-12
                     String deviceSn = "";// deviceSn 130
                     String deviceID = choiceEquipment.getText().toString();//deviceID=HY_OLMS_000000074
-                    for (Equipment equipment : equipmentList) {
-                        if (deviceID.equals(equipment.getDeviceID())) {
-                            deviceSn = equipment.getSn() + "";
+                    for (EquipmentInformation equipmentInformation : equipmentList) {
+                        if (deviceID.equals(equipmentInformation.getEquipmnetName())) {
+                            deviceSn = equipmentInformation.getSn() + "";
                         }
                     }
 
@@ -234,7 +240,7 @@ public class EquipmentConditionMonitorActivity extends BaseActivity implements D
         choiceEquipment.setOnClickListener(new View.OnClickListener() {//公司选择按钮
             @Override
             public void onClick(View v) {
-                Log.e(TAG, equipmentNameList.size() + "size");
+                Log.e(TAG, "equipmentNameList.size->"+equipmentNameList.size());
                 if (equipmentList != null && equipmentList.size() != 0) {
                     new MaterialDialog.Builder(getContext())
                             .title("设备选择")
@@ -262,7 +268,6 @@ public class EquipmentConditionMonitorActivity extends BaseActivity implements D
         statisticalParameters.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Log.e("onItemSelected", "onItemSelected" + position);
                 ArrayAdapter<String> mAdapter = new ArrayAdapter<>(EquipmentConditionMonitorActivity.this, android.R.layout.simple_list_item_1, StatisticsData.getStatisticalParametersKey(StatisticsData.statisticalParameters[position]));
                 Log.e("onItemSelected", StatisticsData.getStatisticalParametersKey(StatisticsData.statisticalParameters[position]) + "");
                 specificParameters.setAdapter(mAdapter);
@@ -332,7 +337,8 @@ public class EquipmentConditionMonitorActivity extends BaseActivity implements D
 
     @Override
     public void showLoading() {
-        loadingDialog.show();
+        if (!loadingDialog.isShowing())
+            loadingDialog.show();
     }
 
     @Override
@@ -508,7 +514,6 @@ public class EquipmentConditionMonitorActivity extends BaseActivity implements D
                 float valueT = (float) ent.getValue();
                 xValues.add(keyT);//横坐标
                 values.add(valueT);//纵坐标的值
-                Log.e(TAG, "key" + keyT + "|||value" + valueT);
             }
 
             for (int i = 0; i < xValues.size(); i++) {

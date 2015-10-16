@@ -167,8 +167,10 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
                 break;
             case R.id.main_gv_monitor:
                 switch (position){
-                    case 0://"监测状态"
-
+                    case 0://"设备状态统计"
+                        Intent gridEquipmentStatisticsIntent = new Intent(MainActivity.this, EquipmentConditionMonitorActivity.class);
+                        gridEquipmentStatisticsIntent.putExtra("projectFlag",true);
+                        startActivity(gridEquipmentStatisticsIntent);
                         break;
                     case 1://"设备状态"
 
@@ -178,10 +180,8 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
                         gridMonitoringStatStatisticsIntent.putExtra("projectFlag",false);
                         startActivity(gridMonitoringStatStatisticsIntent);
                         break;
-                    case 3://"设备状态统计"
-                        Intent gridEquipmentStatisticsIntent = new Intent(MainActivity.this, EquipmentConditionMonitorActivity.class);
-                        gridEquipmentStatisticsIntent.putExtra("projectFlag",true);
-                        startActivity(gridEquipmentStatisticsIntent);
+                    case 3://"监测状态"
+
                         break;
                 }
                 break;
