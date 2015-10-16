@@ -248,7 +248,6 @@ public class EquipmentConditionMonitorActivity extends BaseActivity implements D
                             .itemsCallbackSingleChoice(0, new MaterialDialog.ListCallbackSingleChoice() {
                                 @Override
                                 public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
-                                    //TODO 1.改变button的文字
                                     choiceEquipment.setText(text.toString());
                                     return true; // allow selection
                                 }
