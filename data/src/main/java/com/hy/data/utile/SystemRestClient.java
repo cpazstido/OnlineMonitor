@@ -55,12 +55,8 @@ public class SystemRestClient {
         if(cookies!=null){
             for(Cookie c:cookies.getCookies()){
                 s=c;
-                Log.e("cookies!!!!!!!!" + c.getName(), c.getValue());
             }
-        }else{
-            Log.e("cookies!!!!!!!!" ,"else");
         }
-
         client.post(getAbsoluteUrl(url), params, responseHandler);
 
     }

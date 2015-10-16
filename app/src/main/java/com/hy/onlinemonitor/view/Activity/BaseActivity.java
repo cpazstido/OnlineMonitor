@@ -18,6 +18,7 @@ import com.hy.onlinemonitor.bean.OwnJurisdiction;
 import com.hy.onlinemonitor.bean.User;
 import com.hy.onlinemonitor.presenter.UserPresenter;
 import com.hy.onlinemonitor.utile.ActivityCollector;
+import com.hy.onlinemonitor.view.Activity.ConditionMonitor.EquipmentConditionMonitorActivity;
 import com.hy.onlinemonitor.view.Activity.Function.AlarmInformationActivity;
 import com.hy.onlinemonitor.view.Activity.Function.EquipmentListViewActivity;
 import com.hy.onlinemonitor.view.Activity.Function.MapActivity;
@@ -86,6 +87,8 @@ public abstract class BaseActivity extends AppCompatActivity implements InitView
                         new SecondaryDrawerItem().withName(R.string.line).withIcon(FontAwesome.Icon.faw_minus).withIdentifier(9).withTag("Bullhorn"),
                         new SecondaryDrawerItem().withName(R.string.tower).withIcon(towerDrawable).withIdentifier(10).withTag("Bullhorn"),
                         new SecondaryDrawerItem().withName(R.string.equipment).withIcon(GoogleMaterial.Icon.gmd_devices).withIdentifier(11).withTag("Bullhorn"),
+                        new SectionDrawerItem().withName(R.string.condition_monitoring),
+                        new SecondaryDrawerItem().withName(R.string.equipment_statistics).withIcon(GoogleMaterial.Icon.gmd_equalizer).withIdentifier(15).withTag("Bullhorn"),
                         new DividerDrawerItem(),
                         new PrimaryDrawerItem().withName(R.string.return_login).withIcon(GoogleMaterial.Icon.gmd_account_circle).withIdentifier(12).withCheckable(true),
 //                        new PrimaryDrawerItem().withName(R.string.about).withIcon(GoogleMaterial.Icon.gmd_info_outline).withIdentifier(13).withCheckable(true),
@@ -156,7 +159,10 @@ public abstract class BaseActivity extends AppCompatActivity implements InitView
                                                     })
                                                     .show();
                                             break;
-
+                                        case 15://设备统计
+                                            intent = new Intent(BaseActivity.this, EquipmentConditionMonitorActivity.class);
+                                            intent.putExtra("projectFlag", true);
+                                            break;
                                     }
                                     if (intent != null) {
                                         BaseActivity.this.startActivity(intent);

@@ -8,6 +8,9 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -84,8 +87,6 @@ public class EquipmentConditionMonitorActivity extends BaseActivity implements D
     Spinner specificParameters;
     @Bind(R.id.specific_parameters_ll)
     LinearLayout specificParametersLl;
-    @Bind(R.id.select_btn)
-    Button selectBtn;
     @Bind(R.id.container)
     FrameLayout container;
     private int selectedType = -9;//设置初始值为负,代表为不选择任何项目
@@ -122,6 +123,60 @@ public class EquipmentConditionMonitorActivity extends BaseActivity implements D
     protected void setOwnContentView() {
         setContentView(R.layout.activity_state_monitor);
         ButterKnife.bind(this);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_search, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_search:
+                searchData();
+                break;
+        }
+        return true;
+    }
+
+    private void searchData() {
+
+        if ("选择设备".equals(choiceEquipment.getText().toString())) {
+            ShowUtile.toastShow(getContext(), "请选择设备");
+        } else {
+
+            String startTime = startTimeBtn.getText().toString(); //开始时间 2015-10-12
+            String endTime = endTimeBtn.getText().toString(); //结束时间2015-10-12
+            String deviceSn = "";// deviceSn 130
+            String deviceID = choiceEquipment.getText().toString();//deviceID=HY_OLMS_000000074
+            for (EquipmentInformation equipmentInformation : equipmentList) {
+                if (deviceID.equals(equipmentInformation.getEquipmnetName())) {
+                    deviceSn = equipmentInformation.getSn() + "";
+                }
+            }
+
+            if (projectFlag) {//设备状态统计
+                //选择统计Str
+                selectStatisticsStr = StatisticsData.selectStatistics[selectStatistics.getSelectedItemPosition()];
+                String fieldName = StatisticsData.getValueByStatisticsKey(selectStatisticsStr); //工作温度等对应的
+                if (realTimeStatistics.isChecked()) {
+                    if (!startTimeBtn.getText().toString().equals(endTimeBtn.getText().toString())) {
+                        ShowUtile.toastShow(getContext(), "请选择相同的开始与结束时间");
+                    } else {
+                        EquipmentConditionMonitorActivity.this.equipmentConditionMonitorPresenter.queryConditionMonitorData(getUser().getUserId(), fieldName, startTime, endTime, deviceSn, statisticByTime, deviceID);
+                    }
+                } else {
+                    EquipmentConditionMonitorActivity.this.equipmentConditionMonitorPresenter.queryConditionMonitorData(getUser().getUserId(), fieldName, startTime, endTime, deviceSn, statisticByTime, deviceID);
+                }
+            } else {//为监测状态统计
+                //具体参数Str
+                specificParametersStr = StatisticsData.statisticalParameters[specificParameters.getSelectedItemPosition()];
+            }
+        }
+
     }
 
     @Override
@@ -199,59 +254,27 @@ public class EquipmentConditionMonitorActivity extends BaseActivity implements D
 
     @Override
     public void initialize() {
-        selectBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if ("选择设备".equals(choiceEquipment.getText().toString())) {
-                    ShowUtile.toastShow(getContext(), "请选择设备");
-                } else {
-
-                    String startTime = startTimeBtn.getText().toString(); //开始时间 2015-10-12
-                    String endTime = endTimeBtn.getText().toString(); //结束时间2015-10-12
-                    String deviceSn = "";// deviceSn 130
-                    String deviceID = choiceEquipment.getText().toString();//deviceID=HY_OLMS_000000074
-                    for (EquipmentInformation equipmentInformation : equipmentList) {
-                        if (deviceID.equals(equipmentInformation.getEquipmnetName())) {
-                            deviceSn = equipmentInformation.getSn() + "";
-                        }
-                    }
-
-                    if (projectFlag) {//设备状态统计
-                        //选择统计Str
-                        selectStatisticsStr = StatisticsData.selectStatistics[selectStatistics.getSelectedItemPosition()];
-                        String fieldName = StatisticsData.getValueByStatisticsKey(selectStatisticsStr); //工作温度等对应的
-                        if (realTimeStatistics.isChecked()) {
-                            if (!startTimeBtn.getText().toString().equals(endTimeBtn.getText().toString())) {
-                                ShowUtile.toastShow(getContext(), "请选择相同的开始与结束时间");
-                            } else {
-                                EquipmentConditionMonitorActivity.this.equipmentConditionMonitorPresenter.queryConditionMonitorData(getUser().getUserId(), fieldName, startTime, endTime, deviceSn, statisticByTime, deviceID);
-                            }
-                        } else {
-                            EquipmentConditionMonitorActivity.this.equipmentConditionMonitorPresenter.queryConditionMonitorData(getUser().getUserId(), fieldName, startTime, endTime, deviceSn, statisticByTime, deviceID);
-                        }
-                    } else {//为监测状态统计
-                        //具体参数Str
-                        specificParametersStr = StatisticsData.statisticalParameters[specificParameters.getSelectedItemPosition()];
-                    }
-                }
-            }
-        });
-
         choiceEquipment.setOnClickListener(new View.OnClickListener() {//公司选择按钮
             @Override
             public void onClick(View v) {
                 Log.e(TAG, "equipmentNameList.size->"+equipmentNameList.size());
                 if (equipmentList != null && equipmentList.size() != 0) {
+                    int defaultNum =0;
+                    if(!choiceEquipment.getText().toString().equals("选择设备")){
+                        defaultNum = equipmentNameList.indexOf(choiceEquipment.getText().toString());
+                    }
+
                     new MaterialDialog.Builder(getContext())
                             .title("设备选择")
                             .items(equipmentNameList.toArray(new CharSequence[equipmentNameList.size()]))
-                            .itemsCallbackSingleChoice(0, new MaterialDialog.ListCallbackSingleChoice() {
+                            .itemsCallbackSingleChoice(defaultNum, new MaterialDialog.ListCallbackSingleChoice() {
                                 @Override
                                 public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
                                     choiceEquipment.setText(text.toString());
                                     return true; // allow selection
                                 }
                             })
+                            .negativeText(R.string.cancel)
                             .positiveText(R.string.choice)
                             .show();
 

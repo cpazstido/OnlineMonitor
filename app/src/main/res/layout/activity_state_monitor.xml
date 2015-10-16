@@ -207,17 +207,6 @@
             android:textSize="18sp" />
     </LinearLayout>
 
-    <com.rey.material.widget.Button
-        android:id="@+id/select_btn"
-        style="@style/FlatColorButtonRippleStyle"
-        android:layout_width="match_parent"
-        android:layout_height="36dp"
-        android:layout_margin="15dp"
-        android:text="查询"
-        android:textAppearance="@style/Base.TextAppearance.AppCompat.Button"
-        android:textColor="#FF2196F3"
-        app:rd_delayClick="afterRelease" />
-
     <FrameLayout
         android:id="@+id/container"
         android:layout_width="match_parent"

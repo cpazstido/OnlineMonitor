@@ -12,7 +12,7 @@ public class CookiesUtils {
     private static List<Cookie> cookies;
 
     public static List<Cookie> getCookies() {
-        return cookies != null ? cookies : new ArrayList<Cookie>();
+        return cookies != null ? cookies : new ArrayList<>();
     }
 
     public static void setCookies(List<Cookie> cookies) {
