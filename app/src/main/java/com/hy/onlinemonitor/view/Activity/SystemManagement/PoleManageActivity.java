@@ -60,38 +60,40 @@ public class PoleManageActivity extends SMBaseActivity {
                 Log.e("choiceBtn", "调用了");
                 pageNumber = 1;
                 mAdapter.cleanList();
-                final MaterialDialog dialog = new MaterialDialog.Builder(PoleManageActivity.this)
-                        .title(R.string.line_choice)
-                        .customView(R.layout.dialog_tree_choice, true)
-                        .negativeText(R.string.cancel)
-                        .build();
-                LinearLayout ll = (LinearLayout) dialog.getCustomView().findViewById(R.id.dialog_tree_show);
-                root = TreeNode.root();
-                for (Company company : companyList) {
-                    TreeNode companyTree = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.string.ic_earth, company.getCompanyName())).setViewHolder(new SelectableHeaderHolder(PoleManageActivity.this));
-                    for (final Line line : company.getLineList()) {
-                        TreeNode lineTree = new TreeNode(line.getLineName()).setViewHolder(new SelectableItemHolder(PoleManageActivity.this));
-                        lineTree.setClickListener(new TreeNode.TreeNodeClickListener() {
-                            @Override
-                            public void onClick(TreeNode treeNode, Object o) {
-                                dialog.cancel();
-                                lineSn = line.getLineSn();
-                                smPolePresenter.getPolePage(line.getLineSn(), pageNumber);
-                            }
-                        });
+                if (companyList != null) {
+                    final MaterialDialog dialog = new MaterialDialog.Builder(PoleManageActivity.this)
+                            .title(R.string.line_choice)
+                            .customView(R.layout.dialog_tree_choice, true)
+                            .negativeText(R.string.cancel)
+                            .build();
+                    LinearLayout ll = (LinearLayout) dialog.getCustomView().findViewById(R.id.dialog_tree_show);
+                    root = TreeNode.root();
+                    for (Company company : companyList) {
+                        TreeNode companyTree = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.string.ic_earth, company.getCompanyName())).setViewHolder(new SelectableHeaderHolder(PoleManageActivity.this));
+                        for (final Line line : company.getLineList()) {
+                            TreeNode lineTree = new TreeNode(line.getLineName()).setViewHolder(new SelectableItemHolder(PoleManageActivity.this));
+                            lineTree.setClickListener(new TreeNode.TreeNodeClickListener() {
+                                @Override
+                                public void onClick(TreeNode treeNode, Object o) {
+                                    dialog.cancel();
+                                    lineSn = line.getLineSn();
+                                    smPolePresenter.getPolePage(line.getLineSn(), pageNumber);
+                                }
+                            });
 
-                        companyTree.addChild(lineTree);
+                            companyTree.addChild(lineTree);
+                        }
+                        companyTree.setSelectable(false);
+                        root.addChild(companyTree);
                     }
-                    companyTree.setSelectable(false);
-                    root.addChild(companyTree);
+
+                    tView = new AndroidTreeView(PoleManageActivity.this, root);
+
+                    tView.setDefaultAnimation(true);
+                    tView.setSelectionModeEnabled(false);
+                    ll.addView(tView.getView());
+                    dialog.show();
                 }
-
-                tView = new AndroidTreeView(PoleManageActivity.this, root);
-
-                tView.setDefaultAnimation(true);
-                tView.setSelectionModeEnabled(false);
-                ll.addView(tView.getView());
-                dialog.show();
             }
         });
 
