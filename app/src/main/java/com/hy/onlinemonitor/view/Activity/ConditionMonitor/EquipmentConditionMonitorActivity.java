@@ -47,6 +47,7 @@ import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
 import java.text.DateFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
@@ -339,15 +340,23 @@ public class EquipmentConditionMonitorActivity extends BaseActivity implements D
     }
 
     private boolean checkTime(String startTime, String endTime) {
+        DateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
 
         Date dt1 = null;
         Date dt2 = null;
+
         try {
-            dt1 = DateFormat.getDateInstance().parse(startTime);
-            dt2 = DateFormat.getDateInstance().parse(endTime);
+            dt1 = fmt.parse(startTime);
+            dt2 = fmt.parse(endTime);
         } catch (ParseException e) {
             e.printStackTrace();
         }
+//        try {
+//            dt1 = DateFormat.getDateInstance().parse(startTime);
+//            dt2 = DateFormat.getDateInstance().parse(endTime);
+//        } catch (ParseException e) {
+//            e.printStackTrace();
+//        }
 
         assert dt1 != null;
         assert dt2 != null;
