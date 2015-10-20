@@ -2,6 +2,7 @@ package com.hy.onlinemonitor.view.Activity.Function;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.PixelFormat;
 import android.media.AudioManager;
 import android.os.Bundle;
@@ -17,6 +18,7 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -35,7 +37,6 @@ import com.hy.onlinemonitor.view.LoadDataView;
 import com.rey.material.widget.Button;
 import com.rey.material.widget.RadioButton;
 import com.rey.material.widget.Slider;
-
 
 import java.io.IOException;
 import java.util.Timer;
@@ -95,6 +96,8 @@ public class VideoActivity extends AppCompatActivity implements InitView, LoadDa
     RadioButton channel4;
     @Bind(R.id.channel_choice_ll)
     LinearLayout channelChoiceLl;
+    @Bind(R.id.video_show)
+    LinearLayout videoShow;
 
     private MediaPlayer mediaPlayer;
     private int mVideoWidth;
@@ -510,6 +513,8 @@ public class VideoActivity extends AppCompatActivity implements InitView, LoadDa
             case 2://实时视频
                 this.videoUrl = TransformationUtils.getRealVideoUrl(videoUrls);
                 break;
+            case 3://已经获取到地址了,不用操作任何
+                break;
         }
         videoPlayTv.setText("地址获取成功,请等待...");
 
@@ -517,6 +522,8 @@ public class VideoActivity extends AppCompatActivity implements InitView, LoadDa
         if (!videoUrl.isEmpty()) {
             isHaveUrl = true;
             try {
+                if (mediaPlayer == null)
+                    mediaPlayer = new MediaPlayer(this);
                 mediaPlayer.setDataSource(videoUrl);
 //                mediaPlayer.setDataSource("rtsp://218.204.223.237:554/live/1/66251FC11353191F/e7ooqwcfbqjoo80j.sdp");
                 mediaPlayer.setDisplay(holder);
@@ -615,8 +622,8 @@ public class VideoActivity extends AppCompatActivity implements InitView, LoadDa
         videoEquipmentStatusTv.setText(controlStatus);
         switch (controlStatus) {
             case "\"摄像机电源已打开\"":
-                isOpenPower= false;//防止突然摄像机关电后,不能再次开电的问题.这里在打开电源后设置为可开电
-                if(mediaPlayer ==null)
+                isOpenPower = false;//防止突然摄像机关电后,不能再次开电的问题.这里在打开电源后设置为可开电
+                if (mediaPlayer == null)
                     mediaPlayer = new MediaPlayer(this);
                 if (mediaPlayer.isPlaying()) {
 
@@ -771,7 +778,7 @@ public class VideoActivity extends AppCompatActivity implements InitView, LoadDa
         Log.e("onError", "onError调用了!!!");
         isHaveUrl = false;
         videoUrl = "";
-        isOpenPower=false;
+        isOpenPower = false;
         videoPlayTv.setText("播放出错,错误代码" + "(" + i + ", " + i1 + ")");
         ShowUtile.toastShow(VideoActivity.this, "视频暂无法播放,错误代码" + "(" + i + ", " + i1 + ")");
         doCleanUp();
@@ -805,5 +812,43 @@ public class VideoActivity extends AppCompatActivity implements InitView, LoadDa
         if (mediaPlayer == null)
             mediaPlayer = new MediaPlayer(this);
         initialize();
+    }
+
+    @Override
+    public void onWindowAttributesChanged(WindowManager.LayoutParams params) {
+        Log.e(TAG, "onWindowAttributesChanged");
+        super.onWindowAttributesChanged(params);
+    }
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        Log.e(TAG, "onWindowFocusChanged");
+        super.onWindowFocusChanged(hasFocus);
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        Log.e(TAG, "onConfigurationChanged");
+        if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            Log.e(TAG, "横屏");
+            releaseMediaPlayer();
+            doCleanUp();
+            isHaveUrl = false;
+            videoUrl = "";
+            isOpenPower = false;
+            videoShow.setVisibility(View.GONE);
+            toolbar.setVisibility(View.GONE);
+        } else if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+            Log.e(TAG, "竖屏");
+            releaseMediaPlayer();
+            doCleanUp();
+            isHaveUrl = false;
+            videoUrl = "";
+            isOpenPower = false;
+            videoShow.setVisibility(View.VISIBLE);
+            toolbar.setVisibility(View.VISIBLE);
+        }
+
     }
 }
