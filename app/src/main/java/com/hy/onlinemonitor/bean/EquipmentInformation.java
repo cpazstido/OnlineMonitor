@@ -7,6 +7,8 @@ public class EquipmentInformation implements Serializable {
     private int sn;
     private String equipmnetState;
     private String equipmnetName;
+    private String lineName;
+    private String poleName;
     private int dvrId;
     private String dvrType;
     private int newFireAlarm;
@@ -75,5 +77,21 @@ public class EquipmentInformation implements Serializable {
 
     public void setNewSensorAlarm(int newSensorAlarm) {
         this.newSensorAlarm = newSensorAlarm;
+    }
+
+    public String getLineName() {
+        return lineName;
+    }
+
+    public void setLineName(String lineName) {
+        this.lineName = lineName;
+    }
+
+    public String getPoleName() {
+        return poleName;
+    }
+
+    public void setPoleName(String poleName) {
+        this.poleName = poleName;
     }
 }

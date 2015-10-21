@@ -142,7 +142,6 @@ public class VideoActivity extends AppCompatActivity implements InitView, LoadDa
         super.onCreate(savedInstanceState);
         Log.e(TAG, "onCreate");
         isOnCreate = true;
-//        Vitamio.initialize(VideoActivity.this);
         if (!LibsChecker.checkVitamioLibs(this))
             return;
         if (savedInstanceState != null) {

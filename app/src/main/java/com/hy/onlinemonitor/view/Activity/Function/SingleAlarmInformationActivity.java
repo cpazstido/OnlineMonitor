@@ -53,6 +53,7 @@ public class SingleAlarmInformationActivity extends AppCompatActivity implements
     private AlarmPage alarmPage;
     private String equipmentName;
     private String queryAlarmType;
+    private String curProject;
     private int userId;
     private int dvrType;
     private int dvrId;
@@ -153,6 +154,12 @@ public class SingleAlarmInformationActivity extends AppCompatActivity implements
 
     @Override
     public void initialize() {
+        switch (queryAlarmType){
+            case "sensor":
+                curProject = getIntent().getStringExtra("curProject");
+                loadAlarmList(userId,curProject,equipmentName, queryAlarmType, status, 1);
+                break;
+        }
         loadAlarmList(userId, equipmentName, queryAlarmType, status, 1);
     }
 
@@ -168,6 +175,10 @@ public class SingleAlarmInformationActivity extends AppCompatActivity implements
                 showError(getResources().getString(R.string.not_data));
             }
         }
+    }
+
+    private void loadAlarmList(int userId,String curProject, String equipmentName, String queryAlarmType, int status, int pageNumber) {
+        this.alarmPresenter.initialize(userId, curProject,equipmentName, queryAlarmType, status, pageNumber);
     }
 
     private void loadAlarmList(int userId, String equipmentName, String queryAlarmType, int status, int pageNumber) {

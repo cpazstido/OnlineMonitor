@@ -77,9 +77,12 @@
         <activity android:name=".view.Activity.Function.SingleAlarmInformationActivity"
             android:launchMode="singleTask"
             />
+
         <activity android:name=".view.Activity.Function.VideoActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:launchMode="singleTop"
             />
+
         <activity android:name=".view.Activity.SystemManagement.AdministratorManageActivity"
             android:launchMode="singleTask"/>
 
@@ -100,6 +103,11 @@
 
         <activity android:name=".view.Activity.ConditionMonitor.EquipmentConditionMonitorActivity"
             android:launchMode="singleTask"/>
+
+        <activity android:name=".view.Activity.ConditionMonitor.EquipmentStateMonitorActivity"
+            android:launchMode="singleTask"
+            />
+
         <activity android:name=".view.Activity.SystemManagement.SensorManageActivity" />
 
         <activity android:name=".view.Activity.SystemManagement.CompanyManageActivity" />

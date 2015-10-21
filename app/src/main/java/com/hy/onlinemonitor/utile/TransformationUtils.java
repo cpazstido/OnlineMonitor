@@ -18,6 +18,12 @@ public class TransformationUtils {
         return list;
     }
 
+    public static String getDeviceNameLastSix(String str){
+        int totalNum = str.length();
+
+        return str.substring(totalNum-6,totalNum);
+    }
+
     public static Integer[] getIntegerFromInt(int[] nums) {
         Integer[] in = new Integer[nums.length];
         for (int i = 0; i < nums.length; i++) {

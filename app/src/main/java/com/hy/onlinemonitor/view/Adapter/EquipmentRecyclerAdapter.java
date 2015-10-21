@@ -12,6 +12,7 @@ import com.hy.onlinemonitor.bean.EquipmentInforPage;
 import com.hy.onlinemonitor.bean.EquipmentInformation;
 import com.hy.onlinemonitor.bean.OwnJurisdiction;
 import com.hy.onlinemonitor.utile.ShowUtile;
+import com.hy.onlinemonitor.utile.TransformationUtils;
 import com.hy.onlinemonitor.view.Activity.Function.SingleAlarmInformationActivity;
 import com.hy.onlinemonitor.view.Activity.Function.VideoActivity;
 import com.hy.onlinemonitor.view.ViewHolder.EquipmentListViewHolder;
@@ -33,6 +34,7 @@ public class EquipmentRecyclerAdapter extends RecyclerView.Adapter<EquipmentList
     private List<EquipmentInformation> mList;
     private LabelView label;
     private int userId;
+    String choiceStr = null;
 
     TreeMap<String,EquipmentInformation> equipmentInformatics = new TreeMap<>();
 
@@ -57,9 +59,25 @@ public class EquipmentRecyclerAdapter extends RecyclerView.Adapter<EquipmentList
 
     @Override
     public void onBindViewHolder(final EquipmentListViewHolder holder, int position) {
+        switch (selectionType) {
+            case 0:
+                choiceStr = "fire";
+                break;
+            case 1:
+                choiceStr = "break";
+                break;
+            case 2:
+                choiceStr = "video";
+                break;
+            case 3:
+                choiceStr = "auv";
+                break;
+        }
         final EquipmentInformation equipmentInformation = mList.get(position);
+        String realShow = equipmentInformation.getLineName()+"--"+equipmentInformation.getPoleName()+"--";
+        realShow += TransformationUtils.getDeviceNameLastSix(equipmentInformation.getEquipmnetName());
         holder.stateShow.setText(equipmentInformation.getEquipmnetState());
-        holder.equipmentName.setText(equipmentInformation.getEquipmnetName());
+        holder.equipmentName.setText(realShow);
         if ((equipmentInformation.getNewBreakAlarm() != 0 && 1 == selectionType) || (equipmentInformation.getNewFireAlarm() != 0 && 0 == selectionType) || equipmentInformation.getNewSensorAlarm() != 0) {
             holder.newAlarmImageView.setVisibility(View.VISIBLE);
         } else {
@@ -93,26 +111,12 @@ public class EquipmentRecyclerAdapter extends RecyclerView.Adapter<EquipmentList
             holder.equipmentAlarmNull.setVisibility(View.GONE);
         }
 
+
         holder.realVideo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(holder.itemView.getContext(), VideoActivity.class);
                 intent.putExtra("type", "real");
-                String choiceStr = null;
-                switch (selectionType) {
-                    case 0:
-                        choiceStr = "fire";
-                        break;
-                    case 1:
-                        choiceStr = "break";
-                        break;
-                    case 2:
-                        choiceStr = "video";
-                        break;
-                    case 3:
-                        choiceStr = "auv";
-                        break;
-                }
                 intent.putExtra("choiceType", choiceStr);
                 intent.putExtra("EquipmentInformation", equipmentInformation);
                 holder.itemView.getContext().startActivity(intent);
@@ -167,6 +171,7 @@ public class EquipmentRecyclerAdapter extends RecyclerView.Adapter<EquipmentList
                     intent.putExtra("queryAlarmType", "sensor");
                     intent.putExtra("status", 1);//1是历史 0是新报警
                     intent.putExtra("title", "传感器历史报警");
+                    intent.putExtra("curProject",choiceStr);
                     intent.putExtra("equipmentName", equipmentInformation.getEquipmnetName());
                     intent.putExtra("userId", userId);
                     intent.putExtra("showType", 0);
@@ -224,7 +229,8 @@ public class EquipmentRecyclerAdapter extends RecyclerView.Adapter<EquipmentList
                     Intent intent = new Intent(holder.itemView.getContext(), SingleAlarmInformationActivity.class);
                     intent.putExtra("queryAlarmType", "sensor");
                     intent.putExtra("title", "传感器新报警");
-                    intent.putExtra("status", 1);//1是历史 0是新报警
+                    intent.putExtra("curProject",choiceStr);
+                    intent.putExtra("status", 0);//1是历史 0是新报警
                     intent.putExtra("equipmentName", equipmentInformation.getEquipmnetName());
                     intent.putExtra("userId", userId);
                     intent.putExtra("showType", 0);

@@ -38,7 +38,7 @@ public class RecyclerViewFragment extends Fragment implements AlarmListView {
     @Bind(R.id.error_message_ll)
     RelativeLayout errorMessageLl;
 
-    private boolean isNoInit = true;
+    private static boolean isNoInit = true;
     private AlarmRecyclerAdapter mAdapter;
     private RecyclerView.Adapter RcAdapter;
     private static List<String> alarmTitles;
@@ -50,11 +50,13 @@ public class RecyclerViewFragment extends Fragment implements AlarmListView {
     private AlarmPresenter alarmPresenter;
     private int status = -1;
     private String queryAlarmType;
+    private static String curProject = null;
 
-    public static RecyclerViewFragment newInstance(List<String> alarmTitle, int postion, int user) {
+    public static RecyclerViewFragment newInstance(List<String> alarmTitle, int postion, int user, String curProjectStr) {
         Log.e("newInstance", "newInstance");
         alarmTitles = alarmTitle;
         userId = user;
+        curProject = curProjectStr;
         Bundle bundle = new Bundle();
         bundle.putInt("postion", postion);
         RecyclerViewFragment fragment = new RecyclerViewFragment();
@@ -88,8 +90,8 @@ public class RecyclerViewFragment extends Fragment implements AlarmListView {
         this.alarmPresenter.setView(this);
     }
 
-    private void loadAlarmList(int userId, String queryAlarmType, int status, int pageNumber) {
-        this.alarmPresenter.initialize(userId, queryAlarmType, status, pageNumber);
+    private void loadAlarmList(int userId, String curProject, String queryAlarmType, int status, int pageNumber) {
+        this.alarmPresenter.initialize(userId, queryAlarmType, status, pageNumber, curProject);
     }
 
     @Override
@@ -114,7 +116,7 @@ public class RecyclerViewFragment extends Fragment implements AlarmListView {
         refreshButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                RecyclerViewFragment.this.loadAlarmList(userId, queryAlarmType, status, 1);
+                RecyclerViewFragment.this.loadAlarmList(userId, curProject, queryAlarmType, status, 1);
             }
         });
     }
@@ -133,7 +135,7 @@ public class RecyclerViewFragment extends Fragment implements AlarmListView {
             refreshButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    RecyclerViewFragment.this.loadAlarmList(userId, queryAlarmType, status, 1);
+                    RecyclerViewFragment.this.loadAlarmList(userId, curProject, queryAlarmType, status, 1);
                 }
             });
         } else {
@@ -146,45 +148,45 @@ public class RecyclerViewFragment extends Fragment implements AlarmListView {
 
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser && isNoInit) {
             Bundle bundle = getArguments();
             int postion = bundle.getInt("postion");
             isNoInit = false;
             this.initialize();
-
             switch (alarmTitles.get(postion)) {
                 case "山火新报警":
                     queryAlarmType = "fire";
-                    dvrTypes= 1;
+                    dvrTypes = 1;
                     status = 0;
                     break;
                 case "山火历史报警":
                     queryAlarmType = "fire";
-                    dvrTypes= 1;
+                    dvrTypes = 1;
                     status = 1;
                     break;
                 case "传感器新报警":
                     queryAlarmType = "sensor";
                     status = 0;
+                    showType = 0;
                     break;
                 case "传感器历史报警":
                     queryAlarmType = "sensor";
                     status = 1;
+                    showType = 1;
                     break;
                 case "外破新报警":
                     queryAlarmType = "break";
-                    dvrTypes= 2;
+                    dvrTypes = 2;
                     status = 0;
                     break;
                 case "外破历史报警":
                     queryAlarmType = "break";
-                    dvrTypes= 2;
+                    dvrTypes = 2;
                     status = 1;
                     break;
             }
-
-            this.loadAlarmList(userId, queryAlarmType, status, 1);
+            this.loadAlarmList(userId, curProject, queryAlarmType, status, 1);
         }
+        super.setUserVisibleHint(isVisibleToUser);
     }
 }

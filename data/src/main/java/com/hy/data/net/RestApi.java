@@ -63,7 +63,8 @@ public interface RestApi {
      * @param userId         唯一标示用户
      * @param pageNumber     第几页的数据
      */
-    Observable<AlarmPageEntity> alarmEntity(int userId, String queryAlarmType,
+    Observable<AlarmPageEntity> alarmEntity(int userId, String curProject,
+                                            String queryAlarmType,
                                             int status, int pageNumber);
 
     /**
@@ -85,6 +86,7 @@ public interface RestApi {
      * @param pageNumber     第几页的数据
      */
     Observable<AlarmPageEntity> alarmEntity(int userId, String equipmentName,
+                                            String curProject,
                                             String queryAlarmType, int status,
                                             int pageNumber);
 
@@ -599,7 +601,7 @@ public interface RestApi {
      * @return 返回一个Map 横坐标(时间),纵坐标(值)
      */
     Observable<TreeMap<String, Float>> queryConditionMonitorData(int userId, String fieldName,
-                                                                String startTime, String endTime,
-                                                                String deviceSn, String statisticByTime,
-                                                                String deviceID);
+                                                                 String startTime, String endTime,
+                                                                 String deviceSn, String statisticByTime,
+                                                                 String deviceID);
 }

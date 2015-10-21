@@ -12,9 +12,6 @@ import org.apache.http.client.CookieStore;
 import org.apache.http.client.protocol.ClientContext;
 import org.apache.http.cookie.Cookie;
 
-/**
- * Created by wsw on 2015/7/17.
- */
 public class SystemRestClient {
     public static final String BASE_MONITOR_URL = "http://118.123.114.8:8080/eMonitorApp";
     private static final String BASE_URL = "http://118.123.114.8:8080/eMonitorApp/android";
@@ -29,15 +26,19 @@ public class SystemRestClient {
 //    private static final String BASE_POWER_URL = "http://171.221.207.57:8080/eMonitorApp/frontendconfig";
 //    private static final String BASE_UPDATA_URL = "http://171.221.207.57:8080/eMonitorApp/appUpdate";
 
+//    public static final String BASE_MONITOR_URL = "http://172.16.8.129:8081/eMonitorApp";
 //    private static final String BASE_URL = "http://172.16.8.129:8081/eMonitorApp/android";
 //    public static final String BASE_PICTURE_URL = "http://172.16.8.129:8081/eMonitorApp/alarm/";
 //    private static final String BASE_VIDEO_URL = "http://172.16.8.129:8081/eMonitorApp/accessServer";
 //    private static final String BASE_POWER_URL = "http://172.16.8.129:8081/eMonitorApp/frontendconfig";
 //    private static final String BASE_UPDATA_URL = "http://172.16.8.129:8081/eMonitorApp/appUpdate";
+
     private static FinalAsyncHttpClient finalAsyncHttpClient = new FinalAsyncHttpClient();
     private static AsyncHttpClient client = finalAsyncHttpClient.getAsyncHttpClient();
     public static Cookie s;
-
+    static {
+        client.setTimeout(15000);
+    }
     public static void get(String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {
         client.get(getUpDataAbsoluteUrl(url), params, responseHandler);
     }

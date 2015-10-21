@@ -22,6 +22,8 @@ public class EquipmentInforDataMapper {
         equipmentInformation.setNewBreakAlarm(domainEquipmentInformation.getNewBreakAlarm());
         equipmentInformation.setEquipmnetState(domainEquipmentInformation.getEquipmnetState());
         equipmentInformation.setEquipmnetName(domainEquipmentInformation.getEquipmnetName());
+        equipmentInformation.setLineName(domainEquipmentInformation.getLineName());
+        equipmentInformation.setPoleName(domainEquipmentInformation.getPoleName());
         equipmentInformation.setDvrId(domainEquipmentInformation.getDvrId());
         equipmentInformation.setDvrType(domainEquipmentInformation.getDvrType());
         return equipmentInformation;

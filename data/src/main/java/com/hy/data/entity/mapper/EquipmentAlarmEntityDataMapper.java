@@ -21,6 +21,8 @@ public class EquipmentAlarmEntityDataMapper {
             domainEquipmentInformation = new DomainEquipmentInformation();
             domainEquipmentInformation.setSN(equipmentInforEntity.getSn());
             domainEquipmentInformation.setEquipmnetName(equipmentInforEntity.getEquipmnetName());
+            domainEquipmentInformation.setPoleName(equipmentInforEntity.getPoleName());
+            domainEquipmentInformation.setLineName(equipmentInforEntity.getCircuitName());
             domainEquipmentInformation.setEquipmnetState(equipmentInforEntity.getEquipmnetState());
             domainEquipmentInformation.setNewBreakAlarm(equipmentInforEntity.getNewBreakAlarm());
             domainEquipmentInformation.setNewFireAlarm(equipmentInforEntity.getNewFireAlarm());

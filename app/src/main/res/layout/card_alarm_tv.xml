@@ -29,7 +29,6 @@
             android:layout_height="wrap_content"
             android:text="@string/equipment_identifier"
             android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
-
             android:textSize="@dimen/mSubhead" />
 
         <TextView

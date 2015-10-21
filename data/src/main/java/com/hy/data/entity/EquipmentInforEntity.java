@@ -6,6 +6,8 @@ package com.hy.data.entity;
 public class EquipmentInforEntity {
     private String equipmnetName;
     private String equipmnetState;
+    private String circuitName;
+    private String poleName;
     private int sn;
     private int newFireAlarm;
     private int newBreakAlarm;
@@ -78,5 +80,21 @@ public class EquipmentInforEntity {
 
     public void setDvrType(String dvrType) {
         this.dvrType = dvrType;
+    }
+
+    public String getCircuitName() {
+        return circuitName;
+    }
+
+    public void setCircuitName(String circuitName) {
+        this.circuitName = circuitName;
+    }
+
+    public String getPoleName() {
+        return poleName;
+    }
+
+    public void setPoleName(String poleName) {
+        this.poleName = poleName;
     }
 }

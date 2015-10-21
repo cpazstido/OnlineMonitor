@@ -120,14 +120,23 @@ public class TypeDef {
 //    public static final String[] typeNormalMonitor = { "监测状态", "设备状态","监测统计","设备统计"};
 //    public static final int[] typeNormalMonitorImages =  {R.drawable.gv_tower, R.drawable.gv_tower, R.drawable.gv_tower, R.drawable.ic_equipment_statistics};
 
-    public static final String[] typeFireMonitor = {"设备统计"};
-    public static final int[] typeFireMonitorImages =  {R.drawable.ic_equipment_statistics};
+    public static final String[] typeFireMonitor = {"设备统计","设备状态"};
+    public static final int[] typeFireMonitorImages =  {R.drawable.ic_equipment_statistics,R.drawable.gv_tower};
 
-    public static final String[] typeBreakMonitor = {"设备统计"};
-    public static final int[] typeBreakMonitorImages =  {R.drawable.ic_equipment_statistics};
+    public static final String[] typeBreakMonitor = {"设备统计","设备状态"};
+    public static final int[] typeBreakMonitorImages =  {R.drawable.ic_equipment_statistics,R.drawable.gv_tower};
 
-    public static final String[] typeNormalMonitor = {"设备统计"};
-    public static final int[] typeNormalMonitorImages =  {R.drawable.ic_equipment_statistics};
+    public static final String[] typeNormalMonitor = {"设备统计","设备状态"};
+    public static final int[] typeNormalMonitorImages =  {R.drawable.ic_equipment_statistics,R.drawable.gv_tower};
+
+//    public static final String[] typeFireMonitor = {"设备统计"};
+//    public static final int[] typeFireMonitorImages =  {R.drawable.ic_equipment_statistics};
+//
+//    public static final String[] typeBreakMonitor = {"设备统计"};
+//    public static final int[] typeBreakMonitorImages =  {R.drawable.ic_equipment_statistics};
+//
+//    public static final String[] typeNormalMonitor = {"设备统计"};
+//    public static final int[] typeNormalMonitorImages =  {R.drawable.ic_equipment_statistics};
 
     //子分类--参数配置
     public static final String[] typeFireConfig = { "设备参数", "阈值参数"};
@@ -141,4 +150,8 @@ public class TypeDef {
 
     public static final String[] typeAutoPlaneConfig = { "设备参数", "阈值参数"};
     public static final int[] typeAutoPlaneConfigImages = {R.drawable.gv_tower, R.drawable.gv_tower};
+
+    public static final String[] equipmentStatusTitles = {"装置信息", "装置状态","DVR系统状态","电池电压","电池充电电流","电池充电电流2","电池剩余电量","电池输出电流","太阳能板电压","太阳能板电压2","上传数据信息","电池充电开关","电池充电开关2"};
+
+
 }

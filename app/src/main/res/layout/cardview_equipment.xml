@@ -38,7 +38,7 @@
                 android:id="@+id/equipment_title_new_alarm"
                 android:layout_width="50dp"
                 android:layout_height="match_parent"
-                android:layout_alignBottom="@+id/equipment_name"
+                android:layout_alignBottom="@id/equipment_name"
                 android:layout_alignParentRight="true"
                 android:src="@drawable/gv_fire"
                 android:visibility="gone" />
@@ -220,6 +220,5 @@
 
         </RelativeLayout>
     </LinearLayout>
-
 
 </android.support.v7.widget.CardView>

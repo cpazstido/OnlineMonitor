@@ -6,6 +6,8 @@ import java.lang.String; /**
 public class DomainEquipmentInformation {
     private String equipmnetName;
     private String equipmnetState;
+    private String lineName;
+    private String poleName;
     private int SN;
     private int newFireAlarm;
     private int newBreakAlarm;
@@ -75,5 +77,21 @@ public class DomainEquipmentInformation {
 
     public void setDvrType(String dvrType) {
         this.dvrType = dvrType;
+    }
+
+    public String getLineName() {
+        return lineName;
+    }
+
+    public void setLineName(String lineName) {
+        this.lineName = lineName;
+    }
+
+    public String getPoleName() {
+        return poleName;
+    }
+
+    public void setPoleName(String poleName) {
+        this.poleName = poleName;
     }
 }

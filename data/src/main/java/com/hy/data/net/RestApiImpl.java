@@ -311,13 +311,14 @@ public class RestApiImpl implements RestApi {
      * @return 返回AlarmPage的对象
      */
     @Override
-    public Observable<AlarmPageEntity> alarmEntity(int userId, String queryAlarmType, int status, int pageNumber) {
+    public Observable<AlarmPageEntity> alarmEntity(int userId, String curProject, String queryAlarmType, int status, int pageNumber) {
         return Observable.create(new Observable.OnSubscribe<AlarmPageEntity>() {
             @Override
             public void call(Subscriber<? super AlarmPageEntity> subscriber) {
                 RequestParams params = new RequestParams();
                 params.put("userId", userId);
                 params.put("queryAlarmType", queryAlarmType);
+                params.put("curProject", curProject);
                 params.put("status", status);
                 params.put("pageNum", pageNumber);
 
@@ -394,7 +395,7 @@ public class RestApiImpl implements RestApi {
      * @return 返回AlarmPage的对象
      */
     @Override
-    public Observable<AlarmPageEntity> alarmEntity(int userId, String equipmentName, String queryAlarmType, int status, int pageNumber) {
+    public Observable<AlarmPageEntity> alarmEntity(int userId, String equipmentName, String curProject, String queryAlarmType, int status, int pageNumber) {
         return Observable.create(new Observable.OnSubscribe<AlarmPageEntity>() {
             @Override
             public void call(Subscriber<? super AlarmPageEntity> subscriber) {
@@ -402,6 +403,7 @@ public class RestApiImpl implements RestApi {
                 params.put("userId", userId);
                 params.put("queryAlarmType", queryAlarmType);
                 params.put("status", status);
+                params.put("curProject", curProject);
                 params.put("deviceId", equipmentName);
                 params.put("pageNum", pageNumber);
 
@@ -535,9 +537,9 @@ public class RestApiImpl implements RestApi {
                             String responseVideoUrl = new String(responseBody, "UTF-8");
                             if ("\"loginFail\"".equals(responseVideoUrl)) {
                                 subscriber.onError(new NetworkConnectionException("请重新登录"));
-                            } else if("".equals(responseVideoUrl)){
+                            } else if ("".equals(responseVideoUrl)) {
                                 subscriber.onError(new NetworkConnectionException("Url获取失败"));
-                            }else {
+                            } else {
                                 Log.e("videoUrl", "url为:" + responseVideoUrl);
                                 subscriber.onNext(responseVideoUrl);
                                 subscriber.onCompleted();
@@ -2252,7 +2254,7 @@ public class RestApiImpl implements RestApi {
                 params.put("statisticByTime", statisticByTime);
                 params.put("deviceID", deviceID);
                 try {
-                    SystemRestClient.getClient().get(SystemRestClient.BASE_MONITOR_URL+"/sensorStatistics/getDeviceStatusStatisticsChart.do", params, new AsyncHttpResponseHandler() {
+                    SystemRestClient.getClient().get(SystemRestClient.BASE_MONITOR_URL + "/sensorStatistics/getDeviceStatusStatisticsChart.do", params, new AsyncHttpResponseHandler() {
                         @Override
                         public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                             try {
@@ -2260,7 +2262,7 @@ public class RestApiImpl implements RestApi {
                                 if ("\"loginFail\"".equals(responseVideoUrl)) {
                                     subscriber.onError(new NetworkConnectionException("请重新登录"));
                                 } else {
-                                    subscriber.onNext(TransformationUtils.getTreeMapFromJsonString(responseVideoUrl,statisticByTime));
+                                    subscriber.onNext(TransformationUtils.getTreeMapFromJsonString(responseVideoUrl, statisticByTime));
                                     subscriber.onCompleted();
                                 }
                             } catch (UnsupportedEncodingException e) {

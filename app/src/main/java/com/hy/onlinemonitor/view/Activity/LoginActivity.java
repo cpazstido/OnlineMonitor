@@ -150,13 +150,14 @@ public class LoginActivity extends AppCompatActivity implements JumpView {
 
     }
 
-    private void goTypeView(){
+    private void goTypeView() {
         if (goActivity) {
             Log.e("go", "go");
             loginPresenter.initialize(loginAccount.getText().toString(), loginPwd.getText().toString());
             goActivity = false;
         }
     }
+
     private void checkVersion() {
         upDataDialog = GetLoading.getDialog(LoginActivity.this, "检查版本更新中");
         upDataDialog.show();
@@ -175,7 +176,7 @@ public class LoginActivity extends AppCompatActivity implements JumpView {
                         appSize = 0;
                         if (autoLoginFlag)
                             loginPresenter.initialize(loginAccount.getText().toString(), loginPwd.getText().toString());
-                        else{
+                        else {
                             LoginActivity.this.goTypeView();
                         }
                     } else if (response.isEmpty()) {
@@ -186,7 +187,7 @@ public class LoginActivity extends AppCompatActivity implements JumpView {
                         appSize = 0;
                         if (autoLoginFlag)
                             loginPresenter.initialize(loginAccount.getText().toString(), loginPwd.getText().toString());
-                        else{
+                        else {
                             LoginActivity.this.goTypeView();
                         }
                     } else if ("null".equals(response)) {
@@ -197,7 +198,7 @@ public class LoginActivity extends AppCompatActivity implements JumpView {
                         appSize = 0;
                         if (autoLoginFlag)
                             loginPresenter.initialize(loginAccount.getText().toString(), loginPwd.getText().toString());
-                        else{
+                        else {
                             LoginActivity.this.goTypeView();
                         }
                     } else {
@@ -245,31 +246,19 @@ public class LoginActivity extends AppCompatActivity implements JumpView {
                                                     .content(R.string.downloading)
                                                     .contentGravity(GravityEnum.CENTER)
                                                     .positiveText(R.string.install)
-                                                    .negativeText(R.string.cancels)
                                                     .progress(false, 100, true)
                                                     .callback(new MaterialDialog.ButtonCallback() {
                                                         @Override
                                                         public void onPositive(MaterialDialog dialog) {
                                                             installApk(apk);
                                                         }
-
-                                                        @Override
-                                                        public void onNegative(MaterialDialog dialog) {
-                                                            super.onNegative(dialog);
-                                                            client.cancelRequests(LoginActivity.this, false);
-                                                            downDialog.dismiss();
-                                                        }
-                                                    })
-                                                    .cancelListener(new DialogInterface.OnCancelListener() {
-                                                        @Override
-                                                        public void onCancel(DialogInterface dialog) {
-                                                            if (client != null)
-                                                                client.cancelRequests(LoginActivity.this, true);
-                                                        }
                                                     })
                                                     .showListener(new DialogInterface.OnShowListener() {
                                                         @Override
                                                         public void onShow(DialogInterface dialogInterface) {
+                                                            if (dialogPro != null) {
+                                                                dialogPro = null;
+                                                            }
                                                             dialogPro = (MaterialDialog) dialogInterface;
                                                             handler = new Handler() {
                                                                 @Override
@@ -288,6 +277,8 @@ public class LoginActivity extends AppCompatActivity implements JumpView {
                                                             };
                                                         }
                                                     }).build();
+                                            downDialog.setCancelable(false);
+                                            downDialog.setCanceledOnTouchOutside(false);
                                             positiveAction = downDialog.getActionButton(DialogAction.POSITIVE);
                                             positiveAction.setEnabled(false);
                                             downDialog.show();
@@ -308,7 +299,7 @@ public class LoginActivity extends AppCompatActivity implements JumpView {
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                 Log.e("application", "error");
-                ShowUtile.toastShow(LoginActivity.this,"访问升级服务器失败");
+                ShowUtile.toastShow(LoginActivity.this, "访问升级服务器失败");
                 upDataDialog.cancel();
                 serverVersion = 0;
                 appSize = 0;

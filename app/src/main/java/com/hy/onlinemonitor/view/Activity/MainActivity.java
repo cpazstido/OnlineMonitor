@@ -11,6 +11,7 @@ import com.hy.onlinemonitor.R;
 import com.hy.onlinemonitor.bean.OwnJurisdiction;
 import com.hy.onlinemonitor.utile.ShowUtile;
 import com.hy.onlinemonitor.view.Activity.ConditionMonitor.EquipmentConditionMonitorActivity;
+import com.hy.onlinemonitor.view.Activity.ConditionMonitor.EquipmentStateMonitorActivity;
 import com.hy.onlinemonitor.view.Activity.Function.AlarmInformationActivity;
 import com.hy.onlinemonitor.view.Activity.Function.EquipmentListViewActivity;
 import com.hy.onlinemonitor.view.Activity.Function.MapActivity;
@@ -173,7 +174,7 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
                         startActivity(gridEquipmentStatisticsIntent);
                         break;
                     case 1://"设备状态"
-
+                        EquipmentStateMonitorActivity.startView(MainActivity.this);
                         break;
                     case 2://"监测状态统计"
                         Intent gridMonitoringStatStatisticsIntent = new Intent(MainActivity.this, EquipmentConditionMonitorActivity.class);
