@@ -19,6 +19,7 @@ import com.hy.onlinemonitor.bean.AlarmPage;
 import com.hy.onlinemonitor.presenter.AlarmPresenter;
 import com.hy.onlinemonitor.utile.ActivityCollector;
 import com.hy.onlinemonitor.utile.GetLoading;
+import com.hy.onlinemonitor.utile.ShowUtile;
 import com.hy.onlinemonitor.view.Activity.LoginActivity;
 import com.hy.onlinemonitor.view.Adapter.AlarmRecyclerAdapter;
 import com.hy.onlinemonitor.view.AlarmListView;
@@ -57,6 +58,11 @@ public class SingleAlarmInformationActivity extends AppCompatActivity implements
     private int userId;
     private int dvrType;
     private int dvrId;
+    private int lastVisibleItem;
+    private LinearLayoutManager layoutManager;
+    private boolean isLoadingMore = false;
+    private int pageNum = 1;
+    private boolean isHaveData = false;
 
     protected void onCreate(Bundle savedInstanceState) {
         ActivityCollector.addActivity(this);
@@ -68,8 +74,8 @@ public class SingleAlarmInformationActivity extends AppCompatActivity implements
         queryAlarmType = intent.getStringExtra("queryAlarmType");
         equipmentName = intent.getStringExtra("equipmentName");
         userId = intent.getIntExtra("userId", -1);
-        dvrType = intent.getIntExtra("dvrType",-1);
-        dvrId = intent.getIntExtra("dvrId",-1);
+        dvrType = intent.getIntExtra("dvrType", -1);
+        dvrId = intent.getIntExtra("dvrId", -1);
         status = intent.getIntExtra("status", -1);
         showType = intent.getIntExtra("showType", -1);
         toolbar.setTitle(intent.getStringExtra("title"));
@@ -139,7 +145,7 @@ public class SingleAlarmInformationActivity extends AppCompatActivity implements
     @Override
     public void setupUI() {
         loadingDialog = GetLoading.getDialog(SingleAlarmInformationActivity.this, "加载数据中");
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
+        layoutManager = new LinearLayoutManager(this);
         rvRecyclerviewData.setLayoutManager(layoutManager);
         rvRecyclerviewData.setHasFixedSize(true);
         alarmPage = new AlarmPage();
@@ -150,35 +156,91 @@ public class SingleAlarmInformationActivity extends AppCompatActivity implements
         rvRecyclerviewData.setAdapter(mAdapter);
         alarmPresenter = new AlarmPresenter(SingleAlarmInformationActivity.this);
         this.alarmPresenter.setView(this);
+        rvRecyclerviewData.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                switch (newState) {
+                    case RecyclerView.SCROLL_STATE_IDLE:
+                        if ((lastVisibleItem+1) == mAdapter.getItemCount() && isHaveData) {
+                            if (pageNum < alarmPage.getTotalPage() && !isLoadingMore) {
+                                isLoadingMore = true;
+                                pageNum++;
+                                loadAlarmList(userId, curProject, queryAlarmType, status, pageNum);
+                            } else {
+                                ShowUtile.toastShow(getContext(), "无更多数据...");
+                            }
+                        }
+                        break;
+                }
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                lastVisibleItem = layoutManager.findLastVisibleItemPosition();
+            }
+
+        });
+        swipeRefreshLayout.setOnRefreshListener(new PullRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                swipeRefreshLayout.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        mAdapter.getInformationTreeMap().clear();
+                        pageNum=1;
+                        loadAlarmList(userId, curProject, equipmentName, queryAlarmType, status, pageNum);
+                        swipeRefreshLayout.setRefreshing(false);
+                    }
+                }, 300);
+            }
+        });
+
     }
 
     @Override
     public void initialize() {
-        switch (queryAlarmType){
+        pageNum = 1;
+        switch (queryAlarmType) {
             case "sensor":
                 curProject = getIntent().getStringExtra("curProject");
-                loadAlarmList(userId,curProject,equipmentName, queryAlarmType, status, 1);
+                loadAlarmList(userId, curProject, equipmentName, queryAlarmType, status, pageNum);
+                break;
+            default:
+                loadAlarmList(userId, equipmentName, queryAlarmType, status, pageNum);
                 break;
         }
-        loadAlarmList(userId, equipmentName, queryAlarmType, status, 1);
     }
 
     @Override
-    public void renderAlarmList(AlarmPage alarmPage, String queryAlarmType) {
+    public void renderAlarmList(AlarmPage alarmPage, final String queryAlarmType) {
+        isLoadingMore = false;
+        this.alarmPage = alarmPage;
         if (alarmPage != null) {
             if (alarmPage.getList().size() != 0) {
+                isHaveData = true;
+                pageNum = alarmPage.getPageNum();
                 swipeRefreshLayout.setVisibility(View.VISIBLE);
                 errorMessageLl.setVisibility(View.GONE);
                 this.alarmPage = alarmPage;
                 this.mAdapter.setAlarmCollection(alarmPage.getList());
             } else {
+                isHaveData = false;
                 showError(getResources().getString(R.string.not_data));
+                refreshButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        pageNum = 1;
+                        loadAlarmList(userId, curProject, equipmentName, queryAlarmType, status, pageNum);
+                    }
+                });
             }
         }
     }
 
-    private void loadAlarmList(int userId,String curProject, String equipmentName, String queryAlarmType, int status, int pageNumber) {
-        this.alarmPresenter.initialize(userId, curProject,equipmentName, queryAlarmType, status, pageNumber);
+    private void loadAlarmList(int userId, String curProject, String equipmentName, String queryAlarmType, int status, int pageNumber) {
+        this.alarmPresenter.initialize(userId, curProject, equipmentName, queryAlarmType, status, pageNumber);
     }
 
     private void loadAlarmList(int userId, String equipmentName, String queryAlarmType, int status, int pageNumber) {

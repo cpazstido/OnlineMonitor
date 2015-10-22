@@ -31,11 +31,11 @@ public class TestActivity extends BaseActivity implements LoadDataView {
     @Bind(R.id.pager)
     ViewPager pager;
 
-    private AlertDialog LoadAlert;
+
     private EquipmentStateMonitorPresenter equipmentStateMonitorPresenter;
     private List<String> alarmTitles;
     private String curProject;
-
+    private AlertDialog LoadAlert;
     public static void StartTestView(Context context) {
         Intent intent = new Intent(context, TestActivity.class);
         context.startActivity(intent);
@@ -81,8 +81,9 @@ public class TestActivity extends BaseActivity implements LoadDataView {
         pager.setAdapter(new FragmentStatePagerAdapter(getSupportFragmentManager()) {
             @Override
             public Fragment getItem(int position) {
-                return RecyclerViewFragment.newInstance(alarmTitles, position, TestActivity.this.getUser().getUserId(), curProject);
+                return RecyclerViewFragment.newInstance(getContext(),alarmTitles, position, TestActivity.this.getUser().getUserId(), curProject);
             }
+
             @Override
             public int getCount() {
                 return alarmTitles.size();
@@ -94,9 +95,8 @@ public class TestActivity extends BaseActivity implements LoadDataView {
             }
 
         });
-
         deviceStatusTitle.setViewPager(pager);
-//        pager.setOffscreenPageLimit(pager.getAdapter().getCount());
+        pager.setOffscreenPageLimit(pager.getAdapter().getCount());
     }
 
     public void initialize() {

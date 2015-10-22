@@ -12,12 +12,17 @@ import com.hy.data.utile.SystemRestClient;
 import com.hy.onlinemonitor.R;
 import com.hy.onlinemonitor.bean.AlarmInformation;
 import com.hy.onlinemonitor.bean.AlarmPage;
+import com.hy.onlinemonitor.utile.TransformationUtils;
 import com.hy.onlinemonitor.view.Activity.Function.DetailedAlarmActivity;
 import com.hy.onlinemonitor.view.ViewHolder.AlarmViewHolder;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 public class AlarmRecyclerAdapter extends RecyclerView.Adapter<AlarmViewHolder> {
 
@@ -26,6 +31,11 @@ public class AlarmRecyclerAdapter extends RecyclerView.Adapter<AlarmViewHolder> 
     private int showType;
     private int dvrType;
     private int dvrId;
+    private TreeMap<Integer, AlarmInformation> informationTreeMap = new TreeMap<>();
+
+    public TreeMap<Integer, AlarmInformation> getInformationTreeMap() {
+        return informationTreeMap;
+    }
 
     public void setDvrId(int dvrId) {
         this.dvrId = dvrId;
@@ -37,12 +47,12 @@ public class AlarmRecyclerAdapter extends RecyclerView.Adapter<AlarmViewHolder> 
 
     public void setQueryAlarmType(String queryAlarmType) {
         this.queryAlarmType = queryAlarmType;
-        switch (queryAlarmType){
+        switch (queryAlarmType) {
             case "fire":
-                dvrType= 1;
+                dvrType = 1;
                 break;
             case "break":
-                dvrType =2;
+                dvrType = 2;
                 break;
         }
     }
@@ -50,7 +60,7 @@ public class AlarmRecyclerAdapter extends RecyclerView.Adapter<AlarmViewHolder> 
     private String queryAlarmType;
     private int status;
 
-    public AlarmRecyclerAdapter(AlarmPage alarmPage, Context mContext, int showType,String queryAlarmType, int status) {
+    public AlarmRecyclerAdapter(AlarmPage alarmPage, Context mContext, int showType, String queryAlarmType, int status) {
         validateAlarmsCollection(alarmPage.getList());
         this.mList = alarmPage.getList();
         this.mContext = mContext;
@@ -92,24 +102,28 @@ public class AlarmRecyclerAdapter extends RecyclerView.Adapter<AlarmViewHolder> 
     @Override
     public void onBindViewHolder(AlarmViewHolder holder, final int position) {
         final AlarmInformation alarmInformation = this.mList.get(position);
+
+        String realShow = alarmInformation.getLineName() + "--" + alarmInformation.getPoleName() + "--";
+        realShow += TransformationUtils.getDeviceNameLastSix(alarmInformation.getDeviceId());
+
         switch (queryAlarmType) {
             case "sensor":
-                holder.equipmentIdentifier.setText(alarmInformation.getDeviceId());
+                holder.equipmentIdentifier.setText(realShow);
                 holder.alarmInformation.setText(alarmInformation.getAlarmInformation());
                 holder.collectionTime.setText(alarmInformation.getCollectionTime());
                 break;
             case "fire":
-                holder.alarmCardTitle.setText(alarmInformation.getDeviceId());
+                holder.alarmCardTitle.setText(realShow);
                 Log.e("fire", SystemRestClient.BASE_PICTURE_URL + alarmInformation.getVisibleLightImage());
-                Picasso.with(mContext).load(SystemRestClient.BASE_PICTURE_URL+alarmInformation.getVisibleLightImage()).placeholder(R.drawable.picture_loading).error(R.drawable.loading_error).into(holder.alarmCardImage);
+                Picasso.with(mContext).load(SystemRestClient.BASE_PICTURE_URL + alarmInformation.getVisibleLightImage()).placeholder(R.drawable.picture_loading).error(R.drawable.loading_error).into(holder.alarmCardImage);
 //                Picasso.with(mContext).load("http://172.16.8.129:8081/eMonitorApp/alarm/visiblePicture/217-1-20150916-150333.jpg").into(holder.alarmCardImage);
                 holder.alarmCardView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         Intent intent = new Intent(mContext, DetailedAlarmActivity.class);
                         intent.putExtra("queryAlarmType", queryAlarmType);
-                        intent.putExtra("dvrType",dvrType);
-                        intent.putExtra("dvrId",dvrId);
+                        intent.putExtra("dvrType", dvrType);
+                        intent.putExtra("dvrId", dvrId);
                         intent.putExtra("status", status);
                         intent.putExtra("detailedAlarm", alarmInformation);
                         mContext.startActivity(intent);
@@ -117,16 +131,16 @@ public class AlarmRecyclerAdapter extends RecyclerView.Adapter<AlarmViewHolder> 
                 });
                 break;
             case "break":
-                holder.alarmCardTitle.setText(alarmInformation.getCollectionTime());
-                Log.e("break", SystemRestClient.BASE_PICTURE_URL +alarmInformation.getBreakImage());
-                Picasso.with(mContext).load(SystemRestClient.BASE_PICTURE_URL+alarmInformation.getBreakImage()).placeholder(R.drawable.picture_loading).error(R.drawable.loading_error).into(holder.alarmCardImage);
+                holder.alarmCardTitle.setText(realShow);
+                Log.e("break", SystemRestClient.BASE_PICTURE_URL + alarmInformation.getBreakImage());
+                Picasso.with(mContext).load(SystemRestClient.BASE_PICTURE_URL + alarmInformation.getBreakImage()).placeholder(R.drawable.picture_loading).error(R.drawable.loading_error).into(holder.alarmCardImage);
                 holder.alarmCardView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         Intent intent = new Intent(mContext, DetailedAlarmActivity.class);
                         intent.putExtra("queryAlarmType", queryAlarmType);
-                        intent.putExtra("dvrType",dvrType);
-                        intent.putExtra("dvrId",dvrId);
+                        intent.putExtra("dvrType", dvrType);
+                        intent.putExtra("dvrId", dvrId);
                         intent.putExtra("status", status);
                         intent.putExtra("detailedAlarm", alarmInformation);
                         mContext.startActivity(intent);
@@ -138,7 +152,17 @@ public class AlarmRecyclerAdapter extends RecyclerView.Adapter<AlarmViewHolder> 
 
     public void setAlarmCollection(Collection<AlarmInformation> alarmInformationCollection) {
         this.validateAlarmsCollection(alarmInformationCollection);
-        this.mList = (List<AlarmInformation>) alarmInformationCollection;
+        for (AlarmInformation alarmInformation : alarmInformationCollection) {
+            informationTreeMap.put(alarmInformation.getAlarmSn(), alarmInformation);
+        }
+        Iterator titer = informationTreeMap.entrySet().iterator();
+        List<AlarmInformation> list1 = new ArrayList<>();
+        while (titer.hasNext()) {
+            Map.Entry ent = (Map.Entry) titer.next();
+            list1.add((AlarmInformation) ent.getValue());
+        }
+
+        this.mList = list1;
         this.notifyDataSetChanged();
     }
 

@@ -261,23 +261,6 @@ public class EquipmentRecyclerAdapter extends RecyclerView.Adapter<EquipmentList
             list1.add((EquipmentInformation) ent.getValue());
         }
         mList = list1;
-//        if (mList.size() == 0) {
-//            for(EquipmentInformation equipmentInformation :equipmentInformationCollection){
-//                equipmentInformatics.put(equipmentInformation.getEquipmnetName(),equipmentInformation);
-//            }
-//            mList = (List<EquipmentInformation>) equipmentInformationCollection;
-//        } else {
-//            for(EquipmentInformation equipmentInformation :mList){
-//                equipmentInformatics.put(equipmentInformation.getEquipmnetName(),equipmentInformation);
-//            }
-//            for(EquipmentInformation equipmentInformation :equipmentInformationCollection){
-//                equipmentInformatics.put(equipmentInformation.getEquipmnetName(), equipmentInformation);
-//            }
-//            mList.clear();
-//            for (Map.Entry<String, EquipmentInformation> info : equipmentInformatics.entrySet()) {
-//                mList.add(info.getValue());
-//            }
-//        }
         this.notifyDataSetChanged();
     }
 
