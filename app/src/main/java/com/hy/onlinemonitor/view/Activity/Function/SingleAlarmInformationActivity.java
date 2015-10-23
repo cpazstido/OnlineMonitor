@@ -166,7 +166,7 @@ public class SingleAlarmInformationActivity extends AppCompatActivity implements
                             if (pageNum < alarmPage.getTotalPage() && !isLoadingMore) {
                                 isLoadingMore = true;
                                 pageNum++;
-                                loadAlarmList(userId, curProject, queryAlarmType, status, pageNum);
+                                loadAlarmList(userId ,curProject,equipmentName, queryAlarmType, status, pageNum);
                             } else {
                                 ShowUtile.toastShow(getContext(), "无更多数据...");
                             }

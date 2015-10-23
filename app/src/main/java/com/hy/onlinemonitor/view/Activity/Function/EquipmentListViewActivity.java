@@ -105,12 +105,12 @@ public class EquipmentListViewActivity extends BaseActivity implements LoadDataV
                 }
             });
         } else
-        refreshButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                initialize();
-            }
-        });
+            refreshButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    initialize();
+                }
+            });
     }
 
     @Override
@@ -140,7 +140,7 @@ public class EquipmentListViewActivity extends BaseActivity implements LoadDataV
                     @Override
                     public void run() {
                         mAdapter.getEquipmentInformatics().clear();
-                        pageNumber=1;
+                        pageNumber = 1;
                         EquipmentListViewActivity.this.loadEquipmentList(1);
                         swipeRefreshLayout.setRefreshing(false);
                     }

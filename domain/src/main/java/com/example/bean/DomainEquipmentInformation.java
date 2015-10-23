@@ -12,6 +12,9 @@ public class DomainEquipmentInformation {
     private int newFireAlarm;
     private int newBreakAlarm;
     private int newSensorAlarm;
+    private int historyFireAlarm;
+    private int historyBreakAlarm;
+    private int historySensorAlarm;
     private int dvrId;
     private String dvrType;
 
@@ -93,5 +96,29 @@ public class DomainEquipmentInformation {
 
     public void setPoleName(String poleName) {
         this.poleName = poleName;
+    }
+
+    public int getHistoryFireAlarm() {
+        return historyFireAlarm;
+    }
+
+    public void setHistoryFireAlarm(int historyFireAlarm) {
+        this.historyFireAlarm = historyFireAlarm;
+    }
+
+    public int getHistoryBreakAlarm() {
+        return historyBreakAlarm;
+    }
+
+    public void setHistoryBreakAlarm(int historyBreakAlarm) {
+        this.historyBreakAlarm = historyBreakAlarm;
+    }
+
+    public int getHistorySensorAlarm() {
+        return historySensorAlarm;
+    }
+
+    public void setHistorySensorAlarm(int historySensorAlarm) {
+        this.historySensorAlarm = historySensorAlarm;
     }
 }

@@ -42,18 +42,13 @@ dependencies {
     compile 'com.lid.labelview:lib:0.1.1'
     //下拉刷新
     compile 'com.baoyz.pullrefreshlayout:library:1.0.1'
-    //viewpager
-    compile ('com.github.florent37:materialviewpager:1.1.2@aar'){
-        transitive = true
-    }
+
     //点击打开viewpager的库
     compile 'com.r0adkll:slidableactivity:2.0.3'
     //导航菜单的库
     compile('com.mikepenz:materialdrawer:3.1.2@aar') {
         transitive = true
     }
-    //显示下载的库
-    compile 'com.github.tibolte:elasticdownload:1.0.+'
     //网络请求的库
     compile 'com.loopj.android:android-async-http:1.4.8'
     //Gson

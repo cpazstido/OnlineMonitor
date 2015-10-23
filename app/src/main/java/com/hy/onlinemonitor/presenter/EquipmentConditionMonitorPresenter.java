@@ -23,12 +23,12 @@ import rx.android.schedulers.AndroidSchedulers;
  * Created by 24363 on 2015/10/13.
  */
 public class EquipmentConditionMonitorPresenter implements Presenter {
-    private static String TAG= "EquipmentConditionMonitorPresenter";
+    private static String TAG = "EquipmentConditionMonitorPresenter";
     private Context mContext;
     private UseCase equipmentConditionMonitorUseCase;
     private EquipmentConditionMonitorDataRepository equipmentConditionMonitorDataRepository;
     private EquipmentConditionMonitorActivity equipmentConditionMonitorActivity;
-    private Collection equipmentLists=new ArrayList<>();
+    private Collection equipmentLists = new ArrayList<>();
     private int userId;
     private int selectedType;
 
@@ -85,12 +85,12 @@ public class EquipmentConditionMonitorPresenter implements Presenter {
 
         @Override
         public void onNext(DomainEquipmentInforPage domainEquipmentInforPage) {
-            if(domainEquipmentInforPage.getPageNum() == 1)
+            if (domainEquipmentInforPage.getPageNum() == 1)
                 equipmentLists.clear();
             EquipmentInforDataMapper equipmentInforDataMapper = new EquipmentInforDataMapper();
             equipmentLists.addAll(equipmentInforDataMapper.transform(domainEquipmentInforPage.getList()));
             if (domainEquipmentInforPage.getPageNum() < domainEquipmentInforPage.getTotalPage()) {
-                getEquipmentList(userId,selectedType,domainEquipmentInforPage.getPageNum()+1);
+                getEquipmentList(userId, selectedType, domainEquipmentInforPage.getPageNum() + 1);
             } else {//已经加载到了最后一页
                 setEquipmentList(equipmentLists);
                 EquipmentConditionMonitorPresenter.this.equipmentConditionMonitorActivity.hideLoading();

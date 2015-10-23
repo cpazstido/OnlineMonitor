@@ -5,6 +5,7 @@ import com.example.bean.DomainAdministratorPage;
 import com.example.bean.DomainAlarmPage;
 import com.example.bean.DomainEquipmentPage;
 import com.example.bean.DomainLinePage;
+import com.example.bean.DomainOnlineDeviceStatePage;
 import com.example.bean.DomainPolePage;
 import com.example.bean.DomainRolePage;
 import com.hy.onlinemonitor.bean.AdministratorPage;
@@ -12,6 +13,7 @@ import com.hy.onlinemonitor.bean.AlarmPage;
 import com.hy.onlinemonitor.bean.EquipmentInforPage;
 import com.hy.onlinemonitor.bean.EquipmentPage;
 import com.hy.onlinemonitor.bean.LinePage;
+import com.hy.onlinemonitor.bean.OnlineDeviceStatePage;
 import com.hy.onlinemonitor.bean.PolePage;
 import com.hy.onlinemonitor.bean.RolePage;
 
@@ -127,5 +129,20 @@ public class PageDataMapper {
         equipmentPage.setList(EquipmentDataMapper.transform(domainEquipmentPage.getList()));
 
         return equipmentPage;
+    }
+
+    public OnlineDeviceStatePage transform(DomainOnlineDeviceStatePage domainOnlineDeviceStatePage) {
+        if (null == domainOnlineDeviceStatePage) {
+            throw new IllegalArgumentException("Cannot transform a null value");
+        }
+
+        OnlineDeviceStatePage onlineDeviceStatePage = new OnlineDeviceStatePage();
+        onlineDeviceStatePage.setRowCount(domainOnlineDeviceStatePage.getRowCount());
+        onlineDeviceStatePage.setPageNum(domainOnlineDeviceStatePage.getPageNum());
+        onlineDeviceStatePage.setPageSize(domainOnlineDeviceStatePage.getPageSize());
+        onlineDeviceStatePage.setTotalPage(domainOnlineDeviceStatePage.getTotalPage());
+        onlineDeviceStatePage.setList(OnlineDeviceStateDataMapper.transform(domainOnlineDeviceStatePage.getList()));
+
+        return onlineDeviceStatePage;
     }
 }

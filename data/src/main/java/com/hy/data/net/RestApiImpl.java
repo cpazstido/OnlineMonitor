@@ -14,6 +14,7 @@ import com.hy.data.entity.EquipmentPageEntity;
 import com.hy.data.entity.LineEntity;
 import com.hy.data.entity.LinePageEntity;
 import com.hy.data.entity.MapEntity;
+import com.hy.data.entity.OnlineDeviceStatePageEntity;
 import com.hy.data.entity.PolePageEntity;
 import com.hy.data.entity.PrivilegeEntity;
 import com.hy.data.entity.RoleEntity;
@@ -2283,6 +2284,41 @@ public class RestApiImpl implements RestApi {
         });
     }
 
+    @Override
+    public Observable<OnlineDeviceStatePageEntity> loadOnlineDeviceState(int userId, int lineSn, int pageNum) {
+        return Observable.create(new Observable.OnSubscribe<OnlineDeviceStatePageEntity>() {
+            @Override
+            public void call(Subscriber<? super OnlineDeviceStatePageEntity> subscriber) {
+                RequestParams params = new RequestParams();
+                params.put("userId", userId);
+                params.put("circuitSn", lineSn);
+                params.put("pageIndex", pageNum);
+                SystemRestClient.post("/onlineDevicelist", params, new AsyncHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                        try {
+                            String responseEntities = new String(responseBody, "UTF-8");
+                            Log.e("response", responseEntities);
+                            if ("\"loginFail\"".equals(responseEntities)) {
+                                subscriber.onError(new NetworkConnectionException("请重新登录"));
+                            } else {
+                                subscriber.onNext(pageEntityJsonMapper.transformOnlineDeviceStatePageEntity(responseEntities));
+                                subscriber.onCompleted();
+                            }
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                        subscriber.onError(new NetworkConnectionException("链接失败"));
+                    }
+                });
+            }
+        });
+    }
+
     private boolean isThereInternetConnection() {
         boolean isConnected;
 
@@ -2293,6 +2329,7 @@ public class RestApiImpl implements RestApi {
 
         return isConnected;
     }
+
 
 
 }

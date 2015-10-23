@@ -60,7 +60,6 @@ public class AlarmInformationActivity extends BaseActivity implements LoadDataVi
                 for (String alarmTitle : TypeDef.typeFireAlarmTitle) {
                     alarmTitles.add(alarmTitle);
                 }
-
                 break;
             case 1://外破
                 curProject = "break";

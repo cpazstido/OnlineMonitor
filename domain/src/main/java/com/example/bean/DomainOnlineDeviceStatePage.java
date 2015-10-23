@@ -1,16 +1,16 @@
-package com.hy.onlinemonitor.bean;
+package com.example.bean;
 
 import java.util.List;
 
 /**
- * Created by 24363 on 2015/9/11.
+ * Created by 24363 on 2015/10/22.
  */
-public class EquipmentPage {
-    private int pageNum;                        //当前页数
-    private int pageSize = 10;                  //每页显示的数量
-    private int rowCount;                       //总数目
-    private List<Equipment> list;               //数据
-    private int totalPage;                      //总页数
+public class DomainOnlineDeviceStatePage {
+    private int pageNum;
+    private int pageSize=10;
+    private int rowCount;
+    private List<DomainOnlineDeviceState> list;
+    private int totalPage;
 
     public int getPageNum() {
         return pageNum;
@@ -36,11 +36,11 @@ public class EquipmentPage {
         this.rowCount = rowCount;
     }
 
-    public List<Equipment> getList() {
+    public List<DomainOnlineDeviceState> getList() {
         return list;
     }
 
-    public void setList(List<Equipment> list) {
+    public void setList(List<DomainOnlineDeviceState> list) {
         this.list = list;
     }
 

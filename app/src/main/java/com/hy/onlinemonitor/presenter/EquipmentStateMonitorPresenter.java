@@ -3,6 +3,7 @@ package com.hy.onlinemonitor.presenter;
 import android.content.Context;
 
 import com.example.bean.DomainCompany;
+import com.example.bean.DomainOnlineDeviceStatePage;
 import com.example.interactor.DefaultSubscriber;
 import com.example.interactor.EquipmentStateMonitorUseCase;
 import com.example.interactor.UseCase;
@@ -10,7 +11,9 @@ import com.hy.data.repository.EquipmentStateMonitorDataRepository;
 import com.hy.onlinemonitor.UIThread;
 import com.hy.onlinemonitor.bean.Company;
 import com.hy.onlinemonitor.mapper.CompanyDataMapper;
+import com.hy.onlinemonitor.mapper.PageDataMapper;
 import com.hy.onlinemonitor.view.Activity.ConditionMonitor.EquipmentStateMonitorActivity;
+import com.hy.onlinemonitor.view.Fragment.EquipmentStateMonitorFragment;
 
 import java.util.List;
 
@@ -24,7 +27,7 @@ public class EquipmentStateMonitorPresenter implements Presenter {
     private UseCase equipmentConditionMonitorUseCase;
     private EquipmentStateMonitorDataRepository equipmentStateMonitorDataRepository;
     private EquipmentStateMonitorActivity equipmentStateMonitorActivity;
-    private int userId;
+    private EquipmentStateMonitorFragment equipmentStateMonitorFragment;
 
     public EquipmentStateMonitorPresenter(Context mContext) {
         this.mContext = mContext;
@@ -34,6 +37,10 @@ public class EquipmentStateMonitorPresenter implements Presenter {
         this.equipmentStateMonitorActivity = equipmentStateMonitorActivity;
     }
 
+    public void setEquipmentStateMonitorFragment(EquipmentStateMonitorFragment equipmentStateMonitorFragment) {
+        this.equipmentStateMonitorFragment = equipmentStateMonitorFragment;
+    }
+
     /**
      * 加载所有线路,以便用于切换线路
      *
@@ -41,12 +48,10 @@ public class EquipmentStateMonitorPresenter implements Presenter {
      */
     public void loadAllLine(int userId) {
         showViewLoading();
-        this.userId = userId;
         equipmentStateMonitorDataRepository = new EquipmentStateMonitorDataRepository(mContext, userId);
         this.equipmentConditionMonitorUseCase = new EquipmentStateMonitorUseCase(new UIThread(), AndroidSchedulers.mainThread(), equipmentStateMonitorDataRepository, 1);
         this.equipmentConditionMonitorUseCase.execute(new LineListSubscriber());
     }
-
 
     private class LineListSubscriber extends DefaultSubscriber<List<DomainCompany>> {
         @Override
@@ -70,18 +75,20 @@ public class EquipmentStateMonitorPresenter implements Presenter {
 
     /**
      * 加载装置信息列表
+     *
      * @param mContext Context
-     * @param userId  userId
-     * @param LineSn 线路sn
+     * @param userId   userId
+     * @param lineSn   线路sn
+     * @param pageNum  分页
      */
-    public void loadDeviceInformation(Context mContext,int userId,int LineSn){
+    public void loadOnlineDeviceState(Context mContext, int userId, int lineSn, int pageNum) {
         showViewLoading();
-        equipmentStateMonitorDataRepository = new EquipmentStateMonitorDataRepository(mContext,userId);
+        equipmentStateMonitorDataRepository = new EquipmentStateMonitorDataRepository(mContext, userId, lineSn, pageNum);
         this.equipmentConditionMonitorUseCase = new EquipmentStateMonitorUseCase(new UIThread(), AndroidSchedulers.mainThread(), equipmentStateMonitorDataRepository, 2);
-        this.equipmentConditionMonitorUseCase.execute(new DeviceInformationSubscriber());
+        this.equipmentConditionMonitorUseCase.execute(new OnlineDeviceStateSubscriber());
     }
 
-    private class DeviceInformationSubscriber extends DefaultSubscriber<List<DomainCompany>> {
+    private class OnlineDeviceStateSubscriber extends DefaultSubscriber<DomainOnlineDeviceStatePage> {
         @Override
         public void onCompleted() {
             EquipmentStateMonitorPresenter.this.hideViewLoading();
@@ -95,9 +102,9 @@ public class EquipmentStateMonitorPresenter implements Presenter {
         }
 
         @Override
-        public void onNext(List<DomainCompany> domainCompanies) {
-            List<Company> mList = CompanyDataMapper.transform(domainCompanies);
-            equipmentStateMonitorActivity.setCompanyList(mList);
+        public void onNext(DomainOnlineDeviceStatePage domainOnlineDeviceStatePage) {
+            PageDataMapper pageDataMapper = new PageDataMapper();
+            equipmentStateMonitorFragment.renderOnlineDeviceStateList(pageDataMapper.transform(domainOnlineDeviceStatePage));
         }
     }
 

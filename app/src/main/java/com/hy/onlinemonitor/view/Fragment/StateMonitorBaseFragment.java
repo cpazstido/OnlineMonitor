@@ -12,34 +12,50 @@ import android.view.ViewGroup;
 
 import com.baoyz.widget.PullRefreshLayout;
 import com.hy.onlinemonitor.R;
-
-import java.util.List;
+import com.hy.onlinemonitor.bean.OnlineDeviceStatePage;
+import com.hy.onlinemonitor.presenter.EquipmentStateMonitorPresenter;
+import com.hy.onlinemonitor.utile.ShowUtile;
+import com.hy.onlinemonitor.view.Adapter.StateMonitoring.CMBaseAdapter;
 
 /**
  * Created by 24363 on 2015/10/16.
  */
 public abstract class StateMonitorBaseFragment extends Fragment {
 
-    protected int lineSn = 0;
     private static final String TAG = "状态监测BaseFragment";
-    protected RecyclerView.Adapter mAdapter;
-    RecyclerView rvRecyclerviewData;
-    PullRefreshLayout swipeRefreshLayout;
+    protected CMBaseAdapter mAdapter;
+    protected RecyclerView rvRecyclerviewData;
+    protected PullRefreshLayout swipeRefreshLayout;
+    protected EquipmentStateMonitorPresenter equipmentStateMonitorPresenter;
+    protected Bundle bundle;
+    protected int lineSn = 0;
+    protected int userId = 0;
+    protected int pageNum = 1;
+    public OnlineDeviceStatePage onlineDeviceStatePage;
+    public boolean isLoadingMore =false;
+    private int lastVisibleItem;
+    private LinearLayoutManager layoutManager;
+    protected boolean isHaveData = false;
 
-    private static boolean isNoInit = true;
+    public void setLineSn(int lineSn) {
+        this.lineSn = lineSn;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Bundle bundle = getArguments();
-        if (bundle != null)
+        bundle = getArguments();
+        if (bundle != null) {
             lineSn = bundle.getInt("lineSn");
+            userId = bundle.getInt("userId");
+        }
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Log.e(TAG, "onViewCreated");
+        this.initializePresenter();
         rvRecyclerviewData = (RecyclerView) view.findViewById(R.id.rv_recyclerview_data);
         swipeRefreshLayout = (PullRefreshLayout) view.findViewById(R.id.swipeRefreshLayout);
 
@@ -56,9 +72,36 @@ public abstract class StateMonitorBaseFragment extends Fragment {
             }
         });
 
-        rvRecyclerviewData.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext()));
+        layoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
+        rvRecyclerviewData.setLayoutManager(layoutManager);
         rvRecyclerviewData.setHasFixedSize(true);
         rvRecyclerviewData.setAdapter(mAdapter);
+        rvRecyclerviewData.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                switch (newState) {
+                    case RecyclerView.SCROLL_STATE_IDLE:
+                        if ((lastVisibleItem + 1) == mAdapter.getItemCount() && isHaveData) {
+                            if (pageNum < onlineDeviceStatePage.getTotalPage() && !isLoadingMore) {
+                                isLoadingMore = true;
+                                pageNum++;
+                                loadData();
+                            } else {
+                                ShowUtile.toastShow(getContext(), "无更多数据...");
+                            }
+                        }
+                        break;
+                }
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                lastVisibleItem = layoutManager.findLastVisibleItemPosition();
+            }
+        });
+        this.loadData();
     }
 
     @Nullable
@@ -68,17 +111,6 @@ public abstract class StateMonitorBaseFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_state_monitoring, container, false);
     }
 
-    @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        if (isVisibleToUser && isNoInit) {
-//            Log.e(TAG,"setUserVisibleHint"+getActivity().getPackageName());
-            isNoInit = false;
-            this.initializePresenter();
-            this.loadData();
-        }
-        super.setUserVisibleHint(isVisibleToUser);
-
-    }
 
     /**
      * 加载数据,在变为可见时调用
@@ -87,7 +119,6 @@ public abstract class StateMonitorBaseFragment extends Fragment {
 
     /**
      * 创建adapter
-     *
      */
     protected abstract void getAdapter();
 
@@ -96,11 +127,6 @@ public abstract class StateMonitorBaseFragment extends Fragment {
      */
     protected abstract void doRefresh();
 
-    /**
-     * @param list 接受到的数据
-     * 设置数据
-     */
-    protected abstract void setListData(List list);
 
     /**
      * 初始化Presenter

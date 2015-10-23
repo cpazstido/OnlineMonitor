@@ -5,6 +5,7 @@ import com.example.bean.DomainAdministratorPage;
 import com.example.bean.DomainAlarmPage;
 import com.example.bean.DomainEquipmentPage;
 import com.example.bean.DomainLinePage;
+import com.example.bean.DomainOnlineDeviceStatePage;
 import com.example.bean.DomainPolePage;
 import com.example.bean.DomainRolePage;
 import com.hy.data.entity.AdministratorPageEntity;
@@ -12,6 +13,7 @@ import com.hy.data.entity.AlarmPageEntity;
 import com.hy.data.entity.EquipmentInforPageEntity;
 import com.hy.data.entity.EquipmentPageEntity;
 import com.hy.data.entity.LinePageEntity;
+import com.hy.data.entity.OnlineDeviceStatePageEntity;
 import com.hy.data.entity.PolePageEntity;
 import com.hy.data.entity.RolePageEntity;
 
@@ -116,5 +118,18 @@ public class PageEntityDataMapper {
             domainEquipmentPage.setRowCount(equipmentPageEntity.getRowCount());
         }
         return domainEquipmentPage;
+    }
+
+    public DomainOnlineDeviceStatePage transform(OnlineDeviceStatePageEntity onlineDeviceStatePageEntity) {
+        DomainOnlineDeviceStatePage domainOnlineDeviceStatePage = null;
+        if (null != onlineDeviceStatePageEntity) {
+            domainOnlineDeviceStatePage = new DomainOnlineDeviceStatePage();
+            domainOnlineDeviceStatePage.setTotalPage(onlineDeviceStatePageEntity.getTotalPage());
+            domainOnlineDeviceStatePage.setPageSize(onlineDeviceStatePageEntity.getPageSize());
+            domainOnlineDeviceStatePage.setPageNum(onlineDeviceStatePageEntity.getPageNum());
+            domainOnlineDeviceStatePage.setList(OnlineDeviceStateEntityDataMapper.transform(onlineDeviceStatePageEntity.getList()));
+            domainOnlineDeviceStatePage.setRowCount(onlineDeviceStatePageEntity.getRowCount());
+        }
+        return domainOnlineDeviceStatePage;
     }
 }

@@ -36,7 +36,7 @@ public class EquipmentRecyclerAdapter extends RecyclerView.Adapter<EquipmentList
     private int userId;
     String choiceStr = null;
 
-    TreeMap<String,EquipmentInformation> equipmentInformatics = new TreeMap<>();
+    TreeMap<String, EquipmentInformation> equipmentInformatics = new TreeMap<>();
 
     public TreeMap<String, EquipmentInformation> getEquipmentInformatics() {
         return equipmentInformatics;
@@ -73,11 +73,22 @@ public class EquipmentRecyclerAdapter extends RecyclerView.Adapter<EquipmentList
                 choiceStr = "auv";
                 break;
         }
+
         final EquipmentInformation equipmentInformation = mList.get(position);
-        String realShow = equipmentInformation.getLineName()+"--"+equipmentInformation.getPoleName()+"--";
+        String realShow = equipmentInformation.getLineName() + "--" + equipmentInformation.getPoleName() + "--";
         realShow += TransformationUtils.getDeviceNameLastSix(equipmentInformation.getEquipmnetName());
         holder.stateShow.setText(equipmentInformation.getEquipmnetState());
         holder.equipmentName.setText(realShow);
+
+        holder.newSensorAlarm.setText(TransformationUtils.getNumberButton("传感器",equipmentInformation.getNewSensorAlarm()));
+        holder.newFireAlarm.setText(TransformationUtils.getNumberButton("山火",equipmentInformation.getNewFireAlarm()));
+        holder.newBreakAlarm.setText(TransformationUtils.getNumberButton("外破",equipmentInformation.getNewBreakAlarm()));
+
+        //TODO 1.等待修改设备报警对象
+        holder.historySensorAlarm.setText(TransformationUtils.getNumberButton("传感器",equipmentInformation.getHistorySensorAlarm()));
+        holder.historyFireAlarm.setText(TransformationUtils.getNumberButton("山火",equipmentInformation.getHistoryFireAlarm()));
+        holder.historyBreakAlarm.setText(TransformationUtils.getNumberButton("外破",equipmentInformation.getHistoryBreakAlarm()));
+
         if ((equipmentInformation.getNewBreakAlarm() != 0 && 1 == selectionType) || (equipmentInformation.getNewFireAlarm() != 0 && 0 == selectionType) || equipmentInformation.getNewSensorAlarm() != 0) {
             holder.newAlarmImageView.setVisibility(View.VISIBLE);
         } else {
@@ -128,8 +139,8 @@ public class EquipmentRecyclerAdapter extends RecyclerView.Adapter<EquipmentList
                 if (OwnJurisdiction.haveJurisdiction(3)) {
                     Intent intent = new Intent(holder.itemView.getContext(), SingleAlarmInformationActivity.class);
                     intent.putExtra("queryAlarmType", "break");
-                    intent.putExtra("dvrType",2);//2代表外破
-                    intent.putExtra("dvrId",equipmentInformation.getDvrId());
+                    intent.putExtra("dvrType", 2);//2代表外破
+                    intent.putExtra("dvrId", equipmentInformation.getDvrId());
                     intent.putExtra("status", 1);
                     intent.putExtra("title", "外破历史报警");
                     intent.putExtra("equipmentName", equipmentInformation.getEquipmnetName());
@@ -148,8 +159,8 @@ public class EquipmentRecyclerAdapter extends RecyclerView.Adapter<EquipmentList
                 if (OwnJurisdiction.haveJurisdiction(3)) {
                     Intent intent = new Intent(holder.itemView.getContext(), SingleAlarmInformationActivity.class);
                     intent.putExtra("queryAlarmType", "fire");
-                    intent.putExtra("dvrType",1);//1代表山火
-                    intent.putExtra("dvrId",equipmentInformation.getDvrId());
+                    intent.putExtra("dvrType", 1);//1代表山火
+                    intent.putExtra("dvrId", equipmentInformation.getDvrId());
                     intent.putExtra("status", 1);//1是历史 0是新报警
                     intent.putExtra("title", "山火历史报警");
                     intent.putExtra("equipmentName", equipmentInformation.getEquipmnetName());
@@ -171,7 +182,7 @@ public class EquipmentRecyclerAdapter extends RecyclerView.Adapter<EquipmentList
                     intent.putExtra("queryAlarmType", "sensor");
                     intent.putExtra("status", 1);//1是历史 0是新报警
                     intent.putExtra("title", "传感器历史报警");
-                    intent.putExtra("curProject",choiceStr);
+                    intent.putExtra("curProject", choiceStr);
                     intent.putExtra("equipmentName", equipmentInformation.getEquipmnetName());
                     intent.putExtra("userId", userId);
                     intent.putExtra("showType", 0);
@@ -188,8 +199,8 @@ public class EquipmentRecyclerAdapter extends RecyclerView.Adapter<EquipmentList
                 if (OwnJurisdiction.haveJurisdiction(3)) {
                     Intent intent = new Intent(holder.itemView.getContext(), SingleAlarmInformationActivity.class);
                     intent.putExtra("queryAlarmType", "break");
-                    intent.putExtra("dvrType",2);//2代表外破
-                    intent.putExtra("dvrId",equipmentInformation.getDvrId());
+                    intent.putExtra("dvrType", 2);//2代表外破
+                    intent.putExtra("dvrId", equipmentInformation.getDvrId());
                     intent.putExtra("status", 0);//1是历史 0是新报警
                     intent.putExtra("title", "外破新报警");
                     intent.putExtra("equipmentName", equipmentInformation.getEquipmnetName());
@@ -209,8 +220,8 @@ public class EquipmentRecyclerAdapter extends RecyclerView.Adapter<EquipmentList
                     Intent intent = new Intent(holder.itemView.getContext(), SingleAlarmInformationActivity.class);
                     intent.putExtra("queryAlarmType", "fire");
                     intent.putExtra("title", "山火新报警");
-                    intent.putExtra("dvrId",equipmentInformation.getDvrId());
-                    intent.putExtra("dvrType",1);//1代表山火
+                    intent.putExtra("dvrId", equipmentInformation.getDvrId());
+                    intent.putExtra("dvrType", 1);//1代表山火
                     intent.putExtra("status", 0);//1是历史 0是新报警
                     intent.putExtra("equipmentName", equipmentInformation.getEquipmnetName());
                     intent.putExtra("userId", userId);
@@ -229,7 +240,7 @@ public class EquipmentRecyclerAdapter extends RecyclerView.Adapter<EquipmentList
                     Intent intent = new Intent(holder.itemView.getContext(), SingleAlarmInformationActivity.class);
                     intent.putExtra("queryAlarmType", "sensor");
                     intent.putExtra("title", "传感器新报警");
-                    intent.putExtra("curProject",choiceStr);
+                    intent.putExtra("curProject", choiceStr);
                     intent.putExtra("status", 0);//1是历史 0是新报警
                     intent.putExtra("equipmentName", equipmentInformation.getEquipmnetName());
                     intent.putExtra("userId", userId);
@@ -250,14 +261,14 @@ public class EquipmentRecyclerAdapter extends RecyclerView.Adapter<EquipmentList
     public void setEquipmentCollection(Collection<EquipmentInformation> equipmentInformationCollection) {
         this.validateEquipmentCollection(equipmentInformationCollection);
 
-        for(EquipmentInformation equipmentInformation :equipmentInformationCollection){
-                equipmentInformatics.put(equipmentInformation.getEquipmnetName(),equipmentInformation);
-            }
+        for (EquipmentInformation equipmentInformation : equipmentInformationCollection) {
+            equipmentInformatics.put(equipmentInformation.getEquipmnetName(), equipmentInformation);
+        }
 
-        Iterator titer=equipmentInformatics.entrySet().iterator();
+        Iterator titer = equipmentInformatics.entrySet().iterator();
         List<EquipmentInformation> list1 = new ArrayList<>();
-        while(titer.hasNext()){
-            Map.Entry ent=(Map.Entry )titer.next();
+        while (titer.hasNext()) {
+            Map.Entry ent = (Map.Entry) titer.next();
             list1.add((EquipmentInformation) ent.getValue());
         }
         mList = list1;

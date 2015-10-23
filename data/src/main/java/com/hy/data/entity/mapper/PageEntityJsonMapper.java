@@ -8,6 +8,7 @@ import com.hy.data.entity.AlarmPageEntity;
 import com.hy.data.entity.EquipmentInforPageEntity;
 import com.hy.data.entity.EquipmentPageEntity;
 import com.hy.data.entity.LinePageEntity;
+import com.hy.data.entity.OnlineDeviceStatePageEntity;
 import com.hy.data.entity.PolePageEntity;
 import com.hy.data.entity.RolePageEntity;
 
@@ -62,4 +63,9 @@ public class PageEntityJsonMapper {
         return this.gson.fromJson(JsonResponse, EquipmentPageEntityType);
     }
 
+    public OnlineDeviceStatePageEntity transformOnlineDeviceStatePageEntity(String JsonResponse)throws JsonSyntaxException{
+        Type OnlineDeviceStatePageEntityType = new TypeToken<OnlineDeviceStatePageEntity>() {}.getType();
+
+        return this.gson.fromJson(JsonResponse, OnlineDeviceStatePageEntityType);
+    }
 }

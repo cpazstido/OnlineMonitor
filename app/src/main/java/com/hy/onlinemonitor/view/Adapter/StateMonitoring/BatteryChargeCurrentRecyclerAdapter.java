@@ -7,17 +7,17 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.hy.onlinemonitor.R;
-import com.hy.onlinemonitor.bean.DeviceInformation;
+import com.hy.onlinemonitor.bean.OnlineDeviceState;
+import com.hy.onlinemonitor.utile.TransformationUtils;
 import com.hy.onlinemonitor.view.ViewHolder.StateMonitoringViewHolder;
 
 import java.util.List;
 
 //电池充电电流
-public class BatteryChargeCurrentRecyclerAdapter extends RecyclerView.Adapter<StateMonitoringViewHolder> {
+public class BatteryChargeCurrentRecyclerAdapter extends CMBaseAdapter<StateMonitoringViewHolder> {
     private final Context mContext;
-    private List<DeviceInformation> mList;
 
-    public BatteryChargeCurrentRecyclerAdapter(Context mContext, List<DeviceInformation> mList) {
+    public BatteryChargeCurrentRecyclerAdapter(Context mContext, List<OnlineDeviceState> mList) {
         this.mContext = mContext;
         this.mList = mList;
     }
@@ -29,32 +29,34 @@ public class BatteryChargeCurrentRecyclerAdapter extends RecyclerView.Adapter<St
     }
 
     @Override
-    public void onBindViewHolder(StateMonitoringViewHolder holder, int position) {
-        holder.title4.setVisibility(View.VISIBLE);
-        holder.title5.setVisibility(View.VISIBLE);
-        holder.title6.setVisibility(View.VISIBLE);
-        holder.title7.setVisibility(View.VISIBLE);
-        holder.title4_data.setVisibility(View.VISIBLE);
-        holder.title5_data.setVisibility(View.VISIBLE);
-        holder.title6_data.setVisibility(View.VISIBLE);
-        holder.title7_data.setVisibility(View.VISIBLE);
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        viewHolder = (StateMonitoringViewHolder) holder;
+        viewHolder.title4.setVisibility(View.VISIBLE);
+        viewHolder.title5.setVisibility(View.VISIBLE);
+        viewHolder.title6.setVisibility(View.VISIBLE);
+        viewHolder.title7.setVisibility(View.VISIBLE);
 
-        holder.title1.setText("所在杆塔");
-        holder.title2.setText("本月已接收流量");
-        holder.title3.setText("本月已发送流量");
-        holder.title4.setText("主机软件版本");
-        holder.title5.setText("主机硬件版本");
-        holder.title6.setText("DVR系统MK60版本号");
-        holder.title7.setText("DTU信号强度");
+        viewHolder.title4_data.setVisibility(View.VISIBLE);
+        viewHolder.title5_data.setVisibility(View.VISIBLE);
+        viewHolder.title6_data.setVisibility(View.VISIBLE);
+        viewHolder.title7_data.setVisibility(View.VISIBLE);
 
-        holder.deviceName.setText(mList.get(position).getDeviceId());
-        holder.title1_data.setText(mList.get(position).getPoleName());
-        holder.title2_data.setText(mList.get(position).getReceiveTraffic());
-        holder.title3_data.setText(mList.get(position).getSendTraffic());
-        holder.title4_data.setText(mList.get(position).getSoftwareVersion());
-        holder.title5_data.setText(mList.get(position).getHardwareVersion());
-        holder.title6_data.setText(mList.get(position).getDVRVersion());
-        holder.title7_data.setText(mList.get(position).getSignalIntensity());
+        viewHolder.title1.setText("1#电池充电电流");
+        viewHolder.title2.setText("2#电池充电电流");
+        viewHolder.title3.setText("3#电池充电电流");
+        viewHolder.title4.setText("4#电池充电电流");
+        viewHolder.title5.setText("5#电池充电电流");
+        viewHolder.title6.setText("在线取电地线电流");
+        viewHolder.title7.setText("在线取电充电电流");
+
+        viewHolder.deviceName.setText(mList.get(position).getDeviceId());
+        viewHolder.title1_data.setText(TransformationUtils.getAFromFloat(mList.get(position).getCharge_Currrent_1()));
+        viewHolder.title2_data.setText(TransformationUtils.getAFromFloat(mList.get(position).getCharge_Currrent_2()));
+        viewHolder.title3_data.setText(TransformationUtils.getAFromFloat(mList.get(position).getCharge_Currrent_3()));
+        viewHolder.title4_data.setText(TransformationUtils.getAFromFloat(mList.get(position).getCharge_Currrent_4()));
+        viewHolder.title5_data.setText(TransformationUtils.getAFromFloat(mList.get(position).getBat5_ChargeCurrrent()));
+        viewHolder.title6_data.setText(TransformationUtils.getAFromFloat(mList.get(position).getBat_GetChargeCollectCurrent()));
+        viewHolder.title7_data.setText(TransformationUtils.getAFromFloat(mList.get(position).getBat_GetChargeCurrrent()));
 
     }
 
@@ -63,8 +65,4 @@ public class BatteryChargeCurrentRecyclerAdapter extends RecyclerView.Adapter<St
         return (this.mList != null) ? this.mList.size() : 0;
     }
 
-    public void setList(List<DeviceInformation> mList) {
-        this.mList = mList;
-        this.notifyDataSetChanged();
-    }
 }

@@ -121,13 +121,13 @@ public class TypeDef {
 //    public static final int[] typeNormalMonitorImages =  {R.drawable.gv_tower, R.drawable.gv_tower, R.drawable.gv_tower, R.drawable.ic_equipment_statistics};
 
     public static final String[] typeFireMonitor = {"设备统计","设备状态"};
-    public static final int[] typeFireMonitorImages =  {R.drawable.ic_equipment_statistics,R.drawable.gv_tower};
+    public static final int[] typeFireMonitorImages =  {R.drawable.ic_equipment_statistics,R.drawable.ic_device_state};
 
     public static final String[] typeBreakMonitor = {"设备统计","设备状态"};
-    public static final int[] typeBreakMonitorImages =  {R.drawable.ic_equipment_statistics,R.drawable.gv_tower};
+    public static final int[] typeBreakMonitorImages =  {R.drawable.ic_equipment_statistics,R.drawable.ic_device_state};
 
     public static final String[] typeNormalMonitor = {"设备统计","设备状态"};
-    public static final int[] typeNormalMonitorImages =  {R.drawable.ic_equipment_statistics,R.drawable.gv_tower};
+    public static final int[] typeNormalMonitorImages =  {R.drawable.ic_equipment_statistics,R.drawable.ic_device_state};
 
 //    public static final String[] typeFireMonitor = {"设备统计"};
 //    public static final int[] typeFireMonitorImages =  {R.drawable.ic_equipment_statistics};

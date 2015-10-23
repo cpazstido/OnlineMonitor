@@ -7,17 +7,17 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.hy.onlinemonitor.R;
-import com.hy.onlinemonitor.bean.DeviceInformation;
+import com.hy.onlinemonitor.bean.OnlineDeviceState;
+import com.hy.onlinemonitor.utile.TransformationUtils;
 import com.hy.onlinemonitor.view.ViewHolder.StateMonitoringViewHolder;
 
 import java.util.List;
 
 //DVR状态
-public class DVRStateRecyclerAdapter extends RecyclerView.Adapter<StateMonitoringViewHolder> {
+public class DVRStateRecyclerAdapter extends CMBaseAdapter<StateMonitoringViewHolder> {
     private final Context mContext;
-    private List<DeviceInformation> mList;
 
-    public DVRStateRecyclerAdapter(Context mContext, List<DeviceInformation> mList) {
+    public DVRStateRecyclerAdapter(Context mContext, List<OnlineDeviceState> mList) {
         this.mContext = mContext;
         this.mList = mList;
     }
@@ -29,42 +29,47 @@ public class DVRStateRecyclerAdapter extends RecyclerView.Adapter<StateMonitorin
     }
 
     @Override
-    public void onBindViewHolder(StateMonitoringViewHolder holder, int position) {
-        holder.title4.setVisibility(View.VISIBLE);
-        holder.title5.setVisibility(View.VISIBLE);
-        holder.title6.setVisibility(View.VISIBLE);
-        holder.title7.setVisibility(View.VISIBLE);
-        holder.title8.setVisibility(View.VISIBLE);
-        holder.title9.setVisibility(View.VISIBLE);
-        holder.title10.setVisibility(View.VISIBLE);
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        viewHolder = (StateMonitoringViewHolder) holder;
 
-        holder.title4_data.setVisibility(View.VISIBLE);
-        holder.title5_data.setVisibility(View.VISIBLE);
-        holder.title6_data.setVisibility(View.VISIBLE);
-        holder.title7_data.setVisibility(View.VISIBLE);
-        holder.title8_data.setVisibility(View.VISIBLE);
-        holder.title9_data.setVisibility(View.VISIBLE);
-        holder.title10_data.setVisibility(View.VISIBLE);
+        viewHolder.title4.setVisibility(View.VISIBLE);
+        viewHolder.title5.setVisibility(View.VISIBLE);
+        viewHolder.title6.setVisibility(View.VISIBLE);
+        viewHolder.title7.setVisibility(View.VISIBLE);
+        viewHolder.title8.setVisibility(View.VISIBLE);
+        viewHolder.title9.setVisibility(View.VISIBLE);
+        viewHolder.title10.setVisibility(View.VISIBLE);
 
-        holder.title1.setText("DVR开电状态");
-        holder.title2.setText("可见光相机状态");
-        holder.title3.setText("3G路由器状态");
-        holder.title4.setText("红外相机状态");
-        holder.title5.setText("A9状态");
-        holder.title6.setText("云台状态");
-        holder.title7.setText("DVR系统3G串口");
-        holder.title8.setText("DVR信号强度");
-        holder.title9.setText("A9工作电压");
-        holder.title10.setText("A9工作温度");
+        viewHolder.title4_data.setVisibility(View.VISIBLE);
+        viewHolder.title5_data.setVisibility(View.VISIBLE);
+        viewHolder.title6_data.setVisibility(View.VISIBLE);
+        viewHolder.title7_data.setVisibility(View.VISIBLE);
+        viewHolder.title8_data.setVisibility(View.VISIBLE);
+        viewHolder.title9_data.setVisibility(View.VISIBLE);
+        viewHolder.title10_data.setVisibility(View.VISIBLE);
 
-        holder.deviceName.setText(mList.get(position).getDeviceId());
-        holder.title1_data.setText(mList.get(position).getPoleName());
-        holder.title2_data.setText(mList.get(position).getReceiveTraffic());
-        holder.title3_data.setText(mList.get(position).getSendTraffic());
-        holder.title4_data.setText(mList.get(position).getSoftwareVersion());
-        holder.title5_data.setText(mList.get(position).getHardwareVersion());
-        holder.title6_data.setText(mList.get(position).getDVRVersion());
-        holder.title7_data.setText(mList.get(position).getSignalIntensity());
+        viewHolder.title1.setText("DVR开电状态");
+        viewHolder.title2.setText("可见光相机状态");
+        viewHolder.title3.setText("3G路由器状态");
+        viewHolder.title4.setText("红外相机状态");
+        viewHolder.title5.setText("A9状态");
+        viewHolder.title6.setText("云台状态");
+        viewHolder.title7.setText("DVR系统3G串口");
+        viewHolder.title8.setText("DVR信号强度");
+        viewHolder.title9.setText("A9工作电压");
+        viewHolder.title10.setText("A9工作温度");
+
+        viewHolder.deviceName.setText(mList.get(position).getDeviceId());
+        viewHolder.title1_data.setText(TransformationUtils.getStringByDVR(mList.get(position).getDVR_power_status()));
+        viewHolder.title2_data.setText(TransformationUtils.getStringByVisible(mList.get(position).getDVR_VisibleCamera()));
+        viewHolder.title3_data.setText(TransformationUtils.getStringByRouter(mList.get(position).getDVR_Router3G()));
+        viewHolder.title4_data.setText(TransformationUtils.getStringByVisible(mList.get(position).getDVR_InfraredCamera()));
+        viewHolder.title5_data.setText(TransformationUtils.getStringByRouter(mList.get(position).getDVR_A9()));
+        viewHolder.title6_data.setText(TransformationUtils.getStringByRouter(mList.get(position).getDVR_PTZ()));
+        viewHolder.title7_data.setText(TransformationUtils.getStringByRouter(mList.get(position).getDVR_3G_Uart()));
+        viewHolder.title8_data.setText(mList.get(position).getDVR_Signal_Intensity()+"");
+        viewHolder.title9_data.setText(TransformationUtils.getVFromFloat(mList.get(position).getA9_Voltage()));
+        viewHolder.title10_data.setText(TransformationUtils.getCFromFloat(mList.get(position).getA9_Temperature()));
 
     }
 
@@ -73,8 +78,4 @@ public class DVRStateRecyclerAdapter extends RecyclerView.Adapter<StateMonitorin
         return (this.mList != null) ? this.mList.size() : 0;
     }
 
-    public void setList(List<DeviceInformation> mList) {
-        this.mList = mList;
-        this.notifyDataSetChanged();
-    }
 }

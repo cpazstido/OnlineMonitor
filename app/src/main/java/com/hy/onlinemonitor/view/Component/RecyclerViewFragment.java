@@ -13,7 +13,6 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.github.florent37.materialviewpager.adapter.RecyclerViewMaterialAdapter;
 import com.hy.onlinemonitor.R;
 import com.hy.onlinemonitor.bean.AlarmPage;
 import com.hy.onlinemonitor.presenter.AlarmPresenter;
@@ -25,23 +24,16 @@ import com.rey.material.widget.Button;
 
 import java.util.List;
 
-import butterknife.Bind;
 import butterknife.ButterKnife;
 
 public class RecyclerViewFragment extends Fragment implements AlarmListView {
 
-    @Bind(R.id.recyclerView)
-    RecyclerView recyclerView;
-    @Bind(R.id.error_message_tv)
-    TextView errorMessageTv;
-    @Bind(R.id.refresh_button)
-    Button refreshButton;
-    @Bind(R.id.error_message_ll)
-    RelativeLayout errorMessageLl;
-
+    private RecyclerView recyclerView;
+    private TextView errorMessageTv;
+    private Button refreshButton;
+    private RelativeLayout errorMessageLl;
     private static String curProject;
     private AlarmRecyclerAdapter mAdapter;
-    private RecyclerView.Adapter RcAdapter;
     private static List<String> alarmTitles;
     private static int userId;
     private int showType = 1;
@@ -73,12 +65,15 @@ public class RecyclerViewFragment extends Fragment implements AlarmListView {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         Log.e("RecyclerViewFragment", "onCreateView");
         View view = inflater.inflate(R.layout.fragment_recyclerview, container, false);
-        ButterKnife.bind(this, view);
+        recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
+        errorMessageTv = (TextView) view.findViewById(R.id.error_message_tv);
+        refreshButton = (Button) view.findViewById(R.id.refresh_button);
+        errorMessageLl = (RelativeLayout) view.findViewById(R.id.error_message_ll);
         return view;
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Bundle bundle = getArguments();
         int postion = bundle.getInt("postion");
@@ -122,13 +117,11 @@ public class RecyclerViewFragment extends Fragment implements AlarmListView {
     }
 
     private void setupUI() {
-        layoutManager = new LinearLayoutManager(getActivity());
+        layoutManager = new LinearLayoutManager(mContext);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
         alarmPage = new AlarmPage();
         mAdapter = new AlarmRecyclerAdapter(alarmPage, mContext, showType, queryAlarmType, status);
-        RcAdapter = new RecyclerViewMaterialAdapter(mAdapter);
-        recyclerView.setAdapter(RcAdapter);
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
@@ -159,6 +152,7 @@ public class RecyclerViewFragment extends Fragment implements AlarmListView {
     private void initialize() {
         alarmPresenter = new AlarmPresenter(mContext);
         this.alarmPresenter.setView(this);
+        this.alarmPresenter.setFragment(this);
     }
 
     private void loadAlarmList(int userId, String curProject, String queryAlarmType, int status, int pageNumber) {
@@ -215,7 +209,6 @@ public class RecyclerViewFragment extends Fragment implements AlarmListView {
             recyclerView.setVisibility(View.VISIBLE);
             errorMessageLl.setVisibility(View.GONE);
             this.mAdapter.setAlarmCollection(alarmPage.getList());
-            RcAdapter.notifyDataSetChanged();
         }
     }
 

@@ -31,7 +31,7 @@ public class EquipmentStateMonitorUseCase extends UseCase {
                 observable = equipmentStateMonitorRepository.getAllLine();
                 break;
             case 2:
-                observable = equipmentStateMonitorRepository.loadDeviceInformation();
+                observable = equipmentStateMonitorRepository.loadOnlineDeviceState();
                 break;
         }
 

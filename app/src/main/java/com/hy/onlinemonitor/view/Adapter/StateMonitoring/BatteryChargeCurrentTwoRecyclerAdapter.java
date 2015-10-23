@@ -13,10 +13,10 @@ import com.hy.onlinemonitor.view.ViewHolder.StateMonitoringViewHolder;
 
 import java.util.List;
 
-//电池电压
-public class BatteryVoltageRecyclerAdapter extends CMBaseAdapter<StateMonitoringViewHolder> {
+//电池充电电流2
+public class BatteryChargeCurrentTwoRecyclerAdapter extends CMBaseAdapter<StateMonitoringViewHolder> {
     private final Context mContext;
-    public BatteryVoltageRecyclerAdapter(Context mContext, List<OnlineDeviceState> mList) {
+    public BatteryChargeCurrentTwoRecyclerAdapter(Context mContext, List<OnlineDeviceState> mList) {
         this.mContext = mContext;
         this.mList = mList;
     }
@@ -30,29 +30,25 @@ public class BatteryVoltageRecyclerAdapter extends CMBaseAdapter<StateMonitoring
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         viewHolder = (StateMonitoringViewHolder) holder;
-
         viewHolder.title4.setVisibility(View.VISIBLE);
         viewHolder.title5.setVisibility(View.VISIBLE);
-        viewHolder.title6.setVisibility(View.VISIBLE);
 
         viewHolder.title4_data.setVisibility(View.VISIBLE);
         viewHolder.title5_data.setVisibility(View.VISIBLE);
-        viewHolder.title6_data.setVisibility(View.VISIBLE);
 
-        viewHolder.title1.setText("1#电池电压");
-        viewHolder.title2.setText("2#电池电压");
-        viewHolder.title3.setText("3#电池电压");
-        viewHolder.title4.setText("4#电池电压");
-        viewHolder.title5.setText("5#电池电压");
-        viewHolder.title6.setText("在线取电电池电压");
+        viewHolder.title1.setText("1#电池充电电流2");
+        viewHolder.title2.setText("2#电池充电电流2");
+        viewHolder.title3.setText("3#电池充电电流2");
+        viewHolder.title4.setText("4#电池充电电流2");
+        viewHolder.title5.setText("5#电池充电电流2");
 
         viewHolder.deviceName.setText(mList.get(position).getDeviceId());
-        viewHolder.title1_data.setText(TransformationUtils.getVFromFloat(mList.get(position).getBat1_Voltage()));
-        viewHolder.title2_data.setText(TransformationUtils.getVFromFloat(mList.get(position).getBat2_Voltage()));
-        viewHolder.title3_data.setText(TransformationUtils.getVFromFloat(mList.get(position).getBat3_Voltage()));
-        viewHolder.title4_data.setText(TransformationUtils.getVFromFloat(mList.get(position).getBat4_Voltage()));
-        viewHolder.title5_data.setText(TransformationUtils.getVFromFloat(mList.get(position).getBat5_Voltage()));
-        viewHolder.title6_data.setText(TransformationUtils.getVFromFloat(mList.get(position).getBat_GetChargeVoltage()));
+        viewHolder.title1_data.setText(TransformationUtils.getAFromFloat(mList.get(position).getCharge_Currrent_1_2()));
+        viewHolder.title2_data.setText(TransformationUtils.getAFromFloat(mList.get(position).getCharge_Currrent_2_2()));
+        viewHolder.title3_data.setText(TransformationUtils.getAFromFloat(mList.get(position).getCharge_Currrent_3_2()));
+        viewHolder.title4_data.setText(TransformationUtils.getAFromFloat(mList.get(position).getCharge_Currrent_4_2()));
+        viewHolder.title5_data.setText(TransformationUtils.getAFromFloat(mList.get(position).getBat5_ChargeCurrrent2()));
+
     }
 
     @Override

@@ -10,6 +10,7 @@ import com.hy.data.entity.EquipmentPageEntity;
 import com.hy.data.entity.LineEntity;
 import com.hy.data.entity.LinePageEntity;
 import com.hy.data.entity.MapEntity;
+import com.hy.data.entity.OnlineDeviceStatePageEntity;
 import com.hy.data.entity.PolePageEntity;
 import com.hy.data.entity.PrivilegeEntity;
 import com.hy.data.entity.RoleEntity;
@@ -604,4 +605,15 @@ public interface RestApi {
                                                                  String startTime, String endTime,
                                                                  String deviceSn, String statisticByTime,
                                                                  String deviceID);
+
+    /**
+     * 获取在线设备状态
+     *
+     * @param userId  唯一标示
+     * @param lineSn  线路sn
+     * @param pageNum 页数
+     * @return 返回状态page
+     */
+    Observable<OnlineDeviceStatePageEntity> loadOnlineDeviceState(int userId, int lineSn,
+                                                                  int pageNum);
 }

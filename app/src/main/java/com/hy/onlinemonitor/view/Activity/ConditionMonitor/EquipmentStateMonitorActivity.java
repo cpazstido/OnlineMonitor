@@ -21,8 +21,7 @@ import com.hy.onlinemonitor.data.TypeDef;
 import com.hy.onlinemonitor.presenter.EquipmentStateMonitorPresenter;
 import com.hy.onlinemonitor.utile.ShowUtile;
 import com.hy.onlinemonitor.view.Activity.BaseActivity;
-import com.hy.onlinemonitor.view.Fragment.DeviceInformationFragment;
-import com.hy.onlinemonitor.view.Fragment.TestFragment;
+import com.hy.onlinemonitor.view.Fragment.EquipmentStateMonitorFragment;
 import com.hy.onlinemonitor.view.LoadDataView;
 import com.hy.onlinemonitor.view.ViewHolder.IconTreeItemHolder;
 import com.hy.onlinemonitor.view.ViewHolder.SelectableHeaderHolder;
@@ -32,6 +31,7 @@ import com.unnamed.b.atv.model.TreeNode;
 import com.unnamed.b.atv.view.AndroidTreeView;
 
 import java.util.List;
+import java.util.TreeMap;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -45,6 +45,7 @@ public class EquipmentStateMonitorActivity extends BaseActivity implements LoadD
     @Bind(R.id.device_status_title)
     SmartTabLayout deviceStatusTitle;
 
+    private TreeMap<String, EquipmentStateMonitorFragment> fragmentTreeMap = new TreeMap<>();
     private AlertDialog LoadAlert;
     private AndroidTreeView tView;
     private TreeNode root;
@@ -95,33 +96,29 @@ public class EquipmentStateMonitorActivity extends BaseActivity implements LoadD
                             public void onClick(TreeNode treeNode, Object o) {
                                 dialog.cancel();
                                 int lineSn = line.getLineSn();
-                                Log.e(TAG, "" + lineSn + "||当前显示的fragment" + pager.getCurrentItem());
-                                //TODO 1.点击后用该线路sn去获取在线设备列表,并显示;2.通知界面fragment的改变
+                                EquipmentStateMonitorFragment equipmentStateMonitorFragment = fragmentTreeMap.get(TypeDef.equipmentStatusTitles[pager.getCurrentItem()]);
+                                equipmentStateMonitorFragment.setLineSn(lineSn);
+                                equipmentStateMonitorFragment.loadData();
                             }
                         });
-
                         companyTree.addChild(lineTree);
                     }
-
                     companyTree.setSelectable(false);
                     root.addChild(companyTree);
                 }
-
                 TreeNode loadAllTreeNode = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.string.ic_earth, "所有在线设备")).setViewHolder(new SelectableHeaderHolder(getContext()));
                 loadAllTreeNode.setClickListener(new TreeNode.TreeNodeClickListener() {
                     @Override
                     public void onClick(TreeNode node, Object value) {
                         dialog.cancel();
                         Log.e(TAG, "加载了全部设备" + "||当前显示的fragment" + pager.getCurrentItem());
-                        getSupportFragmentManager().findFragmentByTag("TAG");
-
-                        //TODO 1.加载全部的设备列表,同时显示通知改变
+                        EquipmentStateMonitorFragment equipmentStateMonitorFragment = fragmentTreeMap.get(TypeDef.equipmentStatusTitles[pager.getCurrentItem()]);
+                        equipmentStateMonitorFragment.setLineSn(0);
+                        equipmentStateMonitorFragment.loadData();
                     }
                 });
-
                 root.addChild(loadAllTreeNode);
                 tView = new AndroidTreeView(getContext(), root);
-
                 tView.setDefaultAnimation(true);
                 tView.setSelectionModeEnabled(false);
                 ll.addView(tView.getView());
@@ -138,41 +135,8 @@ public class EquipmentStateMonitorActivity extends BaseActivity implements LoadD
             @Override
             public Fragment getItem(int position) {
                 Log.e("titles", TypeDef.equipmentStatusTitles[position]);
-                Fragment fragment = null;
-                switch (position) {
-                    case 0://装置信息
-                        fragment = DeviceInformationFragment.newInstance();
-//                        fragment.setArguments(new Bundle());
-                        break;
-                    case 1://装置状态
-                        break;
-                    case 2://DVR系统状态
-                        break;
-                    case 3://电池电压
-                        break;
-                    case 4://电池充电电流
-                        break;
-                    case 5://电池充电电流2
-                        break;
-                    case 6://电池剩余电量
-                        break;
-                    case 7://电池输出电流
-                        break;
-                    case 8://太阳能板电压
-                        break;
-                    case 9://太阳能板电压2
-                        break;
-                    case 10://上传数据信息
-                        break;
-                    case 11://电池充电开关
-                        break;
-                    case 12://电池充电开关2
-                        break;
-                }
-
-                if (fragment == null)
-                    fragment = new TestFragment();
-
+                EquipmentStateMonitorFragment fragment = EquipmentStateMonitorFragment.newInstance(getContext(), position, getUser().getUserId());
+                fragmentTreeMap.put(TypeDef.equipmentStatusTitles[position], fragment);
                 return fragment;
             }
 
@@ -192,7 +156,6 @@ public class EquipmentStateMonitorActivity extends BaseActivity implements LoadD
 
     @Override
     public void initialize() {
-        //TODO 1.获取线路列表 2.获取内部数据
         equipmentStateMonitorPresenter = new EquipmentStateMonitorPresenter(getContext());
         equipmentStateMonitorPresenter.setView(this);
         equipmentStateMonitorPresenter.loadAllLine(getUser().getUserId());

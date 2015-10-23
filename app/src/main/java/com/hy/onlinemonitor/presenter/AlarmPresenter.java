@@ -14,6 +14,7 @@ import com.hy.onlinemonitor.UIThread;
 import com.hy.onlinemonitor.bean.AlarmPage;
 import com.hy.onlinemonitor.mapper.PageDataMapper;
 import com.hy.onlinemonitor.view.AlarmListView;
+import com.hy.onlinemonitor.view.Component.RecyclerViewFragment;
 
 import rx.android.schedulers.AndroidSchedulers;
 
@@ -28,6 +29,7 @@ public class AlarmPresenter implements Presenter {
     private PageDataMapper pageDataMapper;
     private int status;
     private AlarmRepository alarmDataRepository;
+    private RecyclerViewFragment recyclerViewFragment;
 
     public AlarmPresenter(Context mContext) {
         this.mContext = mContext;
@@ -59,7 +61,7 @@ public class AlarmPresenter implements Presenter {
      * @param userId         唯一标示用户
      * @param equipmentName  设备名(唯一标示)
      * @param queryAlarmType 查看的报警类型
-     * @param status         查看的报警类型的状态(历史,或者新报警)
+     * @param status         查看的报警类型的状态(历史,或者新报警) 0为新报警,1是历史报警
      */
     public void initialize(int userId, String equipmentName, String queryAlarmType, int status, int pageNumber) {
         this.userId = userId;
@@ -88,13 +90,14 @@ public class AlarmPresenter implements Presenter {
 
     private void loadUserList(int pageNumber) {
         this.showViewLoading();
-        this.getAlarmList(pageNumber,null);
+        this.getAlarmList(pageNumber, null);
     }
 
     private void loadUserList(int pageNumber, String curProject) {
         this.showViewLoading();
-        this.getAlarmList(pageNumber,curProject);
+        this.getAlarmList(pageNumber, curProject);
     }
+
     @Override
     public void showViewLoading() {
         this.alarmView.showLoading();
@@ -105,7 +108,7 @@ public class AlarmPresenter implements Presenter {
         this.alarmView.hideLoading();
     }
 
-    private void getAlarmList(int pageNumber,String curProject) {   //获取所有的设备的报警
+    private void getAlarmList(int pageNumber, String curProject) {   //获取所有的设备的报警
         alarmDataRepository = new AlarmDataRepository(mContext, userId, queryAlarmType, curProject, status, pageNumber);
         this.getAlarmListUseCase = new AlarmUseCase(new UIThread(), AndroidSchedulers.mainThread(), alarmDataRepository);
         this.getAlarmListUseCase.execute(new AlarmListSubscriber());
@@ -123,6 +126,10 @@ public class AlarmPresenter implements Presenter {
         alarmDataRepository = new AlarmDataRepository(mContext, userId, queryAlarmType, curProject, status, pageNumber);
         this.getAlarmListUseCase = new AlarmUseCase(new UIThread(), AndroidSchedulers.mainThread(), alarmDataRepository, equipmentName);
         this.getAlarmListUseCase.execute(new AlarmListSubscriber());
+    }
+
+    public void setFragment(RecyclerViewFragment recyclerViewFragment) {
+        this.recyclerViewFragment = recyclerViewFragment;
     }
 
     private class AlarmListSubscriber extends DefaultSubscriber<DomainAlarmPage> {
@@ -148,7 +155,7 @@ public class AlarmPresenter implements Presenter {
 
     private void showAlarmCollectionInView(DomainAlarmPage domainAlarmPage) {
         AlarmPage alarmPage = this.pageDataMapper.transform(domainAlarmPage);
-        this.alarmView.renderAlarmList(alarmPage, queryAlarmType);
+        this.recyclerViewFragment.renderAlarmList(alarmPage, queryAlarmType);
     }
 
     public void setView(@NonNull AlarmListView view) {
