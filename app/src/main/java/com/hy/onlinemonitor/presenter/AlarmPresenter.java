@@ -30,6 +30,7 @@ public class AlarmPresenter implements Presenter {
     private int status;
     private AlarmRepository alarmDataRepository;
     private RecyclerViewFragment recyclerViewFragment;
+    private int type = -1;
 
     public AlarmPresenter(Context mContext) {
         this.mContext = mContext;
@@ -130,6 +131,7 @@ public class AlarmPresenter implements Presenter {
 
     public void setFragment(RecyclerViewFragment recyclerViewFragment) {
         this.recyclerViewFragment = recyclerViewFragment;
+        this.type = 0;
     }
 
     private class AlarmListSubscriber extends DefaultSubscriber<DomainAlarmPage> {
@@ -149,17 +151,25 @@ public class AlarmPresenter implements Presenter {
 
         @Override
         public void onNext(DomainAlarmPage domainAlarmPage) {
-            AlarmPresenter.this.showAlarmCollectionInView(domainAlarmPage);
+            AlarmPresenter.this.showAlarmCollectionInView(domainAlarmPage, type);
         }
     }
 
-    private void showAlarmCollectionInView(DomainAlarmPage domainAlarmPage) {
+    private void showAlarmCollectionInView(DomainAlarmPage domainAlarmPage, int type) {
         AlarmPage alarmPage = this.pageDataMapper.transform(domainAlarmPage);
-        this.recyclerViewFragment.renderAlarmList(alarmPage, queryAlarmType);
+        switch (type) {
+            case 0:
+                this.recyclerViewFragment.renderAlarmList(alarmPage, queryAlarmType);
+                break;
+            case 1:
+                this.alarmView.renderAlarmList(alarmPage, queryAlarmType);
+                break;
+        }
     }
 
     public void setView(@NonNull AlarmListView view) {
         this.alarmView = view;
+        this.type = 1;
     }
 
     @Override

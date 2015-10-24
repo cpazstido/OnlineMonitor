@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.RelativeLayout;
@@ -232,6 +233,7 @@ public class SingleAlarmInformationActivity extends AppCompatActivity implements
                     @Override
                     public void onClick(View v) {
                         pageNum = 1;
+                        Log.e("getItemCount","getItemCount"+mAdapter.getItemCount());
                         loadAlarmList(userId, curProject, equipmentName, queryAlarmType, status, pageNum);
                     }
                 });

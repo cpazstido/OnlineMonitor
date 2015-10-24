@@ -196,7 +196,7 @@ public class RestApiImpl implements RestApi {
 
                                     @Override
                                     public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                                        Log.e("getUserEntitiesFromApi", "onFailure");
+                                        Log.e("userEntity", "onFailure");
                                         subscriber.onError(new NetworkConnectionException("链接失败"));
                                     }
                                 });
@@ -249,7 +249,7 @@ public class RestApiImpl implements RestApi {
 
                     @Override
                     public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                        Log.e("getUserEntitiesFromApi", "onFailure");
+                        Log.e("setCurrentPorject", "onFailure");
                         subscriber.onError(new NetworkConnectionException("链接失败"));
                     }
                 });
@@ -294,7 +294,7 @@ public class RestApiImpl implements RestApi {
 
                     @Override
                     public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                        Log.e("getUserEntitiesFromApi", "onFailure");
+                        Log.e("equipmentEntity", "onFailure");
                         subscriber.onError(new NetworkConnectionException("链接失败"));
                     }
                 });
@@ -342,7 +342,7 @@ public class RestApiImpl implements RestApi {
 
                     @Override
                     public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                        Log.e("getUserEntitiesFromApi", "onFailure");
+                        Log.e("alarmEntity", "onFailure");
                         subscriber.onError(new NetworkConnectionException("链接失败"));
                     }
                 });
@@ -378,6 +378,7 @@ public class RestApiImpl implements RestApi {
 
                     @Override
                     public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                        Log.e("handleAlarm", "onFailure");
                         subscriber.onError(new NetworkConnectionException("链接失败"));
                     }
                 });
@@ -427,7 +428,7 @@ public class RestApiImpl implements RestApi {
 
                     @Override
                     public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                        Log.e("getUserEntitiesFromApi", "onFailure");
+                        Log.e("alarmEntity", "onFailure");
                         subscriber.onError(new NetworkConnectionException("链接失败"));
                     }
                 });
@@ -477,7 +478,7 @@ public class RestApiImpl implements RestApi {
 
                     @Override
                     public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                        Log.e("getUserEntitiesFromApi", "onFailure");
+                        Log.e("mapEntity", "onFailure");
                         subscriber.onError(new NetworkConnectionException("链接失败"));
                     }
                 });
@@ -552,7 +553,7 @@ public class RestApiImpl implements RestApi {
 
                     @Override
                     public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                        Log.e("getUserEntitiesFromApi", "onFailure");
+                        Log.e("videoUrl", "onFailure");
                         subscriber.onError(new NetworkConnectionException("链接失败"));
                     }
                 });
@@ -587,7 +588,7 @@ public class RestApiImpl implements RestApi {
 
                         @Override
                         public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                            Log.e("getUserEntitiesFromApi", "onFailure");
+                            Log.e("videoControl", "onFailure");
                             subscriber.onError(new NetworkConnectionException("链接失败"));
                         }
                     });
@@ -626,7 +627,7 @@ public class RestApiImpl implements RestApi {
 
                     @Override
                     public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                        Log.e("getUserEntitiesFromApi", "onFailure");
+                        Log.e("companyList", "onFailure");
                         subscriber.onError(new NetworkConnectionException("链接失败"));
                     }
                 });
@@ -663,7 +664,7 @@ public class RestApiImpl implements RestApi {
 
                     @Override
                     public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                        Log.e("getUserEntitiesFromApi", "onFailure");
+                        Log.e("addCompany", "onFailure");
                         subscriber.onError(new NetworkConnectionException("链接失败"));
                     }
                 });
@@ -697,7 +698,7 @@ public class RestApiImpl implements RestApi {
 
                     @Override
                     public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                        Log.e("getUserEntitiesFromApi", "onFailure");
+                        Log.e("queryParetSelectCompany", "onFailure");
                         subscriber.onError(new NetworkConnectionException("链接失败"));
                     }
                 });
@@ -734,7 +735,7 @@ public class RestApiImpl implements RestApi {
 
                     @Override
                     public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                        Log.e("getUserEntitiesFromApi", "onFailure");
+                        Log.e("changeCompany", "onFailure");
                         subscriber.onError(new NetworkConnectionException("链接失败"));
                     }
                 });
@@ -769,7 +770,7 @@ public class RestApiImpl implements RestApi {
 
                     @Override
                     public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                        Log.e("getUserEntitiesFromApi", "onFailure");
+                        Log.e("deleteCompany", "onFailure");
                         subscriber.onError(new NetworkConnectionException("链接失败"));
                     }
                 });
@@ -803,7 +804,7 @@ public class RestApiImpl implements RestApi {
 
                     @Override
                     public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                        Log.e("getUserEntitiesFromApi", "onFailure");
+                        Log.e("roleList", "onFailure");
                         subscriber.onError(new NetworkConnectionException("链接失败"));
                     }
                 });
@@ -839,7 +840,7 @@ public class RestApiImpl implements RestApi {
 
                     @Override
                     public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                        Log.e("onFailure", "AdministratorPageEntity");
+                        Log.e("administratorEntity", "onFailure");
                         subscriber.onError(new NetworkConnectionException("链接失败"));
                     }
                 });
@@ -886,7 +887,7 @@ public class RestApiImpl implements RestApi {
                         } catch (UnsupportedEncodingException e) {
                             e.printStackTrace();
                         }
-                        Log.e("onFailure", "addAdministrator");
+                        Log.e("addAdministrator", "onFailure");
                         subscriber.onError(new NetworkConnectionException("链接失败"));
                     }
                 });
@@ -935,7 +936,7 @@ public class RestApiImpl implements RestApi {
                         } catch (UnsupportedEncodingException e) {
                             e.printStackTrace();
                         }
-                        Log.e("onFailure", "addAdministrator");
+                        Log.e("onFailure", "changeAdministrator");
                         subscriber.onError(new NetworkConnectionException("链接失败"));
                     }
                 });
@@ -976,7 +977,7 @@ public class RestApiImpl implements RestApi {
                         } catch (UnsupportedEncodingException e) {
                             e.printStackTrace();
                         }
-                        Log.e("onFailure", "addAdministrator");
+                        Log.e("onFailure", "deleteAdministrator");
                         subscriber.onError(new NetworkConnectionException("链接失败"));
                     }
                 });
@@ -1016,7 +1017,7 @@ public class RestApiImpl implements RestApi {
 
                     @Override
                     public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                        Log.e("onFailure", "addAdministrator");
+                        Log.e("onFailure", "getAllTower");
                         subscriber.onError(new NetworkConnectionException("链接失败"));
                     }
                 });
@@ -1058,7 +1059,7 @@ public class RestApiImpl implements RestApi {
                         } catch (UnsupportedEncodingException e) {
                             e.printStackTrace();
                         }
-                        Log.e("onFailure", "addAdministrator");
+                        Log.e("onFailure", "getOwnTower");
                         subscriber.onError(new NetworkConnectionException("链接失败"));
                     }
                 });
@@ -1108,7 +1109,7 @@ public class RestApiImpl implements RestApi {
 
                     @Override
                     public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                        Log.e("onFailure", "selectOne");
+                        Log.e("onFailure", "changeManageTower");
                         subscriber.onError(new NetworkConnectionException("链接失败"));
                     }
                 });
@@ -1143,6 +1144,7 @@ public class RestApiImpl implements RestApi {
 
                     @Override
                     public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                        Log.e("onFailure", "getRolePage");
                         subscriber.onError(new NetworkConnectionException("链接失败"));
                     }
                 });
@@ -1178,6 +1180,7 @@ public class RestApiImpl implements RestApi {
 
                     @Override
                     public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                        Log.e("onFailure", "addRole");
                         subscriber.onError(new NetworkConnectionException("链接失败"));
                     }
                 });
@@ -1212,6 +1215,7 @@ public class RestApiImpl implements RestApi {
 
                     @Override
                     public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                        Log.e("onFailure", "changeRole");
                         subscriber.onError(new NetworkConnectionException("链接失败"));
                     }
                 });
@@ -1247,6 +1251,7 @@ public class RestApiImpl implements RestApi {
 
                     @Override
                     public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                        Log.e("onFailure", "deleteRole");
                         subscriber.onError(new NetworkConnectionException("链接失败"));
                     }
                 });
@@ -1284,6 +1289,7 @@ public class RestApiImpl implements RestApi {
 
                     @Override
                     public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                        Log.e("onFailure", "getOwnPrivilege");
                         subscriber.onError(new NetworkConnectionException("链接失败"));
                     }
                 });
@@ -1318,6 +1324,7 @@ public class RestApiImpl implements RestApi {
 
                     @Override
                     public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                        Log.e("onFailure", "getAllPrivilege");
                         subscriber.onError(new NetworkConnectionException("链接失败"));
                     }
                 });
@@ -1365,6 +1372,7 @@ public class RestApiImpl implements RestApi {
 
                     @Override
                     public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                        Log.e("onFailure", "jurisdictionChange");
                         subscriber.onError(new NetworkConnectionException("链接失败"));
                     }
                 });
@@ -1401,6 +1409,7 @@ public class RestApiImpl implements RestApi {
 
                     @Override
                     public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                        Log.e("onFailure", "getLinePage");
                         subscriber.onError(new NetworkConnectionException("链接失败"));
                     }
                 });
@@ -1436,6 +1445,7 @@ public class RestApiImpl implements RestApi {
 
                     @Override
                     public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                        Log.e("onFailure", "getAllLinePage");
                         subscriber.onError(new NetworkConnectionException("链接失败"));
                     }
                 });
@@ -1476,6 +1486,7 @@ public class RestApiImpl implements RestApi {
 
                     @Override
                     public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                        Log.e("onFailure", "addLine");
                         subscriber.onError(new NetworkConnectionException("链接失败"));
                     }
                 });
@@ -1511,6 +1522,7 @@ public class RestApiImpl implements RestApi {
 
                     @Override
                     public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                        Log.e("onFailure", "deleteLine");
                         subscriber.onError(new NetworkConnectionException("链接失败"));
                     }
                 });
@@ -1551,6 +1563,7 @@ public class RestApiImpl implements RestApi {
 
                     @Override
                     public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                        Log.e("onFailure", "changeLine");
                         subscriber.onError(new NetworkConnectionException("链接失败"));
                     }
                 });
@@ -1587,6 +1600,7 @@ public class RestApiImpl implements RestApi {
 
                     @Override
                     public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                        Log.e("onFailure", "getPolePage");
                         subscriber.onError(new NetworkConnectionException("链接失败"));
                     }
                 });
@@ -1622,6 +1636,7 @@ public class RestApiImpl implements RestApi {
 
                     @Override
                     public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                        Log.e("onFailure", "getPoleData");
                         subscriber.onError(new NetworkConnectionException("链接失败"));
                     }
                 });
@@ -1661,6 +1676,7 @@ public class RestApiImpl implements RestApi {
 
                     @Override
                     public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                        Log.e("onFailure", "insertPoleData");
                         subscriber.onError(new NetworkConnectionException("链接失败"));
                     }
                 });
@@ -1696,6 +1712,7 @@ public class RestApiImpl implements RestApi {
 
                     @Override
                     public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                        Log.e("onFailure", "deletePole");
                         subscriber.onError(new NetworkConnectionException("链接失败"));
                     }
                 });
@@ -1735,6 +1752,7 @@ public class RestApiImpl implements RestApi {
 
                     @Override
                     public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                        Log.e("onFailure", "changePole");
                         subscriber.onError(new NetworkConnectionException("链接失败"));
                     }
                 });
@@ -1768,6 +1786,7 @@ public class RestApiImpl implements RestApi {
 
                     @Override
                     public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                        Log.e("onFailure", "getAllLine");
                         subscriber.onError(new NetworkConnectionException("链接失败"));
                     }
                 });
@@ -1804,6 +1823,7 @@ public class RestApiImpl implements RestApi {
 
                     @Override
                     public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                        Log.e("onFailure", "getEquipmentPage");
                         subscriber.onError(new NetworkConnectionException("链接失败"));
                     }
                 });
@@ -1847,6 +1867,7 @@ public class RestApiImpl implements RestApi {
 
                     @Override
                     public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                        Log.e("onFailure", "addEquipment");
                         subscriber.onError(new NetworkConnectionException("链接失败"));
                     }
                 });
@@ -1882,6 +1903,7 @@ public class RestApiImpl implements RestApi {
 
                     @Override
                     public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                        Log.e("onFailure", "deleteEquipment");
                         subscriber.onError(new NetworkConnectionException("链接失败"));
                     }
                 });
@@ -2300,7 +2322,11 @@ public class RestApiImpl implements RestApi {
                             String responseEntities = new String(responseBody, "UTF-8");
                             Log.e("response", responseEntities);
                             if ("\"loginFail\"".equals(responseEntities)) {
+
                                 subscriber.onError(new NetworkConnectionException("请重新登录"));
+                            } else if (responseEntities.contains("资源已经被移除或不存在")) {
+
+                                subscriber.onError(new Exception("资源已经被移除或不存在"));
                             } else {
                                 subscriber.onNext(pageEntityJsonMapper.transformOnlineDeviceStatePageEntity(responseEntities));
                                 subscriber.onCompleted();
@@ -2329,7 +2355,6 @@ public class RestApiImpl implements RestApi {
 
         return isConnected;
     }
-
 
 
 }

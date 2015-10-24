@@ -84,7 +84,6 @@ public class EquipmentRecyclerAdapter extends RecyclerView.Adapter<EquipmentList
         holder.newFireAlarm.setText(TransformationUtils.getNumberButton("山火",equipmentInformation.getNewFireAlarm()));
         holder.newBreakAlarm.setText(TransformationUtils.getNumberButton("外破",equipmentInformation.getNewBreakAlarm()));
 
-        //TODO 1.等待修改设备报警对象
         holder.historySensorAlarm.setText(TransformationUtils.getNumberButton("传感器",equipmentInformation.getHistorySensorAlarm()));
         holder.historyFireAlarm.setText(TransformationUtils.getNumberButton("山火",equipmentInformation.getHistoryFireAlarm()));
         holder.historyBreakAlarm.setText(TransformationUtils.getNumberButton("外破",equipmentInformation.getHistoryBreakAlarm()));

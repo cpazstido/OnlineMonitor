@@ -19,6 +19,7 @@ import com.hy.onlinemonitor.bean.User;
 import com.hy.onlinemonitor.presenter.UserPresenter;
 import com.hy.onlinemonitor.utile.ActivityCollector;
 import com.hy.onlinemonitor.view.Activity.ConditionMonitor.EquipmentConditionMonitorActivity;
+import com.hy.onlinemonitor.view.Activity.ConditionMonitor.EquipmentStateMonitorActivity;
 import com.hy.onlinemonitor.view.Activity.Function.AlarmInformationActivity;
 import com.hy.onlinemonitor.view.Activity.Function.EquipmentListViewActivity;
 import com.hy.onlinemonitor.view.Activity.Function.MapActivity;
@@ -89,6 +90,7 @@ public abstract class BaseActivity extends AppCompatActivity implements InitView
                         new SecondaryDrawerItem().withName(R.string.equipment).withIcon(GoogleMaterial.Icon.gmd_devices).withIdentifier(11).withTag("Bullhorn"),
                         new SectionDrawerItem().withName(R.string.condition_monitoring),
                         new SecondaryDrawerItem().withName(R.string.equipment_statistics).withIcon(GoogleMaterial.Icon.gmd_equalizer).withIdentifier(15).withTag("Bullhorn"),
+                        new SecondaryDrawerItem().withName(R.string.equipment_state).withIcon(getResources().getDrawable(R.drawable.ic_device_state_24dp)).withIdentifier(16).withTag("Bullhorn"),
                         new DividerDrawerItem(),
                         new PrimaryDrawerItem().withName(R.string.return_login).withIcon(GoogleMaterial.Icon.gmd_account_circle).withIdentifier(12).withCheckable(true),
 //                        new PrimaryDrawerItem().withName(R.string.about).withIcon(GoogleMaterial.Icon.gmd_info_outline).withIdentifier(13).withCheckable(true),
@@ -121,14 +123,14 @@ public abstract class BaseActivity extends AppCompatActivity implements InitView
                                             break;
                                         case 6://系统管理-公司
                                             if (OwnJurisdiction.haveJurisdiction(17))
-                                            intent = new Intent(BaseActivity.this, CompanyManageActivity.class);
+                                                intent = new Intent(BaseActivity.this, CompanyManageActivity.class);
                                             break;
                                         case 7://系统管理-管理员
                                             intent = new Intent(BaseActivity.this, AdministratorManageActivity.class);
                                             break;
                                         case 8://系统管理-权限
                                             if (OwnJurisdiction.haveJurisdiction(16))
-                                            intent = new Intent(BaseActivity.this, JurisdictionManageActivity.class);
+                                                intent = new Intent(BaseActivity.this, JurisdictionManageActivity.class);
                                             break;
                                         case 9://系统管理-线路
                                             intent = new Intent(BaseActivity.this, LineManageActivity.class);
@@ -140,7 +142,7 @@ public abstract class BaseActivity extends AppCompatActivity implements InitView
                                             intent = new Intent(BaseActivity.this, EquipmentManageActivity.class);
                                             break;
                                         case 12://返回登录
-                                            intent = new Intent(BaseActivity.this,LoginActivity.class);
+                                            intent = new Intent(BaseActivity.this, LoginActivity.class);
                                             break;
                                         case 13://关于
 //                                            intent = new Intent(BaseActivity.this,);
@@ -162,6 +164,9 @@ public abstract class BaseActivity extends AppCompatActivity implements InitView
                                         case 15://设备统计
                                             intent = new Intent(BaseActivity.this, EquipmentConditionMonitorActivity.class);
                                             intent.putExtra("projectFlag", true);
+                                            break;
+                                        case 16://设备状态
+                                            intent = new Intent(BaseActivity.this, EquipmentStateMonitorActivity.class);
                                             break;
                                     }
                                     if (intent != null) {

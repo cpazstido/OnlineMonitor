@@ -147,6 +147,7 @@ public class RecyclerViewFragment extends Fragment implements AlarmListView {
                 lastVisibleItem = layoutManager.findLastVisibleItemPosition();
             }
         });
+        recyclerView.setAdapter(mAdapter);
     }
 
     private void initialize() {
