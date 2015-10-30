@@ -108,6 +108,9 @@
             android:launchMode="singleTask"
             />
 
+        <activity android:name=".view.Activity.ConditionMonitor.MonitoringStateAcitvity"
+            android:launchMode="singleTask"
+            />
         <activity android:name=".view.Activity.SystemManagement.SensorManageActivity" />
 
         <activity android:name=".view.Activity.SystemManagement.CompanyManageActivity" />

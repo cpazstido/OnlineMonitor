@@ -33,6 +33,7 @@
     <string name="downloads">下载</string>
     <string name="cancels">取消</string>
     <string name="channel_choice">通道选择</string>
+    <string name="date_pick">时间选择</string>
 
 
     <string name="up">上</string>
@@ -56,6 +57,7 @@
     <string name="sensor_information">传感器信息</string>
 
     <string name="equipment">设备</string>
+    <string name="equipment_choice">设备选择</string>
     <string name="equipment_add">设备添加</string>
     <string name="equipment_change">设备修改</string>
     <string name="equipment_manage">设备信息管理</string>
@@ -122,6 +124,8 @@
     <string name="system_management">系统管理</string>
     <string name="parameter_configuration">参数配置</string>
     <string name="condition_monitoring">状态监测</string>
+    <string name="monitoring_condition">监测状态</string>
+    <string name="monitoring_statistics">监测统计</string>
     <string name="company_add">添加公司</string>
     <string name="company_config">设置公司</string>
     <string name="company">公司</string>

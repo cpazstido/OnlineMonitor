@@ -9,6 +9,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.TimeZone;
 import java.util.TreeMap;
 
 public class TransformationUtils {
@@ -29,6 +30,7 @@ public class TransformationUtils {
                     ordinateList.add(f2.floatValue());
                     Date date = new Date(f1);
                     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+                    sdf.setTimeZone(TimeZone.getTimeZone("GMT0"));
                     String sdfDate = sdf.format(date);
                     String[] timeStr = sdfDate.split(" ");
 //                String clock = timeStr[1];

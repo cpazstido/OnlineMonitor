@@ -59,12 +59,6 @@ public class LineDataRepository implements SMLineRepository{
         this.userId = userId;
     }
 
-    public LineDataRepository(Context mContext, int userId,int pageNumber) {
-        this.mContext = mContext;
-        this.userId = userId;
-        this.pageNumber = pageNumber;
-    }
-
     public LineDataRepository(Context mContext, int userId, int companySn,int pageNumber) {
         this.mContext = mContext;
         this.userId = userId;

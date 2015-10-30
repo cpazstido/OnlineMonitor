@@ -1,8 +1,9 @@
 package com.hy.onlinemonitor.mapper;
 
-import com.example.bean.DomainEquipmentInforPage;
 import com.example.bean.DomainAdministratorPage;
 import com.example.bean.DomainAlarmPage;
+import com.example.bean.DomainConditionMonitoringPage;
+import com.example.bean.DomainEquipmentInforPage;
 import com.example.bean.DomainEquipmentPage;
 import com.example.bean.DomainLinePage;
 import com.example.bean.DomainOnlineDeviceStatePage;
@@ -10,6 +11,7 @@ import com.example.bean.DomainPolePage;
 import com.example.bean.DomainRolePage;
 import com.hy.onlinemonitor.bean.AdministratorPage;
 import com.hy.onlinemonitor.bean.AlarmPage;
+import com.hy.onlinemonitor.bean.ConditionMonitoringPage;
 import com.hy.onlinemonitor.bean.EquipmentInforPage;
 import com.hy.onlinemonitor.bean.EquipmentPage;
 import com.hy.onlinemonitor.bean.LinePage;
@@ -144,5 +146,18 @@ public class PageDataMapper {
         onlineDeviceStatePage.setList(OnlineDeviceStateDataMapper.transform(domainOnlineDeviceStatePage.getList()));
 
         return onlineDeviceStatePage;
+    }
+
+    public ConditionMonitoringPage transform(DomainConditionMonitoringPage domainConditionMonitoringPage, int transformType) {
+        ConditionMonitoringPage conditionMonitoringPage = null;
+        if (null != domainConditionMonitoringPage) {
+            conditionMonitoringPage = new ConditionMonitoringPage();
+            conditionMonitoringPage.setTotalPage(domainConditionMonitoringPage.getTotalPage());
+            conditionMonitoringPage.setPageSize(domainConditionMonitoringPage.getPageSize());
+            conditionMonitoringPage.setPageNum(domainConditionMonitoringPage.getPageNum());
+            conditionMonitoringPage.setList(ConditionMonitoringDataMapper.transform(domainConditionMonitoringPage.getList(),transformType));
+            conditionMonitoringPage.setRowCount(domainConditionMonitoringPage.getRowCount());
+        }
+        return conditionMonitoringPage;
     }
 }

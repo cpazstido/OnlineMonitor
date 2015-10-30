@@ -1,5 +1,6 @@
 package com.hy.data.entity.mapper;
 
+import com.example.bean.DomainConditionMonitoringPage;
 import com.example.bean.DomainEquipmentInforPage;
 import com.example.bean.DomainAdministratorPage;
 import com.example.bean.DomainAlarmPage;
@@ -9,12 +10,18 @@ import com.example.bean.DomainOnlineDeviceStatePage;
 import com.example.bean.DomainPolePage;
 import com.example.bean.DomainRolePage;
 import com.hy.data.entity.AdministratorPageEntity;
+import com.hy.data.entity.AeolianVibrationPageEntity;
 import com.hy.data.entity.AlarmPageEntity;
+import com.hy.data.entity.ConductorSagPageEntity;
+import com.hy.data.entity.ConductorSwingWithWindPageEntity;
 import com.hy.data.entity.EquipmentInforPageEntity;
 import com.hy.data.entity.EquipmentPageEntity;
+import com.hy.data.entity.IceCoatingPageEntity;
 import com.hy.data.entity.LinePageEntity;
+import com.hy.data.entity.MicroclimatePageEntity;
 import com.hy.data.entity.OnlineDeviceStatePageEntity;
 import com.hy.data.entity.PolePageEntity;
+import com.hy.data.entity.PoleStatusPageEntity;
 import com.hy.data.entity.RolePageEntity;
 
 /**
@@ -23,7 +30,6 @@ import com.hy.data.entity.RolePageEntity;
 public class PageEntityDataMapper {
     public PageEntityDataMapper() {
     }
-
     public DomainEquipmentInforPage transform(EquipmentInforPageEntity equipmentInforPageEntity) {
         EquipmentAlarmEntityDataMapper equipmentAlarmEntityDataMapper = new EquipmentAlarmEntityDataMapper();
         DomainEquipmentInforPage domainEquipmentInforPage = null;
@@ -131,5 +137,78 @@ public class PageEntityDataMapper {
             domainOnlineDeviceStatePage.setRowCount(onlineDeviceStatePageEntity.getRowCount());
         }
         return domainOnlineDeviceStatePage;
+    }
+
+    public DomainConditionMonitoringPage transform(AeolianVibrationPageEntity aeolianVibrationPageEntity) {
+        DomainConditionMonitoringPage domainConditionMonitoringPage = null;
+        if (null != aeolianVibrationPageEntity) {
+            domainConditionMonitoringPage = new DomainConditionMonitoringPage();
+            domainConditionMonitoringPage.setTotalPage(aeolianVibrationPageEntity.getTotalPage());
+            domainConditionMonitoringPage.setPageSize(aeolianVibrationPageEntity.getPageSize());
+            domainConditionMonitoringPage.setPageNum(aeolianVibrationPageEntity.getPageNum());
+            domainConditionMonitoringPage.setList(AeolianVibrationEntityDataMapper.transform(aeolianVibrationPageEntity.getList()));
+            domainConditionMonitoringPage.setRowCount(aeolianVibrationPageEntity.getRowCount());
+        }
+        return domainConditionMonitoringPage;
+    }
+    public DomainConditionMonitoringPage transform(ConductorSagPageEntity conductorSagPageEntity) {
+        DomainConditionMonitoringPage domainConditionMonitoringPage = null;
+        if (null != conductorSagPageEntity) {
+            domainConditionMonitoringPage = new DomainConditionMonitoringPage();
+            domainConditionMonitoringPage.setTotalPage(conductorSagPageEntity.getTotalPage());
+            domainConditionMonitoringPage.setPageSize(conductorSagPageEntity.getPageSize());
+            domainConditionMonitoringPage.setPageNum(conductorSagPageEntity.getPageNum());
+            domainConditionMonitoringPage.setList(ConductorSagEntityDataMapper.transform(conductorSagPageEntity.getList()));
+            domainConditionMonitoringPage.setRowCount(conductorSagPageEntity.getRowCount());
+        }
+        return domainConditionMonitoringPage;
+    }
+    public DomainConditionMonitoringPage transform(ConductorSwingWithWindPageEntity conductorSwingWithWindPageEntity) {
+        DomainConditionMonitoringPage domainConditionMonitoringPage = null;
+        if (null != conductorSwingWithWindPageEntity) {
+            domainConditionMonitoringPage = new DomainConditionMonitoringPage();
+            domainConditionMonitoringPage.setTotalPage(conductorSwingWithWindPageEntity.getTotalPage());
+            domainConditionMonitoringPage.setPageSize(conductorSwingWithWindPageEntity.getPageSize());
+            domainConditionMonitoringPage.setPageNum(conductorSwingWithWindPageEntity.getPageNum());
+            domainConditionMonitoringPage.setList(ConductorSwingWithWindEntityDataMapper.transform(conductorSwingWithWindPageEntity.getList()));
+            domainConditionMonitoringPage.setRowCount(conductorSwingWithWindPageEntity.getRowCount());
+        }
+        return domainConditionMonitoringPage;
+    }
+    public DomainConditionMonitoringPage transform(IceCoatingPageEntity iceCoatingPageEntity) {
+        DomainConditionMonitoringPage domainConditionMonitoringPage = null;
+        if (null != iceCoatingPageEntity) {
+            domainConditionMonitoringPage = new DomainConditionMonitoringPage();
+            domainConditionMonitoringPage.setTotalPage(iceCoatingPageEntity.getTotalPage());
+            domainConditionMonitoringPage.setPageSize(iceCoatingPageEntity.getPageSize());
+            domainConditionMonitoringPage.setPageNum(iceCoatingPageEntity.getPageNum());
+            domainConditionMonitoringPage.setList(IceCoatingEntityDataMapper.transform(iceCoatingPageEntity.getList()));
+            domainConditionMonitoringPage.setRowCount(iceCoatingPageEntity.getRowCount());
+        }
+        return domainConditionMonitoringPage;
+    }
+    public DomainConditionMonitoringPage transform(MicroclimatePageEntity microclimatePageEntity) {
+        DomainConditionMonitoringPage domainConditionMonitoringPage = null;
+        if (null != microclimatePageEntity) {
+            domainConditionMonitoringPage = new DomainConditionMonitoringPage();
+            domainConditionMonitoringPage.setTotalPage(microclimatePageEntity.getTotalPage());
+            domainConditionMonitoringPage.setPageSize(microclimatePageEntity.getPageSize());
+            domainConditionMonitoringPage.setPageNum(microclimatePageEntity.getPageNum());
+            domainConditionMonitoringPage.setList(MicroclimateEntityDataMapper.transform(microclimatePageEntity.getList()));
+            domainConditionMonitoringPage.setRowCount(microclimatePageEntity.getRowCount());
+        }
+        return domainConditionMonitoringPage;
+    }
+    public DomainConditionMonitoringPage transform(PoleStatusPageEntity poleStatusPageEntity) {
+        DomainConditionMonitoringPage domainConditionMonitoringPage = null;
+        if (null != poleStatusPageEntity) {
+            domainConditionMonitoringPage = new DomainConditionMonitoringPage();
+            domainConditionMonitoringPage.setTotalPage(poleStatusPageEntity.getTotalPage());
+            domainConditionMonitoringPage.setPageSize(poleStatusPageEntity.getPageSize());
+            domainConditionMonitoringPage.setPageNum(poleStatusPageEntity.getPageNum());
+            domainConditionMonitoringPage.setList(PoleStatusEntityDataMapper.transform(poleStatusPageEntity.getList()));
+            domainConditionMonitoringPage.setRowCount(poleStatusPageEntity.getRowCount());
+        }
+        return domainConditionMonitoringPage;
     }
 }

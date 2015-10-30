@@ -151,7 +151,7 @@ public class AdministratorManageActivity extends SMBaseActivity {
     @Override
     protected void initRvAdapter() {
         mAdapter = new SMAdministratorRecyclerAdapter(AdministratorManageActivity.this, new ArrayList<AdministratorInformation>());
-        ((SMAdministratorRecyclerAdapter) mAdapter).setMode(Attributes.Mode.Single);
+        mAdapter.setMode(Attributes.Mode.Single);
         smRecyclerView.setAdapter(mAdapter);
     }
 
@@ -341,14 +341,11 @@ public class AdministratorManageActivity extends SMBaseActivity {
             root.addChild(lineTree);
         }
 
-
-
         tView = new AndroidTreeView(AdministratorManageActivity.this, root);
         tView.setDefaultAnimation(true);
         tView.setSelectionModeEnabled(true);
         containerView.addView(relativeLayout);
         containerView.addView(tView.getView());
-
 
         dialog.show();
     }

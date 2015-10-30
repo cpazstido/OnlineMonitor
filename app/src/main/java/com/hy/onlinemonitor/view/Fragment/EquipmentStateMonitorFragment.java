@@ -2,31 +2,66 @@ package com.hy.onlinemonitor.view.Fragment;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.hy.onlinemonitor.bean.OnlineDeviceState;
 import com.hy.onlinemonitor.bean.OnlineDeviceStatePage;
 import com.hy.onlinemonitor.presenter.EquipmentStateMonitorPresenter;
+import com.hy.onlinemonitor.utile.ShowUtile;
 import com.hy.onlinemonitor.view.Activity.ConditionMonitor.EquipmentStateMonitorActivity;
-import com.hy.onlinemonitor.view.Adapter.StateMonitoring.BatteryChargeCurrentRecyclerAdapter;
-import com.hy.onlinemonitor.view.Adapter.StateMonitoring.BatteryChargeCurrentTwoRecyclerAdapter;
-import com.hy.onlinemonitor.view.Adapter.StateMonitoring.BatteryChargeSwitchRecyclerAdapter;
-import com.hy.onlinemonitor.view.Adapter.StateMonitoring.BatteryChargeSwitchTwoRecyclerAdapter;
-import com.hy.onlinemonitor.view.Adapter.StateMonitoring.BatteryOutputCurrentRecyclerAdapter;
-import com.hy.onlinemonitor.view.Adapter.StateMonitoring.BatteryRemainingCapacityRecyclerAdapter;
-import com.hy.onlinemonitor.view.Adapter.StateMonitoring.BatteryVoltageRecyclerAdapter;
-import com.hy.onlinemonitor.view.Adapter.StateMonitoring.DVRStateRecyclerAdapter;
-import com.hy.onlinemonitor.view.Adapter.StateMonitoring.DeviceInformationRecyclerAdapter;
-import com.hy.onlinemonitor.view.Adapter.StateMonitoring.DeviceStateRecyclerAdapter;
-import com.hy.onlinemonitor.view.Adapter.StateMonitoring.SolarPanelVoltageRecyclerAdapter;
-import com.hy.onlinemonitor.view.Adapter.StateMonitoring.SolarPanelVoltageTowRecyclerAdapter;
-import com.hy.onlinemonitor.view.Adapter.StateMonitoring.UploadDataInformationRecyclerAdapter;
+import com.hy.onlinemonitor.view.Adapter.DeviceStateMonitoring.BatteryChargeCurrentRecyclerAdapter;
+import com.hy.onlinemonitor.view.Adapter.DeviceStateMonitoring.BatteryChargeSwitchRecyclerAdapter;
+import com.hy.onlinemonitor.view.Adapter.DeviceStateMonitoring.BatteryOutputCurrentRecyclerAdapter;
+import com.hy.onlinemonitor.view.Adapter.DeviceStateMonitoring.BatteryRemainingCapacityRecyclerAdapter;
+import com.hy.onlinemonitor.view.Adapter.DeviceStateMonitoring.BatteryVoltageRecyclerAdapter;
+import com.hy.onlinemonitor.view.Adapter.DeviceStateMonitoring.DVRStateRecyclerAdapter;
+import com.hy.onlinemonitor.view.Adapter.DeviceStateMonitoring.DeviceInformationRecyclerAdapter;
+import com.hy.onlinemonitor.view.Adapter.DeviceStateMonitoring.DeviceStateRecyclerAdapter;
+import com.hy.onlinemonitor.view.Adapter.DeviceStateMonitoring.SolarPanelVoltageRecyclerAdapter;
+import com.hy.onlinemonitor.view.Adapter.DeviceStateMonitoring.UploadDataInformationRecyclerAdapter;
 
 import java.util.ArrayList;
 
 public class EquipmentStateMonitorFragment extends StateMonitorBaseFragment {
     private static final String TAG = "状态监测Fragment";
     private static Context mContext;
+
+    @Override
+    protected void initRecyclerView() {
+        layoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
+        rvRecyclerviewData.setLayoutManager(layoutManager);
+        rvRecyclerviewData.setHasFixedSize(true);
+        rvRecyclerviewData.setAdapter(mAdapter);
+        rvRecyclerviewData.setOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                switch (newState) {
+                    case RecyclerView.SCROLL_STATE_IDLE:
+                        if ((lastVisibleItem + 1) == mAdapter.getItemCount() && isHaveData) {
+                            if (pageNum < onlineDeviceStatePage.getTotalPage() && !isLoadingMore) {
+                                isLoadingMore = true;
+                                pageNum++;
+                                loadData();
+                            } else {
+                                ShowUtile.toastShow(getContext(), "无更多数据...");
+                            }
+                        }
+                        break;
+                }
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                lastVisibleItem = layoutManager.findLastVisibleItemPosition();
+            }
+        });
+        this.loadData();
+    }
 
     public void loadData() {//加载数据
         Log.e(TAG, "lineSn->" + lineSn + "userId" + userId + "pageNum->" + pageNum);
@@ -50,29 +85,20 @@ public class EquipmentStateMonitorFragment extends StateMonitorBaseFragment {
             case 4://电池充电电流
                 mAdapter = new BatteryChargeCurrentRecyclerAdapter(mContext, new ArrayList<OnlineDeviceState>());
                 break;
-            case 5://电池充电电流2
-                mAdapter = new BatteryChargeCurrentTwoRecyclerAdapter(mContext, new ArrayList<OnlineDeviceState>());
-                break;
-            case 6://电池剩余电量
+            case 5://电池剩余电量
                 mAdapter = new BatteryRemainingCapacityRecyclerAdapter(mContext, new ArrayList<OnlineDeviceState>());
                 break;
-            case 7://电池输出电流
+            case 6://电池输出电流
                 mAdapter = new BatteryOutputCurrentRecyclerAdapter(mContext, new ArrayList<OnlineDeviceState>());
                 break;
-            case 8://太阳能板电压
+            case 7://太阳能板电压
                 mAdapter = new SolarPanelVoltageRecyclerAdapter(mContext, new ArrayList<OnlineDeviceState>());
                 break;
-            case 9://太阳能板电压2
-                mAdapter = new SolarPanelVoltageTowRecyclerAdapter(mContext, new ArrayList<OnlineDeviceState>());
-                break;
-            case 10://上传数据信息
+            case 8://上传数据信息
                 mAdapter = new UploadDataInformationRecyclerAdapter(mContext, new ArrayList<OnlineDeviceState>());
                 break;
-            case 11://电池充电开关
+            case 9://电池充电开关
                 mAdapter = new BatteryChargeSwitchRecyclerAdapter(mContext, new ArrayList<OnlineDeviceState>());
-                break;
-            case 12://电池充电开关2
-                mAdapter = new BatteryChargeSwitchTwoRecyclerAdapter(mContext, new ArrayList<OnlineDeviceState>());
                 break;
             default:
                 break;
@@ -82,7 +108,7 @@ public class EquipmentStateMonitorFragment extends StateMonitorBaseFragment {
     protected void doRefresh() {//刷新数据
         pageNum = 1;
         mAdapter.getEquipmentInformatics().clear();
-        equipmentStateMonitorPresenter.loadOnlineDeviceState(mContext, userId, lineSn, pageNum);
+        loadData();
     }
 
     @Override
@@ -117,7 +143,7 @@ public class EquipmentStateMonitorFragment extends StateMonitorBaseFragment {
                 this.onlineDeviceStatePage = onlineDeviceStatePage;
                 this.mAdapter.setCollection(onlineDeviceStatePage.getList());
             } else {
-                //TODO 1.显示错误界面
+                Toast.makeText(mContext, "暂无数据", Toast.LENGTH_SHORT).show();
             }
         }
     }

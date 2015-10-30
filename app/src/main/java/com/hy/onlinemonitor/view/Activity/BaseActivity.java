@@ -20,6 +20,7 @@ import com.hy.onlinemonitor.presenter.UserPresenter;
 import com.hy.onlinemonitor.utile.ActivityCollector;
 import com.hy.onlinemonitor.view.Activity.ConditionMonitor.EquipmentConditionMonitorActivity;
 import com.hy.onlinemonitor.view.Activity.ConditionMonitor.EquipmentStateMonitorActivity;
+import com.hy.onlinemonitor.view.Activity.ConditionMonitor.MonitoringStateAcitvity;
 import com.hy.onlinemonitor.view.Activity.Function.AlarmInformationActivity;
 import com.hy.onlinemonitor.view.Activity.Function.EquipmentListViewActivity;
 import com.hy.onlinemonitor.view.Activity.Function.MapActivity;
@@ -91,6 +92,8 @@ public abstract class BaseActivity extends AppCompatActivity implements InitView
                         new SectionDrawerItem().withName(R.string.condition_monitoring),
                         new SecondaryDrawerItem().withName(R.string.equipment_statistics).withIcon(GoogleMaterial.Icon.gmd_equalizer).withIdentifier(15).withTag("Bullhorn"),
                         new SecondaryDrawerItem().withName(R.string.equipment_state).withIcon(getResources().getDrawable(R.drawable.ic_device_state_24dp)).withIdentifier(16).withTag("Bullhorn"),
+                        new SecondaryDrawerItem().withName(R.string.monitoring_statistics).withIcon(getResources().getDrawable(R.drawable.ic_statistics_24)).withIdentifier(17).withTag("Bullhorn"),
+                        new SecondaryDrawerItem().withName(R.string.monitoring_condition).withIcon(getResources().getDrawable(R.drawable.ic_monitor_24)).withIdentifier(18).withTag("Bullhorn"),
                         new DividerDrawerItem(),
                         new PrimaryDrawerItem().withName(R.string.return_login).withIcon(GoogleMaterial.Icon.gmd_account_circle).withIdentifier(12).withCheckable(true),
 //                        new PrimaryDrawerItem().withName(R.string.about).withIcon(GoogleMaterial.Icon.gmd_info_outline).withIdentifier(13).withCheckable(true),
@@ -168,6 +171,11 @@ public abstract class BaseActivity extends AppCompatActivity implements InitView
                                         case 16://设备状态
                                             intent = new Intent(BaseActivity.this, EquipmentStateMonitorActivity.class);
                                             break;
+                                        case 17://监测统计
+                                            intent = new Intent(BaseActivity.this, EquipmentConditionMonitorActivity.class);
+                                            intent.putExtra("projectFlag", false);
+                                        case 18://监测状态
+                                            intent = new Intent(BaseActivity.this, MonitoringStateAcitvity.class);
                                     }
                                     if (intent != null) {
                                         BaseActivity.this.startActivity(intent);

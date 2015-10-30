@@ -22,6 +22,7 @@ import rx.android.schedulers.AndroidSchedulers;
 /**
  * Created by 24363 on 2015/10/13.
  */
+
 public class EquipmentConditionMonitorPresenter implements Presenter {
     private static String TAG = "EquipmentConditionMonitorPresenter";
     private Context mContext;
@@ -130,6 +131,37 @@ public class EquipmentConditionMonitorPresenter implements Presenter {
         }
     }
 
+    public void queryMonitoringStateData(String type, int userId, String fieldName, String startTime, String endTime, String deviceSn, String statisticByTime) {
+        this.showViewLoading();
+        this.equipmentConditionMonitorDataRepository = new EquipmentConditionMonitorDataRepository(mContext, type, userId, fieldName, startTime, endTime, deviceSn, statisticByTime);
+        this.equipmentConditionMonitorUseCase = new EquipmentConditionMonitorUseCase(new UIThread(), AndroidSchedulers.mainThread(), equipmentConditionMonitorDataRepository, 3);
+        this.equipmentConditionMonitorUseCase.execute(new MonitoringStateDataSubscriber());
+
+    }
+
+    private class MonitoringStateDataSubscriber extends DefaultSubscriber<TreeMap<Float, Float>> {
+        @Override
+        public void onCompleted() {
+            EquipmentConditionMonitorPresenter.this.hideViewLoading();
+        }
+
+        @Override
+        public void onError(Throwable e) {
+            EquipmentConditionMonitorPresenter.this.hideViewLoading();
+            equipmentConditionMonitorActivity.showError(e.getMessage());
+            super.onError(e);
+        }
+
+        @Override
+        public void onNext(TreeMap<Float, Float> treeMap) {
+            if (treeMap != null)
+                equipmentConditionMonitorActivity.showChart(treeMap);
+            else {
+                EquipmentConditionMonitorPresenter.this.hideViewLoading();
+                equipmentConditionMonitorActivity.showError("暂无数据");
+            }
+        }
+    }
 
     private void setEquipmentList(Collection equipmentInformations) {
         equipmentConditionMonitorActivity.setEquipmentList(equipmentInformations);

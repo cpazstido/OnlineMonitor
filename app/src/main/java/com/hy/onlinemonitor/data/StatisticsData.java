@@ -19,7 +19,7 @@ public class StatisticsData {
     //监测状态统计-统计参数
     public static String[] statisticalParameters = new String[]{"微气象", "微风振动", "风偏", "杆塔倾斜", "导线弧垂", "告警统计"};
     //监测状态统计-具体属性
-    private static String[][] specificAttributes = new String[][]{{"气温", "湿度", "风速", "风向", "气压", "雨量", "光辐射"}, {"振动浮值", "振动频率"}, {"风偏角", "偏斜角", "最小电气间细"}, {"顺线倾斜角", "横向倾斜角"}, {"导线弧垂", "水平线夹角"}, {"山火告警", "外破告警"}};
+    private static String[][] specificAttributes = new String[][]{{"气温", "湿度", "风速", "风向", "气压", "雨量", "光辐射"}, {"振动浮值", "振动频率"}, {"风偏角", "偏斜角", "最小电气间隙"}, {"顺线倾斜角", "横向倾斜角"}, {"导线弧垂", "水平线夹角"}, {"山火告警", "外破告警"}};
     private static List<String> statisticalParametersKeyList = new ArrayList<>();
     private static List<String> statisticsKeyList = new ArrayList<>();
     private static List<String> specificAttributesKeyList = new ArrayList<>();
@@ -62,7 +62,7 @@ public class StatisticsData {
         specificAttributesValue.put("振动频率", "vibrationFrequency");
         specificAttributesValue.put("风偏角", "windageYawAngle");
         specificAttributesValue.put("偏斜角", "deflectionAngle");
-        specificAttributesValue.put("最小电气间细", "leastClearance");
+        specificAttributesValue.put("最小电气间隙", "leastClearance");
         specificAttributesValue.put("顺线倾斜角", "angleX");
         specificAttributesValue.put("横向倾斜角", "angleY");
         specificAttributesValue.put("导线弧垂", "sag");
@@ -76,7 +76,6 @@ public class StatisticsData {
         statisticalParametersKey.put("杆塔倾斜", specificAttributes[3]);
         statisticalParametersKey.put("导线弧垂", specificAttributes[4]);
         statisticalParametersKey.put("告警统计", specificAttributes[5]);
-
     }
 
     public static String getValueByStatisticsKey(String statisticsKey) {
@@ -106,7 +105,6 @@ public class StatisticsData {
 
     //得到统计参数的值
     public static List<String> getSpecificAttributesKey() {
-
         Collections.addAll(specificAttributesKeyList, statisticalParameters);
         return specificAttributesKeyList;
     }

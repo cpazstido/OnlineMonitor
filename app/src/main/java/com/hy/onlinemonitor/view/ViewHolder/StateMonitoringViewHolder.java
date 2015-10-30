@@ -6,12 +6,9 @@ import android.widget.TextView;
 
 import com.hy.onlinemonitor.R;
 
-/**
- * Created by 24363 on 2015/10/20.
- */
 public class StateMonitoringViewHolder extends RecyclerView.ViewHolder {
-    public TextView title1, title2, title3, title4, title5, title6, title7, title8, title9, title10;
-    public TextView deviceName, title1_data, title2_data, title3_data, title4_data, title5_data, title6_data, title7_data, title8_data, title9_data, title10_data;
+    public TextView title1, title2, title3, title4, title5, title6, title7, title8, title9, title10, title11, title12, title13;
+    public TextView deviceName, title1_data, title2_data, title3_data, title4_data, title5_data, title6_data, title7_data, title8_data, title9_data, title10_data, title11_data, title12_data, title13_data;
     //title1-3和deviceName 始终显示,因为最小也有4个可显示.其他需要在代码中设置其为可显示
     public StateMonitoringViewHolder(View itemView) {
         super(itemView);
@@ -25,7 +22,11 @@ public class StateMonitoringViewHolder extends RecyclerView.ViewHolder {
         title8 = (TextView) itemView.findViewById(R.id.title_eight);
         title9 = (TextView) itemView.findViewById(R.id.title_nine);
         title10 = (TextView) itemView.findViewById(R.id.title_ten);
+        title11 = (TextView) itemView.findViewById(R.id.title_eleven);
+        title12 = (TextView) itemView.findViewById(R.id.title_twelve);
+        title13 = (TextView) itemView.findViewById(R.id.title_thirteen);
         deviceName = (TextView) itemView.findViewById(R.id.tv_device_name);
+
         title1_data = (TextView) itemView.findViewById(R.id.tv_title_one);
         title2_data = (TextView) itemView.findViewById(R.id.tv_title_two);
         title3_data = (TextView) itemView.findViewById(R.id.tv_title_three);
@@ -36,5 +37,8 @@ public class StateMonitoringViewHolder extends RecyclerView.ViewHolder {
         title8_data = (TextView) itemView.findViewById(R.id.tv_title_eight);
         title9_data = (TextView) itemView.findViewById(R.id.tv_title_nine);
         title10_data = (TextView) itemView.findViewById(R.id.tv_title_ten);
+        title11_data = (TextView) itemView.findViewById(R.id.tv_title_eleven);
+        title12_data = (TextView) itemView.findViewById(R.id.tv_title_twelve);
+        title13_data = (TextView) itemView.findViewById(R.id.tv_title_thirteen);
     }
 }

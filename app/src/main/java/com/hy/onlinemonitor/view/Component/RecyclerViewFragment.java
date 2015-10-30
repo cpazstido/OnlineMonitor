@@ -37,7 +37,6 @@ public class RecyclerViewFragment extends Fragment implements AlarmListView {
     private static List<String> alarmTitles;
     private static int userId;
     private int showType = 1;
-    private int dvrTypes;
     private AlarmPage alarmPage;
     private AlarmPresenter alarmPresenter;
     private int status = -1;
@@ -80,12 +79,12 @@ public class RecyclerViewFragment extends Fragment implements AlarmListView {
         switch (alarmTitles.get(postion)) {
             case "山火新报警":
                 queryAlarmType = "fire";
-                dvrTypes = 1;
+                showType = 1;
                 status = 0;
                 break;
             case "山火历史报警":
                 queryAlarmType = "fire";
-                dvrTypes = 1;
+                showType = 1;
                 status = 1;
                 break;
             case "传感器新报警":
@@ -96,16 +95,16 @@ public class RecyclerViewFragment extends Fragment implements AlarmListView {
             case "传感器历史报警":
                 queryAlarmType = "sensor";
                 status = 1;
-                showType = 1;
+                showType = 0;
                 break;
             case "外破新报警":
                 queryAlarmType = "break";
-                dvrTypes = 2;
+                showType = 1;
                 status = 0;
                 break;
             case "外破历史报警":
                 queryAlarmType = "break";
-                dvrTypes = 2;
+                showType = 1;
                 status = 1;
                 break;
         }
@@ -128,7 +127,7 @@ public class RecyclerViewFragment extends Fragment implements AlarmListView {
                 super.onScrollStateChanged(recyclerView, newState);
                 switch (newState) {
                     case RecyclerView.SCROLL_STATE_IDLE:
-                        if (lastVisibleItem == mAdapter.getItemCount() && isHaveData) {
+                        if (lastVisibleItem+1 == mAdapter.getItemCount() && isHaveData) {
                             if (pageNum < alarmPage.getTotalPage() && !isLoadingMore) {
                                 isLoadingMore = true;
                                 pageNum++;

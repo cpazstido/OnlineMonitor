@@ -77,7 +77,7 @@ public class LineManageActivity extends SMBaseActivity {//系统管理-线路管
                         pageNumber++; //页数+1
                         //根据CompanySn来判断是加载所有的还是加载部分
                         switch (theCompanySn) {
-                            case 0: //加载所有
+                            case -1: //加载所有
                                 LineManageActivity.this.smLinePresenter.loadAllLine(getUser().getUserId(), pageNumber);
                                 break;
                             default: //加载指定公司的线路
@@ -146,6 +146,7 @@ public class LineManageActivity extends SMBaseActivity {//系统管理-线路管
         refreshButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mAdapter.linkedHashSet.clear();
                 smLinePresenter.loadCompany(getUser().getUserId());//加载公司列表
             }
         });
@@ -189,9 +190,11 @@ public class LineManageActivity extends SMBaseActivity {//系统管理-线路管
                 pageNumber = 1; //设置加载第一页数据
                 if (i == 0) {
                     //代表选中的是全部公司,加载第一页
-                    theCompanySn = 0;
+                    mAdapter.linkedHashSet.clear();
+                    theCompanySn = -1;
                     LineManageActivity.this.smLinePresenter.loadAllLine(getUser().getUserId(), pageNumber);
                 } else {
+                    mAdapter.linkedHashSet.clear();
                     //加载特定的公司sn的线路
                     for (Company company : companyList) {
                         String a = spinner.getSelectedItem().toString();

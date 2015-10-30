@@ -25,12 +25,15 @@ import com.hy.onlinemonitor.view.ViewHolder.EquipmentViewHolder;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.List;
 
 public class SMEquipmentRecyclerAdapter extends RecyclerSwipeAdapter<EquipmentViewHolder> {
 
     private Context mContext;
     private List<Equipment> equipmentList;
+    public LinkedHashSet<Equipment> linkedHashSet = new LinkedHashSet<>();
     private SMEquipmentPresenter smEquipmentPresenter;
     private List<String> deviceTypeList;
     private SMEquipmentRecyclerAdapter.SensorManage sensorManage;
@@ -72,8 +75,22 @@ public class SMEquipmentRecyclerAdapter extends RecyclerSwipeAdapter<EquipmentVi
         }
         equipmentViewHolder.equipmentDvrid.setText(equipmentList.get(i).getDvrID());
         equipmentViewHolder.equipmentIdentifier.setText(equipmentList.get(i).getDeviceID());
-        equipmentViewHolder.equipmentType.setText(equipmentList.get(i).getDvrType());
-
+        String showType = "";
+        switch (equipmentList.get(i).getDvrType()) {//1为山火，2为外破，3为无人机，4为普通视频
+            case "1":
+                showType = "山火";
+                break;
+            case "2":
+                showType = "外破";
+                break;
+            case "3":
+                showType = "无人机";
+                break;
+            case "4":
+                showType = "普通视频";
+                break;
+        }
+        equipmentViewHolder.equipmentType.setText(showType);
         equipmentViewHolder.moreInformation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -255,7 +272,14 @@ public class SMEquipmentRecyclerAdapter extends RecyclerSwipeAdapter<EquipmentVi
 
     public void setEquipmentPage(List<Equipment> list) {
         this.validateEquipmentCollection(list);
-        this.equipmentList = list;
+        linkedHashSet.addAll(list);
+        Iterator it = linkedHashSet.iterator();
+        List<Equipment> list1 = new ArrayList<>();
+        while (it.hasNext()) {
+            Equipment equipment = (Equipment) it.next();
+            list1.add(equipment);
+        }
+        equipmentList = list1;
         this.notifyDataSetChanged();
     }
 

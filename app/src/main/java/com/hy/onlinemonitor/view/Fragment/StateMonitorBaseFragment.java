@@ -13,9 +13,9 @@ import android.view.ViewGroup;
 import com.baoyz.widget.PullRefreshLayout;
 import com.hy.onlinemonitor.R;
 import com.hy.onlinemonitor.bean.OnlineDeviceStatePage;
+import com.hy.onlinemonitor.presenter.ConditionMonitoringPresenter;
 import com.hy.onlinemonitor.presenter.EquipmentStateMonitorPresenter;
-import com.hy.onlinemonitor.utile.ShowUtile;
-import com.hy.onlinemonitor.view.Adapter.StateMonitoring.CMBaseAdapter;
+import com.hy.onlinemonitor.view.Adapter.DeviceStateMonitoring.CMBaseAdapter;
 
 /**
  * Created by 24363 on 2015/10/16.
@@ -23,18 +23,19 @@ import com.hy.onlinemonitor.view.Adapter.StateMonitoring.CMBaseAdapter;
 public abstract class StateMonitorBaseFragment extends Fragment {
 
     private static final String TAG = "状态监测BaseFragment";
-    protected CMBaseAdapter mAdapter;
+    public CMBaseAdapter mAdapter;
     protected RecyclerView rvRecyclerviewData;
     protected PullRefreshLayout swipeRefreshLayout;
     protected EquipmentStateMonitorPresenter equipmentStateMonitorPresenter;
+    protected ConditionMonitoringPresenter conditionMonitoringPresenter;
     protected Bundle bundle;
     protected int lineSn = 0;
     protected int userId = 0;
     protected int pageNum = 1;
     public OnlineDeviceStatePage onlineDeviceStatePage;
     public boolean isLoadingMore =false;
-    private int lastVisibleItem;
-    private LinearLayoutManager layoutManager;
+    protected int lastVisibleItem;
+    protected LinearLayoutManager layoutManager;
     protected boolean isHaveData = false;
 
     public void setLineSn(int lineSn) {
@@ -46,7 +47,6 @@ public abstract class StateMonitorBaseFragment extends Fragment {
         super.onCreate(savedInstanceState);
         bundle = getArguments();
         if (bundle != null) {
-            lineSn = bundle.getInt("lineSn");
             userId = bundle.getInt("userId");
         }
     }
@@ -71,38 +71,10 @@ public abstract class StateMonitorBaseFragment extends Fragment {
                 }, 300);
             }
         });
-
-        layoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
-        rvRecyclerviewData.setLayoutManager(layoutManager);
-        rvRecyclerviewData.setHasFixedSize(true);
-        rvRecyclerviewData.setAdapter(mAdapter);
-        rvRecyclerviewData.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-                switch (newState) {
-                    case RecyclerView.SCROLL_STATE_IDLE:
-                        if ((lastVisibleItem + 1) == mAdapter.getItemCount() && isHaveData) {
-                            if (pageNum < onlineDeviceStatePage.getTotalPage() && !isLoadingMore) {
-                                isLoadingMore = true;
-                                pageNum++;
-                                loadData();
-                            } else {
-                                ShowUtile.toastShow(getContext(), "无更多数据...");
-                            }
-                        }
-                        break;
-                }
-            }
-
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                lastVisibleItem = layoutManager.findLastVisibleItemPosition();
-            }
-        });
-        this.loadData();
+        this.initRecyclerView();
     }
+
+    protected abstract void initRecyclerView();
 
     @Nullable
     @Override

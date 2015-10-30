@@ -6,16 +6,21 @@ import android.net.NetworkInfo;
 import android.util.Log;
 
 import com.hy.data.entity.AdministratorPageEntity;
+import com.hy.data.entity.AeolianVibrationPageEntity;
 import com.hy.data.entity.AlarmPageEntity;
 import com.hy.data.entity.CompanyEntity;
-import com.hy.data.entity.EquipmentEntity;
+import com.hy.data.entity.ConductorSagPageEntity;
+import com.hy.data.entity.ConductorSwingWithWindPageEntity;
 import com.hy.data.entity.EquipmentInforPageEntity;
 import com.hy.data.entity.EquipmentPageEntity;
+import com.hy.data.entity.IceCoatingPageEntity;
 import com.hy.data.entity.LineEntity;
 import com.hy.data.entity.LinePageEntity;
 import com.hy.data.entity.MapEntity;
+import com.hy.data.entity.MicroclimatePageEntity;
 import com.hy.data.entity.OnlineDeviceStatePageEntity;
 import com.hy.data.entity.PolePageEntity;
+import com.hy.data.entity.PoleStatusPageEntity;
 import com.hy.data.entity.PrivilegeEntity;
 import com.hy.data.entity.RoleEntity;
 import com.hy.data.entity.RolePageEntity;
@@ -1387,7 +1392,8 @@ public class RestApiImpl implements RestApi {
             public void call(Subscriber<? super LinePageEntity> subscriber) {
                 RequestParams params = new RequestParams();
                 params.put("userId", userId);
-                params.put("companySn", companySn);
+                if (companySn != -1)
+                    params.put("companySn", companySn);
                 params.put("pageNum", pageNumber);
 
                 SystemRestClient.post("/getLinePage", params, new AsyncHttpResponseHandler() {
@@ -1795,12 +1801,13 @@ public class RestApiImpl implements RestApi {
     }
 
     @Override
-    public Observable<EquipmentPageEntity> getEquipmentPage(int userId, int poleSn) {
+    public Observable<EquipmentPageEntity> getEquipmentPage(int userId, int poleSn, int pageNum) {
         return Observable.create(new Observable.OnSubscribe<EquipmentPageEntity>() {
             @Override
             public void call(Subscriber<? super EquipmentPageEntity> subscriber) {
                 RequestParams params = new RequestParams();
                 params.put("userId", userId);
+                params.put("pageNum", pageNum);
                 if (poleSn != -1)
                     params.put("poleSn", poleSn);
                 Log.e("params", "userId:" + userId + "polesn" + poleSn);
@@ -2232,39 +2239,6 @@ public class RestApiImpl implements RestApi {
     }
 
     @Override
-    public Observable<List<EquipmentEntity>> getEquipmentList(int userId) {
-        return Observable.create(new Observable.OnSubscribe<List<EquipmentEntity>>() {
-            @Override
-            public void call(Subscriber<? super List<EquipmentEntity>> subscriber) {
-                RequestParams params = new RequestParams();
-                params.put("userId", userId);
-                SystemRestClient.post("/getEquipmentList", params, new AsyncHttpResponseHandler() {
-                    @Override
-                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                        try {
-                            String responseEntities = new String(responseBody, "UTF-8");
-                            if ("\"loginFail\"".equals(responseEntities)) {
-                                subscriber.onError(new NetworkConnectionException("请重新登录"));
-                            } else {
-                                Log.e("response", responseEntities);
-                                subscriber.onNext(pageEntityJsonMapper.transformEquipmentPageEntity(responseEntities).getList());
-                                subscriber.onCompleted();
-                            }
-                        } catch (UnsupportedEncodingException e) {
-                            e.printStackTrace();
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                        subscriber.onError(new NetworkConnectionException("链接失败"));
-                    }
-                });
-            }
-        });
-    }
-
-    @Override
     public Observable<TreeMap<String, Float>> queryConditionMonitorData(int userId, String fieldName, String startTime, String endTime, String deviceSn, String statisticByTime, String deviceID) {
         return Observable.create(new Observable.OnSubscribe<TreeMap<String, Float>>() {
             @Override
@@ -2276,12 +2250,78 @@ public class RestApiImpl implements RestApi {
                 params.put("deviceSn", deviceSn);
                 params.put("statisticByTime", statisticByTime);
                 params.put("deviceID", deviceID);
+                Log.e("startTime", startTime);
+                Log.e("endTime", endTime);
                 try {
                     SystemRestClient.getClient().get(SystemRestClient.BASE_MONITOR_URL + "/sensorStatistics/getDeviceStatusStatisticsChart.do", params, new AsyncHttpResponseHandler() {
                         @Override
                         public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                             try {
                                 String responseVideoUrl = new String(responseBody, "UTF-8");
+                                Log.e("ConditionMonitor", responseVideoUrl);
+                                if ("\"loginFail\"".equals(responseVideoUrl)) {
+                                    subscriber.onError(new NetworkConnectionException("请重新登录"));
+                                } else {
+                                    subscriber.onNext(TransformationUtils.getTreeMapFromJsonString(responseVideoUrl, statisticByTime));
+                                    subscriber.onCompleted();
+                                }
+                            } catch (UnsupportedEncodingException e) {
+                                e.printStackTrace();
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                            Log.e("ConditionMonitorData", "onFailure");
+                            subscriber.onError(new NetworkConnectionException("链接失败"));
+                        }
+                    });
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    @Override
+    public Observable<TreeMap<String, Float>> queryMonitoringStateData(String type, int userId, String fieldName, String startTime, String endTime, String deviceSn, String statisticByTime) {
+        return Observable.create(new Observable.OnSubscribe<TreeMap<String, Float>>() {
+            @Override
+            public void call(Subscriber<? super TreeMap<String, Float>> subscriber) {
+                RequestParams params = new RequestParams();
+                String url = SystemRestClient.BASE_MONITOR_URL + "/sensorStatistics/";
+                switch (type) {
+                    case "微气象":
+                        url += "getMeteorologyHighChartData.do";
+                        break;
+                    case "微风振动":
+                        url += "getAeolianVibrationSensorHighChartData.do";
+                        break;
+                    case "风偏":
+                        url += "getWindageYawHighChartData.do";
+                        break;
+                    case "杆塔倾斜":
+                        url += "getPoleTiltSensorHighChartData.do";
+                        break;
+                    case "导线弧垂":
+                        url += "getConductorSagSensorHighChartData.do";
+                        break;
+                    case "告警统计":
+                        url += "getalarmHighChartData.do";
+                        break;
+                }
+                params.put("fieldName", fieldName);
+                params.put("startTime", startTime);
+                params.put("endTime", endTime);
+                params.put("deviceSn", deviceSn);
+                params.put("statisticByTime", statisticByTime);
+                try {
+                    SystemRestClient.getClient().get(url, params, new AsyncHttpResponseHandler() {
+                        @Override
+                        public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                            try {
+                                String responseVideoUrl = new String(responseBody, "UTF-8");
+                                Log.e("ConditionMonitor", responseVideoUrl);
                                 if ("\"loginFail\"".equals(responseVideoUrl)) {
                                     subscriber.onError(new NetworkConnectionException("请重新登录"));
                                 } else {
@@ -2322,7 +2362,6 @@ public class RestApiImpl implements RestApi {
                             String responseEntities = new String(responseBody, "UTF-8");
                             Log.e("response", responseEntities);
                             if ("\"loginFail\"".equals(responseEntities)) {
-
                                 subscriber.onError(new NetworkConnectionException("请重新登录"));
                             } else if (responseEntities.contains("资源已经被移除或不存在")) {
 
@@ -2345,6 +2384,299 @@ public class RestApiImpl implements RestApi {
         });
     }
 
+    @Override
+    public Observable<AeolianVibrationPageEntity> getAeolianVibration(String deviceSn, int pageNum) {
+        return Observable.create(
+                new Observable.OnSubscribe<AeolianVibrationPageEntity>() {
+                    @Override
+                    public void call(Subscriber<? super AeolianVibrationPageEntity> subscriber) {
+                        if (isThereInternetConnection()) {
+                            RequestParams params = new RequestParams();
+                            params.put("deviceSn", deviceSn);
+                            params.put("currentPage", pageNum);
+                            SystemRestClient.post("/aeolianVibration", params, new AsyncHttpResponseHandler() {
+                                @Override
+                                public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                                    try {
+                                        String responseEntities = new String(responseBody, "UTF-8");
+                                        Log.e("response", responseEntities);
+                                        if ("\"loginFail\"".equals(responseEntities)) {
+                                            subscriber.onError(new NetworkConnectionException("请重新登录"));
+                                        } else if (responseEntities.contains("资源已经被移除或不存在")) {
+                                            subscriber.onError(new Exception("资源已经被移除或不存在"));
+                                        } else {
+                                            subscriber.onNext(pageEntityJsonMapper.transformAeolianVibrationPageEntity(responseEntities));
+                                            subscriber.onCompleted();
+                                        }
+                                    } catch (UnsupportedEncodingException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+
+                                @Override
+                                public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                                    subscriber.onError(new NetworkConnectionException("链接失败"));
+                                }
+                            });
+                        } else {
+                            subscriber.onError(new NetworkConnectionException());
+                        }
+                    }
+                }
+        );
+    }
+
+    @Override
+    public Observable<IceCoatingPageEntity> getIceCoating(String deviceSn, int pageNum) {
+        return Observable.create(
+                new Observable.OnSubscribe<IceCoatingPageEntity>() {
+                    @Override
+                    public void call(Subscriber<? super IceCoatingPageEntity> subscriber) {
+                        if (isThereInternetConnection()) {
+                            RequestParams params = new RequestParams();
+                            params.put("deviceSn", deviceSn);
+                            params.put("currentPage", pageNum);
+                            SystemRestClient.post("/iceCoating", params, new AsyncHttpResponseHandler() {
+                                @Override
+                                public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                                    try {
+                                        String responseEntities = new String(responseBody, "UTF-8");
+                                        Log.e("response", responseEntities);
+                                        if ("\"loginFail\"".equals(responseEntities)) {
+                                            subscriber.onError(new NetworkConnectionException("请重新登录"));
+                                        } else if (responseEntities.contains("资源已经被移除或不存在")) {
+                                            subscriber.onError(new Exception("资源已经被移除或不存在"));
+                                        } else {
+                                            subscriber.onNext(pageEntityJsonMapper.transformIceCoatingPageEntity(responseEntities));
+                                            subscriber.onCompleted();
+                                        }
+                                    } catch (UnsupportedEncodingException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+
+                                @Override
+                                public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                                    subscriber.onError(new NetworkConnectionException("链接失败"));
+                                }
+                            });
+                        } else {
+                            subscriber.onError(new NetworkConnectionException());
+                        }
+                    }
+                }
+        );
+    }
+
+    @Override
+    public Observable<ConductorSagPageEntity> getConductorSag(String deviceSn, int pageNum) {
+        return Observable.create(
+                new Observable.OnSubscribe<ConductorSagPageEntity>() {
+                    @Override
+                    public void call(Subscriber<? super ConductorSagPageEntity> subscriber) {
+                        if (isThereInternetConnection()) {
+                            RequestParams params = new RequestParams();
+                            params.put("deviceSn", deviceSn);
+                            params.put("currentPage", pageNum);
+                            SystemRestClient.post("/conductorSag", params, new AsyncHttpResponseHandler() {
+                                @Override
+                                public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                                    try {
+                                        String responseEntities = new String(responseBody, "UTF-8");
+                                        Log.e("response", responseEntities);
+                                        if ("\"loginFail\"".equals(responseEntities)) {
+                                            subscriber.onError(new NetworkConnectionException("请重新登录"));
+                                        } else if (responseEntities.contains("资源已经被移除或不存在")) {
+                                            subscriber.onError(new Exception("资源已经被移除或不存在"));
+                                        } else {
+                                            subscriber.onNext(pageEntityJsonMapper.transformConductorSagPageEntity(responseEntities));
+                                            subscriber.onCompleted();
+                                        }
+                                    } catch (UnsupportedEncodingException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+
+                                @Override
+                                public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                                    subscriber.onError(new NetworkConnectionException("链接失败"));
+                                }
+                            });
+                        } else {
+                            subscriber.onError(new NetworkConnectionException());
+                        }
+                    }
+                }
+        );
+    }
+
+    @Override
+    public Observable<ConductorSwingWithWindPageEntity> getConductorSwingWithWind(String deviceSn, int pageNum) {
+        return Observable.create(
+                new Observable.OnSubscribe<ConductorSwingWithWindPageEntity>() {
+                    @Override
+                    public void call(Subscriber<? super ConductorSwingWithWindPageEntity> subscriber) {
+                        if (isThereInternetConnection()) {
+                            RequestParams params = new RequestParams();
+                            params.put("deviceSn", deviceSn);
+                            params.put("currentPage", pageNum);
+                            SystemRestClient.post("/conductorSwingWithWind", params, new AsyncHttpResponseHandler() {
+                                @Override
+                                public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                                    try {
+                                        String responseEntities = new String(responseBody, "UTF-8");
+                                        Log.e("response", responseEntities);
+                                        if ("\"loginFail\"".equals(responseEntities)) {
+                                            subscriber.onError(new NetworkConnectionException("请重新登录"));
+                                        } else if (responseEntities.contains("资源已经被移除或不存在")) {
+                                            subscriber.onError(new Exception("资源已经被移除或不存在"));
+                                        } else {
+                                            subscriber.onNext(pageEntityJsonMapper.transformConductorSwingWithWindPageEntity(responseEntities));
+                                            subscriber.onCompleted();
+                                        }
+                                    } catch (UnsupportedEncodingException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+
+                                @Override
+                                public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                                    subscriber.onError(new NetworkConnectionException("链接失败"));
+                                }
+                            });
+                        } else {
+                            subscriber.onError(new NetworkConnectionException());
+                        }
+                    }
+                }
+        );
+    }
+
+    @Override
+    public Observable<PoleStatusPageEntity> getPoleStatus(String deviceSn, int pageNum) {
+        return Observable.create(
+                new Observable.OnSubscribe<PoleStatusPageEntity>() {
+                    @Override
+                    public void call(Subscriber<? super PoleStatusPageEntity> subscriber) {
+                        if (isThereInternetConnection()) {
+                            RequestParams params = new RequestParams();
+                            params.put("deviceSn", deviceSn);
+                            params.put("currentPage", pageNum);
+                            SystemRestClient.post("/poleTilt", params, new AsyncHttpResponseHandler() {
+                                @Override
+                                public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                                    try {
+                                        String responseEntities = new String(responseBody, "UTF-8");
+                                        Log.e("response", responseEntities);
+                                        if ("\"loginFail\"".equals(responseEntities)) {
+                                            subscriber.onError(new NetworkConnectionException("请重新登录"));
+                                        } else if (responseEntities.contains("资源已经被移除或不存在")) {
+                                            subscriber.onError(new Exception("资源已经被移除或不存在"));
+                                        } else {
+                                            subscriber.onNext(pageEntityJsonMapper.transformPoleStatusPageEntity(responseEntities));
+                                            subscriber.onCompleted();
+                                        }
+                                    } catch (UnsupportedEncodingException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+
+                                @Override
+                                public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                                    subscriber.onError(new NetworkConnectionException("链接失败"));
+                                }
+                            });
+                        } else {
+                            subscriber.onError(new NetworkConnectionException());
+                        }
+                    }
+                }
+        );
+    }
+
+    @Override
+    public Observable<MicroclimatePageEntity> getMicroclimate(String deviceSn, int pageNum) {
+        return Observable.create(
+                new Observable.OnSubscribe<MicroclimatePageEntity>() {
+                    @Override
+                    public void call(Subscriber<? super MicroclimatePageEntity> subscriber) {
+                        if (isThereInternetConnection()) {
+                            RequestParams params = new RequestParams();
+                            params.put("deviceSn", deviceSn);
+                            params.put("currentPage", pageNum);
+                            SystemRestClient.post("/microclimate", params, new AsyncHttpResponseHandler() {
+                                @Override
+                                public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                                    try {
+                                        String responseEntities = new String(responseBody, "UTF-8");
+                                        Log.e("response", responseEntities);
+                                        if ("\"loginFail\"".equals(responseEntities)) {
+                                            subscriber.onError(new NetworkConnectionException("请重新登录"));
+                                        } else if (responseEntities.contains("资源已经被移除或不存在")) {
+                                            subscriber.onError(new Exception("资源已经被移除或不存在"));
+                                        } else {
+                                            subscriber.onNext(pageEntityJsonMapper.transformMicroclimatePageEntity(responseEntities));
+                                            subscriber.onCompleted();
+                                        }
+                                    } catch (UnsupportedEncodingException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+
+                                @Override
+                                public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                                    subscriber.onError(new NetworkConnectionException("链接失败"));
+                                }
+                            });
+                        } else {
+                            subscriber.onError(new NetworkConnectionException());
+                        }
+                    }
+                }
+        );
+    }
+
+    @Override
+    public Observable<List<SensorTypeEntity>> getConditionMonitoringType(String devicesn) {
+        return Observable.create(
+                new Observable.OnSubscribe<List<SensorTypeEntity>>() {
+                    @Override
+                    public void call(Subscriber<? super List<SensorTypeEntity>> subscriber) {
+                        if (isThereInternetConnection()) {
+                            RequestParams params = new RequestParams();
+                            params.put("devicesn", devicesn);
+                            SystemRestClient.post("/querySensorTypeListByDeviceSN", params, new AsyncHttpResponseHandler() {
+                                @Override
+                                public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                                    try {
+                                        String responseEntities = new String(responseBody, "UTF-8");
+                                        Log.e("response", responseEntities);
+                                        if ("\"loginFail\"".equals(responseEntities)) {
+                                            subscriber.onError(new NetworkConnectionException("请重新登录"));
+                                        } else if (responseEntities.contains("资源已经被移除或不存在")) {
+                                            subscriber.onError(new Exception("资源已经被移除或不存在"));
+                                        } else {
+                                            subscriber.onNext(sensorTypeEntityJsonMapper.transformSensorTypeEntity(responseEntities));
+                                            subscriber.onCompleted();
+                                        }
+                                    } catch (UnsupportedEncodingException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+
+                                @Override
+                                public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                                    subscriber.onError(new NetworkConnectionException("链接失败"));
+                                }
+                            });
+                        } else {
+                            subscriber.onError(new NetworkConnectionException());
+                        }
+                    }
+                }
+        );
+    }
+
     private boolean isThereInternetConnection() {
         boolean isConnected;
 
@@ -2355,6 +2687,5 @@ public class RestApiImpl implements RestApi {
 
         return isConnected;
     }
-
 
 }

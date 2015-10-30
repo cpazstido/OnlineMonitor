@@ -358,7 +358,7 @@ public class DomainOnlineDeviceState {
     }
 
     public float getBat5_RemainCapacity() {
-        return Bat5_RemainCapacity * 100;
+        return Bat5_RemainCapacity ;
     }
 
     public void setBat5_RemainCapacity(float bat5RemainCapacity) {
@@ -518,7 +518,7 @@ public class DomainOnlineDeviceState {
     }
 
     public float getBat_Dump_Energy() {
-        return Bat_Dump_Energy * 100;
+        return Bat_Dump_Energy ;
     }
 
     public void setBat_Dump_Energy(float bat_Dump_Energy) {
@@ -662,7 +662,7 @@ public class DomainOnlineDeviceState {
     }
 
     public float getBat1_RemainCapacity() {
-        return Bat1_RemainCapacity * 100;
+        return Bat1_RemainCapacity ;
     }
 
     public void setBat1_RemainCapacity(float bat1_RemainCapacity) {
@@ -670,7 +670,7 @@ public class DomainOnlineDeviceState {
     }
 
     public float getBat2_RemainCapacity() {
-        return Bat2_RemainCapacity * 100;
+        return Bat2_RemainCapacity ;
     }
 
     public void setBat2_RemainCapacity(float bat2_RemainCapacity) {
@@ -678,7 +678,7 @@ public class DomainOnlineDeviceState {
     }
 
     public float getBat3_RemainCapacity() {
-        return Bat3_RemainCapacity * 100;
+        return Bat3_RemainCapacity ;
     }
 
     public void setBat3_RemainCapacity(float bat3_RemainCapacity) {
@@ -686,7 +686,7 @@ public class DomainOnlineDeviceState {
     }
 
     public float getBat4_RemainCapacity() {
-        return Bat4_RemainCapacity * 100;
+        return Bat4_RemainCapacity ;
     }
 
     public void setBat4_RemainCapacity(float bat4_RemainCapacity) {
@@ -746,7 +746,7 @@ public class DomainOnlineDeviceState {
     }
 
     public long getSend_flow() {
-        return Send_flow / (1024 * 1024);
+        return Send_flow;
     }
 
     public void setSend_flow(long send_flow) {
@@ -754,7 +754,7 @@ public class DomainOnlineDeviceState {
     }
 
     public long getReceive_flow() {
-        return Receive_flow / (1024 * 1024);
+        return Receive_flow;
     }
 
     public void setReceive_flow(long receive_flow) {

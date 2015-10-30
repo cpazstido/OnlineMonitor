@@ -30,7 +30,9 @@ import com.ogaclejapan.smarttablayout.SmartTabLayout;
 import com.unnamed.b.atv.model.TreeNode;
 import com.unnamed.b.atv.view.AndroidTreeView;
 
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.TreeMap;
 
 import butterknife.Bind;
@@ -96,9 +98,18 @@ public class EquipmentStateMonitorActivity extends BaseActivity implements LoadD
                             public void onClick(TreeNode treeNode, Object o) {
                                 dialog.cancel();
                                 int lineSn = line.getLineSn();
-                                EquipmentStateMonitorFragment equipmentStateMonitorFragment = fragmentTreeMap.get(TypeDef.equipmentStatusTitles[pager.getCurrentItem()]);
-                                equipmentStateMonitorFragment.setLineSn(lineSn);
-                                equipmentStateMonitorFragment.loadData();
+//                                EquipmentStateMonitorFragment equipmentStateMonitorFragment = fragmentTreeMap.get(TypeDef.equipmentStatusTitles[pager.getCurrentItem()]);
+//                                equipmentStateMonitorFragment.mAdapter.equipmentInformatics.clear();
+//                                equipmentStateMonitorFragment.setLineSn(lineSn);
+//                                equipmentStateMonitorFragment.loadData();
+                                Iterator titer = fragmentTreeMap.entrySet().iterator();
+                                while (titer.hasNext()) {
+                                    Map.Entry ent = (Map.Entry) titer.next();
+                                    EquipmentStateMonitorFragment equipmentStateMonitorFragment = (EquipmentStateMonitorFragment)ent.getValue();
+                                    equipmentStateMonitorFragment.mAdapter.equipmentInformatics.clear();
+                                    equipmentStateMonitorFragment.setLineSn(lineSn);
+                                    equipmentStateMonitorFragment.loadData();
+                                }
                             }
                         });
                         companyTree.addChild(lineTree);
@@ -112,9 +123,15 @@ public class EquipmentStateMonitorActivity extends BaseActivity implements LoadD
                     public void onClick(TreeNode node, Object value) {
                         dialog.cancel();
                         Log.e(TAG, "加载了全部设备" + "||当前显示的fragment" + pager.getCurrentItem());
-                        EquipmentStateMonitorFragment equipmentStateMonitorFragment = fragmentTreeMap.get(TypeDef.equipmentStatusTitles[pager.getCurrentItem()]);
-                        equipmentStateMonitorFragment.setLineSn(0);
-                        equipmentStateMonitorFragment.loadData();
+//                        EquipmentStateMonitorFragment equipmentStateMonitorFragment = fragmentTreeMap.get(TypeDef.equipmentStatusTitles[pager.getCurrentItem()]);
+                        Iterator titer = fragmentTreeMap.entrySet().iterator();
+                        while (titer.hasNext()) {
+                            Map.Entry ent = (Map.Entry) titer.next();
+                            EquipmentStateMonitorFragment equipmentStateMonitorFragment = (EquipmentStateMonitorFragment)ent.getValue();
+                            equipmentStateMonitorFragment.mAdapter.equipmentInformatics.clear();
+                            equipmentStateMonitorFragment.setLineSn(0);
+                            equipmentStateMonitorFragment.loadData();
+                        }
                     }
                 });
                 root.addChild(loadAllTreeNode);

@@ -42,6 +42,7 @@ public class PoleManageActivity extends SMBaseActivity {
     private boolean isLoadingMore = false;
     private int lastVisibleItem;
     private int lineSn = -1;
+    private String choiceBtnShow;
 
     @Override
     protected void initTitle() {
@@ -52,14 +53,13 @@ public class PoleManageActivity extends SMBaseActivity {
     @Override
     protected void initViewDisplay() {
         choiceBtn.setVisibility(View.VISIBLE);
-        choiceBtn.setText(R.string.line_choice);
-
+        choiceBtnShow = "线路选择: " + "全部线路";
+        choiceBtn.setText(choiceBtnShow);
         choiceBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {//获取数据,并创建树形菜单对话框
                 Log.e("choiceBtn", "调用了");
                 pageNumber = 1;
-                mAdapter.cleanList();
                 if (companyList != null) {
                     final MaterialDialog dialog = new MaterialDialog.Builder(PoleManageActivity.this)
                             .title(R.string.line_choice)
@@ -76,6 +76,9 @@ public class PoleManageActivity extends SMBaseActivity {
                                 @Override
                                 public void onClick(TreeNode treeNode, Object o) {
                                     dialog.cancel();
+                                    mAdapter.linkedHashSet.clear();
+                                    choiceBtnShow = "线路选择: " + line.getLineName();
+                                    choiceBtn.setText(choiceBtnShow);
                                     lineSn = line.getLineSn();
                                     smPolePresenter.getPolePage(line.getLineSn(), pageNumber);
                                 }
@@ -202,6 +205,7 @@ public class PoleManageActivity extends SMBaseActivity {
         refreshButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mAdapter.linkedHashSet.clear();
                 smPolePresenter.loadAllLine(getUser().getUserId());
             }
         });

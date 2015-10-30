@@ -91,12 +91,12 @@ public class LoginActivity extends AppCompatActivity implements JumpView {
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
 
-//        titles.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                TestActivity.StartTestView(LoginActivity.this);
-//            }
-//        });
+        titles.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TestActivity.StartTestView(LoginActivity.this);
+            }
+        });
 
         initPresenter();
         LoginAlert = GetLoading.getDialog(LoginActivity.this, "登录中");
@@ -227,7 +227,7 @@ public class LoginActivity extends AppCompatActivity implements JumpView {
                             new MaterialDialog.Builder(LoginActivity.this)
                                     .content(upDataInfo)
                                     .positiveText(R.string.downloads)
-                                    .negativeText(R.string.cancels)
+                                    .negativeText("下次升级")
                                     .callback(new MaterialDialog.ButtonCallback() {
                                         @Override
                                         public void onNegative(MaterialDialog dialog) {

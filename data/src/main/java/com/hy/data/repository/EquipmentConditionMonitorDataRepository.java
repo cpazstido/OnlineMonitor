@@ -31,7 +31,7 @@ public class EquipmentConditionMonitorDataRepository implements EquipmentConditi
     private String deviceSn;
     private String statisticByTime;
     private String deviceID;
-
+    private String type;
     public EquipmentConditionMonitorDataRepository(Context mContext, int userId, String fieldName, String startTime, String endTime, String deviceSn, String statisticByTime, String deviceID) {
         this.mContext = mContext;
         this.userId = userId;
@@ -43,7 +43,18 @@ public class EquipmentConditionMonitorDataRepository implements EquipmentConditi
         this.deviceID = deviceID;
     }
 
-    public EquipmentConditionMonitorDataRepository(Context mContext, int userId, int selectedType,int pageNumber) {
+    public EquipmentConditionMonitorDataRepository(Context mContext, String type, int userId, String fieldName, String startTime, String endTime, String deviceSn, String statisticByTime) {
+        this.mContext = mContext;
+        this.userId = userId;
+        this.fieldName = fieldName;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.deviceSn = deviceSn;
+        this.statisticByTime = statisticByTime;
+        this.type = type;
+    }
+
+    public EquipmentConditionMonitorDataRepository(Context mContext, int userId, int selectedType, int pageNumber) {
         this.mContext = mContext;
         this.userId = userId;
         this.selectedType = selectedType;
@@ -54,13 +65,20 @@ public class EquipmentConditionMonitorDataRepository implements EquipmentConditi
     public Observable<DomainEquipmentInforPage> getEquipmentList() {
         RestApiImpl restApi = new RestApiImpl(mContext, new PageEntityJsonMapper());
         PageEntityDataMapper pageEntityDataMapper = new PageEntityDataMapper();
-        return restApi.equipmentEntity(userId, selectedType,pageNumber).map(pageEntityDataMapper::transform);
+        return restApi.equipmentEntity(userId, selectedType, pageNumber).map(pageEntityDataMapper::transform);
     }
 
     @Override
     public Observable<TreeMap<String, Float>> queryConditionMonitorData() {
         RestApiImpl restApi = new RestApiImpl(mContext);
         return restApi.queryConditionMonitorData(userId, fieldName, startTime, endTime, deviceSn, statisticByTime, deviceID);
+    }
+
+    @Override
+    public Observable<TreeMap<String, Float>> queryMonitoringStateData() {
+        RestApiImpl restApi = new RestApiImpl(mContext);
+        return restApi.queryMonitoringStateData(type, userId, fieldName, startTime, endTime, deviceSn, statisticByTime);
+
     }
 
 }

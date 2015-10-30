@@ -33,6 +33,9 @@ public class EquipmentConditionMonitorUseCase extends UseCase{
             case 2:
                 observable = equipmentConditionMonitorRepository.queryConditionMonitorData();
                 break;
+            case 3:
+                observable = equipmentConditionMonitorRepository.queryMonitoringStateData();
+                break;
         }
 
         return observable;

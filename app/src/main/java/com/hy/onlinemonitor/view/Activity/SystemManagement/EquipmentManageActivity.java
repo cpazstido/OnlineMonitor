@@ -2,6 +2,7 @@ package com.hy.onlinemonitor.view.Activity.SystemManagement;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -43,7 +44,11 @@ public class EquipmentManageActivity extends SMBaseActivity {
     private EquipmentPage equipmentPage;
     private List<String> deviceTypeList;
     private List<Pole> poles;
-    private int poleSn;
+    private int poleSn = -1;
+    private int pageNumber = 1;
+    private boolean isLoadingMore = false;
+    private int lastVisibleItem;
+    private String choiceBtnShow;
 
     public void setLines(List<Line> lines) {
         this.lines = lines;
@@ -64,15 +69,15 @@ public class EquipmentManageActivity extends SMBaseActivity {
     @Override
     protected void initViewDisplay() {
         choiceBtn.setVisibility(View.VISIBLE);
-        choiceBtn.setText(R.string.tower_choice);
+        choiceBtnShow = "杆塔选择: 全部杆塔";
+        choiceBtn.setText(choiceBtnShow);
 
         choiceBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {//获取数据,并创建树形菜单对话框
                 Log.e("choiceBtn", "调用了");
-
                 final MaterialDialog dialog = new MaterialDialog.Builder(EquipmentManageActivity.this)
-                        .title(R.string.line_choice)
+                        .title(R.string.tower_choice)
                         .customView(R.layout.dialog_tree_choice, true)
                         .negativeText(R.string.cancel)
                         .build();
@@ -89,8 +94,12 @@ public class EquipmentManageActivity extends SMBaseActivity {
                                 @Override
                                 public void onClick(TreeNode treeNode, Object o) {
                                     dialog.cancel();
+                                    choiceBtnShow = "杆塔选择: " + pole.getPoleName();
+                                    choiceBtn.setText(choiceBtnShow);
+                                    mAdapter.linkedHashSet.clear();
                                     poleSn = pole.getPoleSn();
-                                    smEquipmentPresenter.getEquipmentPage(poleSn);
+                                    pageNumber = 1;
+                                    smEquipmentPresenter.getEquipmentPage(poleSn, pageNumber);
                                 }
                             });
                             lineTree.addChild(poleTree);
@@ -117,6 +126,37 @@ public class EquipmentManageActivity extends SMBaseActivity {
         mAdapter = new SMEquipmentRecyclerAdapter(EquipmentManageActivity.this, new ArrayList<Equipment>());
         mAdapter.setMode(Attributes.Mode.Single);
         smRecyclerView.setAdapter(mAdapter);
+
+        smRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                if (newState == RecyclerView.SCROLL_STATE_IDLE && lastVisibleItem + 1 == mAdapter.getItemCount() && mAdapter.getItemCount() >= equipmentPage.getRowCount()) {
+                    Log.e("hell", "到达底部");
+                    ShowUtile.toastShow(EquipmentManageActivity.this, "没有更多数据....");
+
+                }
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                lastVisibleItem = linearLayoutManager.findLastVisibleItemPosition();
+                int totalItemCount = mAdapter.getItemCount();
+                int pageSize = equipmentPage.getPageSize();
+                Log.e("show", "lastVisibleItem" + lastVisibleItem + "--totalItemCount" + totalItemCount + "pageSize" + pageSize);
+                if (lastVisibleItem >= totalItemCount - 1 && dy > 0 && equipmentPage.getRowCount() > totalItemCount) {
+                    if (!isLoadingMore) {
+                        ShowUtile.toastShow(EquipmentManageActivity.this, "加载更多");
+                        isLoadingMore = true;
+                        pageNumber++;
+                        //根据pageNumber加载更多
+                        EquipmentManageActivity.this.smEquipmentPresenter.getEquipmentPage(poleSn, pageNumber);
+                    } else {
+                        ShowUtile.toastShow(EquipmentManageActivity.this, "正在加载中..");
+                    }
+                }
+            }
+        });
     }
 
     @Override
@@ -223,13 +263,14 @@ public class EquipmentManageActivity extends SMBaseActivity {
 
     public void renderEquipmentList(EquipmentPage equipmentPage) {
         if (equipmentPage != null) {
+            isLoadingMore = false;
             errorMessageLl.setVisibility(View.GONE);
             smRecyclerView.setVisibility(View.VISIBLE);
             this.equipmentPage = equipmentPage;
             mAdapter.setSensorManage(sensorManage);
             mAdapter.setEquipmentPage(equipmentPage.getList());
             mAdapter.setPresenter(smEquipmentPresenter);
-        }else{
+        } else {
             showError(getResources().getString(R.string.not_data));
         }
     }
@@ -252,7 +293,8 @@ public class EquipmentManageActivity extends SMBaseActivity {
         switch (resultCode) { //resultCode为回传的标记，我在B中回传的是888
             case 888:
                 Log.e("onActivityResult", "onActivityResult");
-                smEquipmentPresenter.getEquipmentPage(poleSn);
+                pageNumber = 1;
+                smEquipmentPresenter.getEquipmentPage(poleSn, pageNumber);//加载第一页
                 break;
             default:
                 break;

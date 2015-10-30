@@ -94,7 +94,7 @@ public class SMLinePresenter implements Presenter {
     public void loadAllLine(int userId, int pageNumber) { //加载所有的线路
         showViewLoading(); //显示等待对话框
         this.userId = userId;
-        lineDataRepository = new LineDataRepository(mContext, userId, pageNumber);//创建线路数据仓库,并将参数传入
+        lineDataRepository = new LineDataRepository(mContext, userId, -1, pageNumber);//创建线路数据仓库,并将参数传入
         this.lineUseCase = new LineUseCase(new UIThread(), AndroidSchedulers.mainThread(), lineDataRepository, 5);//创一个UseCase,通过该useCase用于与data层交互,通过最后的type来调用不同的函数
         this.lineUseCase.execute(new LinePageSubscriber());
     }

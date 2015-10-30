@@ -64,7 +64,22 @@ public class EquipmentMoreInformationActivity extends AppCompatActivity {
         initData();
 
         equipmentIdentifier.setText(equipment.getDeviceID());
-        equipmentType.setText(equipment.getDeviceType());
+        String showDeviceType ="";
+        switch (equipment.getDeviceType()){
+            case "fire":
+                showDeviceType="山火";
+                break;
+            case "break":
+                showDeviceType="外破";
+                break;
+            case "uav":
+                showDeviceType="无人机";
+                break;
+            case "video":
+                showDeviceType="普通视频";
+                break;
+        }
+        equipmentType.setText(showDeviceType);
         if(equipment.getSendMmsState() ==0 ){
             alarmInformationSend.setText("否");
         }else{

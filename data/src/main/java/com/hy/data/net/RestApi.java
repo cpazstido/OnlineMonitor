@@ -2,16 +2,21 @@ package com.hy.data.net;
 
 
 import com.hy.data.entity.AdministratorPageEntity;
+import com.hy.data.entity.AeolianVibrationPageEntity;
 import com.hy.data.entity.AlarmPageEntity;
 import com.hy.data.entity.CompanyEntity;
-import com.hy.data.entity.EquipmentEntity;
+import com.hy.data.entity.ConductorSagPageEntity;
+import com.hy.data.entity.ConductorSwingWithWindPageEntity;
 import com.hy.data.entity.EquipmentInforPageEntity;
 import com.hy.data.entity.EquipmentPageEntity;
+import com.hy.data.entity.IceCoatingPageEntity;
 import com.hy.data.entity.LineEntity;
 import com.hy.data.entity.LinePageEntity;
 import com.hy.data.entity.MapEntity;
+import com.hy.data.entity.MicroclimatePageEntity;
 import com.hy.data.entity.OnlineDeviceStatePageEntity;
 import com.hy.data.entity.PolePageEntity;
+import com.hy.data.entity.PoleStatusPageEntity;
 import com.hy.data.entity.PrivilegeEntity;
 import com.hy.data.entity.RoleEntity;
 import com.hy.data.entity.RolePageEntity;
@@ -451,11 +456,12 @@ public interface RestApi {
     /**
      * 得到 设备page
      *
-     * @param userId 唯一标示
-     * @param poleSn 选中的杆塔sn
+     * @param userId  唯一标示
+     * @param poleSn  选中的杆塔sn
+     * @param pageNum 页数
      * @return 设备page
      */
-    Observable<EquipmentPageEntity> getEquipmentPage(int userId, int poleSn);
+    Observable<EquipmentPageEntity> getEquipmentPage(int userId, int poleSn, int pageNum);
 
     /**
      * 添加设备
@@ -582,14 +588,6 @@ public interface RestApi {
     Observable<String> stopPlay(int dvrId, int channelID, String dvrType, int streamType);
 
     /**
-     * 获取所有的设备列表
-     *
-     * @param userId 唯一标示
-     * @return 返回设备列表
-     */
-    Observable<List<EquipmentEntity>> getEquipmentList(int userId);
-
-    /**
      * 获取设备状态监测数据
      *
      * @param userId          唯一标示
@@ -607,6 +605,22 @@ public interface RestApi {
                                                                  String deviceID);
 
     /**
+     * 获取监测状态监测数据
+     *
+     * @param type            统计参数
+     * @param userId          唯一标示
+     * @param fieldName       具体属性
+     * @param startTime       开始时间
+     * @param endTime         结束时间
+     * @param deviceSn        设备sn
+     * @param statisticByTime 统计方式
+     * @return 返回一个Map 横坐标(时间),纵坐标(值)
+     */
+    Observable<TreeMap<String, Float>> queryMonitoringStateData(String type, int userId, String fieldName,
+                                                                String startTime, String endTime,
+                                                                String deviceSn, String statisticByTime);
+
+    /**
      * 获取在线设备状态
      *
      * @param userId  唯一标示
@@ -616,4 +630,66 @@ public interface RestApi {
      */
     Observable<OnlineDeviceStatePageEntity> loadOnlineDeviceState(int userId, int lineSn,
                                                                   int pageNum);
+
+    /**
+     * 得到微风振动数据
+     *
+     * @param deviceSn 设备sn
+     * @param pageNum  页数
+     * @return Page对象
+     */
+    Observable<AeolianVibrationPageEntity> getAeolianVibration(String deviceSn, int pageNum);
+
+    /**
+     * 得到覆冰数据
+     *
+     * @param deviceSn 设备sn
+     * @param pageNum  页数
+     * @return Page对象
+     */
+    Observable<IceCoatingPageEntity> getIceCoating(String deviceSn, int pageNum);
+
+    /**
+     * 得到导线弧垂数据
+     *
+     * @param deviceSn 设备sn
+     * @param pageNum  页数
+     * @return Page对象
+     */
+    Observable<ConductorSagPageEntity> getConductorSag(String deviceSn, int pageNum);
+
+    /**
+     * 得到导线风偏数据
+     *
+     * @param deviceSn 设备sn
+     * @param pageNum  页数
+     * @return Page对象
+     */
+    Observable<ConductorSwingWithWindPageEntity> getConductorSwingWithWind(String deviceSn, int pageNum);
+
+    /**
+     * 得到杆塔状态数据
+     *
+     * @param deviceSn 设备sn
+     * @param pageNum  页数
+     * @return Page对象
+     */
+    Observable<PoleStatusPageEntity> getPoleStatus(String deviceSn, int pageNum);
+
+    /**
+     * 得到微气象数据
+     *
+     * @param deviceSn 设备sn
+     * @param pageNum  页数
+     * @return Page对象
+     */
+    Observable<MicroclimatePageEntity> getMicroclimate(String deviceSn, int pageNum);
+
+    /**
+     * 获取传感器类型,用来显示page
+     *
+     * @param devicesn 设备sn
+     * @return List
+     */
+    Observable<List<SensorTypeEntity>> getConditionMonitoringType(String devicesn);
 }

@@ -20,6 +20,7 @@ import android.widget.CompoundButton;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.github.mikephil.charting.charts.LineChart;
@@ -38,11 +39,17 @@ import com.hy.onlinemonitor.data.StatisticsData;
 import com.hy.onlinemonitor.presenter.EquipmentConditionMonitorPresenter;
 import com.hy.onlinemonitor.utile.GetLoading;
 import com.hy.onlinemonitor.utile.ShowUtile;
+import com.hy.onlinemonitor.utile.TransformationUtils;
 import com.hy.onlinemonitor.view.Activity.BaseActivity;
 import com.hy.onlinemonitor.view.Component.MyMarkerView;
 import com.hy.onlinemonitor.view.LoadDataView;
+import com.hy.onlinemonitor.view.ViewHolder.IconTreeItemHolder;
+import com.hy.onlinemonitor.view.ViewHolder.SelectableHeaderHolder;
+import com.hy.onlinemonitor.view.ViewHolder.SelectableItemHolder;
 import com.rey.material.widget.Button;
 import com.rey.material.widget.RadioButton;
+import com.unnamed.b.atv.model.TreeNode;
+import com.unnamed.b.atv.view.AndroidTreeView;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
 import java.text.DateFormat;
@@ -52,7 +59,9 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -68,6 +77,10 @@ public class EquipmentConditionMonitorActivity extends BaseActivity implements D
     Button startTimeBtn;
     @Bind(R.id.end_time_btn)
     Button endTimeBtn;
+    @Bind(R.id.tv_start_time)
+    TextView startTimeTv;
+    @Bind(R.id.tv_end_time)
+    TextView endTimeTv;
     @Bind(R.id.real_time_statistics)
     RadioButton realTimeStatistics;
     @Bind(R.id.daily_statistics)
@@ -100,8 +113,12 @@ public class EquipmentConditionMonitorActivity extends BaseActivity implements D
     private String statisticByTime = "allTime"; //allTime 实时统计
     private static TreeMap<Float, Float> treeMap = new TreeMap<>();
     private static String selectStatisticsStr = "";//Spinner上的显示的选择统计
-    private static String statisticalParametersStr = "";//Spinner上的显示的选择统计
-    private static String specificParametersStr = "";//Spinner上的显示的选择统计
+    private static String statisticalParametersStr = "";//Spinner上的显示的统计参数
+    private static String specificParametersStr = "";//Spinner上的显示的具体参数
+    private TreeNode root, towerTree, lineTree;
+    private AndroidTreeView tView;
+    private HashMap<String, String> deviceIdHashMap = new HashMap<>();
+    private HashMap<String, String> deviceSnHashMap = new HashMap<>();
 
     private boolean projectFlag;//判断是哪一个界面 true为设备状态统计 false为监测状态统计
 
@@ -110,7 +127,7 @@ public class EquipmentConditionMonitorActivity extends BaseActivity implements D
         while (it.hasNext()) {
             EquipmentInformation equipmentInformation = it.next();
             this.equipmentList.add(equipmentInformation);
-            this.equipmentNameList.add(equipmentInformation.getEquipmnetName());
+            this.equipmentNameList.add(equipmentInformation.getLineName() + "--" + equipmentInformation.getPoleName() + "--" + TransformationUtils.getDeviceNameLastSix(equipmentInformation.getEquipmnetName()));
         }
     }
 
@@ -144,40 +161,35 @@ public class EquipmentConditionMonitorActivity extends BaseActivity implements D
     }
 
     private void searchData() {
-
         if ("选择设备".equals(choiceEquipment.getText().toString())) {
             ShowUtile.toastShow(getContext(), "请选择设备");
         } else {
-
             String startTime = startTimeBtn.getText().toString(); //开始时间 2015-10-12
             String endTime = endTimeBtn.getText().toString(); //结束时间2015-10-12
-            String deviceSn = "";// deviceSn 130
-            String deviceID = choiceEquipment.getText().toString();//deviceID=HY_OLMS_000000074
-            for (EquipmentInformation equipmentInformation : equipmentList) {
-                if (deviceID.equals(equipmentInformation.getEquipmnetName())) {
-                    deviceSn = equipmentInformation.getSn() + "";
-                }
-            }
-
+            String deviceSn = deviceSnHashMap.get(choiceEquipment.getText().toString());
+            String deviceID = deviceIdHashMap.get(choiceEquipment.getText().toString());
             if (projectFlag) {//设备状态统计
                 //选择统计Str
                 selectStatisticsStr = StatisticsData.selectStatistics[selectStatistics.getSelectedItemPosition()];
                 String fieldName = StatisticsData.getValueByStatisticsKey(selectStatisticsStr); //工作温度等对应的
                 if (realTimeStatistics.isChecked()) {
-                    if (!startTimeBtn.getText().toString().equals(endTimeBtn.getText().toString())) {
-                        ShowUtile.toastShow(getContext(), "请选择相同的开始与结束时间");
-                    } else {
-                        EquipmentConditionMonitorActivity.this.equipmentConditionMonitorPresenter.queryConditionMonitorData(getUser().getUserId(), fieldName, startTime, endTime, deviceSn, statisticByTime, deviceID);
-                    }
+                    EquipmentConditionMonitorActivity.this.equipmentConditionMonitorPresenter.queryConditionMonitorData(getUser().getUserId(), fieldName, startTime, startTime, deviceSn, statisticByTime, deviceID);
                 } else {
                     EquipmentConditionMonitorActivity.this.equipmentConditionMonitorPresenter.queryConditionMonitorData(getUser().getUserId(), fieldName, startTime, endTime, deviceSn, statisticByTime, deviceID);
                 }
             } else {//为监测状态统计
+                //统计参数Str
+                statisticalParametersStr = statisticalParameters.getSelectedItem().toString();
                 //具体参数Str
-                specificParametersStr = StatisticsData.statisticalParameters[specificParameters.getSelectedItemPosition()];
+                specificParametersStr = specificParameters.getSelectedItem().toString();
+                String fieldName = StatisticsData.getValueBySpecificAttributesKey(specificParametersStr);
+                if (realTimeStatistics.isChecked()) {
+                    EquipmentConditionMonitorActivity.this.equipmentConditionMonitorPresenter.queryMonitoringStateData(statisticalParametersStr, getUser().getUserId(), fieldName, startTime, startTime, deviceSn, statisticByTime);
+                } else {
+                    EquipmentConditionMonitorActivity.this.equipmentConditionMonitorPresenter.queryMonitoringStateData(statisticalParametersStr, getUser().getUserId(), fieldName, startTime, endTime, deviceSn, statisticByTime);
+                }
             }
         }
-
     }
 
     @Override
@@ -193,26 +205,39 @@ public class EquipmentConditionMonitorActivity extends BaseActivity implements D
                     realTimeStatistics.setChecked(realTimeStatistics == buttonView);
                     dailyStatistics.setChecked(dailyStatistics == buttonView);
                     monthStatistics.setChecked(monthStatistics == buttonView);
-
                     if (realTimeStatistics.isChecked()) {
+                        startTimeTv.setText("统计时间");
+                        endTimeBtn.setVisibility(View.GONE);
+                        endTimeTv.setVisibility(View.GONE);
                         statisticByTime = "allTime";
                     } else if (dailyStatistics.isChecked()) {
+                        startTimeTv.setText("开始时间");
+                        endTimeBtn.setVisibility(View.VISIBLE);
+                        endTimeTv.setVisibility(View.VISIBLE);
                         statisticByTime = "day";
                     } else if (monthStatistics.isChecked()) {
+                        startTimeTv.setText("开始时间");
+                        endTimeBtn.setVisibility(View.VISIBLE);
+                        endTimeTv.setVisibility(View.VISIBLE);
                         statisticByTime = "month";
                     }
-
                 }
             }
         };
 
         if (projectFlag) {
             toolbar.setSubtitle("设备状态统计");
+            startTimeTv.setText("统计时间");
+            endTimeBtn.setVisibility(View.GONE);
+            endTimeTv.setVisibility(View.GONE);
             selectStatisticsLl.setVisibility(View.VISIBLE);
             statisticalParametersLl.setVisibility(View.GONE);
             specificParametersLl.setVisibility(View.GONE);
         } else {
             toolbar.setSubtitle("监测状态统计");
+            startTimeTv.setText("统计时间");
+            endTimeBtn.setVisibility(View.GONE);
+            endTimeTv.setVisibility(View.GONE);
             selectStatisticsLl.setVisibility(View.GONE);
             statisticalParametersLl.setVisibility(View.VISIBLE);
             specificParametersLl.setVisibility(View.VISIBLE);
@@ -258,31 +283,56 @@ public class EquipmentConditionMonitorActivity extends BaseActivity implements D
         choiceEquipment.setOnClickListener(new View.OnClickListener() {//公司选择按钮
             @Override
             public void onClick(View v) {
-                Log.e(TAG, "equipmentNameList.size->"+equipmentNameList.size());
+                Log.e(TAG, "equipmentNameList.size->" + equipmentNameList.size());
                 if (equipmentList != null && equipmentList.size() != 0) {
-                    int defaultNum =0;
-                    if(!choiceEquipment.getText().toString().equals("选择设备")){
-                        defaultNum = equipmentNameList.indexOf(choiceEquipment.getText().toString());
+                    LinkedHashSet<String> linkedHashSet = new LinkedHashSet<>();
+                    for (EquipmentInformation equipmentInformation : equipmentList) {
+                        linkedHashSet.add(equipmentInformation.getLineName());
+                    }
+                    Iterator it = linkedHashSet.iterator();
+                    List<String> lineList = new ArrayList<>();
+                    while (it.hasNext()) {
+                        String lineStr = it.next().toString();
+                        lineList.add(lineStr);
+                    }
+                    final MaterialDialog dialog = new MaterialDialog.Builder(getContext())
+                            .title(R.string.equipment_choice)
+                            .customView(R.layout.dialog_tree_choice, true)
+                            .positiveText(R.string.cancel)
+                            .build();
+                    LinearLayout ll = (LinearLayout) dialog.getCustomView().findViewById(R.id.dialog_tree_show);
+
+                    root = TreeNode.root();
+                    for (String lineName : lineList) {
+                        lineTree = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.string.ic_earth, lineName)).setViewHolder((new SelectableHeaderHolder(getContext())));
+
+                        for (EquipmentInformation equipmentInformation : equipmentList) {
+                            if (lineName.equals(equipmentInformation.getLineName())) {
+                                final String realShowStr = equipmentInformation.getPoleName() + "--" + equipmentInformation.getEquipmnetName();
+                                towerTree = new TreeNode(realShowStr).setViewHolder(new SelectableItemHolder(getContext()));
+                                deviceIdHashMap.put(realShowStr, equipmentInformation.getEquipmnetName());
+                                deviceSnHashMap.put(realShowStr, equipmentInformation.getSn()+"");
+                                towerTree.setClickListener(new TreeNode.TreeNodeClickListener() {
+                                    @Override
+                                    public void onClick(TreeNode node, Object value) {
+                                        dialog.cancel();
+                                        choiceEquipment.setText(realShowStr);
+                                    }
+                                });
+                                lineTree.addChild(towerTree);
+                            }
+                        }
+                        root.addChild(lineTree);
                     }
 
-                    new MaterialDialog.Builder(getContext())
-                            .title("设备选择")
-                            .items(equipmentNameList.toArray(new CharSequence[equipmentNameList.size()]))
-                            .itemsCallbackSingleChoice(defaultNum, new MaterialDialog.ListCallbackSingleChoice() {
-                                @Override
-                                public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
-                                    choiceEquipment.setText(text.toString());
-                                    return true; // allow selection
-                                }
-                            })
-                            .negativeText(R.string.cancel)
-                            .positiveText(R.string.choice)
-                            .show();
-
+                    tView = new AndroidTreeView(getContext(), root);
+                    tView.setDefaultAnimation(true);
+                    tView.setSelectionModeEnabled(false);
+                    ll.addView(tView.getView());
+                    dialog.show();
                 } else {
                     ShowUtile.toastShow(getContext(), "设备列表为空");
                 }
-
             }
         });
 
@@ -392,23 +442,11 @@ public class EquipmentConditionMonitorActivity extends BaseActivity implements D
 
     public void showChart(TreeMap<Float, Float> treeMaps) {
         treeMap = treeMaps;
-
-//        Display display = getWindowManager().getDefaultDisplay();
-//        Point size = new Point();
-//        display.getSize(size);
-//        int width = size.x;
-//        int height = size.y-230;
-//        LinearLayout.LayoutParams linearParams = (LinearLayout.LayoutParams) container.getLayoutParams();
-//        linearParams.height = height;
-//        linearParams.width = width;
-//        container.setLayoutParams(linearParams);
-
         getSupportFragmentManager().beginTransaction().replace(R.id.container, new PlaceholderFragment()).commit();
 
     }
 
     public static class PlaceholderFragment extends Fragment {
-
 
         public PlaceholderFragment() {
         }
@@ -452,7 +490,6 @@ public class EquipmentConditionMonitorActivity extends BaseActivity implements D
         }
 
         private void initChart() {
-
             mChart.setOnChartGestureListener(new OnChartGestureListener() {
                 @Override
                 public void onChartGestureStart(MotionEvent me, ChartTouchListener.ChartGesture lastPerformedGesture) {
@@ -481,29 +518,24 @@ public class EquipmentConditionMonitorActivity extends BaseActivity implements D
 
                 @Override
                 public void onChartFling(MotionEvent me1, MotionEvent me2, float velocityX, float velocityY) {
-
                 }
 
                 @Override
                 public void onChartScale(MotionEvent me, float scaleX, float scaleY) {
-
                 }
 
                 @Override
                 public void onChartTranslate(MotionEvent me, float dX, float dY) {
-
                 }
             });
 
             mChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
                 @Override
                 public void onValueSelected(Entry e, int dataSetIndex, Highlight h) {
-
                 }
 
                 @Override
                 public void onNothingSelected() {
-
                 }
             });
 
@@ -524,7 +556,6 @@ public class EquipmentConditionMonitorActivity extends BaseActivity implements D
             mChart.setScaleEnabled(true);
             // mChart.setScaleXEnabled(true);
             // mChart.setScaleYEnabled(true);
-
             // if disabled, scaling can be done on x- and y-axis separately
             mChart.setPinchZoom(true);
 
@@ -553,13 +584,15 @@ public class EquipmentConditionMonitorActivity extends BaseActivity implements D
 
             // create a dataset and give it a type
             LineDataSet set1 = new LineDataSet(yValues, selectStatisticsStr);
-
             set1.setLineWidth(1.5f);
+            //set Circles is enable
+            set1.setDrawCircles(false);
+
+            set1.setColor(getResources().getColor(R.color.primary));
             set1.setCircleSize(4f);
 
             // create a data object with the datasets
             LineData data = new LineData(xValues, set1);
-
             // set data
             mChart.setData(data);
         }

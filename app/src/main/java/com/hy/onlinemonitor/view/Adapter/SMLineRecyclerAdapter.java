@@ -24,6 +24,8 @@ import com.hy.onlinemonitor.view.ViewHolder.LineViewHolder;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.List;
 
 /**
@@ -34,6 +36,7 @@ public class SMLineRecyclerAdapter extends RecyclerSwipeAdapter<LineViewHolder> 
     private List<Line> lines;
     private SMLinePresenter smLinePresenter;
     private List<Company> companyList;
+    public LinkedHashSet<Line> linkedHashSet = new LinkedHashSet<>();
 
     public SMLineRecyclerAdapter(Context mContext, List<Line> lines) {
         this.mContext = mContext;
@@ -160,15 +163,14 @@ public class SMLineRecyclerAdapter extends RecyclerSwipeAdapter<LineViewHolder> 
 
     public void setLinePage(Collection<Line> roleCollection) { //设置数据
         this.validateLineCollection(roleCollection);
-        if (lines.size() == 0) {
-            lines = (List<Line>) roleCollection;
-        } else {
-            for (Line line : roleCollection) {
-                if (!lines.contains(line)) {
-                    lines.add(line);
-                }
-            }
+        linkedHashSet.addAll(roleCollection);
+        Iterator it = linkedHashSet.iterator();
+        List<Line> list1 = new ArrayList<>();
+        while (it.hasNext()) {
+            Line line = (Line) it.next();
+            list1.add(line);
         }
+        lines = list1;
         this.notifyDataSetChanged();
     }
 

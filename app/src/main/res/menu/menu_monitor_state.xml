@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/action_change"
+        android:icon="@drawable/ic_change"
+        android:orderInCategory="80"
+        android:title="@string/change_equipment"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/action_time"
+        android:icon="@drawable/ic_time"
+        android:orderInCategory="80"
+        android:title="@string/date_pick"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/action_search"
+        android:icon="@drawable/ic_search"
+        android:orderInCategory="80"
+        android:title="@string/action_search"
+        app:showAsAction="ifRoom" />
+
+</menu>

@@ -19,7 +19,10 @@ import com.hy.onlinemonitor.presenter.SMPolePresenter;
 import com.hy.onlinemonitor.utile.ShowUtile;
 import com.hy.onlinemonitor.view.ViewHolder.TowerViewHolder;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.List;
 
 /**
@@ -29,6 +32,7 @@ public class SMTowerRecyclerAdapter extends RecyclerSwipeAdapter<TowerViewHolder
     private Context mContext;
     private List<Pole> poles;
     private SMPolePresenter smPolePresenter;
+    public LinkedHashSet<Pole> linkedHashSet = new LinkedHashSet<>();
 
     public SMTowerRecyclerAdapter(Context mContext, List<Pole> poles) {
         this.mContext = mContext;
@@ -136,15 +140,14 @@ public class SMTowerRecyclerAdapter extends RecyclerSwipeAdapter<TowerViewHolder
 
     public void setPoleCollection(Collection<Pole> poleCollection) {
         this.validateEquipmentCollection(poleCollection);
-        if (poles.size() == 0) {
-            poles = (List<Pole>) poleCollection;
-        } else {
-            for (Pole pole : poleCollection) {
-                if (!poles.contains(pole)) {
-                    poles.add(pole);
-                }
-            }
+        linkedHashSet.addAll(poleCollection);
+        Iterator it = linkedHashSet.iterator();
+        List<Pole> list1 = new ArrayList<>();
+        while (it.hasNext()) {
+            Pole pole = (Pole) it.next();
+            list1.add(pole);
         }
+        poles = list1;
         this.notifyDataSetChanged();
     }
 

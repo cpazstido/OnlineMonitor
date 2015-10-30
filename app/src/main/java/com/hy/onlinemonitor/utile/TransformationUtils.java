@@ -67,7 +67,6 @@ public class TransformationUtils {
                 df = new DecimalFormat("0.00");
                 break;
         }
-
         return df.format(number);
 
     }
@@ -273,6 +272,10 @@ public class TransformationUtils {
         return newStr + "%";
     }
 
+    public static String getSignFromFloat(byte number) {
+        String newStr = getStringFromFloat(number, 2);
+        return newStr + "%";
+    }
     /**
      * 得到兆M为结尾的字符串
      *
@@ -282,7 +285,7 @@ public class TransformationUtils {
 
     public static String getMFromLong(long number) {
         String newStr = getStringFromLong(number, 1);
-        return newStr + "%";
+        return newStr + "M";
     }
 
     /**

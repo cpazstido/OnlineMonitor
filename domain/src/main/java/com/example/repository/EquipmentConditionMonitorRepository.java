@@ -12,4 +12,5 @@ public interface EquipmentConditionMonitorRepository {
 
     Observable<TreeMap<String,Float>> queryConditionMonitorData();
 
+    Observable<TreeMap<String,Float>> queryMonitoringStateData();
 }

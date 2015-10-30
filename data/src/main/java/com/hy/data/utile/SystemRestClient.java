@@ -8,9 +8,6 @@ import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
 import org.apache.http.HttpEntity;
-import org.apache.http.client.CookieStore;
-import org.apache.http.client.protocol.ClientContext;
-import org.apache.http.cookie.Cookie;
 
 public class SystemRestClient {
     public static final String BASE_MONITOR_URL = "http://118.123.114.8:8080/eMonitorApp";
@@ -35,7 +32,6 @@ public class SystemRestClient {
 
     private static FinalAsyncHttpClient finalAsyncHttpClient = new FinalAsyncHttpClient();
     private static AsyncHttpClient client = finalAsyncHttpClient.getAsyncHttpClient();
-    public static Cookie s;
     static {
         client.setTimeout(15000);
     }
@@ -52,14 +48,7 @@ public class SystemRestClient {
     }
 
     public static void post(String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {
-        CookieStore cookies = (CookieStore) client.getHttpContext().getAttribute(ClientContext.COOKIE_STORE);
-        if(cookies!=null){
-            for(Cookie c:cookies.getCookies()){
-                s=c;
-            }
-        }
         client.post(getAbsoluteUrl(url), params, responseHandler);
-
     }
     private static String getAbsoluteUrl(String relativeUrl) {
         Log.i("getAbsoluteUrl", BASE_URL + relativeUrl);

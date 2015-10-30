@@ -33,6 +33,7 @@ public class EquipmentDataRepository implements SMEquipmentRepository {
     private String cma_ID;
     private String sensor_ID;
     private String equipment_ID;
+    private int pageNum;
 
     public EquipmentDataRepository(int userId, int sn, Context mContext) {
         this.userId = userId;
@@ -40,10 +41,11 @@ public class EquipmentDataRepository implements SMEquipmentRepository {
         this.mContext = mContext;
     }
 
-    public EquipmentDataRepository(Context mContext, int userId, int poleSn) {
+    public EquipmentDataRepository(Context mContext, int userId, int poleSn,int pageNum) {
         this.userId = userId;
         this.poleSn = poleSn;
         this.mContext = mContext;
+        this.pageNum = pageNum;
     }
 
     public EquipmentDataRepository(Context mContext, int userId, int poleSn, String deviceID, String dvrId, String angleRelativeToNorthPole, String deviceType, int isSendMessage, String cma_id, String sensor_id, String equipment_id) {
@@ -92,7 +94,7 @@ public class EquipmentDataRepository implements SMEquipmentRepository {
     public Observable<DomainEquipmentPage> getEquipmentPage() {
         RestApiImpl restApi = new RestApiImpl(mContext, new PageEntityJsonMapper());
         PageEntityDataMapper pageEntityDataMapper = new PageEntityDataMapper();
-        return restApi.getEquipmentPage(userId, poleSn).map(pageEntityDataMapper::transform);
+        return restApi.getEquipmentPage(userId, poleSn,pageNum).map(pageEntityDataMapper::transform);
     }
 
     @Override

@@ -7,24 +7,106 @@
 
     <include layout="@layout/toolbar" />
 
+    <LinearLayout
+        android:id="@+id/time_ll_show"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="5dp">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:padding="2dp">
+
+            <TextView
+                android:id="@+id/tv_start_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="开始时间"
+                android:textColor="#000" />
+
+            <com.rey.material.widget.Button
+                android:id="@+id/start_time_btn"
+                style="@style/FlatColorButtonRippleStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="36dp"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="1"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Button"
+                android:textColor="#FF2196F3"
+                app:rd_delayClick="afterRelease" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:padding="2dp">
+
+            <TextView
+                android:id="@+id/tv_end_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="结束时间"
+                android:textColor="#000" />
+
+            <com.rey.material.widget.Button
+                android:id="@+id/end_time_btn"
+                style="@style/FlatColorButtonRippleStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="36dp"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="1"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Button"
+                android:textColor="#FF2196F3"
+                app:rd_delayClick="afterRelease" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:id="@+id/choice_btn_ll"
+        android:padding="5dp">
+
+        <com.rey.material.widget.Button
+            android:id="@+id/choice_equipment"
+            style="@style/FlatColorButtonRippleStyle"
+            android:layout_width="0dp"
+            android:layout_height="36dp"
+            android:layout_marginLeft="10dp"
+            android:layout_weight="1"
+            android:text="选择设备"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Button"
+            android:textColor="#FF2196F3"
+            app:rd_delayClick="afterRelease" />
+
+    </LinearLayout>
+
     <com.ogaclejapan.smarttablayout.SmartTabLayout
-        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/device_status_title"
         android:layout_width="match_parent"
         android:layout_height="@dimen/tab_height"
         android:paddingBottom="4dp"
-        android:background="@color/primary"
-        app:stl_defaultTabTextColor="@color/mdtp_white"
+        app:stl_defaultTabTextColor="@color/primary"
         app:stl_defaultTabTextMinWidth="120dp"
-        app:stl_indicatorColor="@color/mdtp_white"
+        app:stl_indicatorColor="@color/primary"
         app:stl_indicatorCornerRadius="1.5dp"
         app:stl_indicatorInterpolation="smart"
+        app:stl_distributeEvenly="true"
         app:stl_indicatorThickness="3dp"
-        app:stl_indicatorAlwaysInCenter="true"
         app:stl_underlineColor="@color/transparent" />
 
     <android.support.v4.view.ViewPager
         android:id="@+id/pager"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="match_parent" />
+
 </LinearLayout>
