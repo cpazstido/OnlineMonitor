@@ -21,6 +21,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.hy.onlinemonitor.R;
@@ -50,6 +51,8 @@ import io.vov.vitamio.MediaPlayer;
 
 public class VideoActivity extends AppCompatActivity implements InitView, LoadDataView, MediaPlayer.OnBufferingUpdateListener, MediaPlayer.OnCompletionListener, MediaPlayer.OnPreparedListener, MediaPlayer.OnVideoSizeChangedListener, SurfaceHolder.Callback, MediaPlayer.OnErrorListener {
     private static final String TAG = "VideoActivity";
+    @Bind(R.id.rootView)
+    RelativeLayout rootView;
     @Bind(R.id.video_toolbar)
     Toolbar toolbar;
     @Bind(R.id.video_line_tv)
@@ -286,10 +289,10 @@ public class VideoActivity extends AppCompatActivity implements InitView, LoadDa
                                 case MotionEvent.ACTION_UP: //手放开时停止转动命令
                                     if (mediaPlayer.isPlaying()) {
                                         yunControlShow.setText(CONTROL_SHOW + "转动停止中.");
-                                        ShowUtile.toastShow(VideoActivity.this, "转动停止中.");
+                                        ShowUtile.snackBarShow(getRootView(), "转动停止中.");
                                         videoPresenter.videoControl(CONTROL_STOP);
                                     } else {
-                                        ShowUtile.toastShow(VideoActivity.this, "没有在播放状态，请先播放！");
+                                        ShowUtile.snackBarShow(getRootView(), "没有在播放状态，请先播放！");
                                     }
 
                                     break;
@@ -297,10 +300,10 @@ public class VideoActivity extends AppCompatActivity implements InitView, LoadDa
                                     if (mediaPlayer.isPlaying()) {
                                         changeToManual();
                                         yunControlShow.setText(CONTROL_SHOW + "左转中,请稍等");
-                                        ShowUtile.toastShow(VideoActivity.this, "左转中...");
+                                        ShowUtile.snackBarShow(getRootView(), "左转中...");
                                         videoPresenter.videoControl(CONTROL_LEFT);
                                     } else {
-                                        ShowUtile.toastShow(VideoActivity.this, "没有在播放状态，请先播放！");
+                                        ShowUtile.snackBarShow(getRootView(), "没有在播放状态，请先播放！");
                                     }
                                     break;
                             }
@@ -320,10 +323,10 @@ public class VideoActivity extends AppCompatActivity implements InitView, LoadDa
                                 case MotionEvent.ACTION_UP: //手放开时停止转动命令
                                     if (mediaPlayer.isPlaying()) {
                                         yunControlShow.setText(CONTROL_SHOW + "转动停止中.");
-                                        ShowUtile.toastShow(VideoActivity.this, "转动停止中.");
+                                        ShowUtile.snackBarShow(getRootView(), "转动停止中.");
                                         videoPresenter.videoControl(CONTROL_STOP);
                                     } else {
-                                        ShowUtile.toastShow(VideoActivity.this, "没有在播放状态，请先播放！");
+                                        ShowUtile.snackBarShow(getRootView(), "没有在播放状态，请先播放！");
                                     }
 
                                     break;
@@ -331,10 +334,10 @@ public class VideoActivity extends AppCompatActivity implements InitView, LoadDa
                                     if (mediaPlayer.isPlaying()) {
                                         changeToManual();
                                         yunControlShow.setText(CONTROL_SHOW + "上转中,请稍等");
-                                        ShowUtile.toastShow(VideoActivity.this, "上转中...");
+                                        ShowUtile.snackBarShow(getRootView(), "上转中...");
                                         videoPresenter.videoControl(CONTROL_UP);
                                     } else {
-                                        ShowUtile.toastShow(VideoActivity.this, "没有在播放状态，请先播放！");
+                                        ShowUtile.snackBarShow(getRootView(), "没有在播放状态，请先播放！");
                                     }
                                     break;
                             }
@@ -353,10 +356,10 @@ public class VideoActivity extends AppCompatActivity implements InitView, LoadDa
                                 case MotionEvent.ACTION_UP://手放开时停止转动命令
                                     if (mediaPlayer.isPlaying()) {
                                         yunControlShow.setText(CONTROL_SHOW + "转动停止中.");
-                                        ShowUtile.toastShow(VideoActivity.this, "转动停止中.");
+                                        ShowUtile.snackBarShow(getRootView(), "转动停止中.");
                                         videoPresenter.videoControl(CONTROL_STOP);
                                     } else {
-                                        ShowUtile.toastShow(VideoActivity.this, "没有在播放状态，请先播放！");
+                                        ShowUtile.snackBarShow(getRootView(), "没有在播放状态，请先播放！");
                                     }
 
                                     break;
@@ -364,10 +367,10 @@ public class VideoActivity extends AppCompatActivity implements InitView, LoadDa
                                     if (mediaPlayer.isPlaying()) {
                                         changeToManual();
                                         yunControlShow.setText(CONTROL_SHOW + "下转中,请稍等");
-                                        ShowUtile.toastShow(VideoActivity.this, "下转中...");
+                                        ShowUtile.snackBarShow(getRootView(), "下转中...");
                                         videoPresenter.videoControl(CONTROL_DOWN);
                                     } else {
-                                        ShowUtile.toastShow(VideoActivity.this, "没有在播放状态，请先播放！");
+                                        ShowUtile.snackBarShow(getRootView(), "没有在播放状态，请先播放！");
                                     }
                                     break;
                             }
@@ -386,10 +389,10 @@ public class VideoActivity extends AppCompatActivity implements InitView, LoadDa
                                 case MotionEvent.ACTION_UP://手放开时停止转动命令
                                     if (mediaPlayer.isPlaying()) {
                                         yunControlShow.setText(CONTROL_SHOW + "转动停止中.");
-                                        ShowUtile.toastShow(VideoActivity.this, "转动停止中.");
+                                        ShowUtile.snackBarShow(getRootView(), "转动停止中.");
                                         videoPresenter.videoControl(CONTROL_STOP);
                                     } else {
-                                        ShowUtile.toastShow(VideoActivity.this, "没有在播放状态，请先播放！");
+                                        ShowUtile.snackBarShow(getRootView(), "没有在播放状态，请先播放！");
                                     }
 
                                     break;
@@ -397,10 +400,10 @@ public class VideoActivity extends AppCompatActivity implements InitView, LoadDa
                                     if (mediaPlayer.isPlaying()) {
                                         changeToManual();
                                         yunControlShow.setText(CONTROL_SHOW + "右转中,请稍等");
-                                        ShowUtile.toastShow(VideoActivity.this, "右转中...");
+                                        ShowUtile.snackBarShow(getRootView(), "右转中...");
                                         videoPresenter.videoControl(CONTROL_RIGHT);
                                     } else {
-                                        ShowUtile.toastShow(VideoActivity.this, "没有在播放状态，请先播放！");
+                                        ShowUtile.snackBarShow(getRootView(), "没有在播放状态，请先播放！");
                                     }
                                     break;
                             }
@@ -495,7 +498,7 @@ public class VideoActivity extends AppCompatActivity implements InitView, LoadDa
             if (timer != null)
                 timer.cancel();
         }
-        ShowUtile.toastShow(VideoActivity.this, message);
+        ShowUtile.snackBarShow(getRootView(), message);
 
     }
 
@@ -779,7 +782,7 @@ public class VideoActivity extends AppCompatActivity implements InitView, LoadDa
         videoUrl = "";
         isOpenPower = false;
         videoPlayTv.setText("播放出错,错误代码" + "(" + i + ", " + i1 + ")");
-        ShowUtile.toastShow(VideoActivity.this, "视频暂无法播放,错误代码" + "(" + i + ", " + i1 + ")");
+        ShowUtile.snackBarShow(getRootView(), "视频暂无法播放,错误代码" + "(" + i + ", " + i1 + ")");
         doCleanUp();
         releaseMediaPlayer();
         return true;
@@ -849,5 +852,10 @@ public class VideoActivity extends AppCompatActivity implements InitView, LoadDa
             toolbar.setVisibility(View.VISIBLE);
         }
 
+    }
+
+    @Override
+    public View getRootView() {
+        return rootView;
     }
 }

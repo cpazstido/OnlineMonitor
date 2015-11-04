@@ -133,8 +133,7 @@ public class EquipmentManageActivity extends SMBaseActivity {
                 super.onScrollStateChanged(recyclerView, newState);
                 if (newState == RecyclerView.SCROLL_STATE_IDLE && lastVisibleItem + 1 == mAdapter.getItemCount() && mAdapter.getItemCount() >= equipmentPage.getRowCount()) {
                     Log.e("hell", "到达底部");
-                    ShowUtile.toastShow(EquipmentManageActivity.this, "没有更多数据....");
-
+                    ShowUtile.snackBarShow(getRootView(), "没有更多数据....");
                 }
             }
 
@@ -146,13 +145,12 @@ public class EquipmentManageActivity extends SMBaseActivity {
                 Log.e("show", "lastVisibleItem" + lastVisibleItem + "--totalItemCount" + totalItemCount + "pageSize" + pageSize);
                 if (lastVisibleItem >= totalItemCount - 1 && dy > 0 && equipmentPage.getRowCount() > totalItemCount) {
                     if (!isLoadingMore) {
-                        ShowUtile.toastShow(EquipmentManageActivity.this, "加载更多");
                         isLoadingMore = true;
                         pageNumber++;
                         //根据pageNumber加载更多
                         EquipmentManageActivity.this.smEquipmentPresenter.getEquipmentPage(poleSn, pageNumber);
                     } else {
-                        ShowUtile.toastShow(EquipmentManageActivity.this, "正在加载中..");
+                        ShowUtile.snackBarShow(getRootView(), "正在加载中..");
                     }
                 }
             }

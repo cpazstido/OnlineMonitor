@@ -144,6 +144,11 @@ public class EquipmentConditionMonitorActivity extends BaseActivity implements D
     }
 
     @Override
+    public View getRootView() {
+        return container;
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_search, menu);
@@ -162,7 +167,7 @@ public class EquipmentConditionMonitorActivity extends BaseActivity implements D
 
     private void searchData() {
         if ("选择设备".equals(choiceEquipment.getText().toString())) {
-            ShowUtile.toastShow(getContext(), "请选择设备");
+            ShowUtile.snackBarShow(getRootView(), "请选择设备");
         } else {
             String startTime = startTimeBtn.getText().toString(); //开始时间 2015-10-12
             String endTime = endTimeBtn.getText().toString(); //结束时间2015-10-12
@@ -331,7 +336,7 @@ public class EquipmentConditionMonitorActivity extends BaseActivity implements D
                     ll.addView(tView.getView());
                     dialog.show();
                 } else {
-                    ShowUtile.toastShow(getContext(), "设备列表为空");
+                    ShowUtile.snackBarShow(getRootView(), "设备列表为空");
                 }
             }
         });
@@ -380,12 +385,12 @@ public class EquipmentConditionMonitorActivity extends BaseActivity implements D
             if (checkTime(year + "-" + realMonth + "-" + dayOfMonth, endTimeBtn.getText().toString()))
                 startTimeBtn.setText(year + "-" + realMonth + "-" + dayOfMonth);
             else
-                ShowUtile.toastShow(EquipmentConditionMonitorActivity.this, "请选择正确的开始与结束时间");
+                ShowUtile.snackBarShow(getRootView(), "请选择正确的开始与结束时间");
         } else {//选择结束时间
             if (checkTime(startTimeBtn.getText().toString(), year + "-" + realMonth + "-" + dayOfMonth))
                 endTimeBtn.setText(year + "-" + realMonth + "-" + dayOfMonth);
             else
-                ShowUtile.toastShow(EquipmentConditionMonitorActivity.this, "请选择正确的开始与结束时间");
+                ShowUtile.snackBarShow(getRootView(), "请选择正确的开始与结束时间");
         }
     }
 
@@ -432,6 +437,8 @@ public class EquipmentConditionMonitorActivity extends BaseActivity implements D
         if (mChart != null) {
             mChart.getLineData().clearValues();
             mChart.invalidate();
+        }else{
+            ShowUtile.snackBarShow(getRootView(),message);
         }
     }
 

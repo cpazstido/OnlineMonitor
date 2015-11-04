@@ -8,14 +8,13 @@
     android:orientation="vertical">
 
     <TextView
-        android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
         android:id="@+id/error_message_tv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:gravity="center"
         android:text="出现错误"
-        android:textSize="@dimen/mTitle"
+        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
         android:layout_centerVertical="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />

@@ -8,6 +8,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -42,6 +43,8 @@ public abstract class SMBaseActivity extends BaseActivity implements LoadDataVie
     Button refreshButton;
     @Bind(R.id.error_message_ll)
     RelativeLayout errorMessageLl;
+    @Bind(R.id.rootView)
+    LinearLayout rootView;
 
     @Override
     protected void setOwnContentView() {
@@ -75,6 +78,11 @@ public abstract class SMBaseActivity extends BaseActivity implements LoadDataVie
         smRecyclerView.setLayoutManager(linearLayoutManager);
         smRecyclerView.setHasFixedSize(true);
         this.initRvAdapter();
+    }
+
+    @Override
+    public View getRootView() {
+        return rootView;
     }
 
     @Override

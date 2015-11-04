@@ -9,9 +9,9 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="18dp"
         android:text="@string/company_name"
-        android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
-        android:textColor="#80000000"
-        android:textSize="@dimen/customTitle" />
+        android:textColor="@color/secondary_text_default_material_light"
+        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+        />
 
     <EditText
         android:id="@+id/dialog_company_name"
@@ -26,9 +26,9 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="18dp"
         android:text="@string/company_address"
-        android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
-        android:textColor="#80000000"
-        android:textSize="@dimen/customTitle" />
+        android:textColor="@color/secondary_text_default_material_light"
+        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+        />
 
     <EditText
         android:id="@+id/dialog_company_address"
@@ -42,10 +42,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="18dp"
+        android:id="@+id/parent_company_tv"
+        android:textColor="@color/secondary_text_default_material_light"
         android:text="@string/company_parent"
-        android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
-        android:textColor="#80000000"
-        android:textSize="@dimen/customTitle" />
+        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+        />
 
     <Spinner
         android:id="@+id/dialog_company_parent"

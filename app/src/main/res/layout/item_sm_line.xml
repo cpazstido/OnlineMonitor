@@ -47,8 +47,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
                     android:text="@string/line_name"
-                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
-                    android:textSize="@dimen/mTitle" />
+                    android:textAppearance="@style/TextAppearance.AppCompat.Headline" />
 
                 <TextView
                     android:id="@+id/line_name"
@@ -56,8 +55,8 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_marginRight="10dp"
-                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
-                    android:textSize="@dimen/mTitle" />
+                    android:textColor="@color/primary_text_default_material_light"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Title" />
 
             </RelativeLayout>
 
@@ -78,8 +77,8 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
                         android:text="@string/line_start"
-                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
-                        android:textSize="@dimen/mSubhead" />
+                        android:textColor="@color/primary_text_default_material_light"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Subhead" />
 
                     <TextView
                         android:id="@+id/line_start"
@@ -87,8 +86,8 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
                         android:layout_marginRight="10dp"
-                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
-                        android:textSize="@dimen/mBody2" />
+                        android:textColor="@color/secondary_text_default_material_light"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
                 </RelativeLayout>
 
                 <RelativeLayout
@@ -101,8 +100,8 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
                         android:text="@string/line_finish"
-                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
-                        android:textSize="@dimen/mSubhead" />
+                        android:textColor="@color/primary_text_default_material_light"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Subhead" />
 
                     <TextView
                         android:id="@+id/line_finish"
@@ -110,8 +109,8 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
                         android:layout_marginRight="10dp"
-                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
-                        android:textSize="@dimen/mBody2" />
+                        android:textColor="@color/secondary_text_default_material_light"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
                 </RelativeLayout>
 
             </LinearLayout>
@@ -128,8 +127,8 @@
                     android:layout_alignParentLeft="true"
                     android:layout_marginRight="10dp"
                     android:text="@string/line_trend"
-                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
-                    android:textSize="@dimen/mSubhead" />
+                    android:textColor="@color/primary_text_default_material_light"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Subhead" />
 
                 <TextView
                     android:id="@+id/line_trend"
@@ -137,8 +136,8 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_marginRight="10dp"
-                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
-                    android:textSize="@dimen/mBody2" />
+                    android:textColor="@color/secondary_text_default_material_light"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
 
             </RelativeLayout>
 
@@ -153,8 +152,8 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
                     android:text="@string/voltage_level"
-                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
-                    android:textSize="@dimen/mSubhead" />
+                    android:textColor="@color/primary_text_default_material_light"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Subhead" />
 
                 <TextView
                     android:id="@+id/voltage_level"
@@ -162,8 +161,8 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_marginRight="10dp"
-                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
-                    android:textSize="@dimen/mBody2" />
+                    android:textColor="@color/secondary_text_default_material_light"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
 
             </RelativeLayout>
         </LinearLayout>

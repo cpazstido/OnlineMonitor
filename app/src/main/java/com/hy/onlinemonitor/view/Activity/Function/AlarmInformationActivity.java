@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 
 import com.hy.onlinemonitor.R;
 import com.hy.onlinemonitor.data.TypeDef;
@@ -21,9 +22,6 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-/**
- * Created by wsw on 2015/7/13.
- */
 public class AlarmInformationActivity extends BaseActivity implements LoadDataView{
 
     @Bind(R.id.toolbar)
@@ -121,6 +119,11 @@ public class AlarmInformationActivity extends BaseActivity implements LoadDataVi
     @Override
     public Context getContext() {
         return AlarmInformationActivity.this;
+    }
+
+    @Override
+    public View getRootView() {
+        return pager;
     }
 
 }

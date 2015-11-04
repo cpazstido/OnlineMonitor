@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.LinearLayout;
 
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -192,12 +193,17 @@ public class EquipmentStateMonitorActivity extends BaseActivity implements LoadD
 
     @Override
     public void showError(String message) {
-
+        ShowUtile.snackBarShow(getRootView(),message);
     }
 
     @Override
     public Context getContext() {
         return EquipmentStateMonitorActivity.this;
+    }
+
+    @Override
+    public View getRootView() {
+        return pager;
     }
 
     public void setCompanyList(List<Company> mList) {

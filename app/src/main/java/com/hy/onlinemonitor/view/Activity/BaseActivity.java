@@ -218,4 +218,5 @@ public abstract class BaseActivity extends AppCompatActivity implements InitView
         super.onDestroy();
         ActivityCollector.removeActivity(this);
     }
+
 }

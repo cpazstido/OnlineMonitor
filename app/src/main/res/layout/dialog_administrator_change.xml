@@ -16,9 +16,9 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="18dp"
             android:text="@string/login_name"
-            android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
-            android:textColor="#80000000"
-            android:textSize="@dimen/customTitle" />
+            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+            android:textColor="@color/secondary_text_default_material_light"
+            />
 
         <EditText
             android:id="@+id/dialog_administrator_loginName"
@@ -33,9 +33,9 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="18dp"
             android:text="@string/real_name"
-            android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
-            android:textColor="#80000000"
-            android:textSize="@dimen/customTitle" />
+            android:textColor="@color/secondary_text_default_material_light"
+            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+            />
 
         <EditText
             android:id="@+id/dialog_administrator_realName"
@@ -50,9 +50,9 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="18dp"
             android:text="@string/password"
-            android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
-            android:textColor="#80000000"
-            android:textSize="@dimen/customTitle" />
+            android:textColor="@color/secondary_text_default_material_light"
+            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+            />
 
         <EditText
             android:id="@+id/dialog_administrator_password"
@@ -67,9 +67,9 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="18dp"
             android:text="@string/phone_number"
-            android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
-            android:textColor="#80000000"
-            android:textSize="@dimen/customTitle" />
+            android:textColor="@color/secondary_text_default_material_light"
+            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+            />
 
         <EditText
             android:id="@+id/dialog_administrator_number"
@@ -85,9 +85,9 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="18dp"
             android:text="@string/own_company"
-            android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
-            android:textColor="#80000000"
-            android:textSize="@dimen/customTitle" />
+            android:textColor="@color/secondary_text_default_material_light"
+            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+            />
 
         <Spinner
             android:id="@+id/dialog_administrator_company"
@@ -102,9 +102,9 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="18dp"
             android:text="@string/receive_messages"
-            android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
-            android:textColor="#80000000"
-            android:textSize="@dimen/customTitle" />
+            android:textColor="@color/secondary_text_default_material_light"
+            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+            />
 
         <Spinner
             android:id="@+id/dialog_administrator_message"
@@ -120,9 +120,9 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="18dp"
             android:text="@string/role"
-            android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
-            android:textColor="#80000000"
-            android:textSize="@dimen/customTitle" />
+            android:textColor="@color/secondary_text_default_material_light"
+            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+            />
 
         <Spinner
             android:id="@+id/dialog_administrator_role"

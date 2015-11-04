@@ -18,6 +18,7 @@ import com.hy.data.repository.datasource.UserDataStoreFactory;
 import com.hy.onlinemonitor.UIThread;
 import com.hy.onlinemonitor.bean.OwnJurisdiction;
 import com.hy.onlinemonitor.utile.ShowUtile;
+import com.hy.onlinemonitor.view.Activity.LoginActivity;
 import com.hy.onlinemonitor.view.JumpView;
 
 import java.util.ArrayList;
@@ -34,6 +35,7 @@ public class LoginPresenter extends DefaultSubscriber implements Presenter {
     private String loginAccount;
     private String loginPwd;
     private UseCase loginUseCase;
+    private LoginActivity loginActivity;
 
     @Override
     public void resume() {
@@ -51,6 +53,7 @@ public class LoginPresenter extends DefaultSubscriber implements Presenter {
 
     public void setView(@NonNull JumpView view) {
         this.LoginView = view;
+        this.loginActivity = (LoginActivity) view;
         mContext = view.getContext();
     }
 
@@ -123,7 +126,8 @@ public class LoginPresenter extends DefaultSubscriber implements Presenter {
         @Override
         public void onError(Throwable e) {
             LoginPresenter.this.hideViewLoading();
-            ShowUtile.toastShow(mContext,"登录失败,请稍后重试");
+
+            ShowUtile.snackBarShow(loginActivity.getRootView(), "登录失败,请稍后重试");
             super.onError(e);
         }
 

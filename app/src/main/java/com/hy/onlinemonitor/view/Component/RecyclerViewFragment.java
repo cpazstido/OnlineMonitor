@@ -133,7 +133,7 @@ public class RecyclerViewFragment extends Fragment implements AlarmListView {
                                 pageNum++;
                                 loadAlarmList(userId, curProject, queryAlarmType, status, pageNum);
                             } else {
-                                ShowUtile.toastShow(mContext, "无更多数据...");
+                                ShowUtile.snackBarShow(getRootView(), "无更多数据...");
                             }
                         }
                         break;
@@ -186,6 +186,11 @@ public class RecyclerViewFragment extends Fragment implements AlarmListView {
                 RecyclerViewFragment.this.loadAlarmList(userId, curProject, queryAlarmType, status, pageNum);
             }
         });
+    }
+
+    @Override
+    public View getRootView() {
+        return getView();
     }
 
     @Override

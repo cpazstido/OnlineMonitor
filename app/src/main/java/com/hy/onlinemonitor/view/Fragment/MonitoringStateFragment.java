@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.hy.onlinemonitor.bean.AeolianVibration;
 import com.hy.onlinemonitor.bean.ConditionMonitoringPage;
@@ -54,7 +53,7 @@ public class MonitoringStateFragment extends StateMonitorBaseFragment {
                                 pageNum++;
                                 loadData();
                             } else {
-                                ShowUtile.toastShow(getContext(), "无更多数据...");
+                                ShowUtile.snackBarShow(getView(), "无更多数据...");
                             }
                         }
                         break;
@@ -75,22 +74,22 @@ public class MonitoringStateFragment extends StateMonitorBaseFragment {
         Log.e(TAG, title + "deviceSn" + bundle.getString("deviceSn") + "pageNum" + pageNum);
         switch (title) {
             case "微气象传感器":
-                conditionMonitoringPresenter.getMicroclimate(bundle.getString("deviceSn"), pageNum);
+                conditionMonitoringPresenter.getMicroclimate(bundle.getString("deviceSn"), bundle.getString("startDate"), bundle.getString("endDate"), pageNum);
                 break;
             case "杆塔倾斜传感器":
-                conditionMonitoringPresenter.getPoleStatus(bundle.getString("deviceSn"), pageNum);
+                conditionMonitoringPresenter.getPoleStatus(bundle.getString("deviceSn"), bundle.getString("startDate"), bundle.getString("endDate"),pageNum);
                 break;
             case "微风振动传感器":
-                conditionMonitoringPresenter.getAeolianVibration(bundle.getString("deviceSn"), pageNum);
+                conditionMonitoringPresenter.getAeolianVibration(bundle.getString("deviceSn"), bundle.getString("startDate"), bundle.getString("endDate"),pageNum);
                 break;
             case "导线弧垂传感器":
-                conditionMonitoringPresenter.getConductorSag(bundle.getString("deviceSn"), pageNum);
+                conditionMonitoringPresenter.getConductorSag(bundle.getString("deviceSn"), bundle.getString("startDate"), bundle.getString("endDate"),pageNum);
                 break;
             case "覆冰传感器":
-                conditionMonitoringPresenter.getIceCoating(bundle.getString("deviceSn"), pageNum);
+                conditionMonitoringPresenter.getIceCoating(bundle.getString("deviceSn"), bundle.getString("startDate"), bundle.getString("endDate"),pageNum);
                 break;
             case "风偏传感器":
-                conditionMonitoringPresenter.getConductorSwingWithWind(bundle.getString("deviceSn"), pageNum);
+                conditionMonitoringPresenter.getConductorSwingWithWind(bundle.getString("deviceSn"), bundle.getString("startDate"), bundle.getString("endDate"),pageNum);
                 break;
         }
     }
@@ -157,16 +156,24 @@ public class MonitoringStateFragment extends StateMonitorBaseFragment {
         getAdapter();
     }
 
-    public static MonitoringStateFragment newInstance(Context context, String title, int userId, String deviceSn) {
+    @Override
+    protected void toErrorRefresh() {
+        doRefresh();
+    }
+
+    public static MonitoringStateFragment newInstance(Context context, String title, int userId, String deviceSn,String startDate,String endDate) {
         Bundle bundle = new Bundle();
         bundle.putString("title", title);
         bundle.putInt("userId", userId);
         bundle.putString("deviceSn", deviceSn);
+        bundle.putString("startDate", startDate);
+        bundle.putString("endDate", endDate);
         mContext = context;
         MonitoringStateFragment fragment = new MonitoringStateFragment();
         fragment.setArguments(bundle);
         return fragment;
     }
+
 
     public void renderDataList(ConditionMonitoringPage conditionMonitoringPage) {
         isLoadingMore = false;
@@ -196,7 +203,7 @@ public class MonitoringStateFragment extends StateMonitorBaseFragment {
                         break;
                 }
             } else {
-                Toast.makeText(mContext, "暂无数据", Toast.LENGTH_SHORT).show();
+                ((MonitoringStateAcitvity)getActivity()).showError("暂无数据");
             }
         }
     }

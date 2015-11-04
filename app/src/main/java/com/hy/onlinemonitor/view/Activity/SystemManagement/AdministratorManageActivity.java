@@ -281,7 +281,7 @@ public class AdministratorManageActivity extends SMBaseActivity {
                             //非全选时参数为0
                             smAdministratorPresenter.changeManageTower(getUser().getUserId(), TowerSn, 0);
                         } else {//全选时,为1
-                            ShowUtile.toastShow(AdministratorManageActivity.this, "全选");
+                            ShowUtile.snackBarShow(getRootView(), "全选");
                             smAdministratorPresenter.changeManageTower(getUser().getUserId(), null, 1);
                         }
                         super.onPositive(dialog);

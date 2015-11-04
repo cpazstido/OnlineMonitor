@@ -60,7 +60,7 @@ public class LineManageActivity extends SMBaseActivity {//系统管理-线路管
                 //判断是否到达底部
                 if (newState == RecyclerView.SCROLL_STATE_IDLE && lastVisibleItem + 1 == mAdapter.getItemCount() && mAdapter.getItemCount() >= linePage.getRowCount()) {
                     Log.e("hell", "到达底部");
-                    ShowUtile.toastShow(LineManageActivity.this, "没有更多数据....");//显示
+                    ShowUtile.snackBarShow(getRootView(), "没有更多数据....");//显示
                 }
             }
 
@@ -72,7 +72,7 @@ public class LineManageActivity extends SMBaseActivity {//系统管理-线路管
                 //当可见到达总个数-1是,并且page对象总总数大于当前加载了的数目,则进行加载更多
                 if (lastVisibleItem >= totalItemCount - 1 && dy > 0 && linePage.getRowCount() > totalItemCount) {
                     if (!isLoadingMore) { //没有处于正在加载中
-                        ShowUtile.toastShow(LineManageActivity.this, "加载更多");
+                        ShowUtile.snackBarShow(getRootView(), "加载更多");
                         isLoadingMore = true; //正在加载中..
                         pageNumber++; //页数+1
                         //根据CompanySn来判断是加载所有的还是加载部分
@@ -85,7 +85,7 @@ public class LineManageActivity extends SMBaseActivity {//系统管理-线路管
                                 break;
                         }
                     } else {
-                        ShowUtile.toastShow(LineManageActivity.this, "正在加载中..");
+                        ShowUtile.snackBarShow(getRootView(), "正在加载中..");
                     }
                 }
             }

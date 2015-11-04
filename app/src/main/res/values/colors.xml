@@ -44,4 +44,5 @@
     <color name="colorControlActivated">#FF03A9F4</color>
     <color name="colorSwitchThumbNormal">#FF78909C</color>
 
+    <color name="mSubtitleColor">#616161</color>
 </resources>

@@ -12,6 +12,7 @@ import com.hy.onlinemonitor.UIThread;
 import com.hy.onlinemonitor.bean.Company;
 import com.hy.onlinemonitor.mapper.CompanyDataMapper;
 import com.hy.onlinemonitor.mapper.PageDataMapper;
+import com.hy.onlinemonitor.utile.ShowUtile;
 import com.hy.onlinemonitor.view.Activity.ConditionMonitor.EquipmentStateMonitorActivity;
 import com.hy.onlinemonitor.view.Fragment.EquipmentStateMonitorFragment;
 
@@ -62,7 +63,7 @@ public class EquipmentStateMonitorPresenter implements Presenter {
         @Override
         public void onError(Throwable e) {
             EquipmentStateMonitorPresenter.this.hideViewLoading();
-            equipmentStateMonitorActivity.showError(e.getMessage());
+            ShowUtile.snackBarShow(equipmentStateMonitorActivity.getRootView(),e.getMessage());
             super.onError(e);
         }
 
@@ -97,7 +98,7 @@ public class EquipmentStateMonitorPresenter implements Presenter {
         @Override
         public void onError(Throwable e) {
             EquipmentStateMonitorPresenter.this.hideViewLoading();
-            equipmentStateMonitorActivity.showError(e.getMessage());
+            ShowUtile.snackBarShow(equipmentStateMonitorActivity.getRootView(), e.getMessage());
             super.onError(e);
         }
 

@@ -38,34 +38,33 @@
             android:padding="10dp">
 
             <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:layout_weight="1">
-
-            <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
+                android:layout_marginTop="5dp"
+                android:layout_weight="1">
 
-                android:text="@string/tower_name"
-                android:textSize="@dimen/mSubhead" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/tower_name"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Title" />
 
-            <TextView
-                android:id="@+id/tower_name"
-                android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
-                android:layout_marginLeft="15dp"
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:textSize="@dimen/mBody2" />
-        </LinearLayout>
+                <TextView
+                    android:id="@+id/tower_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:textColor="@color/primary_text_default_material_light"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Subhead" />
+            </LinearLayout>
 
             <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:layout_weight="1"
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:orientation="horizontal">
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -75,17 +74,17 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
                         android:text="@string/longitude"
-                        android:textSize="@dimen/mSubhead" />
+                        android:textColor="@color/primary_text_default_material_light"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Subhead" />
 
                     <TextView
                         android:id="@+id/longitude"
-                        android:layout_marginLeft="10dp"
-                        android:layout_height="wrap_content"
-                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
                         android:layout_width="wrap_content"
-                        android:textSize="@dimen/mBody2" />
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:textColor="@color/secondary_text_default_material_light"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -97,17 +96,17 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
                         android:text="@string/latitude"
-                        android:textSize="@dimen/mSubhead" />
+                        android:textColor="@color/primary_text_default_material_light"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Subhead" />
 
                     <TextView
                         android:id="@+id/latitude"
-                        android:layout_marginLeft="10dp"
-                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
-                        android:layout_height="wrap_content"
                         android:layout_width="wrap_content"
-                        android:textSize="@dimen/mBody2" />
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:textColor="@color/secondary_text_default_material_light"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
                 </LinearLayout>
 
             </LinearLayout>
@@ -121,17 +120,17 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
                     android:text="@string/altitude"
-                    android:textSize="@dimen/mSubhead" />
+                    android:textColor="@color/primary_text_default_material_light"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Subhead" />
 
                 <TextView
                     android:id="@+id/altitude"
-                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
-                    android:layout_marginLeft="15dp"
-                    android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
-                    android:textSize="@dimen/mBody2" />
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:textColor="@color/secondary_text_default_material_light"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
             </LinearLayout>
         </LinearLayout>
 

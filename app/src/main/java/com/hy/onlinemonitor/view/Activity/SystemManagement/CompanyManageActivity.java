@@ -42,7 +42,7 @@ public class CompanyManageActivity extends SMBaseActivity {
     @Override
     protected void initRvAdapter() {
         mAdapter = new SMCompanyRecyclerAdapter(CompanyManageActivity.this, new ArrayList<Company>());//新建适配器
-        ((SMCompanyRecyclerAdapter) mAdapter).setMode(Attributes.Mode.Single);//设置适配器的模式
+        mAdapter.setMode(Attributes.Mode.Single);//设置适配器的模式
         smRecyclerView.setAdapter(mAdapter);//给RecyclerView设置适配器
     }
 

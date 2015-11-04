@@ -20,7 +20,6 @@ import android.widget.TextView;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.hy.onlinemonitor.R;
 import com.hy.onlinemonitor.bean.EquipmentInformation;
-import com.hy.onlinemonitor.bean.Line;
 import com.hy.onlinemonitor.presenter.ConditionMonitoringPresenter;
 import com.hy.onlinemonitor.utile.GetLoading;
 import com.hy.onlinemonitor.utile.ShowUtile;
@@ -90,9 +89,7 @@ public class MonitoringStateAcitvity extends BaseActivity implements LoadDataVie
     private int selectedType = -9;//设置初始值为负,代表为不选择任何项目
     private TreeNode root, towerTree, lineTree;
     private AndroidTreeView tView;
-    private List<Line> lines;
     private TreeMap<String, EquipmentStateMonitorFragment> fragmentTreeMap = new TreeMap<>();
-    private static boolean flags = false;
     private boolean timeFlag; //判断是开始按钮还是结束按钮
     private List<EquipmentInformation> equipmentList = new ArrayList<>();
     private List<String> equipmentNameList = new ArrayList<>();
@@ -112,6 +109,8 @@ public class MonitoringStateAcitvity extends BaseActivity implements LoadDataVie
 
     @Override
     protected Toolbar getToolbar() {
+        toolbar.setTitle("状态监测");
+        toolbar.setSubtitle("监测状态");
         return toolbar;
     }
 
@@ -204,7 +203,7 @@ public class MonitoringStateAcitvity extends BaseActivity implements LoadDataVie
                     ll.addView(tView.getView());
                     dialog.show();
                 } else {
-                    ShowUtile.toastShow(getContext(), "设备列表为空");
+                    ShowUtile.snackBarShow(getRootView(), "设备列表为空");
                 }
             }
         });
@@ -223,12 +222,21 @@ public class MonitoringStateAcitvity extends BaseActivity implements LoadDataVie
 
     @Override
     public void showError(String message) {
-
+        deviceStatusTitle.setVisibility(View.GONE);
+        pager.removeAllViews();
+        timeLlShow.setVisibility(View.VISIBLE);
+        choiceBtnLl.setVisibility(View.VISIBLE);
+        ShowUtile.snackBarShow(getRootView(),message);
     }
 
     @Override
     public Context getContext() {
         return MonitoringStateAcitvity.this;
+    }
+
+    @Override
+    public View getRootView() {
+        return LlBackGround;
     }
 
     @Override
@@ -262,10 +270,11 @@ public class MonitoringStateAcitvity extends BaseActivity implements LoadDataVie
     }
 
     private void loadDataBySn() {
+        pager.removeAllViews();
         if ("选择设备".equals(choiceEquipment.getText().toString())) {
             timeLlShow.setVisibility(View.VISIBLE);
             choiceBtnLl.setVisibility(View.VISIBLE);
-            ShowUtile.toastShow(getContext(), "请选择设备");
+            ShowUtile.snackBarShow(getRootView(), "请选择设备");
         } else {
             String deviceSn = deviceSnHashMap.get(choiceEquipment.getText().toString());
             conditionMonitoringPresenter.getConditionMonitoringType(deviceSn);
@@ -293,6 +302,7 @@ public class MonitoringStateAcitvity extends BaseActivity implements LoadDataVie
 
     public void pagerInit(List<String> titles) {
         if (titles.size() == 0) {
+            deviceStatusTitle.setVisibility(View.GONE);
             timeLlShow.setVisibility(View.VISIBLE);
             choiceBtnLl.setVisibility(View.VISIBLE);
             Snackbar.make(LlBackGround, "暂无传感器数据", Snackbar.LENGTH_LONG).show();
@@ -302,7 +312,7 @@ public class MonitoringStateAcitvity extends BaseActivity implements LoadDataVie
                 @Override
                 public Fragment getItem(int position) {
                     String deviceSn = deviceSnHashMap.get(choiceEquipment.getText().toString());
-                    return MonitoringStateFragment.newInstance(getContext(),typeAutoPlaneConfig[position],getUser().getUserId(),deviceSn);
+                    return MonitoringStateFragment.newInstance(getContext(),typeAutoPlaneConfig[position],getUser().getUserId(),deviceSn,startTimeBtn.getText().toString(),endTimeBtn.getText().toString());
                 }
 
                 @Override
@@ -316,6 +326,7 @@ public class MonitoringStateAcitvity extends BaseActivity implements LoadDataVie
                 }
             });
             deviceStatusTitle.setViewPager(pager);
+            deviceStatusTitle.setVisibility(View.VISIBLE);
             pager.setOffscreenPageLimit(pager.getAdapter().getCount());
         }
     }
@@ -327,12 +338,12 @@ public class MonitoringStateAcitvity extends BaseActivity implements LoadDataVie
             if (checkTime(year + "-" + realMonth + "-" + dayOfMonth, endTimeBtn.getText().toString()))
                 startTimeBtn.setText(year + "-" + realMonth + "-" + dayOfMonth);
             else
-                ShowUtile.toastShow(getContext(), "请选择正确的开始与结束时间");
+                ShowUtile.snackBarShow(getRootView(), "请选择正确的开始与结束时间");
         } else {//选择结束时间
             if (checkTime(startTimeBtn.getText().toString(), year + "-" + realMonth + "-" + dayOfMonth))
                 endTimeBtn.setText(year + "-" + realMonth + "-" + dayOfMonth);
             else
-                ShowUtile.toastShow(getContext(), "请选择正确的开始与结束时间");
+                ShowUtile.snackBarShow(getRootView(), "请选择正确的开始与结束时间");
         }
     }
 

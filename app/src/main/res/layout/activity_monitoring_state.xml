@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/ll_background"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/ll_background"
     android:orientation="vertical">
 
     <include layout="@layout/toolbar" />
@@ -27,7 +27,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="开始时间"
-                android:textColor="#000" />
+                android:textAppearance="@style/TextAppearance.AppCompat.Subhead" />
 
             <com.rey.material.widget.Button
                 android:id="@+id/start_time_btn"
@@ -54,7 +54,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="结束时间"
-                android:textColor="#000" />
+                android:textAppearance="@style/TextAppearance.AppCompat.Subhead" />
 
             <com.rey.material.widget.Button
                 android:id="@+id/end_time_btn"
@@ -71,10 +71,10 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/choice_btn_ll"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:id="@+id/choice_btn_ll"
         android:padding="5dp">
 
         <com.rey.material.widget.Button
@@ -98,10 +98,10 @@
         android:paddingBottom="4dp"
         app:stl_defaultTabTextColor="@color/primary"
         app:stl_defaultTabTextMinWidth="120dp"
+        app:stl_distributeEvenly="true"
         app:stl_indicatorColor="@color/primary"
         app:stl_indicatorCornerRadius="1.5dp"
         app:stl_indicatorInterpolation="smart"
-        app:stl_distributeEvenly="true"
         app:stl_indicatorThickness="3dp"
         app:stl_underlineColor="@color/transparent" />
 

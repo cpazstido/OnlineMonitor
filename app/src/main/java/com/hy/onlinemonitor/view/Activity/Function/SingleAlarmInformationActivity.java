@@ -34,6 +34,8 @@ import butterknife.ButterKnife;
  * Created by 24363 on 2015/8/20.
  */
 public class SingleAlarmInformationActivity extends AppCompatActivity implements AlarmListView, InitView {
+    @Bind(R.id.rootView)
+    RelativeLayout rootView;
     @Bind(R.id.equipment_toolbar)
     Toolbar toolbar;
     @Bind(R.id.rv_recyclerview_data)
@@ -144,6 +146,11 @@ public class SingleAlarmInformationActivity extends AppCompatActivity implements
     }
 
     @Override
+    public View getRootView() {
+        return rootView;
+    }
+
+    @Override
     public void setupUI() {
         loadingDialog = GetLoading.getDialog(SingleAlarmInformationActivity.this, "加载数据中");
         layoutManager = new LinearLayoutManager(this);
@@ -169,7 +176,7 @@ public class SingleAlarmInformationActivity extends AppCompatActivity implements
                                 pageNum++;
                                 loadAlarmList(userId ,curProject,equipmentName, queryAlarmType, status, pageNum);
                             } else {
-                                ShowUtile.toastShow(getContext(), "无更多数据...");
+                                ShowUtile.snackBarShow(getRootView(), "无更多数据...");
                             }
                         }
                         break;

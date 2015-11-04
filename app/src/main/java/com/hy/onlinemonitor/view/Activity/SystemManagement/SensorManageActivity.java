@@ -197,6 +197,11 @@ public class SensorManageActivity extends AppCompatActivity implements LoadDataV
         return null;
     }
 
+    @Override
+    public View getRootView() {
+        return smRecyclerView;
+    }
+
     public void setAllSensorList(List<SensorType> mList) {
         this.allSensor = mList;
     }

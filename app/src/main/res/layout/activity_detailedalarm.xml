@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/rootView"
     android:orientation="vertical">
 
     <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
@@ -70,20 +71,20 @@
                 android:layout_weight="1">
 
                 <TextView
-                    android:textSize="@dimen/mSubhead"
-                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
+                    android:textColor="@color/primary_text_default_material_light"
                     android:text="@string/is_blowing_equipment" />
 
                 <TextView
-                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body2"
                     android:id="@+id/detailed_blowing_equipment"
                     android:layout_width="wrap_content"
-                    android:textSize="@dimen/mBody2"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
+                    android:textColor="@color/secondary_text_default_material_light"
                     android:layout_marginRight="10dp" />
 
 
@@ -95,19 +96,20 @@
                 android:layout_weight="1">
 
                 <TextView
-                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
                     android:textSize="@dimen/mSubhead"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
+                    android:textColor="@color/primary_text_default_material_light"
                     android:text="@string/alarm_information" />
 
                 <TextView
-                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body2"
                     android:id="@+id/detailed_alarm_information"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="@dimen/mBody2"
+                    android:textColor="@color/secondary_text_default_material_light"
                     android:layout_alignParentRight="true"
                     android:layout_marginRight="10dp" />
             </RelativeLayout>

@@ -31,8 +31,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="侯阳一线--84号塔"
-                android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
-                android:textSize="@dimen/mSubhead" />
+                android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                />
+
 
             <ImageView
                 android:id="@+id/equipment_title_new_alarm"
@@ -57,8 +58,8 @@
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
                 android:text="@string/new_alarm"
-                android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
-                android:textSize="@dimen/mSubhead" />
+                android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                android:textColor="@color/primary_text_default_material_light" />
 
             <TextView
                 android:id="@+id/new_alarm_null_tv"
@@ -128,8 +129,8 @@
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
                 android:text="@string/history_alarm"
-                android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
-                android:textSize="@dimen/mSubhead" />
+                android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                android:textColor="@color/primary_text_default_material_light" />
 
 
             <LinearLayout
@@ -187,8 +188,8 @@
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
                 android:text="@string/equipment_state"
-                android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
-                android:textSize="@dimen/mSubhead" />
+                android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                android:textColor="@color/primary_text_default_material_light" />
 
             <LinearLayout
                 android:id="@+id/real_time_ll"
@@ -216,7 +217,8 @@
                 android:layout_marginLeft="20dp"
                 android:layout_toLeftOf="@id/real_time_ll"
                 android:layout_toRightOf="@id/equipment_state_tv"
-                android:textAppearance="@style/Base.TextAppearance.AppCompat.Title" />
+                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                android:textColor="@color/secondary_text_default_material_light" />
 
         </RelativeLayout>
     </LinearLayout>

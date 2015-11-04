@@ -52,10 +52,12 @@ public class UserPresenter extends DefaultSubscriber implements Presenter {
 
     @Override
     public void showViewLoading() {
+        typeSelectionActivity.showLoading();
     }
 
     @Override
     public void hideViewLoading() {
+        typeSelectionActivity.hideLoading();
 
     }
 

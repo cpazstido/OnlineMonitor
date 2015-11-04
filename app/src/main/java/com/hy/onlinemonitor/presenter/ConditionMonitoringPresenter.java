@@ -68,6 +68,7 @@ public class ConditionMonitoringPresenter implements Presenter {
         public void onError(Throwable e) {
             Log.e(TAG, e.getMessage());
             ConditionMonitoringPresenter.this.hideViewLoading();
+            monitoringStateAcitvity.showError(e.getMessage());
             super.onError(e);
         }
 
@@ -90,51 +91,51 @@ public class ConditionMonitoringPresenter implements Presenter {
         monitoringStateAcitvity.setEquipmentList(equipmentLists);
     }
 
-    public void getAeolianVibration(String deviceSn, int pageNum) {
+    public void getAeolianVibration(String deviceSn,String startDate,String endDate, int pageNum) {
         this.showViewLoading();
         this.transformType = 1;
-        this.conditionMonitoringDataRepository = new ConditionMonitoringDataRepository(mContext, deviceSn, pageNum);
+        this.conditionMonitoringDataRepository = new ConditionMonitoringDataRepository(mContext, deviceSn,startDate,endDate, pageNum);
         this.useCase = new ConditionMonitoringUseCase(new UIThread(), AndroidSchedulers.mainThread(), conditionMonitoringDataRepository, 2);
         this.useCase.execute(new ConditionMonitoringPageSubscriber());
     }
 
-    public void getIceCoating(String deviceSn, int pageNum) {
+    public void getIceCoating(String deviceSn,String startDate,String endDate, int pageNum) {
         this.showViewLoading();
         this.transformType = 2;
-        this.conditionMonitoringDataRepository = new ConditionMonitoringDataRepository(mContext, deviceSn, pageNum);
+        this.conditionMonitoringDataRepository = new ConditionMonitoringDataRepository(mContext, deviceSn,startDate,endDate, pageNum);
         this.useCase = new ConditionMonitoringUseCase(new UIThread(), AndroidSchedulers.mainThread(), conditionMonitoringDataRepository, 3);
         this.useCase.execute(new ConditionMonitoringPageSubscriber());
 
     }
 
-    public void getConductorSag(String deviceSn, int pageNum) {
+    public void getConductorSag(String deviceSn,String startDate,String endDate, int pageNum) {
         this.showViewLoading();
         this.transformType = 3;
-        this.conditionMonitoringDataRepository = new ConditionMonitoringDataRepository(mContext, deviceSn, pageNum);
+        this.conditionMonitoringDataRepository = new ConditionMonitoringDataRepository(mContext, deviceSn,startDate,endDate, pageNum);
         this.useCase = new ConditionMonitoringUseCase(new UIThread(), AndroidSchedulers.mainThread(), conditionMonitoringDataRepository, 4);
         this.useCase.execute(new ConditionMonitoringPageSubscriber());
     }
 
-    public void getConductorSwingWithWind(String deviceSn, int pageNum) {
+    public void getConductorSwingWithWind(String deviceSn,String startDate,String endDate, int pageNum) {
         this.showViewLoading();
         this.transformType = 4;
-        this.conditionMonitoringDataRepository = new ConditionMonitoringDataRepository(mContext, deviceSn, pageNum);
+        this.conditionMonitoringDataRepository = new ConditionMonitoringDataRepository(mContext, deviceSn,startDate,endDate, pageNum);
         this.useCase = new ConditionMonitoringUseCase(new UIThread(), AndroidSchedulers.mainThread(), conditionMonitoringDataRepository, 5);
         this.useCase.execute(new ConditionMonitoringPageSubscriber());
     }
 
-    public void getPoleStatus(String deviceSn, int pageNum) {
+    public void getPoleStatus(String deviceSn,String startDate,String endDate, int pageNum) {
         this.showViewLoading();
         this.transformType = 5;
-        this.conditionMonitoringDataRepository = new ConditionMonitoringDataRepository(mContext, deviceSn, pageNum);
+        this.conditionMonitoringDataRepository = new ConditionMonitoringDataRepository(mContext, deviceSn,startDate,endDate, pageNum);
         this.useCase = new ConditionMonitoringUseCase(new UIThread(), AndroidSchedulers.mainThread(), conditionMonitoringDataRepository, 6);
         this.useCase.execute(new ConditionMonitoringPageSubscriber());
     }
 
-    public void getMicroclimate(String deviceSn, int pageNum) {
+    public void getMicroclimate(String deviceSn,String startDate,String endDate, int pageNum) {
         this.showViewLoading();
         this.transformType = 6;
-        this.conditionMonitoringDataRepository = new ConditionMonitoringDataRepository(mContext, deviceSn, pageNum);
+        this.conditionMonitoringDataRepository = new ConditionMonitoringDataRepository(mContext, deviceSn,startDate,endDate, pageNum);
         this.useCase = new ConditionMonitoringUseCase(new UIThread(), AndroidSchedulers.mainThread(), conditionMonitoringDataRepository, 7);
         this.useCase.execute(new ConditionMonitoringPageSubscriber());
     }
@@ -150,7 +151,7 @@ public class ConditionMonitoringPresenter implements Presenter {
         public void onError(Throwable e) {
             Log.e(TAG, e.getMessage());
             ConditionMonitoringPresenter.this.hideViewLoading();
-            //TODO 错误处理
+            monitoringStateAcitvity.showError(e.getMessage());
             super.onError(e);
         }
 
@@ -158,7 +159,7 @@ public class ConditionMonitoringPresenter implements Presenter {
         public void onNext(DomainConditionMonitoringPage domainConditionMonitoringPage) {
             //TODO 交给Activity判断,并进行界面生成
             PageDataMapper pageDataMapper = new PageDataMapper();
-            monitoringStateFragment.renderDataList(pageDataMapper.transform(domainConditionMonitoringPage,transformType));
+            monitoringStateFragment.renderDataList(pageDataMapper.transform(domainConditionMonitoringPage, transformType));
         }
     }
 
@@ -180,7 +181,7 @@ public class ConditionMonitoringPresenter implements Presenter {
         public void onError(Throwable e) {
             Log.e(TAG, e.getMessage());
             ConditionMonitoringPresenter.this.hideViewLoading();
-            //TODO 错误处理
+            monitoringStateAcitvity.showError(e.getMessage());
             super.onError(e);
         }
 
@@ -212,7 +213,7 @@ public class ConditionMonitoringPresenter implements Presenter {
 
     @Override
     public void destroy() {
-
+        useCase.unsubscribe();
     }
 
     @Override

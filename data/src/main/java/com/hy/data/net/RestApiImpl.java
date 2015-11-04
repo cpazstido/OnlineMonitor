@@ -581,6 +581,10 @@ public class RestApiImpl implements RestApi {
                                 String responseVideoUrl = new String(responseBody, "UTF-8");
                                 if ("\"loginFail\"".equals(responseVideoUrl)) {
                                     subscriber.onError(new NetworkConnectionException("请重新登录"));
+                                } else if (responseVideoUrl.contains("资源已经被移除或不存在")) {
+                                    subscriber.onError(new Exception("资源已经被移除或不存在"));
+                                } else if ("[]".equals(responseVideoUrl)) {
+                                    subscriber.onError(new Exception("暂无数据"));
                                 } else {
                                     Log.e("videoUrl", "videoControl" + responseVideoUrl);
                                     subscriber.onNext(responseVideoUrl);
@@ -619,6 +623,10 @@ public class RestApiImpl implements RestApi {
                             String responseCompanyEntities = new String(responseBody, "UTF-8");
                             if ("\"loginFail\"".equals(responseCompanyEntities)) {
                                 subscriber.onError(new NetworkConnectionException("请重新登录"));
+                            } else if (responseCompanyEntities.contains("资源已经被移除或不存在")) {
+                                subscriber.onError(new Exception("资源已经被移除或不存在"));
+                            } else if ("[]".equals(responseCompanyEntities)) {
+                                subscriber.onError(new Exception("暂无数据"));
                             } else {
                                 Log.e("responseCompanyEntities", responseCompanyEntities);
                                 //通过jsonMapper转化得到的String
@@ -657,6 +665,10 @@ public class RestApiImpl implements RestApi {
                             String responseCompanyEntities = new String(responseBody, "UTF-8");
                             if ("\"loginFail\"".equals(responseCompanyEntities)) {
                                 subscriber.onError(new NetworkConnectionException("请重新登录"));
+                            } else if (responseCompanyEntities.contains("资源已经被移除或不存在")) {
+                                subscriber.onError(new Exception("资源已经被移除或不存在"));
+                            } else if ("[]".equals(responseCompanyEntities)) {
+                                subscriber.onError(new Exception("暂无数据"));
                             } else {
                                 Log.e("responseCompanyEntities", responseCompanyEntities);
                                 subscriber.onNext(companyEntityJsonMapper.transformCompanyEntity(responseCompanyEntities));
@@ -691,6 +703,10 @@ public class RestApiImpl implements RestApi {
                             String responseCompanyEntities = new String(responseBody, "UTF-8");
                             if ("\"loginFail\"".equals(responseCompanyEntities)) {
                                 subscriber.onError(new NetworkConnectionException("请重新登录"));
+                            } else if (responseCompanyEntities.contains("资源已经被移除或不存在")) {
+                                subscriber.onError(new Exception("资源已经被移除或不存在"));
+                            } else if ("[]".equals(responseCompanyEntities)) {
+                                subscriber.onError(new Exception("暂无数据"));
                             } else {
                                 Log.e("responseCompanyEntities", responseCompanyEntities);
                                 subscriber.onNext(companyEntityJsonMapper.transformCompanyEntity(responseCompanyEntities));
@@ -728,6 +744,10 @@ public class RestApiImpl implements RestApi {
                             String responseCompanyEntities = new String(responseBody, "UTF-8");
                             if ("\"loginFail\"".equals(responseCompanyEntities)) {
                                 subscriber.onError(new NetworkConnectionException("请重新登录"));
+                            } else if (responseCompanyEntities.contains("资源已经被移除或不存在")) {
+                                subscriber.onError(new Exception("资源已经被移除或不存在"));
+                            } else if ("[]".equals(responseCompanyEntities)) {
+                                subscriber.onError(new Exception("暂无数据"));
                             } else {
                                 Log.e("responseCompanyEntities", responseCompanyEntities);
                                 subscriber.onNext(companyEntityJsonMapper.transformCompanyEntity(responseCompanyEntities));
@@ -764,6 +784,10 @@ public class RestApiImpl implements RestApi {
                             Log.e("responseCompanyEntities", responseCompanyEntities);
                             if ("\"loginFail\"".equals(responseCompanyEntities)) {
                                 subscriber.onError(new NetworkConnectionException("请重新登录"));
+                            } else if (responseCompanyEntities.contains("资源已经被移除或不存在")) {
+                                subscriber.onError(new Exception("资源已经被移除或不存在"));
+                            } else if ("[]".equals(responseCompanyEntities)) {
+                                subscriber.onError(new Exception("暂无数据"));
                             } else {
                                 subscriber.onNext(companyEntityJsonMapper.transformCompanyEntity(responseCompanyEntities));
                                 subscriber.onCompleted();
@@ -797,6 +821,10 @@ public class RestApiImpl implements RestApi {
                             String responseRoleEntities = new String(responseBody, "UTF-8");
                             if ("\"loginFail\"".equals(responseRoleEntities)) {
                                 subscriber.onError(new NetworkConnectionException("请重新登录"));
+                            } else if (responseRoleEntities.contains("资源已经被移除或不存在")) {
+                                subscriber.onError(new Exception("资源已经被移除或不存在"));
+                            } else if ("[]".equals(responseRoleEntities)) {
+                                subscriber.onError(new Exception("暂无数据"));
                             } else {
                                 Log.e("responseRoleEntities", responseRoleEntities);
                                 subscriber.onNext(pageEntityJsonMapper.transformRolePageEntity(responseRoleEntities).getList());
@@ -833,6 +861,10 @@ public class RestApiImpl implements RestApi {
                             String responseAdministratorEntities = new String(responseBody, "UTF-8");
                             if ("\"loginFail\"".equals(responseAdministratorEntities)) {
                                 subscriber.onError(new NetworkConnectionException("请重新登录"));
+                            } else if (responseAdministratorEntities.contains("资源已经被移除或不存在")) {
+                                subscriber.onError(new Exception("资源已经被移除或不存在"));
+                            } else if ("[]".equals(responseAdministratorEntities)) {
+                                subscriber.onError(new Exception("暂无数据"));
                             } else {
                                 Log.e("response", responseAdministratorEntities);
                                 subscriber.onNext(pageEntityJsonMapper.transformAdministratorPageEntity(responseAdministratorEntities));
@@ -874,6 +906,10 @@ public class RestApiImpl implements RestApi {
                             String responseAdministratorEntities = new String(responseBody, "UTF-8");
                             if ("\"loginFail\"".equals(responseAdministratorEntities)) {
                                 subscriber.onError(new NetworkConnectionException("请重新登录"));
+                            } else if (responseAdministratorEntities.contains("资源已经被移除或不存在")) {
+                                subscriber.onError(new Exception("资源已经被移除或不存在"));
+                            } else if ("[]".equals(responseAdministratorEntities)) {
+                                subscriber.onError(new Exception("暂无数据"));
                             } else {
                                 Log.e("response", responseAdministratorEntities);
                                 subscriber.onNext(pageEntityJsonMapper.transformAdministratorPageEntity(responseAdministratorEntities));
@@ -923,6 +959,10 @@ public class RestApiImpl implements RestApi {
                             String responseAdministratorEntities = new String(responseBody, "UTF-8");
                             if ("\"loginFail\"".equals(responseAdministratorEntities)) {
                                 subscriber.onError(new NetworkConnectionException("请重新登录"));
+                            } else if (responseAdministratorEntities.contains("资源已经被移除或不存在")) {
+                                subscriber.onError(new Exception("资源已经被移除或不存在"));
+                            } else if ("[]".equals(responseAdministratorEntities)) {
+                                subscriber.onError(new Exception("暂无数据"));
                             } else {
                                 Log.e("response", responseAdministratorEntities);
                                 subscriber.onNext(pageEntityJsonMapper.transformAdministratorPageEntity(responseAdministratorEntities));
@@ -964,6 +1004,10 @@ public class RestApiImpl implements RestApi {
                             String responseAdministratorEntities = new String(responseBody, "UTF-8");
                             if ("\"loginFail\"".equals(responseAdministratorEntities)) {
                                 subscriber.onError(new NetworkConnectionException("请重新登录"));
+                            } else if (responseAdministratorEntities.contains("资源已经被移除或不存在")) {
+                                subscriber.onError(new Exception("资源已经被移除或不存在"));
+                            } else if ("[]".equals(responseAdministratorEntities)) {
+                                subscriber.onError(new Exception("暂无数据"));
                             } else {
                                 Log.e("response", responseAdministratorEntities);
                                 subscriber.onNext(pageEntityJsonMapper.transformAdministratorPageEntity(responseAdministratorEntities));
@@ -1010,6 +1054,10 @@ public class RestApiImpl implements RestApi {
                             String responseAdminLineEntities = new String(responseBody, "UTF-8");
                             if ("\"loginFail\"".equals(responseAdminLineEntities)) {
                                 subscriber.onError(new NetworkConnectionException("请重新登录"));
+                            } else if (responseAdminLineEntities.contains("资源已经被移除或不存在")) {
+                                subscriber.onError(new Exception("资源已经被移除或不存在"));
+                            } else if ("[]".equals(responseAdminLineEntities)) {
+                                subscriber.onError(new Exception("暂无数据"));
                             } else {
                                 Log.e("getAllTower", responseAdminLineEntities);
                                 subscriber.onNext(lineEntityJsonMapper.transformAdminLineEntity(responseAdminLineEntities));
@@ -1047,6 +1095,10 @@ public class RestApiImpl implements RestApi {
                             String responseOwnTowerEntities = new String(responseBody, "UTF-8");
                             if ("\"loginFail\"".equals(responseOwnTowerEntities)) {
                                 subscriber.onError(new NetworkConnectionException("请重新登录"));
+                            } else if (responseOwnTowerEntities.contains("资源已经被移除或不存在")) {
+                                subscriber.onError(new Exception("资源已经被移除或不存在"));
+                            } else if ("[]".equals(responseOwnTowerEntities)) {
+                                subscriber.onError(new Exception("暂无数据"));
                             } else {
                                 subscriber.onNext(listOfIntegerJsonMapper.transformIntegerEntity(responseOwnTowerEntities));
                                 subscriber.onCompleted();
@@ -1102,6 +1154,10 @@ public class RestApiImpl implements RestApi {
                             String responseString = new String(responseBody, "UTF-8");
                             if ("\"loginFail\"".equals(responseString)) {
                                 subscriber.onError(new NetworkConnectionException("请重新登录"));
+                            } else if (responseString.contains("资源已经被移除或不存在")) {
+                                subscriber.onError(new Exception("资源已经被移除或不存在"));
+                            } else if ("[]".equals(responseString)) {
+                                subscriber.onError(new Exception("暂无数据"));
                             } else {
                                 Log.e("changeManageTower", responseString);
                                 subscriber.onNext(stringJsonMapper.transformString(responseString));
@@ -1138,6 +1194,10 @@ public class RestApiImpl implements RestApi {
                             Log.e("getRolePage", responseEntities);
                             if ("\"loginFail\"".equals(responseEntities)) {
                                 subscriber.onError(new NetworkConnectionException("请重新登录"));
+                            } else if (responseEntities.contains("资源已经被移除或不存在")) {
+                                subscriber.onError(new Exception("资源已经被移除或不存在"));
+                            } else if ("[]".equals(responseEntities)) {
+                                subscriber.onError(new Exception("暂无数据"));
                             } else {
                                 subscriber.onNext(pageEntityJsonMapper.transformRolePageEntity(responseEntities));
                                 subscriber.onCompleted();
@@ -1173,6 +1233,10 @@ public class RestApiImpl implements RestApi {
                             String responseEntities = new String(responseBody, "UTF-8");
                             if ("\"loginFail\"".equals(responseEntities)) {
                                 subscriber.onError(new NetworkConnectionException("请重新登录"));
+                            } else if (responseEntities.contains("资源已经被移除或不存在")) {
+                                subscriber.onError(new Exception("资源已经被移除或不存在"));
+                            } else if ("[]".equals(responseEntities)) {
+                                subscriber.onError(new Exception("暂无数据"));
                             } else {
                                 Log.e("response", responseEntities);
                                 subscriber.onNext(pageEntityJsonMapper.transformRolePageEntity(responseEntities));
@@ -1209,6 +1273,10 @@ public class RestApiImpl implements RestApi {
                             Log.e("response", responseEntities);
                             if ("\"loginFail\"".equals(responseEntities)) {
                                 subscriber.onError(new NetworkConnectionException("请重新登录"));
+                            } else if (responseEntities.contains("资源已经被移除或不存在")) {
+                                subscriber.onError(new Exception("资源已经被移除或不存在"));
+                            } else if ("[]".equals(responseEntities)) {
+                                subscriber.onError(new Exception("暂无数据"));
                             } else {
                                 subscriber.onNext(pageEntityJsonMapper.transformRolePageEntity(responseEntities));
                                 subscriber.onCompleted();
@@ -1245,6 +1313,10 @@ public class RestApiImpl implements RestApi {
                             Log.e("response", responseEntities);
                             if ("\"loginFail\"".equals(responseEntities)) {
                                 subscriber.onError(new NetworkConnectionException("请重新登录"));
+                            } else if (responseEntities.contains("资源已经被移除或不存在")) {
+                                subscriber.onError(new Exception("资源已经被移除或不存在"));
+                            } else if ("[]".equals(responseEntities)) {
+                                subscriber.onError(new Exception("暂无数据"));
                             } else {
                                 subscriber.onNext(pageEntityJsonMapper.transformRolePageEntity(responseEntities));
                                 subscriber.onCompleted();
@@ -1283,6 +1355,10 @@ public class RestApiImpl implements RestApi {
                                 subscriber.onError(new NetworkConnectionException("请重新登录"));
                             } else if ("\"查询失败\"".equals(responseEntities)) {
                                 subscriber.onError(new NetworkConnectionException("查询失败"));
+                            } else if (responseEntities.contains("资源已经被移除或不存在")) {
+                                subscriber.onError(new Exception("资源已经被移除或不存在"));
+                            } else if ("[]".equals(responseEntities)) {
+                                subscriber.onError(new Exception("暂无数据"));
                             } else {
                                 subscriber.onNext(privilegeEntityJsonMapper.transformPrivilegeEntity(responseEntities));
                                 subscriber.onCompleted();
@@ -1318,6 +1394,10 @@ public class RestApiImpl implements RestApi {
                             Log.e("response", responseEntities);
                             if ("\"loginFail\"".equals(responseEntities)) {
                                 subscriber.onError(new NetworkConnectionException("请重新登录"));
+                            } else if (responseEntities.contains("资源已经被移除或不存在")) {
+                                subscriber.onError(new Exception("资源已经被移除或不存在"));
+                            } else if ("[]".equals(responseEntities)) {
+                                subscriber.onError(new Exception("暂无数据"));
                             } else {
                                 subscriber.onNext(privilegeEntityJsonMapper.transformPrivilegeEntity(responseEntities));
                                 subscriber.onCompleted();
@@ -1366,6 +1446,10 @@ public class RestApiImpl implements RestApi {
                             Log.e("response", responseEntities);
                             if ("\"loginFail\"".equals(responseEntities)) {
                                 subscriber.onError(new NetworkConnectionException("请重新登录"));
+                            } else if (responseEntities.contains("资源已经被移除或不存在")) {
+                                subscriber.onError(new Exception("资源已经被移除或不存在"));
+                            } else if ("[]".equals(responseEntities)) {
+                                subscriber.onError(new Exception("暂无数据"));
                             } else {
                                 subscriber.onNext(responseEntities);
                                 subscriber.onCompleted();
@@ -1404,6 +1488,10 @@ public class RestApiImpl implements RestApi {
                             Log.e("response", responseEntities);
                             if ("\"loginFail\"".equals(responseEntities)) {
                                 subscriber.onError(new NetworkConnectionException("请重新登录"));
+                            } else if (responseEntities.contains("资源已经被移除或不存在")) {
+                                subscriber.onError(new Exception("资源已经被移除或不存在"));
+                            } else if ("[]".equals(responseEntities)) {
+                                subscriber.onError(new Exception("暂无数据"));
                             } else {
                                 subscriber.onNext(pageEntityJsonMapper.transformLinePageEntity(responseEntities));
                                 subscriber.onCompleted();
@@ -1440,6 +1528,10 @@ public class RestApiImpl implements RestApi {
                             Log.e("response", responseEntities);
                             if ("\"loginFail\"".equals(responseEntities)) {
                                 subscriber.onError(new NetworkConnectionException("请重新登录"));
+                            } else if (responseEntities.contains("资源已经被移除或不存在")) {
+                                subscriber.onError(new Exception("资源已经被移除或不存在"));
+                            } else if ("[]".equals(responseEntities)) {
+                                subscriber.onError(new Exception("暂无数据"));
                             } else {
                                 subscriber.onNext(pageEntityJsonMapper.transformLinePageEntity(responseEntities));
                                 subscriber.onCompleted();
@@ -1481,6 +1573,10 @@ public class RestApiImpl implements RestApi {
                             Log.e("response", responseEntities);
                             if ("\"loginFail\"".equals(responseEntities)) {
                                 subscriber.onError(new NetworkConnectionException("请重新登录"));
+                            } else if (responseEntities.contains("资源已经被移除或不存在")) {
+                                subscriber.onError(new Exception("资源已经被移除或不存在"));
+                            } else if ("[]".equals(responseEntities)) {
+                                subscriber.onError(new Exception("暂无数据"));
                             } else {
                                 subscriber.onNext(pageEntityJsonMapper.transformLinePageEntity(responseEntities));
                                 subscriber.onCompleted();
@@ -1517,6 +1613,10 @@ public class RestApiImpl implements RestApi {
                             Log.e("response", responseEntities);
                             if ("\"loginFail\"".equals(responseEntities)) {
                                 subscriber.onError(new NetworkConnectionException("请重新登录"));
+                            } else if (responseEntities.contains("资源已经被移除或不存在")) {
+                                subscriber.onError(new Exception("资源已经被移除或不存在"));
+                            } else if ("[]".equals(responseEntities)) {
+                                subscriber.onError(new Exception("暂无数据"));
                             } else {
                                 subscriber.onNext(pageEntityJsonMapper.transformLinePageEntity(responseEntities));
                                 subscriber.onCompleted();
@@ -1558,6 +1658,10 @@ public class RestApiImpl implements RestApi {
                             Log.e("response", responseEntities);
                             if ("\"loginFail\"".equals(responseEntities)) {
                                 subscriber.onError(new NetworkConnectionException("请重新登录"));
+                            } else if (responseEntities.contains("资源已经被移除或不存在")) {
+                                subscriber.onError(new Exception("资源已经被移除或不存在"));
+                            } else if ("[]".equals(responseEntities)) {
+                                subscriber.onError(new Exception("暂无数据"));
                             } else {
                                 subscriber.onNext(pageEntityJsonMapper.transformLinePageEntity(responseEntities));
                                 subscriber.onCompleted();
@@ -1595,6 +1699,10 @@ public class RestApiImpl implements RestApi {
                             Log.e("response", responseEntities);
                             if ("\"loginFail\"".equals(responseEntities)) {
                                 subscriber.onError(new NetworkConnectionException("请重新登录"));
+                            } else if (responseEntities.contains("资源已经被移除或不存在")) {
+                                subscriber.onError(new Exception("资源已经被移除或不存在"));
+                            } else if ("[]".equals(responseEntities)) {
+                                subscriber.onError(new Exception("暂无数据"));
                             } else {
                                 subscriber.onNext(pageEntityJsonMapper.transformPolePageEntity(responseEntities));
                                 subscriber.onCompleted();
@@ -1631,6 +1739,10 @@ public class RestApiImpl implements RestApi {
                             Log.e("response", responseEntities);
                             if ("\"loginFail\"".equals(responseEntities)) {
                                 subscriber.onError(new NetworkConnectionException("请重新登录"));
+                            } else if (responseEntities.contains("资源已经被移除或不存在")) {
+                                subscriber.onError(new Exception("资源已经被移除或不存在"));
+                            } else if ("[]".equals(responseEntities)) {
+                                subscriber.onError(new Exception("暂无数据"));
                             } else {
                                 subscriber.onNext(pageEntityJsonMapper.transformPolePageEntity(responseEntities));
                                 subscriber.onCompleted();
@@ -1671,7 +1783,11 @@ public class RestApiImpl implements RestApi {
                             Log.e("response", responseEntities);
                             if ("\"loginFail\"".equals(responseEntities)) {
                                 subscriber.onError(new NetworkConnectionException("请重新登录"));
-                            } else {
+                            }  else if (responseEntities.contains("资源已经被移除或不存在")) {
+                                subscriber.onError(new Exception("资源已经被移除或不存在"));
+                            } else if ("[]".equals(responseEntities)) {
+                                subscriber.onError(new Exception("暂无数据"));
+                            }else {
                                 subscriber.onNext(pageEntityJsonMapper.transformPolePageEntity(responseEntities));
                                 subscriber.onCompleted();
                             }
@@ -1707,6 +1823,10 @@ public class RestApiImpl implements RestApi {
                             Log.e("response", responseEntities);
                             if ("\"loginFail\"".equals(responseEntities)) {
                                 subscriber.onError(new NetworkConnectionException("请重新登录"));
+                            } else if (responseEntities.contains("资源已经被移除或不存在")) {
+                                subscriber.onError(new Exception("资源已经被移除或不存在"));
+                            } else if ("[]".equals(responseEntities)) {
+                                subscriber.onError(new Exception("暂无数据"));
                             } else {
                                 subscriber.onNext(pageEntityJsonMapper.transformPolePageEntity(responseEntities));
                                 subscriber.onCompleted();
@@ -1747,6 +1867,10 @@ public class RestApiImpl implements RestApi {
                             Log.e("response", responseEntities);
                             if ("\"loginFail\"".equals(responseEntities)) {
                                 subscriber.onError(new NetworkConnectionException("请重新登录"));
+                            } else if (responseEntities.contains("资源已经被移除或不存在")) {
+                                subscriber.onError(new Exception("资源已经被移除或不存在"));
+                            } else if ("[]".equals(responseEntities)) {
+                                subscriber.onError(new Exception("暂无数据"));
                             } else {
                                 subscriber.onNext(pageEntityJsonMapper.transformPolePageEntity(responseEntities));
                                 subscriber.onCompleted();
@@ -1781,6 +1905,10 @@ public class RestApiImpl implements RestApi {
                             Log.e("response", responseEntities);
                             if ("\"loginFail\"".equals(responseEntities)) {
                                 subscriber.onError(new NetworkConnectionException("请重新登录"));
+                            } else if (responseEntities.contains("资源已经被移除或不存在")) {
+                                subscriber.onError(new Exception("资源已经被移除或不存在"));
+                            } else if ("[]".equals(responseEntities)) {
+                                subscriber.onError(new Exception("暂无数据"));
                             } else {
                                 subscriber.onNext(companyEntityJsonMapper.transformCompanyEntity(responseEntities));
                                 subscriber.onCompleted();
@@ -1818,6 +1946,10 @@ public class RestApiImpl implements RestApi {
                             String responseEntities = new String(responseBody, "UTF-8");
                             if ("\"loginFail\"".equals(responseEntities)) {
                                 subscriber.onError(new NetworkConnectionException("请重新登录"));
+                            } else if (responseEntities.contains("资源已经被移除或不存在")) {
+                                subscriber.onError(new Exception("资源已经被移除或不存在"));
+                            } else if ("[]".equals(responseEntities)) {
+                                subscriber.onError(new Exception("暂无数据"));
                             } else {
                                 Log.e("response", responseEntities);
                                 subscriber.onNext(pageEntityJsonMapper.transformEquipmentPageEntity(responseEntities));
@@ -1863,6 +1995,10 @@ public class RestApiImpl implements RestApi {
                             Log.e("response", responseEntities);
                             if ("\"loginFail\"".equals(responseEntities)) {
                                 subscriber.onError(new NetworkConnectionException("请重新登录"));
+                            } else if (responseEntities.contains("资源已经被移除或不存在")) {
+                                subscriber.onError(new Exception("资源已经被移除或不存在"));
+                            } else if ("[]".equals(responseEntities)) {
+                                subscriber.onError(new Exception("暂无数据"));
                             } else {
                                 subscriber.onNext(pageEntityJsonMapper.transformEquipmentPageEntity(responseEntities));
                                 subscriber.onCompleted();
@@ -1899,6 +2035,10 @@ public class RestApiImpl implements RestApi {
                             Log.e("response", responseEntities);
                             if ("\"loginFail\"".equals(responseEntities)) {
                                 subscriber.onError(new NetworkConnectionException("请重新登录"));
+                            } else if (responseEntities.contains("资源已经被移除或不存在")) {
+                                subscriber.onError(new Exception("资源已经被移除或不存在"));
+                            } else if ("[]".equals(responseEntities)) {
+                                subscriber.onError(new Exception("暂无数据"));
                             } else {
                                 subscriber.onNext(pageEntityJsonMapper.transformEquipmentPageEntity(responseEntities));
                                 subscriber.onCompleted();
@@ -1943,6 +2083,10 @@ public class RestApiImpl implements RestApi {
                             Log.e("response", responseEntities);
                             if ("\"loginFail\"".equals(responseEntities)) {
                                 subscriber.onError(new NetworkConnectionException("请重新登录"));
+                            } else if (responseEntities.contains("资源已经被移除或不存在")) {
+                                subscriber.onError(new Exception("资源已经被移除或不存在"));
+                            } else if ("[]".equals(responseEntities)) {
+                                subscriber.onError(new Exception("暂无数据"));
                             } else {
                                 subscriber.onNext(pageEntityJsonMapper.transformEquipmentPageEntity(responseEntities));
                                 subscriber.onCompleted();
@@ -1977,6 +2121,10 @@ public class RestApiImpl implements RestApi {
                             Log.e("response", responseEntities);
                             if ("\"loginFail\"".equals(responseEntities)) {
                                 subscriber.onError(new NetworkConnectionException("请重新登录"));
+                            } else if (responseEntities.contains("资源已经被移除或不存在")) {
+                                subscriber.onError(new Exception("资源已经被移除或不存在"));
+                            } else if ("[]".equals(responseEntities)) {
+                                subscriber.onError(new Exception("暂无数据"));
                             } else {
                                 subscriber.onNext(responseEntities);
                                 subscriber.onCompleted();
@@ -2012,6 +2160,10 @@ public class RestApiImpl implements RestApi {
                             Log.e("response", responseEntities);
                             if ("\"loginFail\"".equals(responseEntities)) {
                                 subscriber.onError(new NetworkConnectionException("请重新登录"));
+                            } else if (responseEntities.contains("资源已经被移除或不存在")) {
+                                subscriber.onError(new Exception("资源已经被移除或不存在"));
+                            } else if ("[]".equals(responseEntities)) {
+                                subscriber.onError(new Exception("暂无数据"));
                             } else {
                                 subscriber.onNext(sensorTypeEntityJsonMapper.transformSensorTypeEntity(responseEntities));
                                 subscriber.onCompleted();
@@ -2049,6 +2201,10 @@ public class RestApiImpl implements RestApi {
                             Log.e("response", responseEntities);
                             if ("\"loginFail\"".equals(responseEntities)) {
                                 subscriber.onError(new NetworkConnectionException("请重新登录"));
+                            } else if (responseEntities.contains("资源已经被移除或不存在")) {
+                                subscriber.onError(new Exception("资源已经被移除或不存在"));
+                            } else if ("[]".equals(responseEntities)) {
+                                subscriber.onError(new Exception("暂无数据"));
                             } else {
                                 subscriber.onNext(responseEntities);
                                 subscriber.onCompleted();
@@ -2084,6 +2240,10 @@ public class RestApiImpl implements RestApi {
                             Log.e("response", responseEntities);
                             if ("\"loginFail\"".equals(responseEntities)) {
                                 subscriber.onError(new NetworkConnectionException("请重新登录"));
+                            } else if (responseEntities.contains("资源已经被移除或不存在")) {
+                                subscriber.onError(new Exception("资源已经被移除或不存在"));
+                            } else if ("[]".equals(responseEntities)) {
+                                subscriber.onError(new Exception("暂无数据"));
                             } else {
                                 subscriber.onNext(responseEntities);
                                 subscriber.onCompleted();
@@ -2116,6 +2276,10 @@ public class RestApiImpl implements RestApi {
                             Log.e("openPower", "openPower----->" + responseEntities);
                             if ("\"loginFail\"".equals(responseEntities)) {
                                 subscriber.onError(new NetworkConnectionException("请重新登录"));
+                            } else if (responseEntities.contains("资源已经被移除或不存在")) {
+                                subscriber.onError(new Exception("资源已经被移除或不存在"));
+                            } else if ("[]".equals(responseEntities)) {
+                                subscriber.onError(new Exception("暂无数据"));
                             } else {
                                 subscriber.onNext(responseEntities);
                                 subscriber.onCompleted();
@@ -2148,6 +2312,10 @@ public class RestApiImpl implements RestApi {
                             Log.e("openPower", "openPower----->" + responseEntities);
                             if ("\"loginFail\"".equals(responseEntities)) {
                                 subscriber.onError(new NetworkConnectionException("请重新登录"));
+                            } else if (responseEntities.contains("资源已经被移除或不存在")) {
+                                subscriber.onError(new Exception("资源已经被移除或不存在"));
+                            } else if ("[]".equals(responseEntities)) {
+                                subscriber.onError(new Exception("暂无数据"));
                             } else {
                                 subscriber.onNext(responseEntities);
                                 subscriber.onCompleted();
@@ -2180,6 +2348,10 @@ public class RestApiImpl implements RestApi {
                                 String responseVideoUrl = new String(responseBody, "UTF-8");
                                 if ("\"loginFail\"".equals(responseVideoUrl)) {
                                     subscriber.onError(new NetworkConnectionException("请重新登录"));
+                                } else if (responseVideoUrl.contains("资源已经被移除或不存在")) {
+                                    subscriber.onError(new Exception("资源已经被移除或不存在"));
+                                } else if ("[]".equals(responseVideoUrl)) {
+                                    subscriber.onError(new Exception("暂无数据"));
                                 } else {
                                     Log.e("changePtz", "changePtz" + responseVideoUrl);
                                     subscriber.onNext(responseVideoUrl);
@@ -2216,6 +2388,10 @@ public class RestApiImpl implements RestApi {
                                 String responseVideoUrl = new String(responseBody, "UTF-8");
                                 if ("\"loginFail\"".equals(responseVideoUrl)) {
                                     subscriber.onError(new NetworkConnectionException("请重新登录"));
+                                } else if (responseVideoUrl.contains("资源已经被移除或不存在")) {
+                                    subscriber.onError(new Exception("资源已经被移除或不存在"));
+                                } else if ("[]".equals(responseVideoUrl)) {
+                                    subscriber.onError(new Exception("暂无数据"));
                                 } else {
                                     subscriber.onNext("success");
                                     subscriber.onCompleted();
@@ -2261,6 +2437,10 @@ public class RestApiImpl implements RestApi {
                                 Log.e("ConditionMonitor", responseVideoUrl);
                                 if ("\"loginFail\"".equals(responseVideoUrl)) {
                                     subscriber.onError(new NetworkConnectionException("请重新登录"));
+                                } else if (responseVideoUrl.contains("资源已经被移除或不存在")) {
+                                    subscriber.onError(new Exception("资源已经被移除或不存在"));
+                                } else if ("[]".equals(responseVideoUrl)) {
+                                    subscriber.onError(new Exception("暂无数据"));
                                 } else {
                                     subscriber.onNext(TransformationUtils.getTreeMapFromJsonString(responseVideoUrl, statisticByTime));
                                     subscriber.onCompleted();
@@ -2324,6 +2504,10 @@ public class RestApiImpl implements RestApi {
                                 Log.e("ConditionMonitor", responseVideoUrl);
                                 if ("\"loginFail\"".equals(responseVideoUrl)) {
                                     subscriber.onError(new NetworkConnectionException("请重新登录"));
+                                } else if (responseVideoUrl.contains("资源已经被移除或不存在")) {
+                                    subscriber.onError(new Exception("资源已经被移除或不存在"));
+                                } else if ("[]".equals(responseVideoUrl)) {
+                                    subscriber.onError(new Exception("暂无数据"));
                                 } else {
                                     subscriber.onNext(TransformationUtils.getTreeMapFromJsonString(responseVideoUrl, statisticByTime));
                                     subscriber.onCompleted();
@@ -2364,8 +2548,9 @@ public class RestApiImpl implements RestApi {
                             if ("\"loginFail\"".equals(responseEntities)) {
                                 subscriber.onError(new NetworkConnectionException("请重新登录"));
                             } else if (responseEntities.contains("资源已经被移除或不存在")) {
-
                                 subscriber.onError(new Exception("资源已经被移除或不存在"));
+                            } else if ("[]".equals(responseEntities)) {
+                                subscriber.onError(new Exception("暂无数据"));
                             } else {
                                 subscriber.onNext(pageEntityJsonMapper.transformOnlineDeviceStatePageEntity(responseEntities));
                                 subscriber.onCompleted();
@@ -2385,7 +2570,7 @@ public class RestApiImpl implements RestApi {
     }
 
     @Override
-    public Observable<AeolianVibrationPageEntity> getAeolianVibration(String deviceSn, int pageNum) {
+    public Observable<AeolianVibrationPageEntity> getAeolianVibration(String deviceSn,String startDate,String endDate, int pageNum) {
         return Observable.create(
                 new Observable.OnSubscribe<AeolianVibrationPageEntity>() {
                     @Override
@@ -2394,6 +2579,8 @@ public class RestApiImpl implements RestApi {
                             RequestParams params = new RequestParams();
                             params.put("deviceSn", deviceSn);
                             params.put("currentPage", pageNum);
+                            params.put("startDate",startDate);
+                            params.put("endDate",endDate);
                             SystemRestClient.post("/aeolianVibration", params, new AsyncHttpResponseHandler() {
                                 @Override
                                 public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
@@ -2404,6 +2591,8 @@ public class RestApiImpl implements RestApi {
                                             subscriber.onError(new NetworkConnectionException("请重新登录"));
                                         } else if (responseEntities.contains("资源已经被移除或不存在")) {
                                             subscriber.onError(new Exception("资源已经被移除或不存在"));
+                                        } else if ("[]".equals(responseEntities)) {
+                                            subscriber.onError(new Exception("暂无数据"));
                                         } else {
                                             subscriber.onNext(pageEntityJsonMapper.transformAeolianVibrationPageEntity(responseEntities));
                                             subscriber.onCompleted();
@@ -2427,7 +2616,7 @@ public class RestApiImpl implements RestApi {
     }
 
     @Override
-    public Observable<IceCoatingPageEntity> getIceCoating(String deviceSn, int pageNum) {
+    public Observable<IceCoatingPageEntity> getIceCoating(String deviceSn,String startDate,String endDate, int pageNum) {
         return Observable.create(
                 new Observable.OnSubscribe<IceCoatingPageEntity>() {
                     @Override
@@ -2436,7 +2625,8 @@ public class RestApiImpl implements RestApi {
                             RequestParams params = new RequestParams();
                             params.put("deviceSn", deviceSn);
                             params.put("currentPage", pageNum);
-                            SystemRestClient.post("/iceCoating", params, new AsyncHttpResponseHandler() {
+                            params.put("startDate",startDate);
+                            params.put("endDate",endDate);SystemRestClient.post("/iceCoating", params, new AsyncHttpResponseHandler() {
                                 @Override
                                 public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                                     try {
@@ -2446,6 +2636,8 @@ public class RestApiImpl implements RestApi {
                                             subscriber.onError(new NetworkConnectionException("请重新登录"));
                                         } else if (responseEntities.contains("资源已经被移除或不存在")) {
                                             subscriber.onError(new Exception("资源已经被移除或不存在"));
+                                        } else if ("[]".equals(responseEntities)) {
+                                            subscriber.onError(new Exception("暂无数据"));
                                         } else {
                                             subscriber.onNext(pageEntityJsonMapper.transformIceCoatingPageEntity(responseEntities));
                                             subscriber.onCompleted();
@@ -2469,7 +2661,7 @@ public class RestApiImpl implements RestApi {
     }
 
     @Override
-    public Observable<ConductorSagPageEntity> getConductorSag(String deviceSn, int pageNum) {
+    public Observable<ConductorSagPageEntity> getConductorSag(String deviceSn,String startDate,String endDate, int pageNum) {
         return Observable.create(
                 new Observable.OnSubscribe<ConductorSagPageEntity>() {
                     @Override
@@ -2478,7 +2670,8 @@ public class RestApiImpl implements RestApi {
                             RequestParams params = new RequestParams();
                             params.put("deviceSn", deviceSn);
                             params.put("currentPage", pageNum);
-                            SystemRestClient.post("/conductorSag", params, new AsyncHttpResponseHandler() {
+                            params.put("startDate",startDate);
+                            params.put("endDate",endDate);SystemRestClient.post("/conductorSag", params, new AsyncHttpResponseHandler() {
                                 @Override
                                 public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                                     try {
@@ -2488,6 +2681,8 @@ public class RestApiImpl implements RestApi {
                                             subscriber.onError(new NetworkConnectionException("请重新登录"));
                                         } else if (responseEntities.contains("资源已经被移除或不存在")) {
                                             subscriber.onError(new Exception("资源已经被移除或不存在"));
+                                        } else if ("[]".equals(responseEntities)) {
+                                            subscriber.onError(new Exception("暂无数据"));
                                         } else {
                                             subscriber.onNext(pageEntityJsonMapper.transformConductorSagPageEntity(responseEntities));
                                             subscriber.onCompleted();
@@ -2511,7 +2706,7 @@ public class RestApiImpl implements RestApi {
     }
 
     @Override
-    public Observable<ConductorSwingWithWindPageEntity> getConductorSwingWithWind(String deviceSn, int pageNum) {
+    public Observable<ConductorSwingWithWindPageEntity> getConductorSwingWithWind(String deviceSn,String startDate,String endDate, int pageNum) {
         return Observable.create(
                 new Observable.OnSubscribe<ConductorSwingWithWindPageEntity>() {
                     @Override
@@ -2520,7 +2715,8 @@ public class RestApiImpl implements RestApi {
                             RequestParams params = new RequestParams();
                             params.put("deviceSn", deviceSn);
                             params.put("currentPage", pageNum);
-                            SystemRestClient.post("/conductorSwingWithWind", params, new AsyncHttpResponseHandler() {
+                            params.put("startDate",startDate);
+                            params.put("endDate",endDate);SystemRestClient.post("/conductorSwingWithWind", params, new AsyncHttpResponseHandler() {
                                 @Override
                                 public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                                     try {
@@ -2530,6 +2726,8 @@ public class RestApiImpl implements RestApi {
                                             subscriber.onError(new NetworkConnectionException("请重新登录"));
                                         } else if (responseEntities.contains("资源已经被移除或不存在")) {
                                             subscriber.onError(new Exception("资源已经被移除或不存在"));
+                                        } else if ("[]".equals(responseEntities)) {
+                                            subscriber.onError(new Exception("暂无数据"));
                                         } else {
                                             subscriber.onNext(pageEntityJsonMapper.transformConductorSwingWithWindPageEntity(responseEntities));
                                             subscriber.onCompleted();
@@ -2553,7 +2751,7 @@ public class RestApiImpl implements RestApi {
     }
 
     @Override
-    public Observable<PoleStatusPageEntity> getPoleStatus(String deviceSn, int pageNum) {
+    public Observable<PoleStatusPageEntity> getPoleStatus(String deviceSn,String startDate,String endDate, int pageNum) {
         return Observable.create(
                 new Observable.OnSubscribe<PoleStatusPageEntity>() {
                     @Override
@@ -2562,7 +2760,8 @@ public class RestApiImpl implements RestApi {
                             RequestParams params = new RequestParams();
                             params.put("deviceSn", deviceSn);
                             params.put("currentPage", pageNum);
-                            SystemRestClient.post("/poleTilt", params, new AsyncHttpResponseHandler() {
+                            params.put("startDate",startDate);
+                            params.put("endDate",endDate);SystemRestClient.post("/poleTilt", params, new AsyncHttpResponseHandler() {
                                 @Override
                                 public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                                     try {
@@ -2570,6 +2769,8 @@ public class RestApiImpl implements RestApi {
                                         Log.e("response", responseEntities);
                                         if ("\"loginFail\"".equals(responseEntities)) {
                                             subscriber.onError(new NetworkConnectionException("请重新登录"));
+                                        } else if ("[]".equals(responseEntities)) {
+                                            subscriber.onError(new Exception("暂无数据"));
                                         } else if (responseEntities.contains("资源已经被移除或不存在")) {
                                             subscriber.onError(new Exception("资源已经被移除或不存在"));
                                         } else {
@@ -2595,7 +2796,7 @@ public class RestApiImpl implements RestApi {
     }
 
     @Override
-    public Observable<MicroclimatePageEntity> getMicroclimate(String deviceSn, int pageNum) {
+    public Observable<MicroclimatePageEntity> getMicroclimate(String deviceSn,String startDate,String endDate, int pageNum) {
         return Observable.create(
                 new Observable.OnSubscribe<MicroclimatePageEntity>() {
                     @Override
@@ -2604,7 +2805,8 @@ public class RestApiImpl implements RestApi {
                             RequestParams params = new RequestParams();
                             params.put("deviceSn", deviceSn);
                             params.put("currentPage", pageNum);
-                            SystemRestClient.post("/microclimate", params, new AsyncHttpResponseHandler() {
+                            params.put("startDate",startDate);
+                            params.put("endDate",endDate);SystemRestClient.post("/microclimate", params, new AsyncHttpResponseHandler() {
                                 @Override
                                 public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                                     try {
@@ -2612,6 +2814,8 @@ public class RestApiImpl implements RestApi {
                                         Log.e("response", responseEntities);
                                         if ("\"loginFail\"".equals(responseEntities)) {
                                             subscriber.onError(new NetworkConnectionException("请重新登录"));
+                                        } else if ("[]".equals(responseEntities)) {
+                                            subscriber.onError(new Exception("暂无数据"));
                                         } else if (responseEntities.contains("资源已经被移除或不存在")) {
                                             subscriber.onError(new Exception("资源已经被移除或不存在"));
                                         } else {
@@ -2654,7 +2858,9 @@ public class RestApiImpl implements RestApi {
                                         if ("\"loginFail\"".equals(responseEntities)) {
                                             subscriber.onError(new NetworkConnectionException("请重新登录"));
                                         } else if (responseEntities.contains("资源已经被移除或不存在")) {
-                                            subscriber.onError(new Exception("资源已经被移除或不存在"));
+                                            subscriber.onError(new NetworkConnectionException("资源已经被移除或不存在"));
+                                        } else if ("[]".equals(responseEntities)) {
+                                            subscriber.onError(new NetworkConnectionException("暂无数据"));
                                         } else {
                                             subscriber.onNext(sensorTypeEntityJsonMapper.transformSensorTypeEntity(responseEntities));
                                             subscriber.onCompleted();
@@ -2687,5 +2893,4 @@ public class RestApiImpl implements RestApi {
 
         return isConnected;
     }
-
 }

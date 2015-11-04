@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/rootView"
     android:background="@color/md_white_1000"
     android:orientation="vertical">
 
@@ -32,14 +33,16 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/line"
-                    android:textSize="@dimen/mSubhead" />
+                    android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                    android:textColor="@color/primary_text_default_material_light" />
 
                 <TextView
                     android:id="@+id/video_line_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="8dp"
-                    android:textSize="@dimen/mBody2" />
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                    android:textColor="@color/secondary_text_default_material_light" />
             </LinearLayout>
 
             <LinearLayout
@@ -52,14 +55,18 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/tower"
-                    android:textSize="@dimen/mSubhead" />
+                    android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                    android:textColor="@color/primary_text_default_material_light"
+
+                    />
 
                 <TextView
                     android:id="@+id/video_tower_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="8dp"
-                    android:textSize="@dimen/mBody2" />
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                    android:textColor="@color/secondary_text_default_material_light" />
             </LinearLayout>
 
             <LinearLayout
@@ -71,14 +78,16 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/recording_time"
-                    android:textSize="@dimen/mSubhead" />
+                    android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                    android:textColor="@color/primary_text_default_material_light" />
 
                 <TextView
                     android:id="@+id/video_time_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="8dp"
-                    android:textSize="@dimen/mBody2" />
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                    android:textColor="@color/secondary_text_default_material_light" />
             </LinearLayout>
         </LinearLayout>
 
@@ -97,14 +106,16 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/equipment_state"
-                    android:textSize="@dimen/mSubhead" />
+                    android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                    android:textColor="@color/primary_text_default_material_light" />
 
                 <TextView
                     android:id="@+id/video_equipment_status_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="8dp"
-                    android:textSize="@dimen/mBody2" />
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                    android:textColor="@color/secondary_text_default_material_light" />
             </LinearLayout>
 
             <LinearLayout
@@ -116,14 +127,16 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/play_state"
-                    android:textSize="@dimen/mSubhead" />
+                    android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                    android:textColor="@color/primary_text_default_material_light" />
 
                 <TextView
                     android:id="@+id/video_play_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="8dp"
-                    android:textSize="@dimen/mBody2" />
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                    android:textColor="@color/secondary_text_default_material_light" />
             </LinearLayout>
 
             <LinearLayout
@@ -136,51 +149,56 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/channel_choice"
-                    android:textSize="@dimen/mSubhead" />
+                    android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                    android:textColor="@color/primary_text_default_material_light" />
 
                 <com.rey.material.widget.RadioButton
                     android:id="@+id/channel_1"
                     style="@style/RadioButtonDrawable"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:checked="true"
                     android:layout_weight="1"
+                    android:checked="true"
                     android:gravity="center_vertical"
                     android:text="1"
-                    android:textSize="@dimen/mBody2" />
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                    android:textColor="@color/secondary_text_default_material_light" />
 
                 <com.rey.material.widget.RadioButton
                     android:id="@+id/channel_2"
-                    android:layout_weight="1"
                     style="@style/RadioButtonDrawable"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:checked="false"
                     android:gravity="center_vertical"
                     android:text="2"
-                    android:textSize="@dimen/mBody2" />
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                    android:textColor="@color/secondary_text_default_material_light" />
 
                 <com.rey.material.widget.RadioButton
                     android:id="@+id/channel_3"
-                    android:layout_weight="1"
                     style="@style/RadioButtonDrawable"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:checked="false"
                     android:gravity="center_vertical"
                     android:text="3"
-                    android:textSize="@dimen/mBody2" />
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                    android:textColor="@color/secondary_text_default_material_light" />
 
                 <com.rey.material.widget.RadioButton
                     android:id="@+id/channel_4"
-                    android:layout_weight="1"
                     style="@style/RadioButtonDrawable"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:checked="false"
                     android:gravity="center_vertical"
                     android:text="4"
-                    android:textSize="@dimen/mBody2" />
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                    android:textColor="@color/secondary_text_default_material_light" />
             </LinearLayout>
 
             <LinearLayout
@@ -192,29 +210,32 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/yun_state"
-                    android:textSize="@dimen/mSubhead" />
+                    android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                    android:textColor="@color/primary_text_default_material_light" />
 
                 <com.rey.material.widget.RadioButton
                     android:id="@+id/switches_auto"
-                    android:layout_weight="1"
                     style="@style/RadioButtonDrawable"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:checked="true"
                     android:gravity="center_vertical"
                     android:text="@string/auto"
-                    android:textSize="@dimen/mBody2" />
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                    android:textColor="@color/secondary_text_default_material_light" />
 
                 <com.rey.material.widget.RadioButton
                     android:id="@+id/switches_manual"
                     style="@style/RadioButtonDrawable"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:checked="false"
                     android:layout_weight="1"
+                    android:checked="false"
                     android:gravity="center_vertical"
                     android:text="@string/hand"
-                    android:textSize="@dimen/mBody2" />
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                    android:textColor="@color/secondary_text_default_material_light" />
             </LinearLayout>
 
             <TextView
@@ -222,7 +243,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/yun_control"
-                android:textSize="@dimen/mSubhead" />
+                android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                android:textColor="@color/primary_text_default_material_light" />
 
             <LinearLayout
                 android:layout_width="match_parent"

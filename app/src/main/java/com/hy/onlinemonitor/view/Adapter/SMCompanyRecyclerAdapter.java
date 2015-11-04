@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -91,6 +92,8 @@ public class SMCompanyRecyclerAdapter extends RecyclerSwipeAdapter<CompanyViewHo
 
                     newName = (EditText) dialog.getCustomView().findViewById(R.id.dialog_company_name);
                     newAddress = (EditText) dialog.getCustomView().findViewById(R.id.dialog_company_address);
+                    TextView compnaytv = (TextView) dialog.getCustomView().findViewById(R.id.parent_company_tv);
+                    compnaytv.setVisibility(View.GONE);
                     Spinner companySpinner = (Spinner) dialog.getCustomView().findViewById(R.id.dialog_company_parent);
                     companySpinner.setVisibility(View.GONE);
                     newName.setText(companyViewHolder.companyName.getText());

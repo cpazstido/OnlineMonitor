@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.hy.onlinemonitor.bean.OnlineDeviceState;
 import com.hy.onlinemonitor.bean.OnlineDeviceStatePage;
@@ -47,7 +46,7 @@ public class EquipmentStateMonitorFragment extends StateMonitorBaseFragment {
                                 pageNum++;
                                 loadData();
                             } else {
-                                ShowUtile.toastShow(getContext(), "无更多数据...");
+                                ShowUtile.snackBarShow(getView(), "无更多数据...");
                             }
                         }
                         break;
@@ -120,6 +119,11 @@ public class EquipmentStateMonitorFragment extends StateMonitorBaseFragment {
     }
 
     @Override
+    protected void toErrorRefresh() {
+        doRefresh();
+    }
+
+    @Override
     public void onDestroyView() {
         super.onDestroyView();
     }
@@ -143,7 +147,7 @@ public class EquipmentStateMonitorFragment extends StateMonitorBaseFragment {
                 this.onlineDeviceStatePage = onlineDeviceStatePage;
                 this.mAdapter.setCollection(onlineDeviceStatePage.getList());
             } else {
-                Toast.makeText(mContext, "暂无数据", Toast.LENGTH_SHORT).show();
+                ((EquipmentStateMonitorActivity)getActivity()).showError("暂无数据");
             }
         }
     }

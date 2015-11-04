@@ -1,6 +1,7 @@
 package com.hy.onlinemonitor.view;
 
 import android.content.Context;
+import android.view.View;
 
 /**
  * Interface representing a View that will use to load data.
@@ -28,4 +29,9 @@ public interface LoadDataView {
    */
   Context getContext();
 
+  /**
+   * Get rootView to SnackBar.
+   * @return View
+   */
+  View getRootView();
 }

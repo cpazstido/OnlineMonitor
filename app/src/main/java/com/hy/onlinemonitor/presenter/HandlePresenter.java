@@ -68,16 +68,16 @@ public class HandlePresenter extends DefaultSubscriber implements Presenter {
         @Override
         public void onError(Throwable e) {
             HandlePresenter.this.hideViewLoading();
-            ShowUtile.toastShow(mContext, "处理失败,请重试");
+            ShowUtile.snackBarShow(detailedAlarmActivity.getRootView(), "处理失败,请重试");
             super.onError(e);
         }
 
         @Override
         public void onNext(String result) {
             if ("\"true\"".equals(result))
-                ShowUtile.toastShow(mContext, "处理成功");
+                ShowUtile.snackBarShow(detailedAlarmActivity.getRootView(), "处理成功");
             else
-                ShowUtile.toastShow(mContext, "处理失败");
+                ShowUtile.snackBarShow(detailedAlarmActivity.getRootView(), "处理失败");
         }
     }
 }

@@ -3,6 +3,7 @@ package com.hy.onlinemonitor.view.Activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -12,6 +13,7 @@ import android.util.Log;
 import com.hy.onlinemonitor.R;
 import com.hy.onlinemonitor.presenter.UserPresenter;
 import com.hy.onlinemonitor.utile.ActivityCollector;
+import com.hy.onlinemonitor.utile.GetLoading;
 import com.hy.onlinemonitor.view.Adapter.TypeSelectAdapter;
 import com.hy.onlinemonitor.view.InitView;
 
@@ -32,6 +34,7 @@ public class TypeSelectionActivity extends AppCompatActivity implements InitView
     private List<String> ownedEquipmentList;
     private TypeSelectAdapter typeSelectAdapter;
     private UserPresenter userPresenter;
+    private AlertDialog alertDialog;
 
     public void setOwnedEquipmentList(List<String> ownedEquipmentList) {
         this.ownedEquipmentList = ownedEquipmentList;
@@ -73,6 +76,7 @@ public class TypeSelectionActivity extends AppCompatActivity implements InitView
 
     @Override
     public void setupUI() {
+        alertDialog = GetLoading.getDialog(TypeSelectionActivity.this, "加载中..");
         userPresenter = new UserPresenter();
         userPresenter.setTypeSelectionActivity(this);
         userPresenter.getUserEquipmentList(this);
@@ -89,5 +93,13 @@ public class TypeSelectionActivity extends AppCompatActivity implements InitView
         toolbar.setTitle(R.string.equipment_type);
         toolbar.setSubtitle(R.string.please_choice);
         setSupportActionBar(toolbar);
+    }
+
+    public void showLoading() {
+        alertDialog.show();
+    }
+
+    public void hideLoading() {
+        alertDialog.hide();
     }
 }

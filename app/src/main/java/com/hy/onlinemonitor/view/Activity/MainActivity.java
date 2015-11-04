@@ -55,7 +55,6 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
                 break;
         }
         toolbar.setSubtitle(subtitle);
-
         Log.e("selectedType", "" + selectedType);
         if (selectedType == 3) {//若是无人机,则隐藏状态监测这一项
             findViewById(R.id.main_ll_monitor).setVisibility(View.GONE);

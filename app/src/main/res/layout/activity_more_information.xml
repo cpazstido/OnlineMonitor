@@ -29,16 +29,18 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/equipment_identifier"
-                android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
-                android:textSize="@dimen/mSubhead" />
+                android:textColor="@color/primary_text_default_material_light"
+                android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                 />
 
             <TextView
                 android:id="@+id/equipment_identifier"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
-                android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
-                android:textSize="@dimen/mBody2" />
+                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                android:textColor="@color/secondary_text_default_material_light"
+                />
         </LinearLayout>
 
         <LinearLayout
@@ -51,16 +53,17 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/equipment_type"
-                android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
-                android:textSize="@dimen/mSubhead" />
+                android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                android:textColor="@color/primary_text_default_material_light"
+                />
 
             <TextView
                 android:id="@+id/equipment_type"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
-                android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
-                android:textSize="@dimen/mBody2" />
+                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                android:textColor="@color/secondary_text_default_material_light"
+                android:layout_marginLeft="15dp"/>
         </LinearLayout>
 
         <LinearLayout
@@ -72,17 +75,17 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/alarm_information_send"
-                android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
-                android:textSize="@dimen/mSubhead" />
+                android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                android:textColor="@color/primary_text_default_material_light"
+                android:text="@string/alarm_information_send"/>
 
             <TextView
                 android:id="@+id/alarm_information_send"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
-                android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
-                android:textSize="@dimen/mBody2" />
+                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                android:textColor="@color/secondary_text_default_material_light"
+                android:layout_marginLeft="15dp"/>
         </LinearLayout>
 
         <LinearLayout
@@ -94,17 +97,17 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/equipment_dvrid"
-                android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
-                android:textSize="@dimen/mSubhead" />
+                android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                android:textColor="@color/primary_text_default_material_light"
+                android:text="@string/equipment_dvrid" />
 
             <TextView
                 android:id="@+id/equipment_dvrid"
                 android:layout_width="wrap_content"
+                android:textColor="@color/secondary_text_default_material_light"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
-                android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
-                android:textSize="@dimen/mBody2" />
+                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                android:layout_marginLeft="15dp" />
         </LinearLayout>
 
         <LinearLayout
@@ -116,17 +119,17 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/equipment_cmaid"
-                android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
-                android:textSize="@dimen/mSubhead" />
+                android:textColor="@color/primary_text_default_material_light"
+                android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                android:text="@string/equipment_cmaid"/>
 
             <TextView
                 android:id="@+id/equipment_cmaid"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
-                android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
-                android:textSize="@dimen/mBody2" />
+                android:textColor="@color/secondary_text_default_material_light"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                android:layout_marginLeft="15dp"/>
         </LinearLayout>
 
         <LinearLayout
@@ -138,17 +141,17 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/equipment_eqmenid"
-                android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
-                android:textSize="@dimen/mSubhead" />
+                android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                android:textColor="@color/primary_text_default_material_light"
+                android:text="@string/equipment_eqmenid" />
 
             <TextView
                 android:id="@+id/equipment_eqmenid"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
-                android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
-                android:textSize="@dimen/mBody2" />
+                android:textColor="@color/secondary_text_default_material_light"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                android:layout_marginLeft="15dp"/>
         </LinearLayout>
 
         <LinearLayout
@@ -159,18 +162,18 @@
 
             <TextView
                 android:layout_width="wrap_content"
+                android:textColor="@color/primary_text_default_material_light"
                 android:layout_height="wrap_content"
-                android:text="@string/equipment_sensorid"
-                android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
-                android:textSize="@dimen/mSubhead" />
+                android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                android:text="@string/equipment_sensorid" />
 
             <TextView
                 android:id="@+id/equipment_sensorid"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
-                android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
-                android:textSize="@dimen/mBody2" />
+                android:textColor="@color/secondary_text_default_material_light"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                android:layout_marginLeft="15dp"/>
         </LinearLayout>
 
         <LinearLayout
@@ -180,19 +183,19 @@
             android:layout_weight="1">
 
             <TextView
+                android:textColor="@color/primary_text_default_material_light"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/equipment_preset"
-                android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
-                android:textSize="@dimen/mSubhead" />
+                android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                android:text="@string/equipment_preset" />
 
             <TextView
                 android:id="@+id/equipment_preset"
                 android:layout_width="wrap_content"
+                android:textColor="@color/secondary_text_default_material_light"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
-                android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
-                android:textSize="@dimen/mBody2" />
+                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                android:layout_marginLeft="15dp"/>
         </LinearLayout>
 
     </LinearLayout>
@@ -203,9 +206,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="10dp"
-        android:text="@string/sensor_information"
-        android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
-        android:textSize="@dimen/mTitle" />
+        android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+        android:text="@string/sensor_information"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/more_information_rv"

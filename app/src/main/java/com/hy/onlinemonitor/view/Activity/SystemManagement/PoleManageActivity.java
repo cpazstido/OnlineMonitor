@@ -114,7 +114,7 @@ public class PoleManageActivity extends SMBaseActivity {
                 super.onScrollStateChanged(recyclerView, newState);
                 if (newState == RecyclerView.SCROLL_STATE_IDLE && lastVisibleItem + 1 == mAdapter.getItemCount() && mAdapter.getItemCount() >= polePage.getRowCount()) {
                     Log.e("hell", "到达底部");
-                    ShowUtile.toastShow(PoleManageActivity.this, "没有更多数据....");
+                    ShowUtile.snackBarShow(getRootView(), "没有更多数据....");
 
                 }
             }
@@ -127,7 +127,7 @@ public class PoleManageActivity extends SMBaseActivity {
                 Log.e("show", "lastVisibleItem" + lastVisibleItem + "--totalItemCount" + totalItemCount + "pageSize" + pageSize);
                 if (lastVisibleItem >= totalItemCount - 1 && dy > 0 && polePage.getRowCount() > totalItemCount) {
                     if (!isLoadingMore) {
-                        ShowUtile.toastShow(PoleManageActivity.this, "加载更多");
+                        ShowUtile.snackBarShow(getRootView(), "加载更多");
                         isLoadingMore = true;
                         pageNumber++;
                         //根据pageNumber加载更多
@@ -140,7 +140,7 @@ public class PoleManageActivity extends SMBaseActivity {
                                 break;
                         }
                     } else {
-                        ShowUtile.toastShow(PoleManageActivity.this, "正在加载中..");
+                        ShowUtile.snackBarShow(getRootView(), "正在加载中..");
                     }
                 }
             }
@@ -242,6 +242,7 @@ public class PoleManageActivity extends SMBaseActivity {
     }
 
     public void renderPoleList(PolePage polePage) {
+        isLoadingMore = false;
         if (polePage != null && polePage.getList().size() != 0) {
             errorMessageLl.setVisibility(View.GONE);
             smRecyclerView.setVisibility(View.VISIBLE);

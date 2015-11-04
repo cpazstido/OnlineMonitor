@@ -23,7 +23,8 @@ public class ConditionMonitoringDataRepository implements ConditionMonitoringRep
     private PageEntityDataMapper pageEntityDataMapper;
     private int userId;
     private int selectedType;
-
+    private String startDate;
+    private String endDate;
     public ConditionMonitoringDataRepository(Context mContext, String deviceSn) {
         this.mContext = mContext;
         this.deviceSn = deviceSn;
@@ -36,47 +37,49 @@ public class ConditionMonitoringDataRepository implements ConditionMonitoringRep
         this.selectedType = selectedType;
     }
 
-    public ConditionMonitoringDataRepository(Context mContext, String deviceSn, int pageNum) {
+    public ConditionMonitoringDataRepository(Context mContext, String deviceSn,String startDate,String endDate, int pageNum) {
         this.mContext = mContext;
         this.deviceSn = deviceSn;
         this.pageNum = pageNum;
+        this.startDate = startDate;
+        this.endDate = endDate;
         pageEntityDataMapper = new PageEntityDataMapper();
     }
 
     @Override
     public Observable<DomainConditionMonitoringPage> getAeolianVibration() {
         RestApiImpl restApi = new RestApiImpl(mContext, new PageEntityJsonMapper());
-        return restApi.getAeolianVibration(deviceSn, pageNum).map(pageEntityDataMapper::transform);
+        return restApi.getAeolianVibration(deviceSn,startDate,endDate,pageNum).map(pageEntityDataMapper::transform);
     }
 
     @Override
     public Observable<DomainConditionMonitoringPage> getIceCoating() {
         RestApiImpl restApi = new RestApiImpl(mContext, new PageEntityJsonMapper());
-        return restApi.getIceCoating(deviceSn, pageNum).map(pageEntityDataMapper::transform);
+        return restApi.getIceCoating(deviceSn,startDate,endDate,pageNum).map(pageEntityDataMapper::transform);
     }
 
     @Override
     public Observable<DomainConditionMonitoringPage> getConductorSag() {
         RestApiImpl restApi = new RestApiImpl(mContext, new PageEntityJsonMapper());
-        return restApi.getConductorSag(deviceSn, pageNum).map(pageEntityDataMapper::transform);
+        return restApi.getConductorSag(deviceSn,startDate,endDate,pageNum).map(pageEntityDataMapper::transform);
     }
 
     @Override
     public Observable<DomainConditionMonitoringPage> getConductorSwingWithWind() {
         RestApiImpl restApi = new RestApiImpl(mContext, new PageEntityJsonMapper());
-        return restApi.getConductorSwingWithWind(deviceSn, pageNum).map(pageEntityDataMapper::transform);
+        return restApi.getConductorSwingWithWind(deviceSn,startDate,endDate,pageNum).map(pageEntityDataMapper::transform);
     }
 
     @Override
     public Observable<DomainConditionMonitoringPage> getPoleStatus() {
         RestApiImpl restApi = new RestApiImpl(mContext, new PageEntityJsonMapper());
-        return restApi.getPoleStatus(deviceSn, pageNum).map(pageEntityDataMapper::transform);
+        return restApi.getPoleStatus(deviceSn,startDate,endDate,pageNum).map(pageEntityDataMapper::transform);
     }
 
     @Override
     public Observable<DomainConditionMonitoringPage> getMicroclimate() {
         RestApiImpl restApi = new RestApiImpl(mContext, new PageEntityJsonMapper());
-        return restApi.getMicroclimate(deviceSn, pageNum).map(pageEntityDataMapper::transform);
+        return restApi.getMicroclimate(deviceSn,startDate,endDate,pageNum).map(pageEntityDataMapper::transform);
     }
 
     @Override

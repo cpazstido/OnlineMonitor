@@ -5,6 +5,8 @@ import android.animation.AnimatorInflater;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Handler;
+import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -102,16 +104,15 @@ public class ShowUtile {
 
     static Toast toast = null;
 
-    public static void toastShow(Context mContext,String showText){
-        if (null == toast) {
-            toast = Toast.makeText(mContext, showText, Toast.LENGTH_SHORT);
-        } else {
-            toast.cancel();
-            toast = Toast.makeText(mContext, showText, Toast.LENGTH_SHORT);
-        }
-        toast.show();
+    public static void snackBarShow(@Nullable View view,String showText){
+        Snackbar snackbar = Snackbar.make(view, showText, Snackbar.LENGTH_SHORT)
+                .setAction("确定", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                    }
+                });
+        snackbar.show();
     }
-
     public static void noJurisdictionToast(Context mContext){
         String showText = "无权限访问,请联系管理员修改权限.";
         if (null == toast) {

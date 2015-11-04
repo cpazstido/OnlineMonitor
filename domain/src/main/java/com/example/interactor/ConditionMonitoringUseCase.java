@@ -51,7 +51,6 @@ public class ConditionMonitoringUseCase extends UseCase {
                 break;
             case 8:
                 observable = conditionMonitoringRepository.getEquipmentList();
-
         }
         return observable;
     }

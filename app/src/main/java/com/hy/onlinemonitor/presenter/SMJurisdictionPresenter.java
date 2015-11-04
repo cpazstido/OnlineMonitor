@@ -109,7 +109,7 @@ public class SMJurisdictionPresenter implements Presenter {
 
         @Override
         public void onCompleted() {
-            ShowUtile.toastShow(mContext,"长按可修改角色名");
+            ShowUtile.snackBarShow(jurisdictionManageActivity.getRootView(),"长按可修改角色名");
             SMJurisdictionPresenter.this.hideViewLoading();
         }
 
@@ -175,7 +175,7 @@ public class SMJurisdictionPresenter implements Presenter {
         @Override
         public void onCompleted() {
             SMJurisdictionPresenter.this.hideViewLoading();
-            ShowUtile.toastShow(mContext,"修改完成");
+            ShowUtile.snackBarShow(jurisdictionManageActivity.getRootView(),"修改完成");
         }
 
         @Override

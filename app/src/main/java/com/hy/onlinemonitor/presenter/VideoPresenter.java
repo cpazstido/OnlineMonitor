@@ -113,7 +113,7 @@ public class VideoPresenter implements Presenter {
     private class VideoStopSubscriber extends DefaultSubscriber<String> {
         @Override
         public void onCompleted() {
-            ShowUtile.toastShow(mContext,"切换成功,等待播放中..");
+            ShowUtile.snackBarShow(videoActivity.getRootView(), "切换成功,等待播放中..");
         }
 
         @Override

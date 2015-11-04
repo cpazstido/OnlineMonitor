@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-
     <include layout="@layout/toolbar" />
 
     <LinearLayout
@@ -26,7 +25,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="开始时间"
-                android:textColor="#000" />
+                android:textAppearance="@style/TextAppearance.AppCompat.Subhead" />
 
             <com.rey.material.widget.Button
                 android:id="@+id/start_time_btn"
@@ -53,7 +52,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="结束时间"
-                android:textColor="#000" />
+                android:textAppearance="@style/TextAppearance.AppCompat.Subhead" />
 
             <com.rey.material.widget.Button
                 android:id="@+id/end_time_btn"
@@ -79,7 +78,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="统计方式"
-            android:textColor="#000" />
+            android:textAppearance="@style/TextAppearance.AppCompat.Subhead" />
 
         <com.rey.material.widget.RadioButton
             android:id="@+id/real_time_statistics"
@@ -126,7 +125,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="设备选择"
-            android:textColor="#000" />
+            android:textAppearance="@style/TextAppearance.AppCompat.Subhead" />
 
         <com.rey.material.widget.Button
             android:id="@+id/choice_equipment"
@@ -153,7 +152,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="选择统计"
-            android:textColor="#000" />
+            android:textAppearance="@style/TextAppearance.AppCompat.Subhead" />
 
         <Spinner
             android:id="@+id/select_statistics"
@@ -175,29 +174,30 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="统计参数"
-            android:textColor="#000" />
+            android:textAppearance="@style/TextAppearance.AppCompat.Subhead" />
 
         <Spinner
             android:id="@+id/statistical_parameters"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:textColor="#000000"
-            android:gravity="right"
             android:layout_weight="1"
+            android:gravity="right"
+            android:textColor="#000000"
             android:textSize="18sp" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="具体参数"
-            android:textColor="#000" />
+            android:textAppearance="@style/TextAppearance.AppCompat.Subhead" />
 
         <Spinner
             android:id="@+id/specific_parameters"
-            android:layout_gravity="center"
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
             android:textColor="#000000"
             android:textSize="18sp" />
     </LinearLayout>
@@ -207,8 +207,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:visibility="gone"
-        android:padding="5dp">
+        android:padding="5dp"
+        android:visibility="gone">
 
 
     </LinearLayout>

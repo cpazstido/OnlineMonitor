@@ -638,7 +638,7 @@ public interface RestApi {
      * @param pageNum  页数
      * @return Page对象
      */
-    Observable<AeolianVibrationPageEntity> getAeolianVibration(String deviceSn, int pageNum);
+    Observable<AeolianVibrationPageEntity> getAeolianVibration(String deviceSn,String startDate,String endDate, int pageNum);
 
     /**
      * 得到覆冰数据
@@ -647,7 +647,7 @@ public interface RestApi {
      * @param pageNum  页数
      * @return Page对象
      */
-    Observable<IceCoatingPageEntity> getIceCoating(String deviceSn, int pageNum);
+    Observable<IceCoatingPageEntity> getIceCoating(String deviceSn,String startDate,String endDate, int pageNum);
 
     /**
      * 得到导线弧垂数据
@@ -656,7 +656,7 @@ public interface RestApi {
      * @param pageNum  页数
      * @return Page对象
      */
-    Observable<ConductorSagPageEntity> getConductorSag(String deviceSn, int pageNum);
+    Observable<ConductorSagPageEntity> getConductorSag(String deviceSn,String startDate,String endDate, int pageNum);
 
     /**
      * 得到导线风偏数据
@@ -665,7 +665,7 @@ public interface RestApi {
      * @param pageNum  页数
      * @return Page对象
      */
-    Observable<ConductorSwingWithWindPageEntity> getConductorSwingWithWind(String deviceSn, int pageNum);
+    Observable<ConductorSwingWithWindPageEntity> getConductorSwingWithWind(String deviceSn,String startDate,String endDate, int pageNum);
 
     /**
      * 得到杆塔状态数据
@@ -674,7 +674,7 @@ public interface RestApi {
      * @param pageNum  页数
      * @return Page对象
      */
-    Observable<PoleStatusPageEntity> getPoleStatus(String deviceSn, int pageNum);
+    Observable<PoleStatusPageEntity> getPoleStatus(String deviceSn,String startDate,String endDate, int pageNum);
 
     /**
      * 得到微气象数据
@@ -683,7 +683,7 @@ public interface RestApi {
      * @param pageNum  页数
      * @return Page对象
      */
-    Observable<MicroclimatePageEntity> getMicroclimate(String deviceSn, int pageNum);
+    Observable<MicroclimatePageEntity> getMicroclimate(String deviceSn,String startDate,String endDate, int pageNum);
 
     /**
      * 获取传感器类型,用来显示page

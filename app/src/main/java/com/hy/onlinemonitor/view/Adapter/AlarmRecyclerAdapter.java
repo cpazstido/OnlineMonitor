@@ -20,8 +20,8 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.TreeMap;
 
 public class AlarmRecyclerAdapter extends RecyclerView.Adapter<AlarmViewHolder> {
@@ -31,6 +31,9 @@ public class AlarmRecyclerAdapter extends RecyclerView.Adapter<AlarmViewHolder> 
     private int showType;
     private int dvrType;
     private int dvrId;
+
+    private LinkedHashSet<AlarmInformation> alarmInformations = new LinkedHashSet<>();
+
     private TreeMap<Integer, AlarmInformation> informationTreeMap = new TreeMap<>();
 
     public TreeMap<Integer, AlarmInformation> getInformationTreeMap() {
@@ -152,17 +155,24 @@ public class AlarmRecyclerAdapter extends RecyclerView.Adapter<AlarmViewHolder> 
 
     public void setAlarmCollection(Collection<AlarmInformation> alarmInformationCollection) {
         this.validateAlarmsCollection(alarmInformationCollection);
-        for (AlarmInformation alarmInformation : alarmInformationCollection) {
-            informationTreeMap.put(alarmInformation.getAlarmSn(), alarmInformation);
-        }
-        Iterator titer = informationTreeMap.entrySet().iterator();
+//        for (AlarmInformation alarmInformation : alarmInformationCollection) {
+//            informationTreeMap.put(alarmInformation.getAlarmSn(), alarmInformation);
+//        }
+//        Iterator titer = informationTreeMap.entrySet().iterator();
+//        List<AlarmInformation> list1 = new ArrayList<>();
+//        while (titer.hasNext()) {
+//            Map.Entry ent = (Map.Entry) titer.next();
+//            list1.add((AlarmInformation) ent.getValue());
+//        }
+        alarmInformations.addAll(alarmInformationCollection);
+
+        Iterator<AlarmInformation> titer = alarmInformations.iterator();
         List<AlarmInformation> list1 = new ArrayList<>();
         while (titer.hasNext()) {
-            Map.Entry ent = (Map.Entry) titer.next();
-            list1.add((AlarmInformation) ent.getValue());
+            list1.add(titer.next());
         }
 
-        this.mList = list1;
+        mList = list1;
         this.notifyDataSetChanged();
     }
 

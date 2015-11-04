@@ -131,6 +131,11 @@ public class TestActivity extends BaseActivity implements LoadDataView, DatePick
     }
 
     @Override
+    public View getRootView() {
+        return null;
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_monitor_state, menu);
@@ -216,12 +221,12 @@ public class TestActivity extends BaseActivity implements LoadDataView, DatePick
             if (checkTime(year + "-" + realMonth + "-" + dayOfMonth, endTimeBtn.getText().toString()))
                 startTimeBtn.setText(year + "-" + realMonth + "-" + dayOfMonth);
             else
-                ShowUtile.toastShow(getContext(), "请选择正确的开始与结束时间");
+                ShowUtile.snackBarShow(getRootView(), "请选择正确的开始与结束时间");
         } else {//选择结束时间
             if (checkTime(startTimeBtn.getText().toString(), year + "-" + realMonth + "-" + dayOfMonth))
                 endTimeBtn.setText(year + "-" + realMonth + "-" + dayOfMonth);
             else
-                ShowUtile.toastShow(getContext(), "请选择正确的开始与结束时间");
+                ShowUtile.snackBarShow(getRootView(), "请选择正确的开始与结束时间");
         }
     }
 

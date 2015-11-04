@@ -27,6 +27,8 @@ import butterknife.ButterKnife;
 
 public class EquipmentListViewActivity extends BaseActivity implements LoadDataView {
 
+    @Bind(R.id.rootView)
+    RelativeLayout rootView;
     @Bind(R.id.equipment_toolbar)
     Toolbar toolbar;
     @Bind(R.id.rv_recyclerview_data)
@@ -119,6 +121,11 @@ public class EquipmentListViewActivity extends BaseActivity implements LoadDataV
     }
 
     @Override
+    public View getRootView() {
+        return rootView;
+    }
+
+    @Override
     public void setupUI() {
         loadingDialog = GetLoading.getDialog(EquipmentListViewActivity.this, "加载数据中");
         selectedType = this.getUser().getSelectionType();
@@ -154,7 +161,7 @@ public class EquipmentListViewActivity extends BaseActivity implements LoadDataV
                 super.onScrollStateChanged(recyclerView, newState);
                 if (newState == RecyclerView.SCROLL_STATE_IDLE && lastVisibleItem + 1 == mAdapter.getItemCount() && mAdapter.getItemCount() >= equipmentInforPage.getRowCount()) {
                     Log.e("hell", "到达底部");
-                    ShowUtile.toastShow(EquipmentListViewActivity.this, "没有更多数据....");
+                    ShowUtile.snackBarShow(getRootView(), "没有更多数据....");
                 }
             }
 
@@ -166,11 +173,8 @@ public class EquipmentListViewActivity extends BaseActivity implements LoadDataV
                 if (lastVisibleItem == totalItemCount - 1 && dy > 0 && equipmentInforPage.getRowCount() > totalItemCount) {
                     if (!isLoadingMore) {
                         isLoadingMore = true;
-                        ShowUtile.toastShow(EquipmentListViewActivity.this, "加载更多");
                         pageNumber++;
                         loadEquipmentList(pageNumber);//这里多线程也要手动控制isLoadingMore
-                    } else {
-                        ShowUtile.toastShow(EquipmentListViewActivity.this, "正在加载中..");
                     }
                 }
             }

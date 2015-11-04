@@ -9,6 +9,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.baoyz.widget.PullRefreshLayout;
 import com.hy.onlinemonitor.R;
@@ -16,6 +18,7 @@ import com.hy.onlinemonitor.bean.OnlineDeviceStatePage;
 import com.hy.onlinemonitor.presenter.ConditionMonitoringPresenter;
 import com.hy.onlinemonitor.presenter.EquipmentStateMonitorPresenter;
 import com.hy.onlinemonitor.view.Adapter.DeviceStateMonitoring.CMBaseAdapter;
+import com.rey.material.widget.Button;
 
 /**
  * Created by 24363 on 2015/10/16.
@@ -28,6 +31,9 @@ public abstract class StateMonitorBaseFragment extends Fragment {
     protected PullRefreshLayout swipeRefreshLayout;
     protected EquipmentStateMonitorPresenter equipmentStateMonitorPresenter;
     protected ConditionMonitoringPresenter conditionMonitoringPresenter;
+    protected RelativeLayout errorRl;
+    protected TextView errorShow;
+    protected Button errorRefresh;
     protected Bundle bundle;
     protected int lineSn = 0;
     protected int userId = 0;
@@ -58,6 +64,9 @@ public abstract class StateMonitorBaseFragment extends Fragment {
         this.initializePresenter();
         rvRecyclerviewData = (RecyclerView) view.findViewById(R.id.rv_recyclerview_data);
         swipeRefreshLayout = (PullRefreshLayout) view.findViewById(R.id.swipeRefreshLayout);
+        errorRl = (RelativeLayout) view.findViewById(R.id.error_message_ll);
+        errorShow = (TextView) view.findViewById(R.id.error_message_tv);
+        errorRefresh = (Button) view.findViewById(R.id.refresh_button);
 
         swipeRefreshLayout.setOnRefreshListener(new PullRefreshLayout.OnRefreshListener() {
             @Override
@@ -83,6 +92,17 @@ public abstract class StateMonitorBaseFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_state_monitoring, container, false);
     }
 
+    public void showError(String message){
+        swipeRefreshLayout.setVisibility(View.GONE);
+        errorRl.setVisibility(View.VISIBLE);
+        errorShow.setText(message);
+        errorRefresh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toErrorRefresh();
+            }
+        });
+    }
 
     /**
      * 加载数据,在变为可见时调用
@@ -105,4 +125,5 @@ public abstract class StateMonitorBaseFragment extends Fragment {
      */
     protected abstract void initializePresenter();
 
+    protected abstract void toErrorRefresh();
 }

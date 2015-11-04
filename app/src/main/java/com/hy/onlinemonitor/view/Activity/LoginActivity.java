@@ -17,6 +17,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.DialogAction;
@@ -52,6 +53,7 @@ import butterknife.ButterKnife;
 public class LoginActivity extends AppCompatActivity implements JumpView {
 
     private static final String TAG = "LOGIN";
+
     private SharedPreferences.Editor editor;
     private AsyncHttpClient client;
     private Handler handler = null;
@@ -74,6 +76,8 @@ public class LoginActivity extends AppCompatActivity implements JumpView {
     Button loginBtn;
     @Bind(R.id.titles)
     TextView titles;
+    @Bind(R.id.rootView)
+    RelativeLayout rootView;
 
     private int serverVersion;
     private int localVersion;
@@ -147,7 +151,6 @@ public class LoginActivity extends AppCompatActivity implements JumpView {
                 editor.apply();
             }
         });
-
     }
 
     private void goTypeView() {
@@ -222,7 +225,9 @@ public class LoginActivity extends AppCompatActivity implements JumpView {
 
                         if (MyApplication.localVersion < MyApplication.serverVersion) {
                             String upDataInfo = "发现新版本,建议在wifi环境下更新\n";
-                            upDataInfo += "安装包大小:" + MyApplication.appSize + "kb\n";
+                            long realSize;
+                            realSize = MyApplication.appSize / 1024 / 1024;
+                            upDataInfo += "安装包大小:" + realSize + "m\n";
                             upDataInfo += "版本号:" + MyApplication.serverVersion;
                             new MaterialDialog.Builder(LoginActivity.this)
                                     .content(upDataInfo)
@@ -299,7 +304,7 @@ public class LoginActivity extends AppCompatActivity implements JumpView {
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                 Log.e("application", "error");
-                ShowUtile.toastShow(LoginActivity.this, "访问升级服务器失败");
+                ShowUtile.snackBarShow(getRootView(), "访问升级服务器失败");
                 upDataDialog.cancel();
                 serverVersion = 0;
                 appSize = 0;
@@ -449,4 +454,7 @@ public class LoginActivity extends AppCompatActivity implements JumpView {
     }
 
 
+    public View getRootView() {
+        return rootView;
+    }
 }

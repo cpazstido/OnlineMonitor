@@ -32,7 +32,7 @@ import com.squareup.picasso.Picasso;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class DetailedAlarmActivity extends AppCompatActivity implements LoadDataView{
+public class DetailedAlarmActivity extends AppCompatActivity implements LoadDataView {
     @Bind(R.id.detailed_toolbar)
     Toolbar detailedToolbar;
     @Bind(R.id.detailed_play_video)
@@ -49,6 +49,8 @@ public class DetailedAlarmActivity extends AppCompatActivity implements LoadData
     ImageView detailedInfraredPicture;
     @Bind(R.id.detailed_visible_picture)
     ImageView detailedVisiblePicture;
+    @Bind(R.id.rootView)
+    RelativeLayout rootView;
 
     private String queryAlarmType;
     private int status;
@@ -69,7 +71,7 @@ public class DetailedAlarmActivity extends AppCompatActivity implements LoadData
         queryAlarmType = itemIntent.getStringExtra("queryAlarmType");
         status = itemIntent.getIntExtra("status", -1);
 
-        dvrId = itemIntent.getIntExtra("dvrId",-1);
+        dvrId = itemIntent.getIntExtra("dvrId", -1);
         dvrType = itemIntent.getIntExtra("dvrType", -1);
 
         SlidrConfig config = new SlidrConfig.Builder()
@@ -124,8 +126,8 @@ public class DetailedAlarmActivity extends AppCompatActivity implements LoadData
                     Intent intent = new Intent(DetailedAlarmActivity.this, VideoActivity.class);
                     intent.putExtra("type", "history");
                     intent.putExtra("AlarmInformation", alarmInformation);
-                    intent.putExtra("dvrType",dvrType);
-                    intent.putExtra("dvrId",dvrId);
+                    intent.putExtra("dvrType", dvrType);
+                    intent.putExtra("dvrId", dvrId);
                     startActivity(intent);
                 } else {
                     ShowUtile.noJurisdictionToast(DetailedAlarmActivity.this);
@@ -140,7 +142,7 @@ public class DetailedAlarmActivity extends AppCompatActivity implements LoadData
                     //这里处理报警
                     HandlePresenter handlePresenter = new HandlePresenter();
                     handlePresenter.setView(DetailedAlarmActivity.this);
-                    handlePresenter.handlerAlarm(alarmInformation.getAlarmSn(),queryAlarmType);
+                    handlePresenter.handlerAlarm(alarmInformation.getAlarmSn(), queryAlarmType);
                 } else {
                     ShowUtile.noJurisdictionToast(DetailedAlarmActivity.this);
                 }
@@ -184,5 +186,9 @@ public class DetailedAlarmActivity extends AppCompatActivity implements LoadData
     protected void onDestroy() {
         super.onDestroy();
         ActivityCollector.removeActivity(this);
+    }
+
+    public View getRootView() {
+        return rootView;
     }
 }

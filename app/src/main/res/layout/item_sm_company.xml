@@ -42,19 +42,19 @@
                 android:gravity="center">
 
                 <TextView
-                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/company_name"
-                    android:textSize="@dimen/mSubhead" />
+                    android:textColor="@color/primary_text_default_material_light"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Subhead" />
 
                 <TextView
-                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
+                    android:textColor="@color/secondary_text_default_material_light"
                     android:id="@+id/company_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="8dp"
-                    android:textSize="@dimen/mBody2" />
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
             </LinearLayout>
 
             <LinearLayout
@@ -64,19 +64,19 @@
                 android:gravity="center">
 
                 <TextView
-                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
+                    android:textColor="@color/primary_text_default_material_light"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/company_address"
-                    android:textSize="@dimen/mSubhead" />
+                    android:textAppearance="@style/TextAppearance.AppCompat.Subhead" />
 
                 <TextView
-                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
+                    android:textColor="@color/secondary_text_default_material_light"
                     android:id="@+id/company_address"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="8dp"
-                    android:textSize="@dimen/mBody2" />
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
             </LinearLayout>
 
             <LinearLayout
@@ -86,19 +86,19 @@
                 android:gravity="center">
 
                 <TextView
-                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
+                    android:textColor="@color/primary_text_default_material_light"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/company_parent"
-                    android:textSize="@dimen/mSubhead" />
+                    android:textAppearance="@style/TextAppearance.AppCompat.Subhead" />
 
                 <TextView
-                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
+                    android:textColor="@color/secondary_text_default_material_light"
                     android:id="@+id/company_superior"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="8dp"
-                    android:textSize="@dimen/mBody2" />
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
             </LinearLayout>
         </LinearLayout>
 

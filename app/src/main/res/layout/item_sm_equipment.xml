@@ -66,16 +66,15 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/equipment_identifier"
-                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
-                    android:textSize="@dimen/mSubhead" />
+                    android:textAppearance="@style/TextAppearance.AppCompat.Title" />
 
                 <TextView
                     android:id="@+id/equipment_identifier"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="15dp"
-                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
-                    android:textSize="@dimen/mBody2" />
+                    android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                    android:textColor="@color/primary_text_default_material_light" />
             </LinearLayout>
 
             <LinearLayout
@@ -95,16 +94,16 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/equipment_dvrid"
-                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
-                        android:textSize="@dimen/mSubhead" />
+                        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                        android:textColor="@color/primary_text_default_material_light" />
 
                     <TextView
                         android:id="@+id/equipment_dvrid"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
-                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
-                        android:textSize="@dimen/mBody2" />
+                        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                        android:textColor="@color/secondary_text_default_material_light" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -117,16 +116,16 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/alarm_information_send"
-                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
-                        android:textSize="@dimen/mSubhead" />
+                        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                        android:textColor="@color/primary_text_default_material_light" />
 
                     <TextView
                         android:id="@+id/alarm_information_send"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
-                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
-                        android:textSize="@dimen/mBody2" />
+                        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                        android:textColor="@color/secondary_text_default_material_light" />
                 </LinearLayout>
 
             </LinearLayout>
@@ -141,8 +140,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/equipment_type"
-                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
-                    android:textSize="@dimen/mSubhead" />
+                    android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                    android:textColor="@color/primary_text_default_material_light" />
 
                 <TextView
                     android:id="@+id/equipment_type"
@@ -150,8 +149,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="15dp"
                     android:layout_weight="1"
-                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
-                    android:textSize="@dimen/mBody2" />
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                    android:textColor="@color/secondary_text_default_material_light" />
 
                 <com.rey.material.widget.Button
                     android:id="@+id/more_information"

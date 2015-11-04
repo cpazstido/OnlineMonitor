@@ -229,6 +229,11 @@ public class MapActivity extends BaseActivity implements MapListView {
     }
 
     @Override
+    public View getRootView() {
+        return mMapView;
+    }
+
+    @Override
     public void renderMapList(Collection<Map> maps) {
         mapAndVideoList = (List<Map>) maps;
         resetOverlay(null);
