@@ -60,6 +60,21 @@ public interface RestApi {
     Observable<EquipmentInforPageEntity> equipmentEntity(int userName, int choiceType,
                                                          int pageNumber);
 
+    /**
+     * 获取设备列表
+     *
+     * @param lineSn 线路sn
+     * @return 得到设备列表
+     */
+    Observable<EquipmentInforPageEntity> searchByLineSn(int lineSn);
+
+    /**
+     * 获取设备列表
+     *
+     * @param equipmentName 设备名
+     * @return 设备列表
+     */
+    Observable<EquipmentInforPageEntity> searchByName(String equipmentName);
 
     /**
      * 查看所有的报警
@@ -240,6 +255,7 @@ public interface RestApi {
      * 获得所有的杆塔列表
      *
      * @param userId 唯一标示
+     * @param sn     为负数加载所有,为特定的sn则加载特定的操作sn的
      * @return 线路列表, 包含了所有的杆塔
      */
     Observable<List<LineEntity>> getAllTower(int userId, int sn);
@@ -548,7 +564,7 @@ public interface RestApi {
     Observable<String> getEquipmentStatus(int equipmentSn);
 
     /**
-     * 打开设备电源
+     * 打开设备摄像机电源
      *
      * @param deviceId 设备sn
      * @return 返回指令是否成功
@@ -556,14 +572,14 @@ public interface RestApi {
     Observable<String> openPower(String deviceId, int operationType);
 
     /**
-     * 山火特有的打开电源
+     * 山火,外破特有的打开电源
      *
      * @param dvrId     dvrId
      * @param channelID channelID
      * @param dvrType   dvrType
      * @return 字符串
      */
-    Observable<String> openFirePower(int dvrId, int channelID, String dvrType);
+    Observable<String> openCameraPower(int dvrId, int channelID, String dvrType);
 
     /**
      * 切换手自动
@@ -638,7 +654,7 @@ public interface RestApi {
      * @param pageNum  页数
      * @return Page对象
      */
-    Observable<AeolianVibrationPageEntity> getAeolianVibration(String deviceSn,String startDate,String endDate, int pageNum);
+    Observable<AeolianVibrationPageEntity> getAeolianVibration(String deviceSn, String startDate, String endDate, int pageNum);
 
     /**
      * 得到覆冰数据
@@ -647,7 +663,7 @@ public interface RestApi {
      * @param pageNum  页数
      * @return Page对象
      */
-    Observable<IceCoatingPageEntity> getIceCoating(String deviceSn,String startDate,String endDate, int pageNum);
+    Observable<IceCoatingPageEntity> getIceCoating(String deviceSn, String startDate, String endDate, int pageNum);
 
     /**
      * 得到导线弧垂数据
@@ -656,7 +672,7 @@ public interface RestApi {
      * @param pageNum  页数
      * @return Page对象
      */
-    Observable<ConductorSagPageEntity> getConductorSag(String deviceSn,String startDate,String endDate, int pageNum);
+    Observable<ConductorSagPageEntity> getConductorSag(String deviceSn, String startDate, String endDate, int pageNum);
 
     /**
      * 得到导线风偏数据
@@ -665,7 +681,7 @@ public interface RestApi {
      * @param pageNum  页数
      * @return Page对象
      */
-    Observable<ConductorSwingWithWindPageEntity> getConductorSwingWithWind(String deviceSn,String startDate,String endDate, int pageNum);
+    Observable<ConductorSwingWithWindPageEntity> getConductorSwingWithWind(String deviceSn, String startDate, String endDate, int pageNum);
 
     /**
      * 得到杆塔状态数据
@@ -674,7 +690,7 @@ public interface RestApi {
      * @param pageNum  页数
      * @return Page对象
      */
-    Observable<PoleStatusPageEntity> getPoleStatus(String deviceSn,String startDate,String endDate, int pageNum);
+    Observable<PoleStatusPageEntity> getPoleStatus(String deviceSn, String startDate, String endDate, int pageNum);
 
     /**
      * 得到微气象数据
@@ -683,7 +699,7 @@ public interface RestApi {
      * @param pageNum  页数
      * @return Page对象
      */
-    Observable<MicroclimatePageEntity> getMicroclimate(String deviceSn,String startDate,String endDate, int pageNum);
+    Observable<MicroclimatePageEntity> getMicroclimate(String deviceSn, String startDate, String endDate, int pageNum);
 
     /**
      * 获取传感器类型,用来显示page

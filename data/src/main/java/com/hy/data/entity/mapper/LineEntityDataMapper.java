@@ -20,7 +20,7 @@ public class LineEntityDataMapper {
         if (lineEntity != null) {
             domainLine = new DomainLine();
             domainLine.setName(lineEntity.getName());
-            domainLine.setLineSn(lineEntity.getCircuitSn());
+            domainLine.setLineSn(lineEntity.getSn());
             if(lineEntity.getPoleSet() != null) {
                 domainLine.setTowers(PoleEntityDataMapper.transform(lineEntity.getPoleSet()));
             }

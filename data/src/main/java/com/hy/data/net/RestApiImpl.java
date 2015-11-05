@@ -307,6 +307,78 @@ public class RestApiImpl implements RestApi {
         });
     }
 
+    @Override
+    public Observable<EquipmentInforPageEntity> searchByLineSn(int lineSn) {
+        return Observable.create(new Observable.OnSubscribe<EquipmentInforPageEntity>() {
+            @Override
+            public void call(Subscriber<? super EquipmentInforPageEntity> subscriber) {
+
+                RequestParams params = new RequestParams();
+                params.put("sn", lineSn);
+                Log.e("searchByLineSn",lineSn+"");
+                SystemRestClient.post("/queryDeviceByCrircuitSn", params, new AsyncHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                        try {
+                            String responseEquipmentEntities = new String(responseBody, "UTF-8");
+                            if ("\"loginFail\"".equals(responseEquipmentEntities)) {
+                                subscriber.onError(new NetworkConnectionException("请重新登录"));
+                            } else {
+                                Log.e("getEquipment", responseEquipmentEntities);
+                                subscriber.onNext(pageEntityJsonMapper.transformEquipmentInforPageEntity(responseEquipmentEntities));
+                                subscriber.onCompleted();
+                            }
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                        Log.e("equipmentEntity", "onFailure");
+                        subscriber.onError(new NetworkConnectionException("链接失败"));
+                    }
+                });
+            }
+        });
+    }
+
+    @Override
+    public Observable<EquipmentInforPageEntity> searchByName(String equipmentName) {
+        return Observable.create(new Observable.OnSubscribe<EquipmentInforPageEntity>() {
+            @Override
+            public void call(Subscriber<? super EquipmentInforPageEntity> subscriber) {
+
+                RequestParams params = new RequestParams();
+                params.put("deviceID", equipmentName);
+
+                SystemRestClient.post("/fuzzyQueryByDeviceID", params, new AsyncHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                        try {
+                            String responseEquipmentEntities = new String(responseBody, "UTF-8");
+                            if ("\"loginFail\"".equals(responseEquipmentEntities)) {
+                                subscriber.onError(new NetworkConnectionException("请重新登录"));
+                            } else {
+                                Log.e("getEquipment", responseEquipmentEntities);
+                                subscriber.onNext(pageEntityJsonMapper.transformEquipmentInforPageEntity(responseEquipmentEntities));
+                                subscriber.onCompleted();
+                            }
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                        Log.e("equipmentEntity", "onFailure");
+                        subscriber.onError(new NetworkConnectionException("链接失败"));
+                    }
+                });
+            }
+        });
+    }
+
     /**
      * 查看用户的所有报警
      *
@@ -2300,7 +2372,7 @@ public class RestApiImpl implements RestApi {
     }
 
     @Override
-    public Observable<String> openFirePower(int dvrId, int channelID, String dvrType) {
+    public Observable<String> openCameraPower(int dvrId, int channelID, String dvrType) {
         return Observable.create(new Observable.OnSubscribe<String>() {
             @Override
             public void call(Subscriber<? super String> subscriber) {
@@ -2309,7 +2381,7 @@ public class RestApiImpl implements RestApi {
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                         try {
                             String responseEntities = new String(responseBody, "UTF-8");
-                            Log.e("openPower", "openPower----->" + responseEntities);
+                            Log.e("tag", "openPower----->" + responseEntities);
                             if ("\"loginFail\"".equals(responseEntities)) {
                                 subscriber.onError(new NetworkConnectionException("请重新登录"));
                             } else if (responseEntities.contains("资源已经被移除或不存在")) {

@@ -14,9 +14,6 @@ import com.hy.onlinemonitor.view.Activity.Function.VideoActivity;
 
 import rx.android.schedulers.AndroidSchedulers;
 
-/**
- * Created by 24363 on 2015/8/27.
- */
 public class VideoPresenter implements Presenter {
     private Context mContext;
     private VideoActivity videoActivity;
@@ -30,7 +27,7 @@ public class VideoPresenter implements Presenter {
     private VideoRepository videoRepository;
     private String deviceId;
     private int operationType;
-    private int urlType=-1;
+    private int urlType = -1;
 
     public VideoPresenter(Context mContext) {
         this.mContext = mContext;
@@ -78,7 +75,7 @@ public class VideoPresenter implements Presenter {
     }
 
     public void getVideoUrl() {
-        videoRepository = new VideoDataRepository(mContext, fileName,dvrTypes,dvrId);
+        videoRepository = new VideoDataRepository(mContext, fileName, dvrTypes, dvrId);
         this.videoUseCase = new VideoUseCase(new UIThread(), AndroidSchedulers.mainThread(), videoRepository, 1);
         this.videoUseCase.execute(new VideoUrlSubscriber());
     }
@@ -125,7 +122,7 @@ public class VideoPresenter implements Presenter {
 
         @Override
         public void onNext(String videoUrl) {
-            Log.e("VideoStopSubscr","准备重新播放");
+            Log.e("VideoStopSubscr", "准备重新播放");
             videoActivity.initialize();
         }
     }
@@ -156,7 +153,7 @@ public class VideoPresenter implements Presenter {
 
     private void startVideoPlay(String videoUrl) {
         if (this.videoActivity != null) {
-            this.videoActivity.startVideoPlay(videoUrl,urlType);
+            this.videoActivity.startVideoPlay(videoUrl, urlType);
         }
     }
 
@@ -216,6 +213,9 @@ public class VideoPresenter implements Presenter {
     public void openFireCameraPower(String equipmentName, int operationType, int dvrId, int channelID, String dvrType) {
         this.deviceId = equipmentName;
         this.operationType = operationType;
+        this.dvrId = dvrId;
+        this.channelID = channelID;
+        this.dvrType = dvrType;
         videoRepository = new VideoDataRepository(mContext, equipmentName, dvrType, operationType, dvrId, channelID);
         this.videoUseCase = new VideoUseCase(new UIThread(), AndroidSchedulers.mainThread(), videoRepository, 8);
         this.videoUseCase.execute(new OpenFirePowerSubscriber());
@@ -235,12 +235,12 @@ public class VideoPresenter implements Presenter {
 
         @Override
         public void onNext(String controlStatus) {
-            VideoPresenter.this.openCameraPower(deviceId, operationType);
+            VideoPresenter.this.openCameraPower(deviceId, operationType,dvrId,channelID,dvrType);
         }
     }
 
-    public void openCameraPower(String deivceId, int operationType) {
-        videoRepository = new VideoDataRepository(mContext, deivceId, operationType);
+    public void openCameraPower(String deivceId, int operationType, int dvrId, int channelID, String dvrType) {
+        videoRepository = new VideoDataRepository(mContext, deivceId, dvrType, operationType, dvrId, channelID);
         this.videoUseCase = new VideoUseCase(new UIThread(), AndroidSchedulers.mainThread(), videoRepository, 7);
         this.videoUseCase.execute(new OpenPowerSubscriber());
     }
@@ -290,7 +290,7 @@ public class VideoPresenter implements Presenter {
 
         @Override
         public void onNext(String controlStatus) {
-            Log.e("YunChangeSubscriber",controlStatus);
+            Log.e("YunChangeSubscriber", controlStatus);
             VideoPresenter.this.videoActivity.changeControlFlag();
         }
     }

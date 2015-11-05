@@ -57,6 +57,7 @@
     <string name="sensor_information">传感器信息</string>
 
     <string name="equipment">设备</string>
+    <string name="equipment_search">设备查找</string>
     <string name="equipment_choice">设备选择</string>
     <string name="equipment_add">设备添加</string>
     <string name="equipment_change">设备修改</string>

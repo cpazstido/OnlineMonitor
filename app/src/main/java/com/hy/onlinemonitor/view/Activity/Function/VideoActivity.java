@@ -648,10 +648,7 @@ public class VideoActivity extends AppCompatActivity implements InitView, LoadDa
                     videoPlayTv.setText("等待播放中");
                     switch (choiceType) {
                         case "video":
-                            this.videoPresenter.openCameraPower(equipmentInformation.getEquipmnetName(), OPEN_SYSTEM_POWER);
-                            break;
-                        default:
-                            this.videoPresenter.openCameraPower(equipmentInformation.getEquipmnetName(), OPEN_POWER);
+                            this.videoPresenter.openCameraPower(equipmentInformation.getEquipmnetName(), OPEN_SYSTEM_POWER, equipmentInformation.getDvrId(), channelID, equipmentInformation.getDvrType());
                             break;
                     }
                 }
@@ -662,13 +659,10 @@ public class VideoActivity extends AppCompatActivity implements InitView, LoadDa
                     videoPlayTv.setText("等待播放中");
                     switch (choiceType) {
                         case "video":
-                            this.videoPresenter.openCameraPower(equipmentInformation.getEquipmnetName(), OPEN_SYSTEM_POWER);
-                            break;
-                        case "fire":
-                            this.videoPresenter.openFireCameraPower(equipmentInformation.getEquipmnetName(), OPEN_SYSTEM_POWER, equipmentInformation.getDvrId(), channelID, equipmentInformation.getDvrType());
+                            this.videoPresenter.openCameraPower(equipmentInformation.getEquipmnetName(), OPEN_SYSTEM_POWER, equipmentInformation.getDvrId(), channelID, equipmentInformation.getDvrType());
                             break;
                         default:
-                            this.videoPresenter.openCameraPower(equipmentInformation.getEquipmnetName(), OPEN_SYSTEM_POWER);
+                            this.videoPresenter.openFireCameraPower(equipmentInformation.getEquipmnetName(), OPEN_SYSTEM_POWER, equipmentInformation.getDvrId(), channelID, equipmentInformation.getDvrType());
                             break;
                     }
                 } else {

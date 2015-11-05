@@ -7,7 +7,7 @@ import java.util.List;
  */
 public class LineEntity {
     private String name;
-    private int circuitSn;
+    private int sn;
     private List<PoleEntity> poleSet;
 
     private String circuitOrigin;
@@ -49,12 +49,12 @@ public class LineEntity {
         this.voltage = voltage;
     }
 
-    public int getCircuitSn() {
-        return circuitSn;
+    public int getSn() {
+        return sn;
     }
 
-    public void setCircuitSn(int circuitSn) {
-        this.circuitSn = circuitSn;
+    public void setSn(int sn) {
+        this.sn = sn;
     }
 
     public String getName() {

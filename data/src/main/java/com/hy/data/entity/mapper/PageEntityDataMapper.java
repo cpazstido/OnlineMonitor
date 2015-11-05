@@ -30,6 +30,7 @@ import com.hy.data.entity.RolePageEntity;
 public class PageEntityDataMapper {
     public PageEntityDataMapper() {
     }
+
     public DomainEquipmentInforPage transform(EquipmentInforPageEntity equipmentInforPageEntity) {
         EquipmentAlarmEntityDataMapper equipmentAlarmEntityDataMapper = new EquipmentAlarmEntityDataMapper();
         DomainEquipmentInforPage domainEquipmentInforPage = null;
@@ -38,7 +39,8 @@ public class PageEntityDataMapper {
             domainEquipmentInforPage.setTotalPage(equipmentInforPageEntity.getTotalPage());
             domainEquipmentInforPage.setPageSize(equipmentInforPageEntity.getPageSize());
             domainEquipmentInforPage.setPageNum(equipmentInforPageEntity.getPageNum());
-            domainEquipmentInforPage.setList(equipmentAlarmEntityDataMapper.transform(equipmentInforPageEntity.getList()));
+            if (equipmentInforPageEntity.getList() != null)
+                domainEquipmentInforPage.setList(equipmentAlarmEntityDataMapper.transform(equipmentInforPageEntity.getList()));
             domainEquipmentInforPage.setRowCount(equipmentInforPageEntity.getRowCount());
         }
         return domainEquipmentInforPage;
@@ -151,6 +153,7 @@ public class PageEntityDataMapper {
         }
         return domainConditionMonitoringPage;
     }
+
     public DomainConditionMonitoringPage transform(ConductorSagPageEntity conductorSagPageEntity) {
         DomainConditionMonitoringPage domainConditionMonitoringPage = null;
         if (null != conductorSagPageEntity) {
@@ -163,6 +166,7 @@ public class PageEntityDataMapper {
         }
         return domainConditionMonitoringPage;
     }
+
     public DomainConditionMonitoringPage transform(ConductorSwingWithWindPageEntity conductorSwingWithWindPageEntity) {
         DomainConditionMonitoringPage domainConditionMonitoringPage = null;
         if (null != conductorSwingWithWindPageEntity) {
@@ -175,6 +179,7 @@ public class PageEntityDataMapper {
         }
         return domainConditionMonitoringPage;
     }
+
     public DomainConditionMonitoringPage transform(IceCoatingPageEntity iceCoatingPageEntity) {
         DomainConditionMonitoringPage domainConditionMonitoringPage = null;
         if (null != iceCoatingPageEntity) {
@@ -187,6 +192,7 @@ public class PageEntityDataMapper {
         }
         return domainConditionMonitoringPage;
     }
+
     public DomainConditionMonitoringPage transform(MicroclimatePageEntity microclimatePageEntity) {
         DomainConditionMonitoringPage domainConditionMonitoringPage = null;
         if (null != microclimatePageEntity) {
@@ -199,6 +205,7 @@ public class PageEntityDataMapper {
         }
         return domainConditionMonitoringPage;
     }
+
     public DomainConditionMonitoringPage transform(PoleStatusPageEntity poleStatusPageEntity) {
         DomainConditionMonitoringPage domainConditionMonitoringPage = null;
         if (null != poleStatusPageEntity) {

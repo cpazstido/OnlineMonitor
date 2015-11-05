@@ -119,9 +119,9 @@ public class VideoDataRepository implements VideoRepository{
     }
 
     @Override
-    public Observable<String> openFirePower() {
+    public Observable<String> openCameraPower() {
         RestApiImpl restApi = new RestApiImpl(mContext);
-        return restApi.openFirePower(dvrId, channelID, dvrType);
+        return restApi.openCameraPower(dvrId, channelID, dvrType);
     }
 
     @Override
