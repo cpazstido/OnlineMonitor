@@ -8,8 +8,8 @@ android {
         applicationId "com.hy.onlinemonitor"
         minSdkVersion 14
         targetSdkVersion 22
-        versionCode 4
-        versionName "1.4"
+        versionCode 7
+        versionName "1.7"
     }
     buildTypes {
         release {
@@ -29,7 +29,6 @@ repositories {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile(name:'vitamio-release', ext:'aar')
     compile 'com.android.support:cardview-v7:22.2.1'
     compile 'com.android.support:support-v4:22.2.1'
     compile 'com.android.support:appcompat-v7:22.2.1'
@@ -38,12 +37,9 @@ dependencies {
     compile 'com.android.support:design:22.2.1'
     compile 'com.github.rey5137:material:1.1.1'
     //图片加载库
-    compile 'com.squareup.picasso:picasso:2.5.2'
-    //控件加入左上等图标
-    compile 'com.lid.labelview:lib:0.1.1'
+    compile 'com.github.bumptech.glide:glide:3.6.1'
     //下拉刷新
     compile 'com.baoyz.pullrefreshlayout:library:1.0.1'
-
     //点击打开viewpager的库
     compile 'com.r0adkll:slidableactivity:2.0.3'
     //导航菜单的库
@@ -54,7 +50,6 @@ dependencies {
     compile 'com.loopj.android:android-async-http:1.4.8'
     //Gson
     compile 'com.google.code.gson:gson:2.3.1'
-    //百度地图
     //导入自动find的库
     compile 'com.jakewharton:butterknife:7.0.1'
     //滑动出现更多选项
@@ -80,10 +75,14 @@ dependencies {
     //日期选择库
     compile 'com.wdullaer:materialdatetimepicker:1.5.3'
 
+    //百度地图
     compile files('src/main/libs/baidumapapi_v3_5_0_1.jar')
     //统计图的库
     compile 'com.github.PhilJay:MPAndroidChart:v2.1.5'
 
     //Activity切换库
     compile 'com.kogitune:pre-lollipop-activity-transition:1.1.0'
+
+    //引导页
+    compile 'com.github.amlcurran.showcaseview:library:5.3.0'
 }

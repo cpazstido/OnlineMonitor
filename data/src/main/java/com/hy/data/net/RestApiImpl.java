@@ -1128,9 +1128,7 @@ public class RestApiImpl implements RestApi {
                                 subscriber.onError(new NetworkConnectionException("请重新登录"));
                             } else if (responseAdminLineEntities.contains("资源已经被移除或不存在")) {
                                 subscriber.onError(new Exception("资源已经被移除或不存在"));
-                            } else if ("[]".equals(responseAdminLineEntities)) {
-                                subscriber.onError(new Exception("暂无数据"));
-                            } else {
+                            }else {
                                 Log.e("getAllTower", responseAdminLineEntities);
                                 subscriber.onNext(lineEntityJsonMapper.transformAdminLineEntity(responseAdminLineEntities));
                                 subscriber.onCompleted();
@@ -1169,8 +1167,6 @@ public class RestApiImpl implements RestApi {
                                 subscriber.onError(new NetworkConnectionException("请重新登录"));
                             } else if (responseOwnTowerEntities.contains("资源已经被移除或不存在")) {
                                 subscriber.onError(new Exception("资源已经被移除或不存在"));
-                            } else if ("[]".equals(responseOwnTowerEntities)) {
-                                subscriber.onError(new Exception("暂无数据"));
                             } else {
                                 subscriber.onNext(listOfIntegerJsonMapper.transformIntegerEntity(responseOwnTowerEntities));
                                 subscriber.onCompleted();
@@ -1429,9 +1425,7 @@ public class RestApiImpl implements RestApi {
                                 subscriber.onError(new NetworkConnectionException("查询失败"));
                             } else if (responseEntities.contains("资源已经被移除或不存在")) {
                                 subscriber.onError(new Exception("资源已经被移除或不存在"));
-                            } else if ("[]".equals(responseEntities)) {
-                                subscriber.onError(new Exception("暂无数据"));
-                            } else {
+                            }else {
                                 subscriber.onNext(privilegeEntityJsonMapper.transformPrivilegeEntity(responseEntities));
                                 subscriber.onCompleted();
                             }
@@ -2376,6 +2370,7 @@ public class RestApiImpl implements RestApi {
         return Observable.create(new Observable.OnSubscribe<String>() {
             @Override
             public void call(Subscriber<? super String> subscriber) {
+                Log.e("openCameraPower","dvrId"+dvrId+"dvrType"+dvrType+"channelId"+channelID);
                 SystemRestClient.openFirePower("/openCameraPower", dvrId, channelID, dvrType, new AsyncHttpResponseHandler() {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
@@ -2567,6 +2562,7 @@ public class RestApiImpl implements RestApi {
                 params.put("endTime", endTime);
                 params.put("deviceSn", deviceSn);
                 params.put("statisticByTime", statisticByTime);
+                Log.e("StateData",url);
                 try {
                     SystemRestClient.getClient().get(url, params, new AsyncHttpResponseHandler() {
                         @Override

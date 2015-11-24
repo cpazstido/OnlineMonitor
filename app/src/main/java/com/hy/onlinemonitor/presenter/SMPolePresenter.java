@@ -121,6 +121,7 @@ public class SMPolePresenter implements Presenter{
 
     public void deletePole(int poleSn) {
         showViewLoading();
+        this.poleManageActivity.clearList();
         poleDataRepository = new PoleDataRepository(poleSn,mContext, userId);
         this.poleUseCase = new PoleUseCase(new UIThread(), AndroidSchedulers.mainThread(), poleDataRepository, 4);
         this.poleUseCase.execute(new PolePageSubscriber());

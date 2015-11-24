@@ -3,8 +3,8 @@ package com.hy.onlinemonitor.view.Activity.Function;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.graphics.PixelFormat;
 import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -45,11 +45,8 @@ import java.util.TimerTask;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import io.vov.vitamio.LibsChecker;
-import io.vov.vitamio.MediaPlayer;
 
-
-public class VideoActivity extends AppCompatActivity implements InitView, LoadDataView, MediaPlayer.OnBufferingUpdateListener, MediaPlayer.OnCompletionListener, MediaPlayer.OnPreparedListener, MediaPlayer.OnVideoSizeChangedListener, SurfaceHolder.Callback, MediaPlayer.OnErrorListener {
+public class VideoActivity extends AppCompatActivity implements InitView, LoadDataView, MediaPlayer.OnBufferingUpdateListener, MediaPlayer.OnCompletionListener, MediaPlayer.OnVideoSizeChangedListener, SurfaceHolder.Callback, MediaPlayer.OnErrorListener {
     private static final String TAG = "VideoActivity";
     @Bind(R.id.rootView)
     RelativeLayout rootView;
@@ -145,20 +142,14 @@ public class VideoActivity extends AppCompatActivity implements InitView, LoadDa
         super.onCreate(savedInstanceState);
         Log.e(TAG, "onCreate");
         isOnCreate = true;
-        if (!LibsChecker.checkVitamioLibs(this))
-            return;
         if (savedInstanceState != null) {
             Log.e(TAG, "onCreate savedInstanceState");
         }
         ActivityCollector.addActivity(this);
         setContentView(R.layout.activity_video);
         ButterKnife.bind(this);
-        try {
-            setupUI();
-            initialize();
-        } catch (Exception e) {
-            Log.e("aaaa", "aaaa");
-        }
+        setupUI();
+        initialize();
         mTimer.schedule(mTimerTask, 0, 1000);
     }
 
@@ -168,8 +159,10 @@ public class VideoActivity extends AppCompatActivity implements InitView, LoadDa
         public void run() {
             if (mediaPlayer == null)
                 return;
-            if (mediaPlayer.isPlaying() && !sliderSlContinuous.isPressed()) {
-                handleProgress.sendEmptyMessage(0);
+            if (type != null && "history".equals(type)) {
+                if (mediaPlayer.isPlaying() && !sliderSlContinuous.isPressed()) {
+                    handleProgress.sendEmptyMessage(0);
+                }
             }
         }
     };
@@ -213,7 +206,6 @@ public class VideoActivity extends AppCompatActivity implements InitView, LoadDa
             }
         };
 
-
         CompoundButton.OnCheckedChangeListener channelListener = new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -256,21 +248,17 @@ public class VideoActivity extends AppCompatActivity implements InitView, LoadDa
 
         holder = surfaceView.getHolder();
         holder.addCallback(this);
-        holder.setFormat(PixelFormat.RGBA_8888);
-
+//        holder.setFormat(PixelFormat.RGBA_8888);
         loadingDialog = GetLoading.getDialog(VideoActivity.this, "加载中.....");
         Intent intent = getIntent();
         type = intent.getStringExtra("type");
-
         switch (type) {
             case "real":
                 sliderSlContinuous.setVisibility(View.GONE);
-
                 channel1.setOnCheckedChangeListener(channelListener);
                 channel2.setOnCheckedChangeListener(channelListener);
                 channel3.setOnCheckedChangeListener(channelListener);
                 channel4.setOnCheckedChangeListener(channelListener);
-
                 switchesAuto.setOnCheckedChangeListener(controlListener);
                 switchesManual.setOnCheckedChangeListener(controlListener);
                 haveControl = OwnJurisdiction.haveJurisdiction(1);
@@ -289,7 +277,7 @@ public class VideoActivity extends AppCompatActivity implements InitView, LoadDa
                                 case MotionEvent.ACTION_UP: //手放开时停止转动命令
                                     if (mediaPlayer.isPlaying()) {
                                         yunControlShow.setText(CONTROL_SHOW + "转动停止中.");
-                                        ShowUtile.snackBarShow(getRootView(), "转动停止中.");
+                                        ShowUtile.toastShow(getContext(), "转动停止中.");
                                         videoPresenter.videoControl(CONTROL_STOP);
                                     } else {
                                         ShowUtile.snackBarShow(getRootView(), "没有在播放状态，请先播放！");
@@ -300,7 +288,7 @@ public class VideoActivity extends AppCompatActivity implements InitView, LoadDa
                                     if (mediaPlayer.isPlaying()) {
                                         changeToManual();
                                         yunControlShow.setText(CONTROL_SHOW + "左转中,请稍等");
-                                        ShowUtile.snackBarShow(getRootView(), "左转中...");
+                                        ShowUtile.toastShow(getContext(), "左转中...");
                                         videoPresenter.videoControl(CONTROL_LEFT);
                                     } else {
                                         ShowUtile.snackBarShow(getRootView(), "没有在播放状态，请先播放！");
@@ -314,7 +302,6 @@ public class VideoActivity extends AppCompatActivity implements InitView, LoadDa
                     }
                 });
 
-
                 controlUp.setOnTouchListener(new View.OnTouchListener() {
                     @Override
                     public boolean onTouch(View v, MotionEvent event) {
@@ -323,7 +310,7 @@ public class VideoActivity extends AppCompatActivity implements InitView, LoadDa
                                 case MotionEvent.ACTION_UP: //手放开时停止转动命令
                                     if (mediaPlayer.isPlaying()) {
                                         yunControlShow.setText(CONTROL_SHOW + "转动停止中.");
-                                        ShowUtile.snackBarShow(getRootView(), "转动停止中.");
+                                        ShowUtile.toastShow(getContext(), "转动停止中.");
                                         videoPresenter.videoControl(CONTROL_STOP);
                                     } else {
                                         ShowUtile.snackBarShow(getRootView(), "没有在播放状态，请先播放！");
@@ -334,7 +321,7 @@ public class VideoActivity extends AppCompatActivity implements InitView, LoadDa
                                     if (mediaPlayer.isPlaying()) {
                                         changeToManual();
                                         yunControlShow.setText(CONTROL_SHOW + "上转中,请稍等");
-                                        ShowUtile.snackBarShow(getRootView(), "上转中...");
+                                        ShowUtile.toastShow(getContext(), "上转中...");
                                         videoPresenter.videoControl(CONTROL_UP);
                                     } else {
                                         ShowUtile.snackBarShow(getRootView(), "没有在播放状态，请先播放！");
@@ -356,7 +343,7 @@ public class VideoActivity extends AppCompatActivity implements InitView, LoadDa
                                 case MotionEvent.ACTION_UP://手放开时停止转动命令
                                     if (mediaPlayer.isPlaying()) {
                                         yunControlShow.setText(CONTROL_SHOW + "转动停止中.");
-                                        ShowUtile.snackBarShow(getRootView(), "转动停止中.");
+                                        ShowUtile.toastShow(getContext(), "转动停止中.");
                                         videoPresenter.videoControl(CONTROL_STOP);
                                     } else {
                                         ShowUtile.snackBarShow(getRootView(), "没有在播放状态，请先播放！");
@@ -367,7 +354,7 @@ public class VideoActivity extends AppCompatActivity implements InitView, LoadDa
                                     if (mediaPlayer.isPlaying()) {
                                         changeToManual();
                                         yunControlShow.setText(CONTROL_SHOW + "下转中,请稍等");
-                                        ShowUtile.snackBarShow(getRootView(), "下转中...");
+                                        ShowUtile.toastShow(getContext(), "下转中...");
                                         videoPresenter.videoControl(CONTROL_DOWN);
                                     } else {
                                         ShowUtile.snackBarShow(getRootView(), "没有在播放状态，请先播放！");
@@ -389,7 +376,7 @@ public class VideoActivity extends AppCompatActivity implements InitView, LoadDa
                                 case MotionEvent.ACTION_UP://手放开时停止转动命令
                                     if (mediaPlayer.isPlaying()) {
                                         yunControlShow.setText(CONTROL_SHOW + "转动停止中.");
-                                        ShowUtile.snackBarShow(getRootView(), "转动停止中.");
+                                        ShowUtile.toastShow(getContext(), "转动停止中.");
                                         videoPresenter.videoControl(CONTROL_STOP);
                                     } else {
                                         ShowUtile.snackBarShow(getRootView(), "没有在播放状态，请先播放！");
@@ -400,7 +387,7 @@ public class VideoActivity extends AppCompatActivity implements InitView, LoadDa
                                     if (mediaPlayer.isPlaying()) {
                                         changeToManual();
                                         yunControlShow.setText(CONTROL_SHOW + "右转中,请稍等");
-                                        ShowUtile.snackBarShow(getRootView(), "右转中...");
+                                        ShowUtile.toastShow(getContext(), "右转中...");
                                         videoPresenter.videoControl(CONTROL_RIGHT);
                                     } else {
                                         ShowUtile.snackBarShow(getRootView(), "没有在播放状态，请先播放！");
@@ -491,7 +478,8 @@ public class VideoActivity extends AppCompatActivity implements InitView, LoadDa
     public void showError(String message) {
         if (message.equals("Url获取失败")) {
             if (mediaPlayer == null)
-                mediaPlayer = new MediaPlayer(this);
+                mediaPlayer = new MediaPlayer();
+            videoPlayTv.setText("Url获取失败,等待重新获取中...");
             videoUrl = "";
             isHaveUrl = false;
         } else {
@@ -519,44 +507,11 @@ public class VideoActivity extends AppCompatActivity implements InitView, LoadDa
                 break;
         }
         videoPlayTv.setText("地址获取成功,请等待...");
-
         Log.e("startVideoPlay", videoUrl);
         if (!videoUrl.isEmpty()) {
             isHaveUrl = true;
             try {
-                if (mediaPlayer == null)
-                    mediaPlayer = new MediaPlayer(this);
                 mediaPlayer.setDataSource(videoUrl);
-//                mediaPlayer.setDataSource("rtsp://218.204.223.237:554/live/1/66251FC11353191F/e7ooqwcfbqjoo80j.sdp");
-                mediaPlayer.setDisplay(holder);
-                mediaPlayer.setOnBufferingUpdateListener(this);
-                mediaPlayer.setOnCompletionListener(this);
-                mediaPlayer.setOnPreparedListener(this);
-                mediaPlayer.setOnVideoSizeChangedListener(this);
-                mediaPlayer.setOnErrorListener(this);
-                setVolumeControlStream(AudioManager.STREAM_MUSIC);
-
-                mediaPlayer.setOnInfoListener(new MediaPlayer.OnInfoListener() {
-                    @Override
-                    public boolean onInfo(MediaPlayer mediaPlayer, int arg1, int arg2) {
-                        switch (arg1) {
-                            case MediaPlayer.MEDIA_INFO_BUFFERING_START:
-                                //开始缓存，暂停播放
-                                Log.e(TAG, "开始缓存" + "暂停播放");
-                                break;
-                            case MediaPlayer.MEDIA_INFO_BUFFERING_END:
-                                //缓存完成，继续播放
-                                Log.e(TAG, "缓存完成" + "继续播放");
-                                break;
-                            case MediaPlayer.MEDIA_INFO_DOWNLOAD_RATE_CHANGED:
-                                //显示 下载速度
-                                Log.e(TAG, "download rate:" + arg2);
-                                break;
-                        }
-                        return true;
-                    }
-                });
-
             } catch (IOException e) {
                 Log.e(TAG, "error:" + e.getMessage(), e);
                 e.printStackTrace();
@@ -578,19 +533,8 @@ public class VideoActivity extends AppCompatActivity implements InitView, LoadDa
         super.onStop();
         if (timer != null)
             timer.cancel();
-        releaseMediaPlayer();
-        doCleanUp();
-    }
-
-    @Override
-    protected void onPause() {
-        Log.e(TAG, "onPause");
-        super.onPause();
-        if (timer != null)
-            timer.cancel();
-        releaseMediaPlayer();
-        doCleanUp();
-
+        if (mTimer != null)
+            mTimer.cancel();
     }
 
     @Override
@@ -600,7 +544,7 @@ public class VideoActivity extends AppCompatActivity implements InitView, LoadDa
         if (!isOnCreate)
             initialize();
         if (mediaPlayer == null)
-            mediaPlayer = new MediaPlayer(this);
+            mediaPlayer = new MediaPlayer();
     }
 
 
@@ -624,21 +568,20 @@ public class VideoActivity extends AppCompatActivity implements InitView, LoadDa
         videoEquipmentStatusTv.setText(controlStatus);
         switch (controlStatus) {
             case "\"摄像机电源已打开\"":
-                isOpenPower = false;//防止突然摄像机关电后,不能再次开电的问题.这里在打开电源后设置为可开电
-                if (mediaPlayer == null)
-                    mediaPlayer = new MediaPlayer(this);
-                if (mediaPlayer.isPlaying()) {
-
-                    videoPlayTv.setText("正在播放中");
-                } else {
-                    if (isHaveUrl && !videoUrl.isEmpty()) {
-                        break;
+                if (mediaPlayer != null) {
+                    isOpenPower = false;//防止突然摄像机关电后,不能再次开电的问题.这里在打开电源后设置为可开电
+                    if (mediaPlayer.isPlaying()) {
+                        videoPlayTv.setText("正在播放中");
                     } else {
-                        videoPlayTv.setText("获取地址中");
+                        if (isHaveUrl && !videoUrl.isEmpty()) {
+                            break;
+                        } else {
+                            videoPlayTv.setText("获取地址中");
 //                        startVideoPlay("{\"RtspURL\":\"rtsp://218.204.223.237:554/live/1/66251FC11353191F/e7ooqwcfbqjoo80j.sdp\"}");
-                        dvrId = equipmentInformation.getDvrId();
-                        dvrType = equipmentInformation.getDvrType();
-                        this.videoPresenter.getUrlForRealPlay(channelID, streamType, equipmentInformation.getDvrId(), equipmentInformation.getDvrType());
+                            dvrId = equipmentInformation.getDvrId();
+                            dvrType = equipmentInformation.getDvrType();
+                            this.videoPresenter.getUrlForRealPlay(channelID, streamType, equipmentInformation.getDvrId(), equipmentInformation.getDvrType());
+                        }
                     }
                 }
                 break;
@@ -700,9 +643,25 @@ public class VideoActivity extends AppCompatActivity implements InitView, LoadDa
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
         Log.d(TAG, "surfaceCreated called");
-        doCleanUp();
 //        mediaPlayer = new MediaPlayer(this);
-        mediaPlayer = new MediaPlayer(this);
+        initMediaPlay();
+    }
+
+    private void initMediaPlay() {
+        mediaPlayer = new MediaPlayer();
+        mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+        // 设置播放的视频源
+        // 设置显示视频的SurfaceHolder
+        mediaPlayer.setDisplay(surfaceView.getHolder());
+        Log.e(TAG, "开始装载");
+        mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            @Override
+            public void onPrepared(MediaPlayer mp) {
+                Log.e(TAG, "装载完成");
+                mediaPlayer.start();
+            }
+        });
+        mediaPlayer.setOnErrorListener(this);
     }
 
     private void doCleanUp() {
@@ -719,12 +678,6 @@ public class VideoActivity extends AppCompatActivity implements InitView, LoadDa
         }
     }
 
-    private void startVideoPlayback() {
-        Log.v(TAG, "startVideoPlayback");
-        holder.setFixedSize(mVideoWidth, mVideoHeight);
-        mediaPlayer.start();
-    }
-
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
         Log.d(TAG, "surfaceChanged called");
@@ -733,6 +686,9 @@ public class VideoActivity extends AppCompatActivity implements InitView, LoadDa
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
         Log.d(TAG, "surfaceDestroyed called");
+        if (mediaPlayer != null && mediaPlayer.isPlaying()) {
+            mediaPlayer.stop();
+        }
     }
 
     @Override
@@ -741,17 +697,10 @@ public class VideoActivity extends AppCompatActivity implements InitView, LoadDa
 
     @Override
     public void onCompletion(MediaPlayer mediaPlayer) {
+        if("history".equals(type))
+            sliderSlContinuous.setVisibility(View.GONE);
+        ShowUtile.snackBarShow(getRootView(),"播放完毕");
         Log.d(TAG, "onCompletion called");
-    }
-
-    @Override
-    public void onPrepared(MediaPlayer mediaPlayer) {
-        Log.d(TAG, "onPrepared called");
-        mIsVideoReadyToBePlayed = true;
-
-        if (mIsVideoSizeKnown) {
-            startVideoPlayback();
-        }
     }
 
     @Override
@@ -759,14 +708,10 @@ public class VideoActivity extends AppCompatActivity implements InitView, LoadDa
         Log.v(TAG, "onVideoSizeChanged called");
         if (width == 0 || height == 0) {
             Log.e(TAG, "invalid video width(" + width + ") or height(" + height + ")");
-            return;
         }
         mIsVideoSizeKnown = true;
         mVideoWidth = width;
         mVideoHeight = height;
-        if (mIsVideoReadyToBePlayed) {
-            startVideoPlayback();
-        }
     }
 
     @Override
@@ -775,7 +720,8 @@ public class VideoActivity extends AppCompatActivity implements InitView, LoadDa
         isHaveUrl = false;
         videoUrl = "";
         isOpenPower = false;
-        videoPlayTv.setText("播放出错,错误代码" + "(" + i + ", " + i1 + ")");
+        String errorStr = "播放出错,错误代码" + "(" + i + ", " + i1 + ")";
+        videoPlayTv.setText(errorStr);
         ShowUtile.snackBarShow(getRootView(), "视频暂无法播放,错误代码" + "(" + i + ", " + i1 + ")");
         doCleanUp();
         releaseMediaPlayer();
@@ -806,7 +752,7 @@ public class VideoActivity extends AppCompatActivity implements InitView, LoadDa
         videoUrl = "";
         isHaveUrl = false;
         if (mediaPlayer == null)
-            mediaPlayer = new MediaPlayer(this);
+            initMediaPlay();
         initialize();
     }
 
@@ -835,6 +781,7 @@ public class VideoActivity extends AppCompatActivity implements InitView, LoadDa
             isOpenPower = false;
             videoShow.setVisibility(View.GONE);
             toolbar.setVisibility(View.GONE);
+
         } else if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
             Log.e(TAG, "竖屏");
             releaseMediaPlayer();
@@ -845,7 +792,8 @@ public class VideoActivity extends AppCompatActivity implements InitView, LoadDa
             videoShow.setVisibility(View.VISIBLE);
             toolbar.setVisibility(View.VISIBLE);
         }
-
+        if (mediaPlayer == null)
+            initMediaPlay();
     }
 
     @Override

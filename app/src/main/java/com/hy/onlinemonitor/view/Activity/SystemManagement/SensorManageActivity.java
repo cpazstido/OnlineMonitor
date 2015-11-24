@@ -2,6 +2,7 @@ package com.hy.onlinemonitor.view.Activity.SystemManagement;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -20,6 +21,9 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.daimajia.swipe.util.Attributes;
+import com.github.amlcurran.showcaseview.OnShowcaseEventListener;
+import com.github.amlcurran.showcaseview.ShowcaseView;
+import com.github.amlcurran.showcaseview.targets.ViewTarget;
 import com.google.gson.Gson;
 import com.hy.onlinemonitor.R;
 import com.hy.onlinemonitor.bean.Equipment;
@@ -29,6 +33,7 @@ import com.hy.onlinemonitor.presenter.SMSensorPresenter;
 import com.hy.onlinemonitor.utile.ActivityCollector;
 import com.hy.onlinemonitor.utile.GetLoading;
 import com.hy.onlinemonitor.view.Adapter.SMSensorRecyclerAdapter;
+import com.hy.onlinemonitor.view.Component.ToolbarActionItemTarget;
 import com.hy.onlinemonitor.view.LoadDataView;
 import com.rey.material.widget.FloatingActionButton;
 
@@ -53,7 +58,7 @@ public class SensorManageActivity extends AppCompatActivity implements LoadDataV
     private Equipment equipment;
     private int userId;
     public AlertDialog alertDialog;
-    private boolean isUploading =false;
+    private boolean isUploading = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,14 +73,14 @@ public class SensorManageActivity extends AppCompatActivity implements LoadDataV
         buttonBtFloatWave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!isUploading) {
+                if (!isUploading) {
                     isUploading = true;
                     Gson gson = new Gson();
                     String sensorJson = gson.toJson(mAdapter.getSensors());
                     Log.e("sensorJson", "sensorJson->" + sensorJson);
                     smSensorPresenter.changeSensor(equipment.getSn(), sensorJson);
-                }else{
-                    Toast.makeText(SensorManageActivity.this,"正在上传修改中.请稍后",Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(SensorManageActivity.this, "正在上传修改中.请稍后", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -135,19 +140,25 @@ public class SensorManageActivity extends AppCompatActivity implements LoadDataV
                                 String sensorName = allSensor.get(((Spinner) dialog.getCustomView().findViewById(R.id.dialog_sensor_name)).getSelectedItemPosition()).getSensorName();
                                 String sensorInfo = allSensor.get(((Spinner) dialog.getCustomView().findViewById(R.id.dialog_sensor_name)).getSelectedItemPosition()).getSensorMarke();
                                 String sensorInDeviceID = ((EditText) dialog.getCustomView().findViewById(R.id.dialog_sensor_identifier)).getText().toString();
-                                Sensor sensor = new Sensor();
-                                sensor.setInfo(sensorInfo);
-                                sensor.setName(sensorName);
-                                sensor.setSensorInDeviceID(sensorInDeviceID);
-                                mList.add(sensor);
-                                mAdapter.setSensorList(mList);
 
-                                super.onPositive(dialog);
+                                if (sensorName.isEmpty() || sensorInfo.isEmpty() || sensorInDeviceID.isEmpty()) {
+                                    Toast.makeText(SensorManageActivity.this, "请完整填写", Toast.LENGTH_SHORT).show();
+                                } else {
+                                    Sensor sensor = new Sensor();
+                                    sensor.setInfo(sensorInfo);
+                                    sensor.setName(sensorName);
+                                    sensor.setSensorInDeviceID(sensorInDeviceID);
+                                    mList.add(sensor);
+                                    mAdapter.setSensorList(mList);
+                                    dialog.dismiss();
+                                    super.onPositive(dialog);
+                                }
                             }
 
                             @Override
                             public void onNegative(MaterialDialog dialog) {
                                 super.onNegative(dialog);
+                                dialog.dismiss();
                             }
 
                             @Override
@@ -155,6 +166,7 @@ public class SensorManageActivity extends AppCompatActivity implements LoadDataV
                                 super.onNeutral(dialog);
                             }
                         })
+                        .autoDismiss(false)
                         .build();
 
                 List<String> sensorName = new ArrayList<>();
@@ -204,13 +216,57 @@ public class SensorManageActivity extends AppCompatActivity implements LoadDataV
 
     public void setAllSensorList(List<SensorType> mList) {
         this.allSensor = mList;
+
+        SharedPreferences sp = this.getSharedPreferences("SP", MODE_PRIVATE);
+        boolean isFirst = sp.getBoolean("SensorManageActivity", true);
+
+        if (isFirst) {
+            SharedPreferences.Editor editor = sp.edit();
+            editor.putBoolean("SensorManageActivity", false);
+            editor.apply();
+            new ShowcaseView.Builder(this)
+                    .setTarget(new ToolbarActionItemTarget(toolbar, R.id.action_add))
+                    .singleShot(80)
+                    .withMaterialShowcase()
+                    .setStyle(R.style.CustomShowcaseTheme2)
+                    .setContentTitle("添加传感器")
+                    .setContentText("点击按钮可以添加传感器")
+                    .hideOnTouchOutside()
+                    .setShowcaseEventListener(new OnShowcaseEventListener() {
+                        @Override
+                        public void onShowcaseViewHide(ShowcaseView showcaseView) {
+                            ViewTarget target = new ViewTarget(buttonBtFloatWave);
+
+                            new ShowcaseView.Builder(SensorManageActivity.this)
+                                    .setTarget(target)
+                                    .singleShot(90)
+                                    .withMaterialShowcase()
+                                    .setStyle(R.style.CustomShowcaseTheme)
+                                    .setContentTitle("完成修改传感器")
+                                    .setContentText("在修改所有的传感器信息后,点击该按钮可将修改的信息上传至服务器,只有在点击该按钮后,才会使修改生效")
+                                    .hideOnTouchOutside()
+                                    .build().show();
+                        }
+
+                        @Override
+                        public void onShowcaseViewDidHide(ShowcaseView showcaseView) {
+
+                        }
+
+                        @Override
+                        public void onShowcaseViewShow(ShowcaseView showcaseView) {
+
+                        }
+                    })
+                    .build().show();
+        }
     }
 
     public void isChange(String result) {
-        if(result.equals("true")){
-            isUploading=false;
+        if (result.equals("true")) {
+            isUploading = false;
 //            ShowUtile.toastShow(SensorManageActivity.this,"修改成功");
-            Toast.makeText(SensorManageActivity.this,"修改成功",Toast.LENGTH_SHORT).show();
+            Toast.makeText(SensorManageActivity.this, "修改成功", Toast.LENGTH_SHORT).show();
         }
     }
 

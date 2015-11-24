@@ -47,7 +47,7 @@ public class JurisdictionManageActivity extends SMBaseActivity {
     protected void initRvAdapter() {
         mAdapter = new SMJurisdictionRecyclerAdapter(JurisdictionManageActivity.this, new ArrayList<Role>());
         mAdapter.setChangeJurisdictionClickListener(changeJurisdictionClickListener);
-        ((SMJurisdictionRecyclerAdapter) mAdapter).setMode(Attributes.Mode.Single);
+         mAdapter.setMode(Attributes.Mode.Single);
         smRecyclerView.setAdapter(mAdapter);
     }
 
@@ -149,6 +149,8 @@ public class JurisdictionManageActivity extends SMBaseActivity {
         }else {
             showError(Resources.getSystem().getString(R.string.not_data));
         }
+        ShowGuideView("JurisdictionManageActivity",null,"点击按钮可添加角色");
+
     }
 
     public void changeJurisdictionDialogShow() {

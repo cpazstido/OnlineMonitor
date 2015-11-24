@@ -95,13 +95,6 @@ public class LoginActivity extends AppCompatActivity implements JumpView {
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
 
-        titles.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                TestActivity.StartTestView(LoginActivity.this);
-            }
-        });
-
         initPresenter();
         LoginAlert = GetLoading.getDialog(LoginActivity.this, "登录中");
         initSP();
@@ -224,6 +217,7 @@ public class LoginActivity extends AppCompatActivity implements JumpView {
                         }
 
                         if (MyApplication.localVersion < MyApplication.serverVersion) {
+                            ShowUtile.toastShow(LoginActivity.this,"点击下次升级可进入应用");
                             String upDataInfo = "发现新版本,建议在wifi环境下更新\n";
                             long realSize;
                             realSize = MyApplication.appSize / 1024 / 1024;
@@ -390,7 +384,6 @@ public class LoginActivity extends AppCompatActivity implements JumpView {
             rememberPasswordCheck.setChecked(true);
             autoLoginCheck.setChecked(false);
         }
-
     }
 
     private void initPresenter() {
@@ -424,6 +417,7 @@ public class LoginActivity extends AppCompatActivity implements JumpView {
     public void goToView() {
         Intent intent = new Intent(LoginActivity.this, TypeSelectionActivity.class);
         startActivity(intent);
+        finish();
     }
 
     @Override

@@ -276,6 +276,7 @@ public class TransformationUtils {
         String newStr = getStringFromFloat(number, 2);
         return newStr + "%";
     }
+
     /**
      * 得到兆M为结尾的字符串
      *
@@ -308,8 +309,10 @@ public class TransformationUtils {
      */
     public static String getDeviceNameLastSix(String str) {
         int totalNum = str.length();
-
-        return str.substring(totalNum - 6, totalNum);
+        if (totalNum > 6)
+            return str.substring(totalNum - 6, totalNum);
+        else
+            return str;
     }
 
     /**

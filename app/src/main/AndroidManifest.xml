@@ -23,15 +23,6 @@
         android:label="@string/app_name"
         tools:replace="android:label"
         android:theme="@style/AppTheme">
-        <!-- 初始化vitamio的必要步奏-->
-        <activity
-            android:name="io.vov.vitamio.activity.InitActivity"
-            android:configChanges="orientation|screenSize|smallestScreenSize|keyboard|keyboardHidden|navigation"
-            android:launchMode="singleTop"
-            tools:replace="android:theme"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen"
-            android:windowSoftInputMode="stateAlwaysHidden" />
-
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="VUnuFRfILd4DrXKYZOc0ObMk" />
@@ -39,16 +30,13 @@
         <activity
             android:name=".view.Activity.LoginActivity"
             android:label="@string/app_name"
+            android:clearTaskOnLaunch="true"
             android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity
-            android:name=".view.Activity.TestActivity"
-            android:launchMode="singleTask" />
 
         <activity
             android:name=".view.Activity.TypeSelectionActivity"

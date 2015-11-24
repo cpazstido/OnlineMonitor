@@ -100,6 +100,7 @@ public class SMEquipmentPresenter implements Presenter {
 
     public void addEquipment(int poleSn, String deviceID, String dvrId, String angleRelativeToNorthPole, String deviceType, int isSendMessage, String cma_id, String sensor_id, String equipment_id) {
         showViewLoading();
+        equipmentManageActivity.clearEquipmentList();
         SMEquipmentRepository smEquipmentRepository = new EquipmentDataRepository(mContext, userId, poleSn, deviceID, dvrId, angleRelativeToNorthPole, deviceType, isSendMessage, cma_id, sensor_id, equipment_id);
         this.equipmentUseCase = new EquipmentUseCase(new UIThread(), AndroidSchedulers.mainThread(), smEquipmentRepository, 3);
         this.equipmentUseCase.execute(new EquipmentPageSubscriber());
@@ -107,14 +108,15 @@ public class SMEquipmentPresenter implements Presenter {
 
     public void deleteEquipment(int sn) {
         showViewLoading();
+        equipmentManageActivity.clearEquipmentList();
         SMEquipmentRepository smEquipmentRepository = new EquipmentDataRepository(sn, mContext, userId);
         this.equipmentUseCase = new EquipmentUseCase(new UIThread(), AndroidSchedulers.mainThread(), smEquipmentRepository, 4);
         this.equipmentUseCase.execute(new EquipmentPageSubscriber());
-
     }
 
     public void changeEquipment(String deviceID, String dvrId, String angleRelativeToNorthPole, String deviceType, int isSendMessage, String cma_id, String sensor_id, String equipment_id, int equipmentSn) {
         showViewLoading();
+        equipmentManageActivity.clearEquipmentList();
         SMEquipmentRepository smEquipmentRepository = new EquipmentDataRepository(mContext, userId, deviceID, dvrId, angleRelativeToNorthPole, deviceType, isSendMessage, cma_id, sensor_id, equipment_id, equipmentSn);
         this.equipmentUseCase = new EquipmentUseCase(new UIThread(), AndroidSchedulers.mainThread(), smEquipmentRepository, 5);
         this.equipmentUseCase.execute(new EquipmentPageSubscriber());

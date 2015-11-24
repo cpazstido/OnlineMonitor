@@ -13,6 +13,7 @@
     app:cardElevation="4dp">
 
     <LinearLayout
+        android:id="@+id/card_ll"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
@@ -30,7 +31,6 @@
                 android:id="@+id/equipment_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="侯阳一线--84号塔"
                 android:textAppearance="@style/TextAppearance.AppCompat.Title"
                 />
 
@@ -38,6 +38,7 @@
             <ImageView
                 android:id="@+id/equipment_title_new_alarm"
                 android:layout_width="50dp"
+                android:alpha="0.5"
                 android:layout_height="match_parent"
                 android:layout_alignBottom="@id/equipment_name"
                 android:layout_alignParentRight="true"

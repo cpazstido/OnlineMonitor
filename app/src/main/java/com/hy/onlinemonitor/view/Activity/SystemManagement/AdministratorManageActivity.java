@@ -12,6 +12,7 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.daimajia.swipe.util.Attributes;
@@ -102,14 +103,19 @@ public class AdministratorManageActivity extends SMBaseActivity {
                             String isMessage = ((Spinner) dialog.getCustomView().findViewById(R.id.dialog_administrator_message)).getSelectedItem().toString();
                             int companySn = companies.get(((Spinner) dialog.getCustomView().findViewById(R.id.dialog_administrator_company)).getSelectedItemPosition()).getSn();
                             int roleSn = roleList.get(((Spinner) dialog.getCustomView().findViewById(R.id.dialog_administrator_role)).getSelectedItemPosition()).getSn();
-
-                            smAdministratorPresenter.addAdministrator(roleSn, companySn, loginName, realName, password, phoneNumber, isMessage);
-                            mAdapter.notifyDataSetChanged();
-                            super.onPositive(dialog);
+                            if (loginName.isEmpty() || realName.isEmpty() || password.isEmpty() || phoneNumber.isEmpty() || isMessage.isEmpty()) {
+                                Toast.makeText(AdministratorManageActivity.this, "请完整填写", Toast.LENGTH_SHORT).show();
+                            } else {
+                                dialog.dismiss();
+                                smAdministratorPresenter.addAdministrator(roleSn, companySn, loginName, realName, password, phoneNumber, isMessage);
+                                mAdapter.notifyDataSetChanged();
+                                super.onPositive(dialog);
+                            }
                         }
 
                         @Override
                         public void onNegative(MaterialDialog dialog) {
+                            dialogShow();
                             super.onNegative(dialog);
                         }
 
@@ -118,6 +124,7 @@ public class AdministratorManageActivity extends SMBaseActivity {
                             super.onNeutral(dialog);
                         }
                     })
+                    .autoDismiss(false)
                     .build();
             dialogShow();
         } else {
@@ -184,7 +191,7 @@ public class AdministratorManageActivity extends SMBaseActivity {
 
     @Override
     public void showError(String message) {
-       ErrorThing(message);
+        ErrorThing(message);
     }
 
     @Override
@@ -203,14 +210,16 @@ public class AdministratorManageActivity extends SMBaseActivity {
     }
 
     public void renderEquipmentList(AdministratorPage administratorPage) {
-        if (administratorPage != null &&administratorPage.getList().size() !=0) {
+        if (administratorPage != null && administratorPage.getList().size() != 0) {
             errorMessageLl.setVisibility(View.GONE);
             smRecyclerView.setVisibility(View.VISIBLE);
             this.administratorPage = administratorPage;
             this.mAdapter.setAdministratorCollection(administratorPage.getList());
-        }else{
+        } else {
             showError(Resources.getSystem().getString(R.string.not_data));
         }
+
+        ShowGuideView("AdministratorManageActivity",null,"点击按钮可添加管理员");
     }
 
     private SMAdministratorRecyclerAdapter.onTowerManageClickListener onTowerManageClickListener =
@@ -232,14 +241,14 @@ public class AdministratorManageActivity extends SMBaseActivity {
             flag = false;
             boolean isItemCheckAll = true;
             for (TreeNode treeNode : node.getRoot().getChildren()) {
-                boolean itemCheck =true;
-                for(TreeNode treeNode1: treeNode.getChildren()){
-                    if(!treeNode1.isSelected()){
-                        itemCheck =false;
+                boolean itemCheck = true;
+                for (TreeNode treeNode1 : treeNode.getChildren()) {
+                    if (!treeNode1.isSelected()) {
+                        itemCheck = false;
                     }
                 }
                 treeNode.setSelected(itemCheck);
-                if(!treeNode.isSelected()){
+                if (!treeNode.isSelected()) {
                     isItemCheckAll = false;
                 }
             }
@@ -300,8 +309,8 @@ public class AdministratorManageActivity extends SMBaseActivity {
 
         checkAll = (CheckBox) relativeLayout.findViewById(R.id.check_box);
 
-        if(administratorInformation.getAllPoleSeleceted() ==1){
-            Log.e("tag","全选了");
+        if (administratorInformation.getAllPoleSeleceted() == 1) {
+            Log.e("tag", "全选了");
             checkAll.setChecked(true);
 //            checkAll.setChecked(true);
         }
@@ -333,7 +342,7 @@ public class AdministratorManageActivity extends SMBaseActivity {
                             towerTree.setSelected(true);
                         }
                     }
-                }else{
+                } else {
                     lineTree.setSelected(true);
                 }
                 lineTree.addChild(towerTree);

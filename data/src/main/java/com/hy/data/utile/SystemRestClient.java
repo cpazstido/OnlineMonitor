@@ -10,13 +10,13 @@ import com.loopj.android.http.RequestParams;
 import org.apache.http.HttpEntity;
 
 public class SystemRestClient {
+    private static final String BASE_UPDATA_URL = "http://118.123.114.8:8080/eMonitorApp/appUpdate";
 
     public static final String BASE_MONITOR_URL = "http://118.123.114.8:8080/eMonitorApp";
     public static final String BASE_PICTURE_URL = "http://118.123.114.8:8080/eMonitorApp/alarm/";
     private static final String BASE_URL = "http://118.123.114.8:8080/eMonitorApp/android";
     private static final String BASE_VIDEO_URL = "http://118.123.114.8:8080/eMonitorApp/accessServer";
     private static final String BASE_POWER_URL = "http://118.123.114.8:8080/eMonitorApp/frontendconfig";
-    private static final String BASE_UPDATA_URL = "http://118.123.114.8:8080/eMonitorApp/appUpdate";
 
 //    private static final String BASE_URL = "http://171.221.207.57:8080/eMonitorApp/android";
 //    public static final String BASE_PICTURE_URL = "http://171.221.207.57:8080/eMonitorApp/alarm/";
@@ -24,11 +24,11 @@ public class SystemRestClient {
 //    private static final String BASE_POWER_URL = "http://171.221.207.57:8080/eMonitorApp/frontendconfig";
 //    private static final String BASE_UPDATA_URL = "http://171.221.207.57:8080/eMonitorApp/appUpdate";
 
-//    public static final String BASE_MONITOR_URL = "http://172.16.8.236:8081/eMonitorApp";
-//    private static final String BASE_URL = "http://172.16.8.236:8081/eMonitorApp/android";
-//    public static final String BASE_PICTURE_URL = "http://172.16.8.236:8081/eMonitorApp/alarm/";
-//    private static final String BASE_VIDEO_URL = "http://172.16.8.236:8081/eMonitorApp/accessServer";
-//    private static final String BASE_POWER_URL = "http://172.16.8.236:8081/eMonitorApp/frontendconfig";
+//    public static final String BASE_MONITOR_URL = "http://172.16.8.224:8081/eMonitorApp";
+//    private static final String BASE_URL = "http://172.16.8.224:8081/eMonitorApp/android";
+//    public static final String BASE_PICTURE_URL = "http://172.16.8.224:8081/eMonitorApp/alarm/";
+//    private static final String BASE_VIDEO_URL = "http://172.16.8.224:8081/eMonitorApp/accessServer";
+//    private static final String BASE_POWER_URL = "http://172.16.8.224:8081/eMonitorApp/frontendconfig";
 
     private static FinalAsyncHttpClient finalAsyncHttpClient = new FinalAsyncHttpClient();
     private static AsyncHttpClient client = finalAsyncHttpClient.getAsyncHttpClient();

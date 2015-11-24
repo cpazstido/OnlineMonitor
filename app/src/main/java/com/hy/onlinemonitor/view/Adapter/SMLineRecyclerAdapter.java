@@ -190,6 +190,7 @@ public class SMLineRecyclerAdapter extends RecyclerSwipeAdapter<LineViewHolder> 
     }
 
     public void cleanList() {
+        linkedHashSet.clear();
         lines.clear();
     }
 }

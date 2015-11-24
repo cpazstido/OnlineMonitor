@@ -1,9 +1,11 @@
 package com.hy.onlinemonitor.view.Activity.SystemManagement;
 
+import android.content.SharedPreferences;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -12,10 +14,12 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.github.amlcurran.showcaseview.ShowcaseView;
 import com.hy.onlinemonitor.R;
 import com.hy.onlinemonitor.utile.GetLoading;
 import com.hy.onlinemonitor.view.Activity.BaseActivity;
 import com.hy.onlinemonitor.view.Activity.LoginActivity;
+import com.hy.onlinemonitor.view.Component.ToolbarActionItemTarget;
 import com.hy.onlinemonitor.view.LoadDataView;
 import com.rey.material.widget.Button;
 import com.rey.material.widget.Spinner;
@@ -117,13 +121,33 @@ public abstract class SMBaseActivity extends BaseActivity implements LoadDataVie
             refreshButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
                     LoginActivity.goLoginView(SMBaseActivity.this);
                 }
             });
-        }else{
+        } else {
             doRefresh();
         }
     }
 
+    public void ShowGuideView(String spFlag, String ContentTitle, String ContentText) {
+
+        SharedPreferences sp = this.getSharedPreferences("SP", MODE_PRIVATE);
+        boolean isFirst = sp.getBoolean(spFlag, true);
+
+        if (isFirst) {
+            SharedPreferences.Editor editor = sp.edit();
+            editor.putBoolean(spFlag, false);
+            editor.apply();
+            String mContentTitle = TextUtils.isEmpty(ContentTitle) ? "添加按钮" : ContentTitle;
+            String mContentText = TextUtils.isEmpty(ContentText) ? "添加按钮,用于添加数据" : ContentText;
+            new ShowcaseView.Builder(this)
+                    .setTarget(new ToolbarActionItemTarget(toolbar, R.id.action_add))
+                    .withMaterialShowcase()
+                    .setStyle(R.style.CustomShowcaseTheme)
+                    .setContentTitle(mContentTitle)
+                    .setContentText(mContentText)
+                    .hideOnTouchOutside()
+                    .build().show();
+        }
+    }
 }

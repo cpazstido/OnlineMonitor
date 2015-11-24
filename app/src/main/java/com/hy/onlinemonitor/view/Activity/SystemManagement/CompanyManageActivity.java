@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.daimajia.swipe.util.Attributes;
@@ -71,11 +72,22 @@ public class CompanyManageActivity extends SMBaseActivity {
                             String name = newName.getText().toString();
                             String address = newAddress.getText().toString();
                             int companySn = parentCompanyList.get(((android.widget.Spinner) dialog.getCustomView().findViewById(R.id.dialog_company_parent)).getSelectedItemPosition()).getSn();
-                            smCompanyPresenter.addCompany(name, address, companySn);
-                            super.onPositive(dialog);
+                            if (name.isEmpty() || address.isEmpty()) {
+                                Toast.makeText(CompanyManageActivity.this, "请完整填写", Toast.LENGTH_SHORT).show();
+                            } else {
+                                dialog.dismiss();
+                                smCompanyPresenter.addCompany(name, address, companySn);
+                                super.onPositive(dialog);
+                            }
                         }
 
+                        @Override
+                        public void onNegative(MaterialDialog dialog) {
+                            super.onNegative(dialog);
+                            dialog.dismiss();
+                        }
                     })
+                    .autoDismiss(false)
                     .build();
             //companyNameList是一个list
             List<String> companyNameList = new ArrayList<>();
@@ -130,6 +142,7 @@ public class CompanyManageActivity extends SMBaseActivity {
         } else {
             showError(Resources.getSystem().getString(R.string.not_data));
         }
+        ShowGuideView("CompanyManageActivity",null,"点击按钮可添加公司");
     }
 
     public void setParentCompanyList(List<Company> mList) {

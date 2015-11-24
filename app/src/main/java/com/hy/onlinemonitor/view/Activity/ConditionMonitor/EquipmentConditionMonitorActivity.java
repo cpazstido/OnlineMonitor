@@ -68,7 +68,7 @@ import java.util.TreeMap;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-
+//统计图
 public class EquipmentConditionMonitorActivity extends BaseActivity implements DatePickerDialog.OnDateSetListener, LoadDataView {
     private static String TAG = "EquipmentConditionMonitorActivity";
     @Bind(R.id.toolbar)
@@ -593,7 +593,10 @@ public class EquipmentConditionMonitorActivity extends BaseActivity implements D
             LineDataSet set1 = new LineDataSet(yValues, selectStatisticsStr);
             set1.setLineWidth(1.5f);
             //set Circles is enable
-            set1.setDrawCircles(false);
+            if(xValues.size()<40)
+                set1.setDrawCircles(true);
+            else
+                set1.setDrawCircles(false);
 
             set1.setColor(getResources().getColor(R.color.primary));
             set1.setCircleSize(4f);

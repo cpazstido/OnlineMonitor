@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.bumptech.glide.Glide;
 import com.hy.data.utile.SystemRestClient;
 import com.hy.onlinemonitor.R;
 import com.hy.onlinemonitor.bean.AlarmInformation;
@@ -15,7 +16,6 @@ import com.hy.onlinemonitor.bean.AlarmPage;
 import com.hy.onlinemonitor.utile.TransformationUtils;
 import com.hy.onlinemonitor.view.Activity.Function.DetailedAlarmActivity;
 import com.hy.onlinemonitor.view.ViewHolder.AlarmViewHolder;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -105,10 +105,12 @@ public class AlarmRecyclerAdapter extends RecyclerView.Adapter<AlarmViewHolder> 
     @Override
     public void onBindViewHolder(AlarmViewHolder holder, final int position) {
         final AlarmInformation alarmInformation = this.mList.get(position);
-
-        String realShow = alarmInformation.getLineName() + "--" + alarmInformation.getPoleName() + "--";
+        //为每一个cardview添加标题
+        String realShow = alarmInformation.getCollectionTime();
+        realShow += "\n";
+        realShow += alarmInformation.getLineName() + "--" + alarmInformation.getPoleName() + "--";
         realShow += TransformationUtils.getDeviceNameLastSix(alarmInformation.getDeviceId());
-
+        //根据不同的查询类型设置界面
         switch (queryAlarmType) {
             case "sensor":
                 holder.equipmentIdentifier.setText(realShow);
@@ -118,8 +120,12 @@ public class AlarmRecyclerAdapter extends RecyclerView.Adapter<AlarmViewHolder> 
             case "fire":
                 holder.alarmCardTitle.setText(realShow);
                 Log.e("fire", SystemRestClient.BASE_PICTURE_URL + alarmInformation.getVisibleLightImage());
-                Picasso.with(mContext).load(SystemRestClient.BASE_PICTURE_URL + alarmInformation.getVisibleLightImage()).placeholder(R.drawable.picture_loading).error(R.drawable.loading_error).into(holder.alarmCardImage);
-//                Picasso.with(mContext).load("http://172.16.8.129:8081/eMonitorApp/alarm/visiblePicture/217-1-20150916-150333.jpg").into(holder.alarmCardImage);
+
+                Glide.with(mContext)
+                        .load(SystemRestClient.BASE_PICTURE_URL + alarmInformation.getVisibleLightImage())
+                        .centerCrop()
+                        .error(R.drawable.loading_error).placeholder(R.drawable.picture_loading).crossFade(1500).into(holder.alarmCardImage);
+
                 holder.alarmCardView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -136,7 +142,10 @@ public class AlarmRecyclerAdapter extends RecyclerView.Adapter<AlarmViewHolder> 
             case "break":
                 holder.alarmCardTitle.setText(realShow);
                 Log.e("break", SystemRestClient.BASE_PICTURE_URL + alarmInformation.getBreakImage());
-                Picasso.with(mContext).load(SystemRestClient.BASE_PICTURE_URL + alarmInformation.getBreakImage()).placeholder(R.drawable.picture_loading).error(R.drawable.loading_error).into(holder.alarmCardImage);
+                Glide.with(mContext)
+                        .load(SystemRestClient.BASE_PICTURE_URL + alarmInformation.getBreakImage())
+                        .centerCrop()
+                        .error(R.drawable.loading_error).placeholder(R.drawable.picture_loading).crossFade(1500).into(holder.alarmCardImage);
                 holder.alarmCardView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {

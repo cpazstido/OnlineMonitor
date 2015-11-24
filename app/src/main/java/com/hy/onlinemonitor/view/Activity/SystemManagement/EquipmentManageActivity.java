@@ -189,17 +189,23 @@ public class EquipmentManageActivity extends SMBaseActivity {
                             String cma_ID = ((EditText) dialog.getCustomView().findViewById(R.id.dialog_equipment_cmaid)).getText().toString();
                             String sensor_ID = ((EditText) dialog.getCustomView().findViewById(R.id.dialog_equipment_sensorid)).getText().toString();
                             String equipment_ID = ((EditText) dialog.getCustomView().findViewById(R.id.dialog_equipment_eqmenid)).getText().toString();
-
-                            smEquipmentPresenter.addEquipment(poleSn, deviceID, dvrid, angleRelativeToNorthPole, deviceType, isSendMessage, cma_ID, sensor_ID, equipment_ID);
-                            super.onPositive(dialog);
+                            if(deviceID.isEmpty()||dvrid.isEmpty()||angleRelativeToNorthPole.isEmpty()||cma_ID.isEmpty()||sensor_ID.isEmpty()||equipment_ID.isEmpty()){
+                                Toast.makeText(EquipmentManageActivity.this, "请完整填写", Toast.LENGTH_SHORT).show();
+                            }else{
+                                dialog.dismiss();
+                                smEquipmentPresenter.addEquipment(poleSn, deviceID, dvrid, angleRelativeToNorthPole, deviceType, isSendMessage, cma_ID, sensor_ID, equipment_ID);
+                                super.onPositive(dialog);
+                            }
                         }
 
                         @Override
                         public void onNegative(MaterialDialog dialog) {
                             super.onNegative(dialog);
+                            dialog.dismiss();
                         }
 
                     })
+                    .autoDismiss(false)
                     .build();
 
             Spinner equipmentTypeSpinner = (Spinner) dialog.getCustomView().findViewById(R.id.dialog_equipment_type);
@@ -271,8 +277,12 @@ public class EquipmentManageActivity extends SMBaseActivity {
         } else {
             showError(getResources().getString(R.string.not_data));
         }
-    }
+        ShowGuideView("EquipmentManageActivity",null,"点击按钮可添加线路");
 
+    }
+    public void clearEquipmentList(){
+        mAdapter.linkedHashSet.clear();
+    }
     private SMEquipmentRecyclerAdapter.SensorManage sensorManage =
             new SMEquipmentRecyclerAdapter.SensorManage() {
                 @Override

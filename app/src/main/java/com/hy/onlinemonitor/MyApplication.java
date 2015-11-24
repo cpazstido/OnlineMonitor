@@ -21,7 +21,6 @@ public class MyApplication extends Application {
     public static int localVersion = 0;// 本地安装版本
     public static int serverVersion = 0;// 服务器版本
     public static long appSize = 0;
-    public static int deviceListSortType =0;//设备列表排序方式,默认为0,按
     @Override
     public void onCreate() {
         super.onCreate();

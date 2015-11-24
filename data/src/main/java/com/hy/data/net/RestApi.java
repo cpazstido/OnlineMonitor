@@ -195,6 +195,8 @@ public interface RestApi {
     Observable<List<CompanyEntity>> deleteCompany(int userId, int sn);
 
     /**
+     * 获取角色列表
+     *
      * @param userId 用户唯一标示
      * @return 角色列表
      */

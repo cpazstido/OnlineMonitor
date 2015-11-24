@@ -38,7 +38,7 @@ import java.util.TreeMap;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-
+//设备状态
 public class EquipmentStateMonitorActivity extends BaseActivity implements LoadDataView {
     private static final String TAG = "设备状态监测Activity";
     @Bind(R.id.toolbar)

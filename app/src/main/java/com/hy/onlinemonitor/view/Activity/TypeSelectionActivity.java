@@ -9,6 +9,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.KeyEvent;
+import android.widget.Toast;
 
 import com.hy.onlinemonitor.R;
 import com.hy.onlinemonitor.presenter.UserPresenter;
@@ -68,6 +70,12 @@ public class TypeSelectionActivity extends AppCompatActivity implements InitView
     }
 
     @Override
+    protected void onStop() {
+        super.onStop();
+        this.userPresenter.stop();
+    }
+
+    @Override
     public void onDestroy() {
         super.onDestroy();
         ActivityCollector.removeActivity(this);
@@ -93,6 +101,20 @@ public class TypeSelectionActivity extends AppCompatActivity implements InitView
         toolbar.setTitle(R.string.equipment_type);
         toolbar.setSubtitle(R.string.please_choice);
         setSupportActionBar(toolbar);
+    }
+
+    long mExitTime = 0;
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            if ((System.currentTimeMillis() - mExitTime) > 2000) {
+                Toast.makeText(this, "再按一次退出程序", Toast.LENGTH_SHORT).show();
+                mExitTime = System.currentTimeMillis();
+            } else {
+                finish();
+            }
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 
     public void showLoading() {

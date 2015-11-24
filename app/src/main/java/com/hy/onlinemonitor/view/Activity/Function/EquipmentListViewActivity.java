@@ -1,6 +1,7 @@
 package com.hy.onlinemonitor.view.Activity.Function;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -19,6 +20,7 @@ import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.baoyz.widget.PullRefreshLayout;
+import com.github.amlcurran.showcaseview.ShowcaseView;
 import com.hy.onlinemonitor.R;
 import com.hy.onlinemonitor.bean.EquipmentInforPage;
 import com.hy.onlinemonitor.bean.Line;
@@ -28,6 +30,7 @@ import com.hy.onlinemonitor.utile.ShowUtile;
 import com.hy.onlinemonitor.view.Activity.BaseActivity;
 import com.hy.onlinemonitor.view.Activity.LoginActivity;
 import com.hy.onlinemonitor.view.Adapter.EquipmentRecyclerAdapter;
+import com.hy.onlinemonitor.view.Component.ToolbarActionItemTarget;
 import com.hy.onlinemonitor.view.LoadDataView;
 import com.rey.material.widget.Button;
 import com.rey.material.widget.RadioButton;
@@ -101,6 +104,22 @@ public class EquipmentListViewActivity extends BaseActivity implements LoadDataV
             } else {
                 showError(getResources().getString(R.string.not_data));
             }
+        }
+        SharedPreferences sp = this.getSharedPreferences("SP", MODE_PRIVATE);
+        boolean isFirst = sp.getBoolean("EquipmentListViewActivity", true);
+
+        if (isFirst) {
+            SharedPreferences.Editor editor = sp.edit();
+            editor.putBoolean("EquipmentListViewActivity", false);
+            editor.apply();
+            new ShowcaseView.Builder(this)
+                    .setTarget(new ToolbarActionItemTarget(toolbar, R.id.action_search))
+                    .withMaterialShowcase()
+                    .setStyle(R.style.CustomShowcaseTheme)
+                    .setContentTitle("搜索按钮")
+                    .setContentText("点击该按钮用于精确查找想要查看的设备")
+                    .hideOnTouchOutside()
+                    .build().show();
         }
     }
 
@@ -183,9 +202,19 @@ public class EquipmentListViewActivity extends BaseActivity implements LoadDataV
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
-                if (newState == RecyclerView.SCROLL_STATE_IDLE && lastVisibleItem + 1 == mAdapter.getItemCount() && mAdapter.getItemCount() >= equipmentInforPage.getRowCount()) {
-                    Log.e("hell", "到达底部");
-                    ShowUtile.snackBarShow(getRootView(), "没有更多数据....");
+                switch (newState) {
+                    case RecyclerView.SCROLL_STATE_IDLE:
+                        if ((lastVisibleItem + 1) == mAdapter.getItemCount()) {
+                            if (pageNumber < equipmentInforPage.getTotalPage() && !isLoadingMore) {
+                                isLoadingMore = true;
+                                pageNumber++;
+                                loadEquipmentList(pageNumber);
+                            } else {
+                                Log.e("hell", "到达底部");
+                                ShowUtile.snackBarShow(getRootView(), "无更多数据...");
+                            }
+                        }
+                        break;
                 }
             }
 
@@ -193,14 +222,6 @@ public class EquipmentListViewActivity extends BaseActivity implements LoadDataV
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 if (scrollFlag) {
                     lastVisibleItem = linearLayoutManager.findLastVisibleItemPosition();
-                    int totalItemCount = mAdapter.getItemCount();
-                    if (lastVisibleItem == totalItemCount - 1 && dy > 0 && equipmentInforPage.getRowCount() > totalItemCount) {
-                        if (!isLoadingMore) {
-                            isLoadingMore = true;
-                            pageNumber++;
-                            loadEquipmentList(pageNumber);//这里多线程也要手动控制isLoadingMore
-                        }
-                    }
                 }
             }
         });

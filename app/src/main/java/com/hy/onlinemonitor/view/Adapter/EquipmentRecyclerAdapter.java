@@ -16,7 +16,6 @@ import com.hy.onlinemonitor.utile.TransformationUtils;
 import com.hy.onlinemonitor.view.Activity.Function.SingleAlarmInformationActivity;
 import com.hy.onlinemonitor.view.Activity.Function.VideoActivity;
 import com.hy.onlinemonitor.view.ViewHolder.EquipmentListViewHolder;
-import com.lid.lib.LabelView;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -32,7 +31,6 @@ public class EquipmentRecyclerAdapter extends RecyclerView.Adapter<EquipmentList
     private int selectionType;
     private Context mContext;
     private List<EquipmentInformation> mList;
-    private LabelView label;
     private int userId;
     String choiceStr = null;
 
@@ -53,7 +51,6 @@ public class EquipmentRecyclerAdapter extends RecyclerView.Adapter<EquipmentList
     public EquipmentListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(mContext).inflate(R.layout.cardview_equipment, parent,
                 false);
-
         return new EquipmentListViewHolder(view, selectionType);
     }
 

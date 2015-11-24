@@ -12,7 +12,6 @@ public class EquipmentListViewHolder extends RecyclerView.ViewHolder{
     public TextView stateShow,equipmentName,equipmentAlarmNull;
     public Button newSensorAlarm,newFireAlarm,newBreakAlarm,historySensorAlarm,historyFireAlarm,historyBreakAlarm,realVideo;
     public ImageView newAlarmImageView;
-
     public EquipmentListViewHolder(View itemView, int equipmentType) {
         super(itemView);
         stateShow = (TextView) itemView.findViewById(R.id.equipment_state_show);

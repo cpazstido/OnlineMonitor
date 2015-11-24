@@ -13,7 +13,6 @@ import com.hy.onlinemonitor.utile.ShowUtile;
 import com.hy.onlinemonitor.view.Activity.Function.VideoActivity;
 
 import rx.android.schedulers.AndroidSchedulers;
-
 public class VideoPresenter implements Presenter {
     private Context mContext;
     private VideoActivity videoActivity;

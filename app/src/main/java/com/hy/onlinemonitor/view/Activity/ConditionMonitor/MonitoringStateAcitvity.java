@@ -52,10 +52,7 @@ import java.util.TreeMap;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-
-/**
- * Created by 24363 on 2015/10/28.
- */
+//监测状态
 public class MonitoringStateAcitvity extends BaseActivity implements LoadDataView, DatePickerDialog.OnDateSetListener {
     private static final String TAG = "MonitoringStateAcitvity";
 

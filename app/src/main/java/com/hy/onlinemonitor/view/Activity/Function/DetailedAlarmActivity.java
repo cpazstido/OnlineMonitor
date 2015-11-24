@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.hy.data.utile.SystemRestClient;
 import com.hy.onlinemonitor.R;
 import com.hy.onlinemonitor.bean.AlarmInformation;
@@ -27,7 +28,6 @@ import com.r0adkll.slidr.Slidr;
 import com.r0adkll.slidr.model.SlidrConfig;
 import com.r0adkll.slidr.model.SlidrPosition;
 import com.rey.material.widget.Button;
-import com.squareup.picasso.Picasso;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -109,12 +109,29 @@ public class DetailedAlarmActivity extends AppCompatActivity implements LoadData
                         break;
                 }
 
-                Picasso.with(this).load(SystemRestClient.BASE_PICTURE_URL + alarmInformation.getVisibleLightImage()).placeholder(R.drawable.picture_loading).error(R.drawable.loading_error).into(detailedVisiblePicture);
-                Picasso.with(this).load(SystemRestClient.BASE_PICTURE_URL + alarmInformation.getInfraredImage()).placeholder(R.drawable.picture_loading).error(R.drawable.loading_error).into(detailedInfraredPicture);
+                Log.e("详细界面","可见光"+SystemRestClient.BASE_PICTURE_URL + alarmInformation.getVisibleLightImage());
+                Log.e("详细界面","红外"+SystemRestClient.BASE_PICTURE_URL + alarmInformation.getInfraredImage());
+
+                Glide.with(this).load(SystemRestClient.BASE_PICTURE_URL + alarmInformation.getVisibleLightImage())
+                        .error(R.drawable.loading_error)
+                        .placeholder(R.drawable.picture_loading)
+                        .dontAnimate()
+                        .into(detailedVisiblePicture);
+                Glide.with(this).load(SystemRestClient.BASE_PICTURE_URL + alarmInformation.getInfraredImage())
+                        .error(R.drawable.loading_error)
+                        .placeholder(R.drawable.picture_loading)
+                        .dontAnimate()
+                        .into(detailedInfraredPicture);
                 break;
             case "break":
                 detailedVisiblePicture.setVisibility(View.GONE);
-                Picasso.with(this).load(SystemRestClient.BASE_PICTURE_URL + alarmInformation.getInfraredImage()).into(detailedInfraredPicture);
+                Log.e("详细界面", "外破" + SystemRestClient.BASE_PICTURE_URL + alarmInformation.getBreakImage());
+                Glide.with(this).load(SystemRestClient.BASE_PICTURE_URL + alarmInformation.getBreakImage())
+                        .error(R.drawable.loading_error)
+                        .placeholder(R.drawable.picture_loading)
+                        .centerCrop()
+                        .dontAnimate()
+                        .into(detailedInfraredPicture);
                 showIsBlowing.setVisibility(View.GONE);
                 break;
         }

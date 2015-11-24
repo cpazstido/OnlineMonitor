@@ -86,4 +86,16 @@
 
     <style name="CheckBoxDrawable" parent="Material.Drawable.CheckBox"/>
 
+    <style name="CustomShowcaseTheme" parent="ShowcaseView">
+        <item name="sv_backgroundColor" >#c84f4f4f</item>
+        <item name="sv_showcaseColor">#3498db</item>
+        <item name="sv_buttonText">知道了</item>
+        <item name="sv_tintButtonColor">false</item>
+    </style>
+
+    <style name="CustomShowcaseTheme2" parent="ShowcaseView">
+        <item name="sv_backgroundColor" >#c84f4f4f</item>
+        <item name="sv_showcaseColor">#3498db</item>
+        <item name="sv_buttonText">下一步</item>
+    </style>
 </resources>

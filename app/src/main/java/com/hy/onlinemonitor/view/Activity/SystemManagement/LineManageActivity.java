@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.daimajia.swipe.util.Attributes;
@@ -32,6 +33,7 @@ public class LineManageActivity extends SMBaseActivity {//系统管理-线路管
     private int pageNumber = 1; //当前显示页数
     private int lastVisibleItem; //最后一个课件的item的序号
     private int theCompanySn = -1; //公司sn
+    private List<String> companyNameList;
 
     //第一步执行
     @Override
@@ -118,16 +120,28 @@ public class LineManageActivity extends SMBaseActivity {//系统管理-线路管
                             String newStart = ((EditText) dialog.getCustomView().findViewById(R.id.dialog_line_start)).getText().toString();//取得对话框上的起点
                             String newVoltageLevel = ((EditText) dialog.getCustomView().findViewById(R.id.dialog_line_voltage_level)).getText().toString(); //取得对话框上的电压等级
                             int companySn = companyList.get(((android.widget.Spinner) dialog.getCustomView().findViewById(R.id.dialog_line_company)).getSelectedItemPosition()).getSn(); ////取得对话框上的spinner上的选择,并获取公司sn
-                            LineManageActivity.this.smLinePresenter.addLine(companySn, newName, newStart, newFinish, newTrend, newVoltageLevel);//添加线路
-                            spinnerChoiceCompany.setSelection(0);//设置spinner的selection
-                            super.onPositive(dialog);
+                            if (newName.isEmpty() || newTrend.isEmpty() || newFinish.isEmpty() || newStart.isEmpty() || newVoltageLevel.isEmpty()){
+                                Toast.makeText(LineManageActivity.this,"请完整填写",Toast.LENGTH_SHORT).show();
+                            }else {
+                                dialog.dismiss();
+                                LineManageActivity.this.smLinePresenter.addLine(companySn, newName, newStart, newFinish, newTrend, newVoltageLevel);//添加线路
+                                String companyName = companyList.get(((android.widget.Spinner) dialog.getCustomView().findViewById(R.id.dialog_line_company)).getSelectedItemPosition()).getCompanyName();
+                                spinnerChoiceCompany.setSelection(companyNameList.indexOf(companyName) + 1);//设置spinner的selection
+                                super.onPositive(dialog);
+                            }
                         }
 
+                        @Override
+                        public void onNegative(MaterialDialog dialog) {
+                            super.onNegative(dialog);
+                            dialog.dismiss();
+                        }
                     })
+                    .autoDismiss(false)
                     .build();
 
             android.widget.Spinner companySpinner = (android.widget.Spinner) dialog.getCustomView().findViewById(R.id.dialog_line_company);
-            List<String> companyNameList = new ArrayList<>();
+            companyNameList = new ArrayList<>();
             for (Company company : companyList) {
                 companyNameList.add(company.getCompanyName()); //取得所有的公司名
             }
@@ -216,6 +230,9 @@ public class LineManageActivity extends SMBaseActivity {//系统管理-线路管
 
     public void renderLinePage(LinePage linePage) { //通知数据改变
         if (linePage != null && linePage.getList().size() != 0) {
+            if (linePage.getPageNum() == 1) {
+                mAdapter.cleanList();
+            }
             errorMessageLl.setVisibility(View.GONE);
             smRecyclerView.setVisibility(View.VISIBLE);
             this.linePage = linePage;
@@ -224,6 +241,8 @@ public class LineManageActivity extends SMBaseActivity {//系统管理-线路管
         } else {
             showError(Resources.getSystem().getString(R.string.not_data));
         }
+        ShowGuideView("LineManageActivity",null,"点击按钮可添加线路");
+
     }
 
     public void setLoading() { //设置加载状态

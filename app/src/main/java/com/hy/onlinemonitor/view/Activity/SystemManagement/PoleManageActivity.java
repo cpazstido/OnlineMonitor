@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.daimajia.swipe.util.Attributes;
@@ -105,7 +106,7 @@ public class PoleManageActivity extends SMBaseActivity {
     @Override
     protected void initRvAdapter() {
         mAdapter = new SMTowerRecyclerAdapter(PoleManageActivity.this, new ArrayList<Pole>());
-        ((SMTowerRecyclerAdapter) mAdapter).setMode(Attributes.Mode.Single);
+        mAdapter.setMode(Attributes.Mode.Single);
         smRecyclerView.setAdapter(mAdapter);
 
         smRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -172,15 +173,23 @@ public class PoleManageActivity extends SMBaseActivity {
                             String latitude = ((EditText) dialog.getCustomView().findViewById(R.id.dialog_latitude)).getText().toString();
                             String altitude = ((EditText) dialog.getCustomView().findViewById(R.id.dialog_altitude)).getText().toString();
                             int lineSn = lineList.get(((Spinner) dialog.getCustomView().findViewById(R.id.spinner_choice_line)).getSelectedItemPosition()).getLineSn();
-                            smPolePresenter.addPole(lineSn, name, longitude, latitude, altitude);
-                            super.onPositive(dialog);
+                            if (name.isEmpty() || longitude.isEmpty() || latitude.isEmpty() || altitude.isEmpty()) {
+                                Toast.makeText(PoleManageActivity.this, "请完整填写", Toast.LENGTH_SHORT).show();
+                            } else {
+                                dialog.dismiss();
+                                smPolePresenter.addPole(lineSn, name, longitude, latitude, altitude);
+                                super.onPositive(dialog);
+                            }
                         }
 
                         @Override
                         public void onNegative(MaterialDialog dialog) {
                             super.onNegative(dialog);
+                            dialog.dismiss();
+
                         }
                     })
+                    .autoDismiss(false)
                     .build();
 
             Spinner spinnerChoiceLine = (Spinner) dialog.getCustomView().findViewById(R.id.spinner_choice_line);
@@ -251,10 +260,17 @@ public class PoleManageActivity extends SMBaseActivity {
         } else {
             showError(Resources.getSystem().getString(R.string.not_data));
         }
+        ShowGuideView("PoleManageActivity",null,"点击按钮可添加杆塔");
+
     }
 
     public void firstLoadAll() {
         PoleManageActivity.this.smPolePresenter.loadAllPole(getUser().getUserId(), pageNumber);
+    }
+
+    public void clearList(){
+        this.mAdapter.linkedHashSet.clear();
+
     }
 
     @Override

@@ -15,6 +15,7 @@ import com.hy.data.repository.datasource.UserDataStoreFactory;
 import com.hy.onlinemonitor.UIThread;
 import com.hy.onlinemonitor.bean.User;
 import com.hy.onlinemonitor.mapper.UserDataMapper;
+import com.hy.onlinemonitor.utile.ShowUtile;
 import com.hy.onlinemonitor.view.Activity.BaseActivity;
 import com.hy.onlinemonitor.view.Activity.TypeSelectionActivity;
 
@@ -45,6 +46,11 @@ public class UserPresenter extends DefaultSubscriber implements Presenter {
 
     }
 
+    public void stop(){//界面不见时,隐藏等待对话框
+        Log.e("stop","stop");
+        UserPresenter.this.hideViewLoading();
+    }
+
     @Override
     public void destroy() {
         this.UserInformationCase.unsubscribe();
@@ -58,7 +64,6 @@ public class UserPresenter extends DefaultSubscriber implements Presenter {
     @Override
     public void hideViewLoading() {
         typeSelectionActivity.hideLoading();
-
     }
 
     public void getUserInformation(Context mContext) {
@@ -98,7 +103,6 @@ public class UserPresenter extends DefaultSubscriber implements Presenter {
     private final class upDataUserSubscriber extends DefaultSubscriber<String> {
         @Override
         public void onCompleted() {
-            hideViewLoading();
             if (message != null) {
                 if ("success".equals(message))
                     typeSelectionActivity.GotoActivity();
@@ -167,6 +171,8 @@ public class UserPresenter extends DefaultSubscriber implements Presenter {
 
         @Override
         public void onError(Throwable e) {
+            hideViewLoading();
+            ShowUtile.toastShow(baseActivity.getBaseContext(),"登录失败,请返回登录页面重试.");
             Log.e("sub", "onError");
         }
 

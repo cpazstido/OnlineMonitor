@@ -6,20 +6,20 @@
         android:icon="@drawable/ic_change"
         android:orderInCategory="80"
         android:title="@string/change_equipment"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="always" />
 
     <item
         android:id="@+id/action_time"
         android:icon="@drawable/ic_time"
         android:orderInCategory="80"
         android:title="@string/date_pick"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="always" />
 
     <item
         android:id="@+id/action_search"
         android:icon="@drawable/ic_search"
         android:orderInCategory="80"
         android:title="@string/action_search"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="always" />
 
 </menu>
